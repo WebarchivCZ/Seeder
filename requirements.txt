@@ -4,3 +4,4 @@ sorl-thumbnail
 psycopg2
 djangorestframework
 sphinx
+django-pgfields
