@@ -1,0 +1,6 @@
+Django==1.7
+pillow
+sorl-thumbnail
+psycopg2
+djangorestframework
+sphinx
