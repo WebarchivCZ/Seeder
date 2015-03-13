@@ -1,0 +1,27 @@
+from base import *
+
+
+SECRET_KEY = ''
+assert SECRET_KEY, 'You must set secret key!'
+
+# SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = True
+TEMPLATE_DEBUG = True
+
+ALLOWED_HOSTS = []
+
+# Database
+# https://docs.djangoproject.com/en/1.7/ref/settings/#databases
+# since we use special PostgresSQL fields we cannot simply use any db.
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': '<db name>',
+        'USER': '<db user>',
+        'PASSWORD': '<db pass>'
+    }
+}
+
+
+
+
