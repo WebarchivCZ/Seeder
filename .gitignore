@@ -74,4 +74,5 @@ target/
 # Temporary data
 .ipynb_checkpoints/
 
+local_settings.py
 
