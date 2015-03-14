@@ -75,7 +75,7 @@ class Seed(BaseModel):
     """
     url = models.URLField(unique=True)
     state = models.CharField(choices=constants.SEED_STATES,
-                             default=constants.INCLUDE_SEED_STATE,
+                             default=constants.SEED_STATE_INCLUDE,
                              max_length=3)
     source = models.ForeignKey(Source)
     redirect = models.BooleanField(_('Redirect on seed'), default=False)
@@ -85,10 +85,38 @@ class Seed(BaseModel):
     from_time = models.DateTimeField(verbose_name=_('From'), blank=True)
     to_time = models.DateTimeField(verbose_name=_('To'), blank=True)
 
-
     class Meta:
         verbose_name = _('Seed')
         verbose_name_plural = _('Seeds')
 
     def __unicode__(self):
         return self.url
+
+
+class VotingRound(BaseModel):
+    """
+        Voting round about source.
+    """
+
+    date_ended = models.DateTimeField(_('End of the election'))
+    ended_by = models.ForeignKey(User)
+    source = models.ForeignKey(Source)
+    result = models.CharField(_('Result of the election'),
+                              max_length=3,
+                              default=constants.VOTING_WAIT,
+                              choices=constants.VOTING_RESULT_CHOICES)
+
+    class Meta:
+        verbose_name = _('Election')
+        verbose_name_plural = _('Elections')
+
+    def __unicode__(self):
+        return u'Election: {0}'.format(self.source)
+
+class Vote(BaseModel):
+    casted_by = models.ForeignKey(User)
+    comment = models.TextField(_('Comment'))
+    vote = models.CharField(_('Vote'),
+                              max_length=3,
+                              choices=constants.VOTE_CHOICES)
+

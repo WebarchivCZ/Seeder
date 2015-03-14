@@ -25,15 +25,37 @@ SOURCE_STATES = (
 )
 
 
-INCLUDE_SEED_STATE = 'inc'
-EXCLUDE_SEED_STATE = 'exc'
-OLD_SEED_STATE = 'old'
+SEED_STATE_INCLUDE = 'inc'
+SEED_STATE_EXCLUDE = 'exc'
+SEED_STATE_OLD = 'old'
 
 SEED_STATES = (
-    (INCLUDE_SEED_STATE, _('Include in harvest')),
-    (EXCLUDE_SEED_STATE, _('Exclude from harvest')),
-    (OLD_SEED_STATE, _('Seed is no longer published')),
+    (SEED_STATE_INCLUDE, _('Include in harvest')),
+    (SEED_STATE_EXCLUDE, _('Exclude from harvest')),
+    (SEED_STATE_OLD, _('Seed is no longer published')),
 )
+
+
+VOTING_INCLUDE = 'inc'
+VOTING_EXCLUDE = 'exc'
+VOTING_WAIT = 'w'
+VOTING_RESULT_CHOICES = (
+    (VOTING_INCLUDE, _('Source is to be included')),
+    (VOTING_EXCLUDE, _('Source is to be excluded')),
+    (VOTING_WAIT, _('Waiting for the end of the election')),
+)
+
+
+VOTE_INCLUDE = 'inc'
+VOTE_EXCLUDE = 'exc'
+VOTE_NEUTRAL = 'neu'
+
+VOTE_CHOICES = (
+    (VOTE_INCLUDE, _('Source is to be included')),
+    (VOTE_EXCLUDE, _('Source is to be excluded')),
+    (VOTE_NEUTRAL, _('Neutral vote')),
+)
+
 
 CONSPECTUS_CHOICES = (
     ('1',  'Antropologie, etnografie'),
