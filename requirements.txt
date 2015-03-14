@@ -3,4 +3,4 @@ pillow
 sorl-thumbnail
 psycopg2
 djangorestframework
-sphinx
+sphinx==1.3
