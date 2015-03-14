@@ -1,5 +1,5 @@
 from django.db import models
-
+from django.contrib.postgres.fields import ArrayField
 from django.utils.translation import ugettext as _
 from django.contrib.auth.models import User
 
@@ -21,7 +21,9 @@ class Publisher(BaseModel):
         Publisher of the Source(s), Publisher can have multiple contacts.
     """
     name = models.CharField(_('Name'), max_length=64)
-    # contacts = models.ArrayField(models.CharField(max_length=64))
+    contacts = ArrayField(
+        base_field=models.CharField(max_length=64),
+        null=True)
 
     class Meta:
         verbose_name = _('Publisher')
