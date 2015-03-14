@@ -114,8 +114,12 @@ class VotingRound(BaseModel):
         return u'Election: {0}'.format(self.source)
 
 class Vote(BaseModel):
+    """
+        Individual vote in voting round
+    """
     casted_by = models.ForeignKey(User)
     comment = models.TextField(_('Comment'))
+    round = models.ForeignKey(verbose_name=_('Round'), to=VotingRound)
     vote = models.CharField(_('Vote'),
                               max_length=3,
                               choices=constants.VOTE_CHOICES)
