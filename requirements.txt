@@ -1,4 +1,4 @@
-Django==1.7
+https://www.djangoproject.com/download/1.8b2/tarball/
 pillow
 sorl-thumbnail
 psycopg2
