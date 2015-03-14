@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # Seeder documentation build configuration file, created by
-# sphinx-quickstart on Fri Mar 13 18:04:02 2015.
+# sphinx-quickstart on Sat Mar 14 20:52:11 2015.
 #
 # This file is execfile()d with the current directory set to its
 # containing dir.
@@ -31,10 +31,9 @@ import shlex
 # ones.
 extensions = [
     'sphinx.ext.autodoc',
-    'sphinx.ext.doctest',
     'sphinx.ext.intersphinx',
-    'sphinx.ext.coverage',
     'sphinx.ext.mathjax',
+    'sphinx.ext.ifconfig',
     'sphinx.ext.viewcode',
 ]
 
@@ -79,7 +78,7 @@ language = None
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
-exclude_patterns = []
+exclude_patterns = ['_build']
 
 # The reST default role (used for this markup: `text`) to use for all
 # documents.
