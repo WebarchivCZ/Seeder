@@ -1,9 +1,39 @@
 # -*- coding: utf-8 -*-
+from django.utils.translation import ugettext as _
+
+
+SOURCE_STATE_INITIALIZED = 'i'
+SOURCE_STATE_WAITING = 'w'
+SOURCE_STATE_COMMUNICATING = 'c'
+SOURCE_STATE_ACCEPTED = 'a'
+SOURCE_STATE_DECLINED_BY_STAFF = 'd'
+SOURCE_STATE_DECLINED_BY_PUBLISHER = 'n'
+SOURCE_STATE_PUBLISHER_IGNORED_REQUEST = 'm'
+SOURCE_STATE_CONTRACT_EXPIRED = 'e'
+SOURCE_STATE_CONTRACT_TERMINATED = 't'
 
 SOURCE_STATES = (
-    ('a', 'accepted'),
+    (SOURCE_STATE_INITIALIZED, _('Initialized')),
+    (SOURCE_STATE_WAITING, _('Waiting for response')),
+    (SOURCE_STATE_COMMUNICATING, _('In communication')),
+    (SOURCE_STATE_ACCEPTED, _('Accepted')),
+    (SOURCE_STATE_DECLINED_BY_STAFF, _('Declined by staff')),
+    (SOURCE_STATE_DECLINED_BY_PUBLISHER, _('Declined by publisher')),
+    (SOURCE_STATE_PUBLISHER_IGNORED_REQUEST, _('Publisher ignored requests')),
+    (SOURCE_STATE_CONTRACT_EXPIRED, _('Contract expired')),
+    (SOURCE_STATE_CONTRACT_TERMINATED, _('Contract terminated')),
 )
 
+
+INCLUDE_SEED_STATE = 'inc'
+EXCLUDE_SEED_STATE = 'exc'
+OLD_SEED_STATE = 'old'
+
+SEED_STATES = (
+    (INCLUDE_SEED_STATE, _('Include in harvest')),
+    (EXCLUDE_SEED_STATE, _('Exclude from harvest')),
+    (OLD_SEED_STATE, _('Seed is no longer published')),
+)
 
 CONSPECTUS_CHOICES = (
     ('1',  'Antropologie, etnografie'),

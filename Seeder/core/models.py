@@ -15,17 +15,6 @@ class BaseModel(models.Model):
         ordering = ('created', )
 
 
-class Seed(BaseModel):
-    url = models.URLField()
-
-    class Meta:
-        verbose_name = _('Seed')
-        verbose_name_plural = _('Seeds')
-
-    def __unicode__(self):
-        return self.url
-
-
 class Publisher(BaseModel):
     """
         Publisher of the Source(s), Publisher can have multiple contacts.
@@ -54,7 +43,6 @@ class Source(BaseModel):
     comment = models.TextField(_('Comment'), blank=True)
     base_url = models.URLField()
     web_proposal = models.BooleanField(_('Proposed by visitor'), default=False)
-    seeds = models.ManyToManyField(verbose_name=_('Seeds'), to=Seed)
     publisher = models.ForeignKey(verbose_name=_('Publisher'), to=Publisher)
     special_contact = models.CharField(blank=True, max_length=64)
 
@@ -79,3 +67,28 @@ class Source(BaseModel):
 
     def __unicode__(self):
         return self.name
+
+
+class Seed(BaseModel):
+    """
+    Seed is individual url in source
+    """
+    url = models.URLField(unique=True)
+    state = models.CharField(choices=constants.SEED_STATES,
+                             default=constants.INCLUDE_SEED_STATE,
+                             max_length=3)
+    source = models.ForeignKey(Source)
+    redirect = models.BooleanField(_('Redirect on seed'), default=False)
+    robots = models.BooleanField(_('Robots.txt active'), default=False)
+    comment = models.TextField(_('Comment'), blank=True)
+
+    from_time = models.DateTimeField(verbose_name=_('From'), blank=True)
+    to_time = models.DateTimeField(verbose_name=_('To'), blank=True)
+
+
+    class Meta:
+        verbose_name = _('Seed')
+        verbose_name_plural = _('Seeds')
+
+    def __unicode__(self):
+        return self.url
