@@ -1,3 +1,5 @@
+import reversion
+
 from django.db import models
 from django.contrib.postgres.fields import ArrayField
 from django.utils.translation import ugettext as _
@@ -16,6 +18,7 @@ class BaseModel(models.Model):
         ordering = ('created', )
 
 
+@reversion.register
 class Publisher(BaseModel):
     """
         Publisher of the Source(s), Publisher can have multiple contacts.
@@ -33,6 +36,7 @@ class Publisher(BaseModel):
         return self.name
 
 
+@reversion.register
 class Source(BaseModel):
     """
         Source in the context of this project means an information source that
@@ -72,6 +76,7 @@ class Source(BaseModel):
         return self.name
 
 
+@reversion.register
 class Seed(BaseModel):
     """
     Seed is individual url in source
