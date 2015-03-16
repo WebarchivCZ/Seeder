@@ -72,6 +72,12 @@ class Source(BaseModel):
         verbose_name = _('Source')
         verbose_name_plural = _('Sources')
 
+        # Extra permission for supervisors to enable them manage Sources that
+        # they don't own..
+        permissions = (
+            ('manage_sources', 'Manage others sources'),
+        )
+
     def __unicode__(self):
         return self.name
 
