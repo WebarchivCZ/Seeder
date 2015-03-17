@@ -1,9 +1,9 @@
 https://www.djangoproject.com/download/1.8b2/tarball/
+django # this is a hack to silence warnings and dependencies
 pillow
 sorl-thumbnail
 psycopg2
 djangorestframework
 sphinx==1.3
-django
 django-reversion
 django-bower
