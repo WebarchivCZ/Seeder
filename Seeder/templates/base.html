@@ -7,13 +7,45 @@
     <link rel="stylesheet" href="{{ STATIC_URL }}pure/pure-min.css">
     <link rel="stylesheet" href="{{ STATIC_URL }}pure/base-min.css">
     <link rel="stylesheet" href="{{ STATIC_URL }}pure/buttons-min.css">
+    <link rel="stylesheet" href="{{ STATIC_URL }}main.css">
     {% block extra_head %}
     {% endblock %}
 
 </head>
 <body>
-    {% block body %}
 
-    {% endblock %}
+<div id="layout">
+    <div id="menu">
+        <div class="pure-menu">
+            <a class="pure-menu-heading" href="#">Seeder</a>
+
+            <ul class="pure-menu-list">
+                <li class="pure-menu-item">
+                    <a href="/" class="pure-menu-link">{% trans 'Home' %}</a>
+                </li>
+                <li class="pure-menu-item">
+                    <a href="#" class="pure-menu-link">{% trans 'Add source' %}</a>
+                </li>
+                <li class="pure-menu-item pure-menu-selected">
+                    <a href="#" class="pure-menu-link">{% trans 'Search' %}</a>
+                </li>
+            </ul>
+            <ul class="pure-menu-list bottom">
+                <li class="pure-menu-item">
+                    <a href="https://github.com/WebArchivCZ/Seeder/issues" class="pure-menu-link">{% trans 'Github Issues' %}</a>
+                </li>
+                <li class="pure-menu-item">
+                    <a href="{% url 'admin:index' %}" class="pure-menu-link">{% trans 'Admin' %}</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div id="main">
+        {% block body %}
+
+        {% endblock %}
+    </div>
+</div>
 </body>
 </html>

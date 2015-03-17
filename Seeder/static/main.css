@@ -1,0 +1,33 @@
+#menu {
+    width: 10%;
+    min-width: 100px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    z-index: 1000;
+    background: #191818;
+    overflow-y: auto;
+}
+
+#menu a {
+    color: #999;
+}
+
+#menu .pure-menu-selected a {
+    background: #1f8dd6;
+    color: white;
+}
+
+#menu .pure-menu-heading {
+    color: white;
+    text-transform: none;
+    font-size: larger;
+}
+
+#menu .bottom {
+    width: 10%;
+    position: fixed;
+    left: 0;
+    bottom: 30px;
+}
