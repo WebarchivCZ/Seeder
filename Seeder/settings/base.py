@@ -10,8 +10,8 @@ https://docs.djangoproject.com/en/1.7/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
+# that double dirname is necessary since setting is in folder...
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
-PROJECT_DIR = os.path.join(BASE_DIR, '../../')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.7/howto/deployment/checklist/
@@ -51,9 +51,9 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 )
 
-ROOT_URLCONF = 'Seeder.urls'
+ROOT_URLCONF = 'urls'
 
-WSGI_APPLICATION = 'Seeder.wsgi.application'
+WSGI_APPLICATION = 'wsgi.application'
 
 STATICFILES_FINDERS = (
     "django.contrib.staticfiles.finders.FileSystemFinder",
@@ -62,15 +62,15 @@ STATICFILES_FINDERS = (
 )
 
 STATICFILES_DIRS = (
-    os.path.join(PROJECT_DIR, 'static'),
+    os.path.join(BASE_DIR, 'static'),
 )
 
 TEMPLATE_DIRS = (
-    os.path.join(PROJECT_DIR, 'templates'),
+    os.path.join(BASE_DIR, 'templates'),
 )
 
 
-BOWER_COMPONENTS_ROOT = PROJECT_DIR
+BOWER_COMPONENTS_ROOT = BASE_DIR
 BOWER_INSTALLED_APPS = (
     'pure',
 )
@@ -91,4 +91,4 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.7/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(PROJECT_DIR, 'static_root')
+STATIC_ROOT = os.path.join(BASE_DIR, 'static_root')
