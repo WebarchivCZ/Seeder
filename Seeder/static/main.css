@@ -1,5 +1,5 @@
 #menu {
-    width: 10%;
+    width: 15%;
     min-width: 100px;
     position: fixed;
     top: 0;
@@ -22,7 +22,7 @@
 #menu .pure-menu-heading {
     color: white;
     text-transform: none;
-    font-size: larger;
+    font-size: 130%;
 }
 
 #menu .bottom {
@@ -30,4 +30,10 @@
     position: fixed;
     left: 0;
     bottom: 30px;
+}
+
+
+#layout #main {
+    position: fixed;
+    left: 17%;
 }

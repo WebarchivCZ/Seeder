@@ -18,12 +18,10 @@
     {% if user.is_authenticated %}
         <div id="menu">
             <div class="pure-menu">
-                <a class="pure-menu-heading" href="#">Seeder</a>
+                <a class="pure-menu-heading" href="/">{% trans 'Seeder 3.0' %}</a>
 
                 <ul class="pure-menu-list">
-                    <li class="pure-menu-item">
-                        <a href="/" class="pure-menu-link">{% trans 'Home' %}</a>
-                    </li>
+                    <li class="pure-menu-item pure-menu-separator"></li>
                     <li class="pure-menu-item">
                         <a href="#" class="pure-menu-link">{% trans 'Add source' %}</a>
                     </li>
@@ -40,15 +38,6 @@
                     </li>
                     <li class="pure-menu-item">
                         <a href="{% url 'logout' %}" class="pure-menu-link">{% trans 'Logout' %}</a>
-                    </li>
-
-
-                    <li class="pure-menu-item pure-menu-separator"></li>
-                    <li class="pure-menu-item">
-                        <a href="https://github.com/WebArchivCZ/Seeder/issues" class="pure-menu-link">{% trans 'Github Issues' %}</a>
-                    </li>
-                    <li class="pure-menu-item">
-                        <a href="{% url 'admin:index' %}" class="pure-menu-link">{% trans 'Admin' %}</a>
                     </li>
                 </ul>
             </div>
