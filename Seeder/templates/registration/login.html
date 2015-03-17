@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block extra_head %}
+    <link rel="stylesheet" href="{{ STATIC_URL }}login.css">
+{% endblock %}
+
+{% block title %}{% trans 'Login' %}{% endblock %}
+
+{% block body %}
+    <div class="login-box">
+    <h2>{% trans 'Log in please' %}</h2>
+    <form action="" method="post" class="pure-form">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" class="pure-button pure-button-primary"/>
+    </form>
+    </div>
+
+
+{% endblock %}
