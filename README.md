@@ -8,5 +8,5 @@ Web archivists tool for moderating what to archive and what to exclude.
 Features:
  - collecting sources to be archived
  - managing those sources
- - voting whether include them or not
+ - voting
  - communicating with publishers
