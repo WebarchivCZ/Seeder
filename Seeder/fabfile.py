@@ -21,9 +21,10 @@ def schemamigration():
 
 @task(alias='cs')
 def collect_static():
-    run('../manage.py collectstatic --noinput')
+    local('./manage.py bower_install')
+    local('./manage.py collectstatic --noinput')
 
 
 @task(alias='s')
 def shell():
-    run('./manage.py shell')
+    local('./manage.py shell')
