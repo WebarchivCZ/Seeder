@@ -1,7 +1,12 @@
 Seeder
 ======
 
+Documentation is available at [Read the docs](http://seeder.readthedocs.org/en/latest/)
 
 Web archivists tool for moderating what to archive and what to exclude.
 
-Documentation is available at [Read the docs](http://seeder.readthedocs.org/en/latest/)
+Features:
+ - collecting sources to be archived
+ - managing those sources
+ - voting whether include them or not
+ - communicating with publishers
