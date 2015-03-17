@@ -70,6 +70,8 @@ target/
 
 .idea/
 
+bower_components/
+
 ### IPythonNotebook template
 # Temporary data
 .ipynb_checkpoints/
