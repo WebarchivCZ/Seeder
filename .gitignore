@@ -77,4 +77,4 @@ bower_components/
 .ipynb_checkpoints/
 
 local_settings.py
-
+static_root/
