@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/1.7/ref/settings/
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
-
+PROJECT_DIR = os.path.join(BASE_DIR, '..')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.7/howto/deployment/checklist/
@@ -36,6 +36,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'djangobower',
     'reversion',
     'core',
 )
@@ -54,19 +55,23 @@ ROOT_URLCONF = 'Seeder.urls'
 
 WSGI_APPLICATION = 'Seeder.wsgi.application'
 
+STATICFILES_FINDERS = (
+    "django.contrib.staticfiles.finders.FileSystemFinder",
+    "django.contrib.staticfiles.finders.AppDirectoriesFinder",
+    'djangobower.finders.BowerFinder',
+)
 
 
-# Internationalization
-# https://docs.djangoproject.com/en/1.7/topics/i18n/
+BOWER_COMPONENTS_ROOT = PROJECT_DIR
+
+BOWER_INSTALLED_APPS = (
+    'pure',
+)
 
 LANGUAGE_CODE = 'en-us'
-
 TIME_ZONE = 'UTC'
-
 USE_I18N = True
-
 USE_L10N = True
-
 USE_TZ = True
 
 
@@ -74,3 +79,4 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.7/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(PROJECT_DIR, 'static')
