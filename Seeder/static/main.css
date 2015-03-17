@@ -37,3 +37,13 @@
     position: fixed;
     left: 17%;
 }
+
+#search {
+    position: absolute;
+    right: 10px;
+    margin: 10px;
+}
+
+#search #search-bar {
+    width: 100%;
+}
