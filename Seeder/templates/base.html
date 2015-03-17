@@ -15,31 +15,46 @@
 <body>
 
 <div id="layout">
-    <div id="menu">
-        <div class="pure-menu">
-            <a class="pure-menu-heading" href="#">Seeder</a>
+    {% if user.is_authenticated %}
+        <div id="menu">
+            <div class="pure-menu">
+                <a class="pure-menu-heading" href="#">Seeder</a>
 
-            <ul class="pure-menu-list">
-                <li class="pure-menu-item">
-                    <a href="/" class="pure-menu-link">{% trans 'Home' %}</a>
-                </li>
-                <li class="pure-menu-item">
-                    <a href="#" class="pure-menu-link">{% trans 'Add source' %}</a>
-                </li>
-                <li class="pure-menu-item pure-menu-selected">
-                    <a href="#" class="pure-menu-link">{% trans 'Search' %}</a>
-                </li>
-            </ul>
-            <ul class="pure-menu-list bottom">
-                <li class="pure-menu-item">
-                    <a href="https://github.com/WebArchivCZ/Seeder/issues" class="pure-menu-link">{% trans 'Github Issues' %}</a>
-                </li>
-                <li class="pure-menu-item">
-                    <a href="{% url 'admin:index' %}" class="pure-menu-link">{% trans 'Admin' %}</a>
-                </li>
-            </ul>
+                <ul class="pure-menu-list">
+                    <li class="pure-menu-item">
+                        <a href="/" class="pure-menu-link">{% trans 'Home' %}</a>
+                    </li>
+                    <li class="pure-menu-item">
+                        <a href="#" class="pure-menu-link">{% trans 'Add source' %}</a>
+                    </li>
+                    <li class="pure-menu-item pure-menu-selected">
+                        <a href="#" class="pure-menu-link">{% trans 'Search' %}</a>
+                    </li>
+                </ul>
+                <ul class="pure-menu-list bottom">
+                    <li class="pure-menu-item">
+                        <a href="#" class="pure-menu-link">{% trans 'Profile' %}</a>
+                    </li>
+                    <li class="pure-menu-item">
+                        <a href="#" class="pure-menu-link">{% trans 'Change password' %}</a>
+                    </li>
+                    <li class="pure-menu-item">
+                        <a href="{% url 'logout' %}" class="pure-menu-link">{% trans 'Logout' %}</a>
+                    </li>
+
+
+                    <li class="pure-menu-item pure-menu-separator"></li>
+                    <li class="pure-menu-item">
+                        <a href="https://github.com/WebArchivCZ/Seeder/issues" class="pure-menu-link">{% trans 'Github Issues' %}</a>
+                    </li>
+                    <li class="pure-menu-item">
+                        <a href="{% url 'admin:index' %}" class="pure-menu-link">{% trans 'Admin' %}</a>
+                    </li>
+                </ul>
+            </div>
         </div>
-    </div>
+    {% endif %}
+
 
     <div id="main">
         {% block body %}
