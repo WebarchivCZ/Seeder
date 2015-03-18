@@ -73,6 +73,8 @@ TEMPLATE_DIRS = (
 BOWER_COMPONENTS_ROOT = BASE_DIR
 BOWER_INSTALLED_APPS = (
     'pure',
+    'jquery',
+    'typeahead.js'
 )
 
 
