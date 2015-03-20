@@ -36,6 +36,7 @@
 #layout #main {
     position: fixed;
     left: 17%;
+    width: 100%;
 }
 
 #search {
