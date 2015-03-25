@@ -4,7 +4,7 @@
 {% block body %}
     <h1>{% trans 'Add source' %}</h1>
 
-    <form method="post" action="" class="">
+    <form method="post" class="">
         {% csrf_token %}
         <div class="pure-form pure-form-stacked" id="source-part">
             {{ source.as_p }}

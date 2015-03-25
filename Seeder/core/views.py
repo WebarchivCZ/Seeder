@@ -18,6 +18,9 @@ class LandingView(LoginMixin, TemplateView):
 
 
 class AddSource(LoginMixin, View):
+    """
+    Custom view for processing source form and seed formset
+    """
     form_classes = {
         'source': forms.SourceForm,
         'seeds': forms.SeedFormset,
@@ -30,3 +33,18 @@ class AddSource(LoginMixin, View):
                              for name, form in self.form_classes.items()}
 
         return render(self.request, self.template_name, forms_initialized)
+
+    def post(self, request):
+        forms_initialized = {
+            name: form(prefix=name, data=request.POST)
+            for name, form in self.form_classes.items()}
+
+        valid = all([form_class.is_valid()
+                     for form_class in forms_initialized.values()])
+        if valid:
+            return self.process_forms(forms_initialized)
+        else:
+            return render(self.request, self.template_name, forms_initialized)
+
+    def process_forms(self, forms):
+        pass
