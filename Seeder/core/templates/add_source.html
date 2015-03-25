@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block body %}
+    <h1>{% trans 'Add source' %}</h1>
+
+    <form method="post" action="" class="">
+        {% csrf_token %}
+        <div class="pure-form pure-form-stacked" id="source-part">
+            {{ source.as_p }}
+        </div>
+
+        <div class="pure-form pure-form-stacked" id="seed-part">
+            {{ seeds }}
+        </div>
+
+        <input type="submit" class="pure-button"/>
+    </form>
+
+{% endblock %}

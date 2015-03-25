@@ -10,6 +10,8 @@
     overflow-y: auto;
 }
 
+
+
 #menu a {
     color: #999;
 }
@@ -38,6 +40,26 @@
     left: 17%;
     width: 100%;
 }
+
+
+#layout #source-part {
+    width: 30%;
+}
+
+
+#layout #seed-part {
+    position: absolute;
+    right: 10%;
+    top: 15%;
+    width: 50%;
+}
+
+#layout #seed-part input {
+    width: 40%;
+}
+
+
+
 
 #search {
     position: absolute;

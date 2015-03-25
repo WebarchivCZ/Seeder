@@ -48,7 +48,6 @@ class Source(BaseModel):
     owner = models.ForeignKey(User, verbose_name=_('Curator'))
     name = models.CharField(_('Name'), max_length=64)
     comment = models.TextField(_('Comment'), blank=True)
-    base_url = models.URLField()
     web_proposal = models.BooleanField(_('Proposed by visitor'), default=False)
     publisher = models.ForeignKey(verbose_name=_('Publisher'), to=Publisher)
     special_contact = models.CharField(blank=True, max_length=64)
@@ -56,7 +55,8 @@ class Source(BaseModel):
     state = models.CharField(
         verbose_name=_('State'),
         max_length=3,
-        choices=constants.SOURCE_STATES)
+        choices=constants.SOURCE_STATES,
+        default=constants.SOURCE_STATE_INITIALIZED)
     conspectus = models.CharField(
         verbose_name=_('Conspectus'),
         choices=constants.CONSPECTUS_CHOICES,
@@ -87,7 +87,7 @@ class Seed(BaseModel):
     """
     Seed is individual url in source
     """
-    url = models.URLField(unique=True)
+    url = models.URLField(_('Seed url'), unique=True)
     state = models.CharField(choices=constants.SEED_STATES,
                              default=constants.SEED_STATE_INCLUDE,
                              max_length=3)

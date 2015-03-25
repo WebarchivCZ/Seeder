@@ -25,7 +25,7 @@
                 <ul class="pure-menu-list">
                     <li class="pure-menu-item pure-menu-separator"></li>
                     <li class="pure-menu-item">
-                        <a href="#" class="pure-menu-link">{% trans 'Add source' %}</a>
+                        <a href="{% url 'add_source' %}" class="pure-menu-link">{% trans 'Add source' %}</a>
                     </li>
                     <li class="pure-menu-item pure-menu-selected">
                         <a href="#" class="pure-menu-link">{% trans 'Search' %}</a>
@@ -106,8 +106,6 @@ $('#search-bar').typeahead({
   displayKey: 'value',
   source: substringMatcher(states)
 });
-
-$('#search-bar').addClass('')
 
 </script>
 
