@@ -1,8 +1,9 @@
+import models
+
 from django import forms
 from django.forms.models import modelformset_factory
 from django.utils.translation import ugettext as _
 
-from . import models
 
 
 class SourceForm(forms.ModelForm):

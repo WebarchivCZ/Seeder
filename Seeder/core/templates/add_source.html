@@ -1,9 +1,7 @@
 {% extends 'base.html' %}
 {% load i18n %}
 
-{% block body %}
-    <h1>{% trans 'Add source' %}</h1>
-
+{% block content %}
     <form class="pure-form pure-form-aligned" method="post">
         {% csrf_token %}
         <fieldset>

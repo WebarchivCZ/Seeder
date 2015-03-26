@@ -1,11 +1,11 @@
 import reversion
+import constants
 
 from django.db import models
 from django.contrib.postgres.fields import ArrayField
 from django.utils.translation import ugettext as _
 from django.contrib.auth.models import User
 
-from . import constants
 
 
 class BaseModel(models.Model):
