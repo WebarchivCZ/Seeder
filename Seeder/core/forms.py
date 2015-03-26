@@ -2,6 +2,7 @@ import models
 
 from django import forms
 from django.forms.models import modelformset_factory
+from django.forms.formsets import BaseFormSet
 from django.utils.translation import ugettext as _
 
 
@@ -39,4 +40,14 @@ class SourceForm(forms.ModelForm):
                   'web_proposal', 'comment')
 
 
-SeedFormset = modelformset_factory(models.Seed, fields=('url', ), extra=3)
+class BaseSeedFormset(BaseFormSet):
+    def clean(self):
+        """
+        Checks that there is always at least one valid seed
+        """
+        urls = [frm.cleaned_data.get('url', None) for frm in self.forms]
+        if not any(urls):
+            raise forms.ValidationError(_('There must be at least one seed!'))
+
+SeedFormset = modelformset_factory(
+    models.Seed, fields=('url', ), extra=3, formset=BaseSeedFormset)

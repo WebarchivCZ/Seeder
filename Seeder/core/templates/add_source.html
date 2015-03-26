@@ -11,6 +11,7 @@
         </div>
         <div class="col-md-4 col-sm-12">
             {{ seed_formset|crispy }}
+            {% include "bootstrap3/errors_formset.html" with formset=seed_formset%}
             <input type="submit" class="btn btn-primary btn-lg btn-block"/>
         </div>
     </form>
