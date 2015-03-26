@@ -7,3 +7,4 @@ djangorestframework
 sphinx==1.3
 django-reversion
 django-bower
+django-crispy-forms

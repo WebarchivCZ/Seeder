@@ -1,23 +1,12 @@
 {% extends 'base.html' %}
 {% load i18n %}
+{% load crispy_forms_tags %}
+
 
 {% block content %}
-    <form class="pure-form pure-form-aligned" method="post">
+    <form class="" method="post">
         {% csrf_token %}
-        <fieldset>
-            {% include 'pure_form.html' with form=source_form %}
-            <div class="pure-controls">
-                <button type="submit" class="pure-button pure-button-primary">Submit</button>
-            </div>
-        </fieldset>
-
-        <fieldset id="seed-part">
-            {{seed_formset.management_form}}
-
-            {% for form in seed_formset %}
-                {% include 'pure_form.html' %}
-            {% endfor %}
-        </fieldset>
+        {{ source_form|crispy }}
 
     </form>
 {% endblock %}
