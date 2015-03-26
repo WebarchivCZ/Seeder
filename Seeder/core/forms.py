@@ -16,10 +16,21 @@ class SourceForm(forms.ModelForm):
         # new_publisher instantly this could have been done declaratively but
         # then we would loose model level validation etc.
         self.fields['publisher'].required = False
-
-        # curator is also valid field only when user has manage_sources
-        # permission
         self.fields['owner'].required = False
+
+    def clean(self):
+        cleaned_data = super(SourceForm, self).clean()
+
+        publishers = (cleaned_data['publisher'], cleaned_data['new_publisher'])
+        # check that user has either publisher or new_publisher
+        if not any(publishers):
+            self.add_error('new_publisher', _('Please fill out publisher'))
+
+        if all(publishers):
+            self.add_error(
+                'new_publisher',
+                _('You cannot create a new publisher and use old '
+                  'one at the same time!'))
 
     class Meta:
         model = models.Source
