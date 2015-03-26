@@ -11,9 +11,9 @@ class SourceForm(forms.ModelForm):
 
     class Meta:
         model = models.Source
-        fields = ('web_proposal', 'name', 'owner',  'publisher',
-                  'new_publisher', 'special_contact', 'conspectus',
-                  'sub_conspectus', 'comment')
+        fields = ('name', 'owner',  'publisher', 'new_publisher',
+                  'special_contact', 'conspectus', 'sub_conspectus',
+                  'web_proposal', 'comment')
 
 
 SeedFormset = modelformset_factory(models.Seed, fields=('url', ), extra=3)

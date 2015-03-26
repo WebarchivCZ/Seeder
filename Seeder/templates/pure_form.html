@@ -1,0 +1,11 @@
+{% for hidden in form.hidden_fields %}
+    {{ hidden }}
+{% endfor %}
+
+{% for field in form.visible_fields %}
+    <div class="pure-control-group {% if field.errors %}invalid{% endif %}">
+        {{ field.errors }}
+        {{ field.label_tag }}
+        {{ field }}
+    </div>
+{% endfor %}

@@ -1,114 +1,99 @@
 {% load i18n %}
 <!DOCTYPE html>
-<html>
-<head lang="en">
-    <meta charset="UTF-8">
-    <title>{% block title %}Project{% endblock %} | {% trans 'Seeder' %}</title>
-    <link rel="stylesheet" href="{{ STATIC_URL }}pure/pure-min.css">
-    <link rel="stylesheet" href="{{ STATIC_URL }}pure/base-min.css">
-    <script src="{{ STATIC_URL }}jquery/dist/jquery.min.js"></script>
-    <script src="{{ STATIC_URL }}typeahead.js/dist/typeahead.jquery.min.js"></script>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="http://getbootstrap.com/favicon.ico">
 
-    <link rel="stylesheet" href="{{ STATIC_URL }}main.css">
-    {% block extra_head %}
-    {% endblock %}
+    <title>{% trans 'Seeder' %}</title>
 
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
+    <!-- Custom styles for this template -->
+    <link href="{{ STATIC_URL }}main.css" rel="stylesheet">
 </head>
 <body>
 
-<div id="layout">
-    {% if user.is_authenticated %}
-        <div id="menu">
-            <div class="pure-menu">
-                <a class="pure-menu-heading" href="/">{% trans 'Seeder 3.0' %}</a>
-
-                <ul class="pure-menu-list">
-                    <li class="pure-menu-item pure-menu-separator"></li>
-                    <li class="pure-menu-item">
-                        <a href="{% url 'add_source' %}" class="pure-menu-link">{% trans 'Add source' %}</a>
-                    </li>
-                    <li class="pure-menu-item pure-menu-selected">
-                        <a href="#" class="pure-menu-link">{% trans 'Search' %}</a>
-                    </li>
-                </ul>
-                <ul class="pure-menu-list bottom">
-                    <li class="pure-menu-item">
-                        <a href="#" class="pure-menu-link">{% trans 'Profile' %}</a>
-                    </li>
-                    <li class="pure-menu-item">
-                        <a href="#" class="pure-menu-link">{% trans 'Change password' %}</a>
-                    </li>
-                    <li class="pure-menu-item">
-                        <a href="{% url 'logout' %}" class="pure-menu-link">{% trans 'Logout' %}</a>
-                    </li>
-                </ul>
-            </div>
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed"
+                    data-toggle="collapse" data-target="#navbar"
+                    aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand"
+               href="/">{% trans 'Seeder' %}</a>
         </div>
-    {% endif %}
-    <div id="main">
-        <div id="search" class="pure-u-1-3">
-            <form action="" class="pure-form">
-                <input type="text" id="search-bar" placeholder="{% trans 'Search' %}"/>
+        <div id="navbar" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a href="">{% trans 'Profile' %}</a>
+                </li>
+                <li>
+                    <a href="">{% trans 'Change password' %}</a>
+                </li>
+                <li>
+                    <a href="{% url 'logout' %}">{% trans 'Logout' %}</a>
+                </li>
+            </ul>
+            <form class="navbar-form navbar-right">
+                <input type="text" class="form-control" placeholder="Search">
             </form>
         </div>
-        {% block body %}
+    </div>
+</nav>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-3 col-md-2 sidebar">
+            <ul class="nav nav-sidebar">
+                <li class="active">
+                    <a href="">{% trans 'Add source' %}</a>
+                </li>
+                <li>
+                    <a href="">Reports</a>
+                </li>
+                <li>
+                    <a href="">Analytics</a>
+                </li>
+                <li>
+                    <a href="">Export</a>
+                </li>
+            </ul>
+            <ul class="nav nav-sidebar">
+                <li><a href="">Nav item</a></li>
+                <li><a href="">Nav item again</a></li>
+                <li><a href="">One more nav</a></li>
+                <li><a href="">Another nav item</a></li>
+                <li><a href="">More navigation</a></li>
+            </ul>
+        </div>
+        {% block content_raw %}
+            <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+                <h1 class="page-header">Dashboard</h1>
+                {% block content %}
+
+                {% endblock %}
+            </div>
 
         {% endblock %}
     </div>
 </div>
 
+<script src="{{ STATIC_URL }}jquery/dist/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
 {% block extrajs %}
 {% endblock %}
-
-<script>
-var substringMatcher = function(strs) {
-  return function findMatches(q, cb) {
-    var matches, substrRegex;
-
-    // an array that will be populated with substring matches
-    matches = [];
-
-    // regex used to determine if a string contains the substring `q`
-    substrRegex = new RegExp(q, 'i');
-
-    // iterate through the pool of strings and for any string that
-    // contains the substring `q`, add it to the `matches` array
-    $.each(strs, function(i, str) {
-      if (substrRegex.test(str)) {
-        // the typeahead jQuery plugin expects suggestions to a
-        // JavaScript object, refer to typeahead docs for more info
-        matches.push({ value: str });
-      }
-    });
-
-    cb(matches);
-  };
-};
-
-var states = ['Alabama', 'Alaska', 'Arizona', 'Arkansas', 'California',
-  'Colorado', 'Connecticut', 'Delaware', 'Florida', 'Georgia', 'Hawaii',
-  'Idaho', 'Illinois', 'Indiana', 'Iowa', 'Kansas', 'Kentucky', 'Louisiana',
-  'Maine', 'Maryland', 'Massachusetts', 'Michigan', 'Minnesota',
-  'Mississippi', 'Missouri', 'Montana', 'Nebraska', 'Nevada', 'New Hampshire',
-  'New Jersey', 'New Mexico', 'New York', 'North Carolina', 'North Dakota',
-  'Ohio', 'Oklahoma', 'Oregon', 'Pennsylvania', 'Rhode Island',
-  'South Carolina', 'South Dakota', 'Tennessee', 'Texas', 'Utah', 'Vermont',
-  'Virginia', 'Washington', 'West Virginia', 'Wisconsin', 'Wyoming'
-];
-
-$('#search-bar').typeahead({
-  hint: true,
-  highlight: true,
-  minLength: 1
-},
-{
-  name: 'states',
-  displayKey: 'value',
-  source: substringMatcher(states)
-});
-
-</script>
-
 
 </body>
 </html>

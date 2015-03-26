@@ -4,17 +4,22 @@
 {% block body %}
     <h1>{% trans 'Add source' %}</h1>
 
-    <form method="post" class="">
+    <form class="pure-form pure-form-aligned" method="post">
         {% csrf_token %}
-        <div class="pure-form pure-form-stacked" id="source-part">
-            {{ source.as_p }}
-        </div>
+        <fieldset>
+            {% include 'pure_form.html' with form=source_form %}
+            <div class="pure-controls">
+                <button type="submit" class="pure-button pure-button-primary">Submit</button>
+            </div>
+        </fieldset>
 
-        <div class="pure-form pure-form-stacked" id="seed-part">
-            {{ seeds }}
-        </div>
+        <fieldset id="seed-part">
+            {{seed_formset.management_form}}
 
-        <input type="submit" class="pure-button"/>
+            {% for form in seed_formset %}
+                {% include 'pure_form.html' %}
+            {% endfor %}
+        </fieldset>
+
     </form>
-
 {% endblock %}

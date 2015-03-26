@@ -22,8 +22,8 @@ class AddSource(LoginMixin, View):
     Custom view for processing source form and seed formset
     """
     form_classes = {
-        'source': forms.SourceForm,
-        'seeds': forms.SeedFormset,
+        'source_form': forms.SourceForm,
+        'seed_formset': forms.SeedFormset,
     }
 
     template_name = 'add_source.html'
@@ -31,7 +31,6 @@ class AddSource(LoginMixin, View):
     def get(self, request):
         forms_initialized = {name: form(prefix=name)
                              for name, form in self.form_classes.items()}
-
         return render(self.request, self.template_name, forms_initialized)
 
     def post(self, request):

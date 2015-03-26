@@ -51,6 +51,8 @@ class Source(BaseModel):
     web_proposal = models.BooleanField(_('Proposed by visitor'), default=False)
     publisher = models.ForeignKey(verbose_name=_('Publisher'), to=Publisher)
     special_contact = models.CharField(blank=True, max_length=64)
+    auto_imported = models.BooleanField(_('Imported from old portal'),
+                                        default=False)
 
     state = models.CharField(
         verbose_name=_('State'),
