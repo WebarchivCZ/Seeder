@@ -41,10 +41,6 @@ class ManagementSourceForm(SourceForm):
     This is pretty much the same as SourceForm with the difference that it
     allows to select owner=curator of the source.
     """
-    def __init__(self, *args, **kwargs):
-        super(SourceForm, self).__init__(*args, **kwargs)
-        self.fields['owner'].required = False
-
     class Meta:
         model = models.Source
         fields = ('owner', 'name', 'publisher', 'new_publisher',

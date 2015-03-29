@@ -24,11 +24,11 @@ class AddSource(LoginMixin, ProjectPage, MultipleFormView):
         'seed_formset': forms.SeedFormset,
     }
 
-    # def dispatch(self, request, *args, **kwargs):
-    #     # dynamically set
-    #     if self.request.user.has_perm('core.manage_sources'):
-    #         self.form_classes['source_form'] = forms.ManagementSourceForm
-    #     return super(AddSource, self).dispatch(request, *args, **kwargs)
+    def dispatch(self, request, *args, **kwargs):
+        # dynamically set
+        if self.request.user.has_perm('core.manage_sources'):
+            self.form_classes['source_form'] = forms.ManagementSourceForm
+        return super(AddSource, self).dispatch(request, *args, **kwargs)
 
 
     def forms_valid(self, form_instances):
