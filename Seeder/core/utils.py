@@ -36,29 +36,26 @@ class ProjectPage(TemplateView):
 class MultipleFormView(TemplateView):
     """
     View mixin that handles multiple forms / formsets.
-    After the successful data is inserted ``self.process_forms`` is called.
+    After the successful data is inserted ``self.forms_valid`` is called.
     """
     form_classes = {}
 
+    def initialize_forms(self, data=None):
+        return {name: form(prefix=name, data=data)
+                for name, form in self.form_classes.items()}
+
     def get_context_data(self, **kwargs):
         context = super(MultipleFormView, self).get_context_data(**kwargs)
-        forms_initialized = {name: form(prefix=name)
-                             for name, form in self.form_classes.items()}
-
-        return merge_dicts(context, forms_initialized)
+        return merge_dicts(context, self.initialize_forms())
 
     def post(self, request):
-        forms_initialized = {
-            name: form(prefix=name, data=request.POST)
-            for name, form in self.form_classes.items()}
-
-        valid = all([form_class.is_valid()
-                     for form_class in forms_initialized.values()])
+        forms_initialized = self.initialize_forms(data=request.POST)
+        valid = all([form_class.is_valid() for name, form_class in forms_initialized.items()])
         if valid:
-            return self.process_forms(forms_initialized)
+            return self.forms_valid(forms_initialized)
         else:
             context = merge_dicts(self.get_context_data(), forms_initialized)
             return self.render_to_response(context)
 
-    def process_forms(self, form_instances):
+    def forms_valid(self, form_instances):
         raise NotImplemented

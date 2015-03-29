@@ -8,12 +8,7 @@ def runserver():
 
 @task(alias='sdb')
 def syncdb():
-    """
-    There is some weird bug in 1.8 that requires auth module to be migrated
-    before anything else...
-    """
-    local('./manage.py migrate auth')
-    local('./manage.py migrate core')
+    local('./manage.py syncdb --noinput')
     local('./manage.py migrate')
 
 

@@ -2,10 +2,9 @@ import reversion
 import constants
 
 from django.db import models
-from django.contrib.postgres.fields import ArrayField
 from django.utils.translation import ugettext as _
 from django.contrib.auth.models import User
-
+from django.core.urlresolvers import reverse
 
 
 class BaseModel(models.Model):
@@ -15,7 +14,7 @@ class BaseModel(models.Model):
 
     class Meta:
         abstract = True
-        ordering = ('created', )
+        ordering = ('-last_changed', )
 
 
 @reversion.register
@@ -24,9 +23,6 @@ class Publisher(BaseModel):
         Publisher of the Source(s), Publisher can have multiple contacts.
     """
     name = models.CharField(_('Name'), max_length=64)
-    contacts = ArrayField(
-        base_field=models.CharField(max_length=64),
-        null=True)
 
     class Meta:
         verbose_name = _('Publisher')
@@ -47,10 +43,11 @@ class Source(BaseModel):
     created_by = models.ForeignKey(User, related_name='created_by')
     owner = models.ForeignKey(User, verbose_name=_('Curator'))
     name = models.CharField(_('Name'), max_length=64)
-    comment = models.TextField(_('Comment'), blank=True)
+    comment = models.TextField(_('Comment'), null=True, blank=True)
     web_proposal = models.BooleanField(_('Proposed by visitor'), default=False)
-    publisher = models.ForeignKey(verbose_name=_('Publisher'), to=Publisher)
-    special_contact = models.CharField(blank=True, max_length=64)
+    publisher = models.ForeignKey(verbose_name=_('Publisher'), to=Publisher,
+                                  null=True, blank=True)
+    special_contact = models.CharField(null=True, blank=True, max_length=64)
     auto_imported = models.BooleanField(_('Imported from old portal'),
                                         default=False)
 
@@ -62,11 +59,13 @@ class Source(BaseModel):
     conspectus = models.CharField(
         verbose_name=_('Conspectus'),
         choices=constants.CONSPECTUS_CHOICES,
+        null=True,
         blank=True,
         max_length=3)
     sub_conspectus = models.CharField(
         verbose_name=_('Sub conspectus'),
         choices=constants.SUB_CONSPECTUS_CHOICES,
+        null=True,
         blank=True,
         max_length=3)
 
@@ -83,23 +82,27 @@ class Source(BaseModel):
     def __unicode__(self):
         return self.name
 
+    def get_absolute_url(self):
+        return reverse('source_detail', args=[str(self.id)])
+
 
 @reversion.register
 class Seed(BaseModel):
     """
     Seed is individual url in source
     """
-    url = models.URLField(_('Seed url'), unique=True)
+    url = models.URLField(_('Seed url'))
     state = models.CharField(choices=constants.SEED_STATES,
                              default=constants.SEED_STATE_INCLUDE,
                              max_length=3)
     source = models.ForeignKey(Source)
     redirect = models.BooleanField(_('Redirect on seed'), default=False)
     robots = models.BooleanField(_('Robots.txt active'), default=False)
-    comment = models.TextField(_('Comment'), blank=True)
+    comment = models.TextField(_('Comment'), null=True, blank=True)
 
-    from_time = models.DateTimeField(verbose_name=_('From'), blank=True)
-    to_time = models.DateTimeField(verbose_name=_('To'), blank=True)
+    from_time = models.DateTimeField(verbose_name=_('From'), null=True,
+                                     blank=True)
+    to_time = models.DateTimeField(verbose_name=_('To'), null=True, blank=True)
 
     class Meta:
         verbose_name = _('Seed')

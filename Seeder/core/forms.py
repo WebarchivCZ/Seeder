@@ -10,19 +10,13 @@ class SourceForm(forms.ModelForm):
     new_publisher = forms.CharField(
         required=False,
         help_text=_('Instantly create publisher'))
-    
-    def __init__(self, *args, **kwargs):
-        super(SourceForm, self).__init__(*args, **kwargs)
-        # publisher is not required because user can create
-        # new_publisher instantly this could have been done declaratively but
-        # then we would loose model level validation etc.
-        self.fields['publisher'].required = False
-        self.fields['owner'].required = False
+
 
     def clean(self):
         cleaned_data = super(SourceForm, self).clean()
 
-        publishers = (cleaned_data['publisher'], cleaned_data['new_publisher'])
+        publishers = (cleaned_data.get('publisher', None),
+                      cleaned_data.get('new_publisher', None))
         # check that user has either publisher or new_publisher
         if not any(publishers):
             self.add_error('new_publisher', _('Please fill out publisher'))
@@ -33,9 +27,27 @@ class SourceForm(forms.ModelForm):
                 _('You cannot create a new publisher and use old '
                   'one at the same time!'))
 
+        return cleaned_data
+
     class Meta:
         model = models.Source
-        fields = ('name', 'owner', 'publisher', 'new_publisher',
+        fields = ('name', 'publisher', 'new_publisher',
+                  'special_contact', 'conspectus', 'sub_conspectus',
+                  'web_proposal', 'comment')
+
+
+class ManagementSourceForm(SourceForm):
+    """
+    This is pretty much the same as SourceForm with the difference that it
+    allows to select owner=curator of the source.
+    """
+    def __init__(self, *args, **kwargs):
+        super(SourceForm, self).__init__(*args, **kwargs)
+        self.fields['owner'].required = False
+
+    class Meta:
+        model = models.Source
+        fields = ('owner', 'name', 'publisher', 'new_publisher',
                   'special_contact', 'conspectus', 'sub_conspectus',
                   'web_proposal', 'comment')
 
