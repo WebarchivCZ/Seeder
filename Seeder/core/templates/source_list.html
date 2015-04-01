@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load crispy_forms_tags %}
+
+
+{% block content %}
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th>{% trans 'Name' %}</th>
+            <th>{% trans 'URL' %}</th>
+        </tr>
+        </thead>
+        <tbody>
+            {% for source in sources %}
+                <tr>
+                    <td>{{ source }}</td>
+                    <td><a href="{{ source.get_absolute_url }}">{% trans 'Detail' %}</a></td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
