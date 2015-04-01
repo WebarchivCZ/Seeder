@@ -11,7 +11,7 @@
     <meta name="author" content="">
     <link rel="icon" href="http://getbootstrap.com/favicon.ico">
 
-    <title>{{ title }} | {% trans 'Seeder' %}</title>
+    <title>{% block title %}{{ view.title }}{% endblock %} | {% trans 'Seeder' %}</title>
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
@@ -63,8 +63,8 @@
                 <li id="add_source">
                     <a href="{% url 'add_source' %}">{% trans 'Add source' %}</a>
                 </li>
-                <li>
-                    <a href="">Reports</a>
+                <li id="sources">
+                    <a href="{% url 'list_sources' %}">{% trans 'List sources' %}</a>
                 </li>
                 <li>
                     <a href="">Analytics</a>
@@ -80,7 +80,7 @@
         </div>
         {% block content_raw %}
             <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-                <h1 class="page-header">{{title}}</h1>
+                <h1 class="page-header">{% block page_header %}{{ view.title }}{% endblock %}</h1>
                 {% block content %}
 
                 {% endblock %}
@@ -98,7 +98,7 @@
 
 <script>
     // dynamically activate menu link, yes this seem like a barbaric think to do, but think of all the if conditions in django that does not need to exist!
-    $("#{{ view_name }}").addClass('active');
+    $("#{{ view.view_name }}").addClass('active');
 </script>
 
 

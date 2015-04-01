@@ -18,21 +18,6 @@ class LoginMixin(object):
         return super(LoginMixin, self).dispatch(request, *args, **kwargs)
 
 
-class ProjectPage(TemplateView):
-    """
-    This is used for easy declaration of titles and view_name that are used in
-    menus to set current menu to active state.
-    """
-    title = 'Project'
-    view_name = 'project'
-
-    def get_context_data(self, **kwargs):
-        context = super(ProjectPage, self).get_context_data(**kwargs)
-        context['title'] = self.title
-        context['view_name'] = self.view_name
-        return context
-
-
 class MultipleFormView(TemplateView):
     """
     View mixin that handles multiple forms / formsets.
