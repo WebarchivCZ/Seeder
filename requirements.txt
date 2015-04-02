@@ -1,5 +1,4 @@
-https://www.djangoproject.com/download/1.8b2/tarball/
-django # this is a hack to silence warnings and dependencies
+django==1.8
 pillow
 sorl-thumbnail
 psycopg2
