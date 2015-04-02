@@ -61,13 +61,13 @@ class Source(BaseModel):
         choices=constants.CONSPECTUS_CHOICES,
         null=True,
         blank=True,
-        max_length=3)
+        max_length=5)
     sub_conspectus = models.CharField(
         verbose_name=_('Sub conspectus'),
         choices=constants.SUB_CONSPECTUS_CHOICES,
         null=True,
         blank=True,
-        max_length=3)
+        max_length=5)
 
     class Meta:
         verbose_name = _('Source')
