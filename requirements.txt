@@ -8,3 +8,4 @@ django-reversion
 django-bower
 django-crispy-forms
 django-tables2
+django_filters
