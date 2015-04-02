@@ -46,5 +46,5 @@ class SourceTable(tables.Table):
         fields = ('name', 'owner', 'created', 'last_changed', 'state',
                   'publisher', 'conspectus', 'sub_conspectus')
         attrs = {
-            'class': 'table table-striped'
+            'class': 'table table-striped table-hover'
         }
