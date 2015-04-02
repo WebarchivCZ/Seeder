@@ -40,6 +40,7 @@ INSTALLED_APPS = (
     'reversion',
     'crispy_forms',
     'django_tables2',
+    'django_filters',
 
     'core',
 )
