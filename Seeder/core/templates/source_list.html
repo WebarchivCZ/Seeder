@@ -1,23 +1,9 @@
 {% extends 'base.html' %}
 {% load i18n %}
 {% load crispy_forms_tags %}
+{% load render_table from django_tables2 %}
 
 
 {% block content %}
-    <table class="table table-hover">
-        <thead>
-        <tr>
-            <th>{% trans 'Name' %}</th>
-            <th>{% trans 'URL' %}</th>
-        </tr>
-        </thead>
-        <tbody>
-            {% for source in sources %}
-                <tr>
-                    <td>{{ source }}</td>
-                    <td><a href="{{ source.get_absolute_url }}">{% trans 'Detail' %}</a></td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+    {% render_table table %}
 {% endblock %}

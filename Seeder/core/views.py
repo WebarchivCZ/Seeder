@@ -1,10 +1,13 @@
 import forms
 import models
+import tables
 
 from django.views.generic.base import TemplateView
 from django.views.generic import DetailView, ListView
 from django.http.response import HttpResponseRedirect
 from django.utils.translation import ugettext as _
+
+from django_tables2 import SingleTableView
 
 from utils import LoginMixin, MultipleFormView
 
@@ -66,9 +69,40 @@ class SourceDetail(LoginMixin, DetailView):
     model = models.Source
 
 
-class SourceList(LoginMixin, ListView):
+class SourceList(LoginMixin, SingleTableView):
+    title = _('Sources')
     template_name = 'source_list.html'
-    model = models.Source
     context_object_name = 'sources'
     view_name = 'sources'
-    title = _('Sources')
+    model = models.Source
+    table_class = tables.SourceTable
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
