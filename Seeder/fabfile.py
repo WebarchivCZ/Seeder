@@ -14,7 +14,7 @@ def syncdb():
 
 @task(alias='sm')
 def schemamigration():
-    local('./manage.py schemamigration core --auto')
+    local('./manage.py makemigrations core')
     local('git add core/migrations/')
     local('./manage.py migrate')
 
