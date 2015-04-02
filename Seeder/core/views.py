@@ -77,4 +77,4 @@ class SourceList(LoginMixin, SingleTableView):
     model = models.Source
     table_class = tables.SourceTable
 
-    table_pagination = {"per_page": 1}
+    table_pagination = {"per_page": 20}

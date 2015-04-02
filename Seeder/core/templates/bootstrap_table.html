@@ -50,7 +50,7 @@
             {% if table.page.has_previous %}
                 <li class="previous"><a href="{% querystring table.prefixed_page_field=table.page.previous_page_number %}"><span aria-hidden="true">&larr;</span>{% trans 'Previous' %}</a></li>
             {% endif %}
-        
+
             {% if table.page.has_next %}
                 <li class="next"><a href="{% querystring table.prefixed_page_field=table.page.next_page_number %}">{% trans 'Next' %} <span aria-hidden="true">&rarr;</span></a></li>
             {% endif %}
