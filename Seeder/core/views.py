@@ -1,6 +1,7 @@
 import forms
 import models
 import tables
+import field_filters
 
 from django.views.generic.base import TemplateView
 from django.views.generic import DetailView, ListView
@@ -70,11 +71,20 @@ class SourceDetail(LoginMixin, DetailView):
 
 
 class SourceList(LoginMixin, SingleTableView):
-    title = _('Sources')
+    model = models.Source
     template_name = 'source_list.html'
+    title = _('Sources')
     context_object_name = 'sources'
     view_name = 'sources'
-    model = models.Source
     table_class = tables.SourceTable
-
+    filter_class = field_filters.SourceFilter
     table_pagination = {"per_page": 20}
+
+    def get_table_data(self):
+        queryset = super(SourceList, self).get_table_data()
+        return self.filter_class(self.request.GET, queryset=queryset)
+
+    def get_context_data(self, **kwargs):
+        context = super(SourceList, self).get_context_data(**kwargs)
+        context['filter'] = self.filter_class(data=self.request.GET)
+        return context

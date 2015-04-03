@@ -4,6 +4,14 @@
 {% load render_table from django_tables2 %}
 
 
-{% block content %}
-    {% render_table table 'bootstrap_table.html' %}
+{% block content_raw %}
+    <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+        <div class="col-md-4 col-sm-12">
+            <form method="get">
+                {{ filter.form|crispy }}
+            </form>
+        </div>
+        {% render_table table 'bootstrap_table.html' %}
+    </div>
+
 {% endblock %}
