@@ -1,4 +1,5 @@
 {% load i18n %}
+{% load bootstrap3 %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -79,9 +80,12 @@
                 <li><a href="https://seeder.readthedocs.org/en/latest/">{% trans 'Read the docs' %}</a></li>
             </ul>
         </div>
+        {% bootstrap_messages %}
+
         {% block content_raw %}
             <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
                 <h1 class="page-header">{% block page_header %}{{ view.title }}{% endblock %}</h1>
+
                 {% block content %}
 
                 {% endblock %}

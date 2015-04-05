@@ -38,9 +38,9 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'djangobower',
     'reversion',
-    'crispy_forms',
     'django_tables2',
     'django_filters',
+    'bootstrap3',
 
     'core',
 )

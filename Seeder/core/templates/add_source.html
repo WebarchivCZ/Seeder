@@ -1,17 +1,16 @@
 {% extends 'base.html' %}
 {% load i18n %}
-{% load crispy_forms_tags %}
+{% load bootstrap3 %}
 
 
 {% block content %}
     <form class="" method="post">
         {% csrf_token %}
         <div class="col-md-4 col-sm-12">
-            {{ source_form|crispy }}
+            {% bootstrap_form source_form %}
         </div>
         <div class="col-md-4 col-sm-12">
-            {{ seed_formset|crispy }}
-            {% include "bootstrap3/errors_formset.html" with formset=seed_formset%}
+            {% bootstrap_formset seed_formset %}
             <input type="submit" class="btn btn-primary btn-lg btn-block"/>
         </div>
     </form>

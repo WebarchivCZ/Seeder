@@ -4,12 +4,10 @@ import tables
 import field_filters
 
 from django.views.generic.base import TemplateView
-from django.views.generic import DetailView, ListView
+from django.views.generic import DetailView
 from django.http.response import HttpResponseRedirect
 from django.utils.translation import ugettext as _
-
 from django_tables2 import SingleTableView
-
 from utils import LoginMixin, MultipleFormView
 
 
