@@ -13,11 +13,14 @@
     <link rel="icon" href="http://getbootstrap.com/favicon.ico">
 
     <title>{% block title %}{{ view.title }}{% endblock %} | {% trans 'Seeder' %}</title>
+    <script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
 
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
     <!-- Custom styles for this template -->
     <link href="{{ STATIC_URL }}main.css" rel="stylesheet">
+    {% block extrahead %}{% endblock %}
+
 </head>
 <body>
 
@@ -95,8 +98,6 @@
     </div>
 </div>
 
-<script src="{{ STATIC_URL }}jquery/dist/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
 {% block extrajs %}
 {% endblock %}
 
