@@ -7,6 +7,5 @@ class SourceFilter(FilterSet):
     class Meta:
         model = models.Source
         fields = {
-            'owner': [''],
             'name': ['iexact']
         }
