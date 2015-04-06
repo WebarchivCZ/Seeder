@@ -5,5 +5,39 @@
 {% block page_header %} {{ source }} {% endblock %}
 
 {% block content %}
-    {{ source }}
+    <div class="col-xs-4 col-md-8 well">
+        <dl class="dl-horizontal">
+          <dt>{% trans 'Owner' %}</dt>
+          <dd>{{ source.owner }}</dd>
+          <dt>{% trans 'Created by' %}</dt>
+          <dd>{{ source.created_by }}</dd>
+          <dt>{% trans 'Name' %}</dt>
+          <dd>{{ source.name }}</dd>
+          <dt>{% trans 'Comment' %}</dt>
+          <dd>{{ source.comment }}</dd>
+          <dt>{% trans 'Web propsal' %}</dt>
+          <dd>{{ source.web_proposal }}</dd>
+          <dt>{% trans 'Publisher' %}</dt>
+          <dd>{{ source.publisher }}</dd>
+          <dt>{% trans "Specific contact" %}</dt>
+          <dd>{{ source.special_contact }}</dd>
+          <dt>{% trans 'Status' %}</dt>
+          <dd>{{ source.state }}</dd>
+          <dt>{% trans 'Conspectus' %}</dt>
+          <dd>{{ source.conspectus }}</dd>
+          <dt>{% trans 'Sub conspectus' %}</dt>
+          <dd>{{ source.sub_conspectus }}</dd>
+          <dt>{% trans 'Created at' %}</dt>
+          <dd>{{ source.created }}</dd>
+          <dt>{% trans 'Last update' %}</dt>
+          <dd>{{ source.last_changed }}</dd>
+        </dl>
+    </div>
+
+    <div class="col-xs-4 col-md-8">
+        <h2>{% trans 'History' %}</h2>
+    
+    </div>
+
+
 {% endblock %}
