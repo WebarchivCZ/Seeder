@@ -31,5 +31,5 @@ class SourceFilter(django_filters.FilterSet):
 
     class Meta:
         model = core_models.Source
-        fields = ('owner', 'name', 'web_proposal', 'publisher', 'state',
+        fields = ('name', 'owner', 'web_proposal', 'publisher', 'state',
                   'conspectus', 'sub_conspectus', 'created',  'last_changed')
