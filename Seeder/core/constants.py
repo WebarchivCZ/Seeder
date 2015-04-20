@@ -61,9 +61,9 @@ VOTE_EXCLUDE = 'exc'
 VOTE_NEUTRAL = 'neu'
 
 VOTE_CHOICES = (
-    (VOTE_INCLUDE, _('Source is to be included')),
-    (VOTE_EXCLUDE, _('Source is to be excluded')),
-    (VOTE_NEUTRAL, _('Neutral vote')),
+    (VOTE_INCLUDE, _('Include source')),
+    (VOTE_EXCLUDE, _('Exclude source')),
+    (VOTE_NEUTRAL, _('Undecided')),
 )
 
 
