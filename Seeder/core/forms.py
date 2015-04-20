@@ -42,7 +42,7 @@ class ManagementSourceForm(SourceForm):
     """
     class Meta:
         model = models.Source
-        fields = ('owner', 'name', 'publisher', 'new_publisher',
+        fields = ('owner', 'name', 'publisher', 'new_publisher', 'frequency',
                   'special_contact', 'conspectus', 'sub_conspectus',
                   'web_proposal', 'comment')
 
