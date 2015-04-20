@@ -11,7 +11,6 @@ class SourceForm(forms.ModelForm):
         required=False,
         help_text=_('Instantly create publisher'))
 
-
     def clean(self):
         cleaned_data = super(SourceForm, self).clean()
 
@@ -31,7 +30,7 @@ class SourceForm(forms.ModelForm):
 
     class Meta:
         model = models.Source
-        fields = ('name', 'publisher', 'new_publisher', 'frequency', 
+        fields = ('name', 'publisher', 'new_publisher', 'frequency',
                   'special_contact', 'conspectus', 'sub_conspectus',
                   'web_proposal', 'comment')
 
