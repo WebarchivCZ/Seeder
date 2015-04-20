@@ -2,7 +2,8 @@
 from django.utils.translation import ugettext as _
 
 
-SOURCE_STATE_INITIALIZED = 'i'
+SOURCE_STATE_VOTE = 'v'
+SOURCE_STATE_DUPLICITY = 'dpl'
 SOURCE_STATE_WAITING = 'w'
 SOURCE_STATE_COMMUNICATING = 'c'
 SOURCE_STATE_ACCEPTED = 'a'
@@ -13,7 +14,8 @@ SOURCE_STATE_CONTRACT_EXPIRED = 'e'
 SOURCE_STATE_CONTRACT_TERMINATED = 't'
 
 SOURCE_STATES = (
-    (SOURCE_STATE_INITIALIZED, _('Initialized')),
+    (SOURCE_STATE_VOTE, _('Voting')),
+    (SOURCE_STATE_DUPLICITY, _('Duplicated record')),
     (SOURCE_STATE_WAITING, _('Waiting for response')),
     (SOURCE_STATE_COMMUNICATING, _('In communication')),
     (SOURCE_STATE_ACCEPTED, _('Accepted')),
@@ -22,6 +24,14 @@ SOURCE_STATES = (
     (SOURCE_STATE_PUBLISHER_IGNORED_REQUEST, _('Publisher ignored requests')),
     (SOURCE_STATE_CONTRACT_EXPIRED, _('Contract expired')),
     (SOURCE_STATE_CONTRACT_TERMINATED, _('Contract terminated')),
+)
+
+
+SOURCE_FREQUENCY_PER_YEAR = (
+    (1, _('Once a year')),
+    (2, _('Twice a year')),
+    (6, _('Six times per year')),
+    (12, _('Every month')),
 )
 
 
