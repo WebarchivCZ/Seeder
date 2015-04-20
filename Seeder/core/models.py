@@ -53,6 +53,12 @@ class Source(BaseModel):
         max_length=3,
         choices=constants.SOURCE_STATES,
         default=constants.SOURCE_STATE_VOTE)
+
+    frequency = models.IntegerField(
+        verbose_name=_('Frequency'),
+        choices=constants.SOURCE_FREQUENCY_PER_YEAR,
+        max_length=3)
+
     conspectus = models.CharField(
         verbose_name=_('Conspectus'),
         choices=constants.CONSPECTUS_CHOICES,

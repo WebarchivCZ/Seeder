@@ -31,7 +31,7 @@ class SourceForm(forms.ModelForm):
 
     class Meta:
         model = models.Source
-        fields = ('name', 'publisher', 'new_publisher',
+        fields = ('name', 'publisher', 'new_publisher', 'frequency', 
                   'special_contact', 'conspectus', 'sub_conspectus',
                   'web_proposal', 'comment')
 
