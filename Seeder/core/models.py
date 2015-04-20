@@ -52,7 +52,7 @@ class Source(BaseModel):
         verbose_name=_('State'),
         max_length=3,
         choices=constants.SOURCE_STATES,
-        default=constants.SOURCE_STATE_INITIALIZED)
+        default=constants.SOURCE_STATE_VOTE)
     conspectus = models.CharField(
         verbose_name=_('Conspectus'),
         choices=constants.CONSPECTUS_CHOICES,
