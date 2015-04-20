@@ -59,8 +59,7 @@ class Source(BaseModel):
 
     frequency = models.IntegerField(
         verbose_name=_('Frequency'),
-        choices=constants.SOURCE_FREQUENCY_PER_YEAR,
-        max_length=3)
+        choices=constants.SOURCE_FREQUENCY_PER_YEAR)
 
     conspectus = models.CharField(
         verbose_name=_('Conspectus'),
@@ -94,7 +93,7 @@ class Source(BaseModel):
 
 class Seed(BaseModel):
     """
-    Seed is individual url in source
+        Seeds are individual urls in Source.
     """
     url = models.URLField(_('Seed url'))
     state = models.CharField(choices=constants.SEED_STATES,
