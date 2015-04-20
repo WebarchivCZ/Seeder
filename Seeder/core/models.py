@@ -1,4 +1,3 @@
-import reversion
 import constants
 
 from django.db import models
@@ -17,7 +16,6 @@ class BaseModel(models.Model):
         ordering = ('-last_changed', )
 
 
-@reversion.register
 class Publisher(BaseModel):
     """
         Publisher of the Source(s), Publisher can have multiple contacts.
@@ -32,7 +30,6 @@ class Publisher(BaseModel):
         return self.name
 
 
-@reversion.register
 class Source(BaseModel):
     """
         Source in the context of this project means an information source that
@@ -86,7 +83,6 @@ class Source(BaseModel):
         return reverse('source_detail', args=[str(self.id)])
 
 
-@reversion.register
 class Seed(BaseModel):
     """
     Seed is individual url in source
