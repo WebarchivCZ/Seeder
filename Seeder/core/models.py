@@ -5,6 +5,8 @@ from django.utils.translation import ugettext as _
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 
+from django_fsm import FSMField, transition
+
 
 class BaseModel(models.Model):
     active = models.BooleanField(default=True)
@@ -48,11 +50,12 @@ class Source(BaseModel):
     auto_imported = models.BooleanField(_('Imported from old portal'),
                                         default=False)
 
-    state = models.CharField(
+    state = FSMField(
         verbose_name=_('State'),
         max_length=3,
         choices=constants.SOURCE_STATES,
-        default=constants.SOURCE_STATE_VOTE)
+        default=constants.SOURCE_STATE_VOTE,
+        protected=True)
 
     frequency = models.IntegerField(
         verbose_name=_('Frequency'),
