@@ -46,6 +46,7 @@ INSTALLED_APPS = (
     'publishers',
     'source',
     'voting',
+    'class_based_comments'
 )
 
 
