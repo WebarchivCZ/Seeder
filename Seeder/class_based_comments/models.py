@@ -1,3 +1,5 @@
+import constants
+
 from django.conf import settings
 from django.contrib.contenttypes import generic
 from django.contrib.contenttypes.models import ContentType
@@ -6,8 +8,6 @@ from django.utils.translation import ugettext_lazy as _
 from django.utils import timezone
 
 from managers import CommentManager
-
-COMMENT_MAX_LENGTH = getattr(settings, 'COMMENT_MAX_LENGTH', 3000)
 
 
 class Comment(models.Model):
@@ -40,7 +40,9 @@ class Comment(models.Model):
         blank=True,
         null=True)
 
-    comment = models.TextField(_('comment'), max_length=COMMENT_MAX_LENGTH)
+    comment = models.TextField(
+        verbose_name=_('comment'),
+        max_length=constants.COMMENT_MAX_LENGTH)
 
     # Metadata about the comment
     submit_date = models.DateTimeField(
