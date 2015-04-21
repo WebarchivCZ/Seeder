@@ -5,6 +5,7 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.utils import timezone
 
+from managers import CommentManager
 
 COMMENT_MAX_LENGTH = getattr(settings, 'COMMENT_MAX_LENGTH', 3000)
 
@@ -58,6 +59,8 @@ class Comment(models.Model):
         help_text=_('Check this box if the comment is inappropriate. A "This '
                     'comment has been removed" message will be displayed '
                     'instead.'))
+
+    objects = CommentManager()
 
     def _get_user_info(self):
         """
