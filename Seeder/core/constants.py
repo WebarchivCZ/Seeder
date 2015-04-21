@@ -57,6 +57,14 @@ VOTING_STATES = (
     (VOTING_WAIT, _('Decision postponed')),
 )
 
+# dict that maps voting states to bootstrap button colours
+VOTING_STATES_TO_COLOURS = {
+    VOTING_INITIAL: 'btn-info',
+    VOTING_INCLUDE: 'btn-success',
+    VOTING_EXCLUDE: 'btn-danger',
+    VOTING_WAIT: 'btn-warning',
+}
+
 
 VOTE_INCLUDE = 'inc'
 VOTE_EXCLUDE = 'exc'
