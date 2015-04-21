@@ -109,6 +109,15 @@ class Comment(models.Model):
         self.user_email = val
     email = property(_get_email, _set_email, doc="Email of the author")
 
+    @property
+    def text(self):
+        """
+            Property for safely showing comment content.
+        """
+        if self.is_removed:
+            return _('This comment has been removed')
+        return self.comment
+
     class Meta:
         ordering = ('submit_date',)
         permissions = [("can_moderate", "Can moderate comments")]
