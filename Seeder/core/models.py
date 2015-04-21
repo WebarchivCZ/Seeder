@@ -142,6 +142,7 @@ class VotingRound(BaseModel):
             return "{0} on {1}".format(state, self.date_ended)
         return state
 
+
 class Vote(BaseModel):
     """
         Individual vote in voting round
