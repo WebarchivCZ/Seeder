@@ -137,10 +137,29 @@ class VotingRound(BaseModel):
         verbose_name_plural = _('Elections')
 
     def __unicode__(self):
-        state = self.get_state_display()
-        if self.date_ended:
-            return "{0} on {1}".format(state, self.date_ended)
-        return state
+        positive_votes, negative_votes, overall = self.get_score_tuple()
+        score = u'{vote_sum}/{overall} | +{positive} | -{negative}'.format(
+            vote_sum=sum((positive_votes, negative_votes)),
+            overall=overall, positive=positive_votes, negative=negative_votes)
+
+        return '{score}: {state}'.format(score=score,
+                                         state=self.get_state_display())
+
+    def get_score_tuple(self):
+        """
+        Aggregation function that returns tuple with score parts
+        """
+        positive_votes = 6
+        negative_votes = 3
+        neutral_votes = 5
+        overall = positive_votes + negative_votes + neutral_votes
+        return positive_votes, negative_votes, overall
+
+    def get_btn_class(self):
+        """
+            Returns bootstrap btn class
+        """
+        return constants.VOTING_STATES_TO_COLOURS[self.state]
 
 
 class Vote(BaseModel):
