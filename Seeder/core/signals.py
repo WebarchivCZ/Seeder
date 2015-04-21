@@ -1,8 +1,9 @@
-import models
-
 from django.dispatch import receiver
 from django.db.models.signals import post_save
 from functools import wraps
+
+from source.models import Source
+from voting.models import VotingRound
 
 
 def new_instance(f):
@@ -16,11 +17,11 @@ def new_instance(f):
     return wrapper
 
 
-@receiver(signal=post_save, sender=models.Source)
+@receiver(signal=post_save, sender=Source)
 @new_instance
 def create_voting_round(instance, **kwargs):
     """
         Creates a voting round after new Source is created.
     """
-    voting_round = models.VotingRound(source=instance)
+    voting_round = VotingRound(source=instance)
     voting_round.save()

@@ -2,8 +2,6 @@ from django.conf.urls import patterns, include, url
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
 
-from core import urls as core_urls
-
 urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
 
@@ -17,6 +15,11 @@ urlpatterns = patterns('',
     #     auth_views.password_reset_confirm, name='password_reset_confirm'),
     # url(r'^reset/done/$', auth_views.password_reset_complete, name='password_reset_complete'),
 
+
+    url(r'^source/', include('source.urls')),
+    url(r'^publisher/', include('publishers.urls')),
+    url(r'^voting/', include('voting.urls')),
+
     # beware: wild card regexp!
-    url(r'^', include(core_urls))
+    url(r'^', include('core.urls'))
 )
