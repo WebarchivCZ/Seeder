@@ -121,11 +121,12 @@ class VotingRound(BaseModel):
         Voting round about source.
     """
 
-    date_ended = models.DateTimeField(_('End of the election'))
-    ended_by = models.ForeignKey(User)
     source = models.ForeignKey(Source)
-    result = models.CharField(_('Result of the election'),
-                              max_length=3,
+    ended_by = models.ForeignKey(User, blank=True, null=True)
+    date_ended = models.DateTimeField(_('End of the election'),
+                                      blank=True, null=True)
+    result = models.CharField(_('Result of the election'), max_length=3,
+                              blank=True, null=True,
                               default=constants.VOTING_WAIT,
                               choices=constants.VOTING_RESULT_CHOICES)
 
@@ -142,7 +143,7 @@ class Vote(BaseModel):
         Individual vote in voting round
     """
     casted_by = models.ForeignKey(User)
-    comment = models.TextField(_('Comment'))
+    comment = models.TextField(_('Comment'), blank=True)
     round = models.ForeignKey(verbose_name=_('Round'), to=VotingRound)
     vote = models.CharField(_('Vote'),
                             max_length=3,
