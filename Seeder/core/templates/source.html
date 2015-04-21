@@ -33,6 +33,12 @@
           <dd>{{ source.last_changed }}</dd>
         </dl>
     </div>
+    <div class="col-xs-4 col-md-6 well">
+    {% for voting_round in source.votinground_set.all %}
+        {{ voting_round }}
+    {% endfor %}
+
+    </div>
 
 
 {% endblock %}
