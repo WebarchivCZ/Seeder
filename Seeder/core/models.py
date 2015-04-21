@@ -126,7 +126,7 @@ class VotingRound(BaseModel):
     date_ended = models.DateTimeField(_('End of the election'),
                                       blank=True, null=True)
     result = models.CharField(_('Result of the election'), max_length=3,
-                              blank=True, null=True,
+                              blank=True,
                               default=constants.VOTING_WAIT,
                               choices=constants.VOTING_RESULT_CHOICES)
 
