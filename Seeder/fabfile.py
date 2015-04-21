@@ -8,6 +8,7 @@ def runserver():
 
 @task(alias='sdb')
 def syncdb():
+    local('./manage.py migrate auth')  # bug in 1.8
     local('./manage.py syncdb --noinput')
     local('./manage.py migrate')
 
