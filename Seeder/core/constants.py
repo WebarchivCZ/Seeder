@@ -46,13 +46,15 @@ SEED_STATES = (
 )
 
 
+VOTING_INITIAL = 'ini'
 VOTING_INCLUDE = 'inc'
 VOTING_EXCLUDE = 'exc'
 VOTING_WAIT = 'w'
-VOTING_RESULT_CHOICES = (
+VOTING_STATES = (
+    (VOTING_INITIAL, _('Vote in progress')),
     (VOTING_INCLUDE, _('Source is to be included')),
     (VOTING_EXCLUDE, _('Source is to be excluded')),
-    (VOTING_WAIT, _('Waiting for the end of the election')),
+    (VOTING_WAIT, _('Decision postponed')),
 )
 
 

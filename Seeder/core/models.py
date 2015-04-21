@@ -125,18 +125,22 @@ class VotingRound(BaseModel):
     ended_by = models.ForeignKey(User, blank=True, null=True)
     date_ended = models.DateTimeField(_('End of the election'),
                                       blank=True, null=True)
-    result = models.CharField(_('Result of the election'), max_length=3,
-                              blank=True,
-                              default=constants.VOTING_WAIT,
-                              choices=constants.VOTING_RESULT_CHOICES)
+    state = FSMField(
+        verbose_name=_('State'),
+        max_length=3,
+        choices=constants.VOTING_STATES,
+        default=constants.VOTING_INITIAL,
+        protected=True)
 
     class Meta:
         verbose_name = _('Election')
         verbose_name_plural = _('Elections')
 
     def __unicode__(self):
-        return u'Election: {0}'.format(self.source)
-
+        state = self.get_state_display()
+        if self.date_ended:
+            return "{0} on {1}".format(state, self.date_ended)
+        return state
 
 class Vote(BaseModel):
     """
