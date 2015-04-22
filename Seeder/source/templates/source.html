@@ -36,8 +36,18 @@
         </dl>
     </div>
 
+    <div class="col-xs-4 col-md-4">
+    <p>{% trans 'Seeds' %}:</p>
+    <ul>
+        {% for seed in source.seed_set.all %}
+            <li>{{ seed.url }}</li>
+        {% endfor %}
+    </ul>
+    </div>
+
+
     <div class="pull-right">
-    <p>{% trans 'Voting rounds:' %}</p>
+    <p>{% trans 'Voting rounds' %}:</p>
         {% for voting_round in source.votinground_set.all %}
             <a href="" class="btn {{ voting_round.get_btn_class }}">{{ voting_round }}</a>
         {% endfor %}
