@@ -3,10 +3,10 @@ import models
 import constants
 
 from django import forms
-from django.shortcuts import get_object_or_404
 from django.contrib.contenttypes.models import ContentType
 from django.utils.crypto import salted_hmac, constant_time_compare
 from django.utils.translation import ugettext_lazy as _
+from django.core.exceptions import ObjectDoesNotExist
 
 CommentModel = models.Comment
 
@@ -107,32 +107,39 @@ def create_form_class(threaded=False, anonymous=False, title=False):
     :return: CommentForm
     """
 
-    fields = ('timestamp', 'security_hash', 'honeypot')
+    form_fields = ('timestamp', 'security_hash', 'honeypot')
     if threaded:
-        fields += ('parent',)
+        form_fields += ('parent',)
     if title:
-        fields += ('title',)
+        form_fields += ('title',)
     if anonymous:
-        fields += ('user_name', 'user_email',)
-    fields += ('comment',)  # this should be at the end of the form
+        form_fields += ('user_name', 'user_email',)
+    form_fields += ('comment',)  # this should be at the end of the form
 
     class CommentForm(CommentSecurityForm):
         if threaded:
             parent = forms.IntegerField(widget=forms.HiddenInput)
 
+        def clean_parent(self):
+            pid = self.cleaned_data['parent']
+            if pid:
+                try:
+                    return CommentModel.objects.get(pk=pid)
+                except ObjectDoesNotExist:
+                    raise forms.ValidationError('Parent comment id incorrect')
+            else:
+                return pid
+
         def save(self, commit=True):
             comment = super(CommentForm, self).save(commit=False)
             comment.content_type = self.ct_type
             comment.object_pk = self.target_object.pk
-            if threaded:
-                parent = self.cleaned_data['parent']
-                comment.parent = get_object_or_404(CommentModel, pk=parent)
             if commit:
                 comment.save()
             return comment
 
         class Meta:
             model = CommentModel
-            fields = fields
+            fields = form_fields
 
     return CommentForm
