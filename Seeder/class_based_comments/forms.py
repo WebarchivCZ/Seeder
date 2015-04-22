@@ -4,7 +4,6 @@ import constants
 
 from django import forms
 from django.shortcuts import get_object_or_404
-from django.forms.utils import ErrorDict
 from django.contrib.contenttypes.models import ContentType
 from django.utils.crypto import salted_hmac, constant_time_compare
 from django.utils.translation import ugettext_lazy as _
@@ -96,77 +95,44 @@ class CommentSecurityForm(forms.ModelForm):
         return salted_hmac(key_salt, value).hexdigest()
 
 
-SECURITY_FIELDS = ('timestamp', 'security_hash', 'honeypot')
-
-
-class CommentForm(CommentSecurityForm):
+def create_form_class(threaded=False, anonymous=False, title=False):
     """
-    Mixin for comments form
-    """
-
-    def save(self, commit=True):
-        """
-        Fills out object details received in initialization.
-        Note: super means 'Next in line' in this context:
-            https://www.youtube.com/watch?v=EiOglTERPEo
-        """
-        comment = super(CommentForm, self).save(commit=False)
-        comment.content_type = self.ct_type
-        comment.object_pk = self.target_object.pk
-        if commit:
-            comment.save()
-        return comment
+    Dynamically creates user form with custom fields depending on situation.
+    This is encapsulated class generator.
 
 
-class ThreadedCommentForm(CommentForm):
-    """
-    Mixin for threaded comments, contains hidden input for pk of the parent
-    """
-    parent = forms.IntegerField(widget=forms.HiddenInput)
-
-    def save(self, commit=True):
-        comment = super(ThreadedCommentForm, self).save(commit=False)
-        comment.parent = get_object_or_404(CommentModel,
-                                           pk=self.cleaned_data['parent'])
-        if commit:
-            comment.save()
-        return comment
-
-
-class AnonymousCommentForm(CommentForm):
-    """
-    Comment form displayed to anonymous users
+    :param threaded: enable threading of comments
+    :param anonymous: set if user is not logged in
+    :param title: select if you want to enable titles for the comment
+    :return: CommentForm
     """
 
-    class Meta:
-        model = CommentModel
-        fields = SECURITY_FIELDS + ('user_name', 'user_email', 'comment')
+    fields = ('timestamp', 'security_hash', 'honeypot')
+    if threaded:
+        fields += ('parent',)
+    if title:
+        fields += ('title',)
+    if anonymous:
+        fields += ('user_name', 'user_email',)
+    fields += ('comment',)  # this should be at the end of the form
 
+    class CommentForm(CommentSecurityForm):
+        if threaded:
+            parent = forms.IntegerField(widget=forms.HiddenInput)
 
-class RegisteredCommentForm(CommentForm):
-    """
-    Comment form for registered users
-    """
-    class Meta:
-        model = CommentModel
-        fields = SECURITY_FIELDS + ('comment',)
+        def save(self, commit=True):
+            comment = super(CommentForm, self).save(commit=False)
+            comment.content_type = self.ct_type
+            comment.object_pk = self.target_object.pk
+            if threaded:
+                parent = self.cleaned_data['parent']
+                comment.parent = get_object_or_404(CommentModel, pk=parent)
+            if commit:
+                comment.save()
+            return comment
 
+        class Meta:
+            model = CommentModel
+            fields = fields
 
-class AnonymousThreadedCommentForm(ThreadedCommentForm):
-    """
-    Threaded comment form displayed to anonymous users
-    """
-
-    class Meta:
-        model = CommentModel
-        fields = SECURITY_FIELDS + ('user_name', 'user_email', 'comment',
-                                    'parent')
-
-
-class RegisteredThreadedCommentForm(ThreadedCommentForm):
-    """
-    Threaded comment form for registered users
-    """
-    class Meta:
-        model = CommentModel
-        fields = SECURITY_FIELDS + ('comment', 'parent')
+    return CommentForm
