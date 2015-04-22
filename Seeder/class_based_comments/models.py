@@ -98,7 +98,7 @@ class Comment(MPTTModel):
     user_info = property(_get_user_info)
 
     def _get_name(self):
-        return self.userinfo["name"]
+        return self.user_info["name"]
 
     def _set_name(self, val):
         if self.user_id:

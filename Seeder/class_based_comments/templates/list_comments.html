@@ -1,5 +1,11 @@
-<ul>
+{% load humanize %}
+
+<div class="comment-group">
     {% for comment in comments %}
-        <li>{{ comment }}</li>
+        <div class="comment-box">
+            <span class="comment-name">{{ comment.name }}</span>
+            <span class="comment-date">{{ comment.submit_date|naturaltime }}</span>
+            <p class="comment-content">{{ comment.text }}</p>
+        </div>
     {% endfor %}
-</ul>
+</div>
