@@ -1,12 +1,12 @@
 import forms
 
+from django.views.generic.base import View
 from django.views.generic.detail import SingleObjectMixin
-from django.views.generic.edit import CreateView
 
 from models import Comment
 
 
-class CommentView(CreateView, SingleObjectMixin):
+class CommentView(SingleObjectMixin, View):
     """
     View for creating and listing comments.
     """
@@ -15,15 +15,21 @@ class CommentView(CreateView, SingleObjectMixin):
     anonymous_threaded_comment_form = forms.AnonymousThreadedCommentForm
     registered_threaded_comment_form = forms.RegisteredThreadedCommentForm
 
-    prefix = 'comment'
-    threaded = False
-
     # disable comments for anonymous users
     enforce_login = False
+    # enable threading of comments
+    threaded = False
+
+    form_name = 'comment_form'
+
+
 
     def get_context_data(self, **kwargs):
         context = super(CommentView, self).get_context_data(**kwargs)
+        obj = self.get_object()
+        form_class = self.get_form()
         context['comments'] = Comment.objects.for_model(self.get_object())
+        context[self.form_name] = form_class(target_object=obj)
         return context
 
     def get_form(self, form_class=None):

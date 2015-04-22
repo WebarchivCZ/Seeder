@@ -12,7 +12,7 @@ from django.utils.translation import ugettext_lazy as _
 CommentModel = models.Comment
 
 
-class CommentSecurityForm(forms.Form):
+class CommentSecurityForm(forms.ModelForm):
     """
     Handles the security aspects (anti-spoofing) for comment forms.
     """
@@ -27,14 +27,14 @@ class CommentSecurityForm(forms.Form):
                                label=_('If you enter anything in this field '
                                        'your comment will be treated as spam'))
 
-    def __init__(self, target_object, data=None, initial=None):
+    def __init__(self, target_object, initial=None, **kwargs):
         self.target_object = target_object
         self.ct_type = ContentType.objects.get_for_model(target_object)
 
         if initial is None:
             initial = {}
         initial.update(self.generate_security_data())
-        super(CommentSecurityForm, self).__init__(data=data, initial=initial)
+        super(CommentSecurityForm, self).__init__(initial=initial, **kwargs)
 
     def security_errors(self):
         """
@@ -110,6 +110,10 @@ class CommentSecurityForm(forms.Form):
         return salted_hmac(key_salt, value).hexdigest()
 
 
+SECURITY_FIELDS = ('content_type', 'object_pk', 'timestamp', 'security_hash',
+                   'honeypot')
+
+
 class CommentForm(CommentSecurityForm):
     """
     Mixin for comments form
@@ -144,39 +148,39 @@ class ThreadedCommentForm(CommentForm):
         return comment
 
 
-class AnonymousCommentForm(forms.ModelForm, CommentForm):
+class AnonymousCommentForm(CommentForm):
     """
     Comment form displayed to anonymous users
     """
 
     class Meta:
         model = CommentModel
-        fields = ('user_name', 'user_email', 'comment')
+        fields = SECURITY_FIELDS + ('user_name', 'user_email', 'comment')
 
 
-class RegisteredCommentForm(forms.ModelForm, CommentForm):
+class RegisteredCommentForm(CommentForm):
     """
     Comment form for registered users
     """
     class Meta:
         model = CommentModel
-        fields = ('comment',)
+        fields = SECURITY_FIELDS + ('comment',)
 
 
-class AnonymousThreadedCommentForm(forms.ModelForm, ThreadedCommentForm):
+class AnonymousThreadedCommentForm(ThreadedCommentForm):
     """
     Threaded comment form displayed to anonymous users
     """
 
     class Meta:
         model = CommentModel
-        fields = ('user_name', 'user_email', 'comment', 'parent')
+        fields = SECURITY_FIELDS + ('user_name', 'user_email', 'comment', 'parent')
 
 
-class RegisteredThreadedCommentForm(forms.ModelForm, ThreadedCommentForm):
+class RegisteredThreadedCommentForm(ThreadedCommentForm):
     """
     Threaded comment form for registered users
     """
     class Meta:
         model = CommentModel
-        fields = ('comment', 'parent')
+        fields = SECURITY_FIELDS + ('comment', 'parent')
