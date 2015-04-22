@@ -62,6 +62,7 @@ class SourceDetail(LoginMixin, DetailView, CommentView):
     view_name = 'sources'
     context_object_name = 'source'
     model = models.Source
+    anonymous = False
 
 
 class SourceList(LoginMixin, SingleTableView):

@@ -11,16 +11,16 @@ class CommentView(TemplateResponseMixin, SingleObjectMixin, View):
     """
     View for creating and listing comments.
     """
-    anonymous_comment_form = forms.AnonymousCommentForm
-    registered_comment_form = forms.RegisteredCommentForm
-    anonymous_threaded_comment_form = forms.AnonymousThreadedCommentForm
-    registered_threaded_comment_form = forms.RegisteredThreadedCommentForm
 
-    # disable comments for anonymous users
-    enforce_login = False
+    # set to true if some of your users are anonymous
+    anonymous = False
     # enable threading of comments
     threaded = False
+    # form variable in templates
     form_name = 'comment_form'
+    # enable titles in form
+    titles = False
+
 
     def initialize_form(self, data=None):
         """
@@ -53,15 +53,5 @@ class CommentView(TemplateResponseMixin, SingleObjectMixin, View):
 
     @property
     def comment_form(self):
-        authenticated = self.request.user.is_authenticated()
-        if self.enforce_login and not authenticated:
-            raise NotImplemented('Report a bug to show interest in this '
-                                 'feature...')
-        if self.threaded:
-            if authenticated:
-                return self.registered_threaded_comment_form
-            return self.anonymous_threaded_comment_form
-        else:
-            if authenticated:
-                return self.registered_comment_form
-            return self.anonymous_comment_form
+        return forms.create_form_class(self.threaded, self.anonymous,
+                                       self.titles)
