@@ -28,7 +28,7 @@ class Comment(MPTTModel):
 
     object_pk = models.TextField(_('object ID'))
     content_object = GenericForeignKey(ct_field="content_type",
-                                               fk_field="object_pk")
+                                       fk_field="object_pk")
     # Identity fields:
     user = models.ForeignKey(
         to=settings.AUTH_USER_MODEL,
@@ -45,6 +45,13 @@ class Comment(MPTTModel):
         unpack_ipv4=True,
         blank=True,
         null=True)
+
+    # optional title:
+    title = models.CharField(
+        verbose_name=_('Title'),
+        max_length=64,
+        blank=True
+    )
 
     comment = models.TextField(
         verbose_name=_('comment'),
