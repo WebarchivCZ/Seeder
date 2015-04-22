@@ -29,7 +29,7 @@ class CommentView(TemplateResponseMixin, SingleObjectMixin, View):
         """
         return self.comment_form(target_object=self.get_object(), data=data)
 
-    def post(self, request, *args, **kwargs):
+    def post(self, request, **kwargs):
 
         form = self.initialize_form(data=request.POST)
         user = self.request.user
@@ -44,7 +44,6 @@ class CommentView(TemplateResponseMixin, SingleObjectMixin, View):
             context = self.get_context_data(**kwargs)
             context[self.form_name] = form
             return self.render_to_response(context)
-
 
     def get_context_data(self, **kwargs):
         context = super(CommentView, self).get_context_data(**kwargs)
@@ -66,27 +65,3 @@ class CommentView(TemplateResponseMixin, SingleObjectMixin, View):
             if authenticated:
                 return self.registered_comment_form
             return self.anonymous_comment_form
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
