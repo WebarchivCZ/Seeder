@@ -16,8 +16,6 @@ class CommentSecurityForm(forms.ModelForm):
     """
     Handles the security aspects (anti-spoofing) for comment forms.
     """
-    content_type = forms.CharField(widget=forms.HiddenInput)
-    object_pk = forms.CharField(widget=forms.HiddenInput)
     timestamp = forms.IntegerField(widget=forms.HiddenInput)
     security_hash = forms.CharField(min_length=40, max_length=40,
                                     widget=forms.HiddenInput)
@@ -36,16 +34,6 @@ class CommentSecurityForm(forms.ModelForm):
         initial.update(self.generate_security_data())
         super(CommentSecurityForm, self).__init__(initial=initial, **kwargs)
 
-    def security_errors(self):
-        """
-        Return just those errors associated with security
-        """
-        errors = ErrorDict()
-        for f in ("honeypot", "timestamp", "security_hash"):
-            if f in self.errors:
-                errors[f] = self.errors[f]
-        return errors
-
     def clean_honeypot(self):
         """
         Check honeypot, this might detect simple spam bots
@@ -61,8 +49,8 @@ class CommentSecurityForm(forms.ModelForm):
         """
         hash_received = self.cleaned_data["security_hash"]
         expected_hash = self.generate_security_hash(
-            content_type=self.data.get('content_type', ''),
-            object_pk=self.data.get('object_pk', ''),
+            content_type=str(self.ct_type),
+            object_pk=str(self.target_object.pk),
             timestamp=self.data.get('timestamp', ''),)
         if not constant_time_compare(expected_hash, hash_received):
             raise forms.ValidationError("Security hash check failed.")
@@ -81,8 +69,6 @@ class CommentSecurityForm(forms.ModelForm):
         """Generate a dict of security data for "initial" data."""
         timestamp = int(time.time())
         return {
-            'content_type': str(self.ct_type),
-            'object_pk': str(self.target_object.pk),
             'timestamp': str(timestamp),
             'security_hash': self.initial_security_hash(timestamp),
         }
@@ -105,13 +91,12 @@ class CommentSecurityForm(forms.ModelForm):
         Generate a HMAC security hash from the provided info.
         """
         info = (content_type, object_pk, timestamp)
-        key_salt = "django.contrib.forms.CommentSecurityForm"
+        key_salt = "CommentSecurityForm"
         value = "-".join(info)
         return salted_hmac(key_salt, value).hexdigest()
 
 
-SECURITY_FIELDS = ('content_type', 'object_pk', 'timestamp', 'security_hash',
-                   'honeypot')
+SECURITY_FIELDS = ('timestamp', 'security_hash', 'honeypot')
 
 
 class CommentForm(CommentSecurityForm):
@@ -174,7 +159,8 @@ class AnonymousThreadedCommentForm(ThreadedCommentForm):
 
     class Meta:
         model = CommentModel
-        fields = SECURITY_FIELDS + ('user_name', 'user_email', 'comment', 'parent')
+        fields = SECURITY_FIELDS + ('user_name', 'user_email', 'comment',
+                                    'parent')
 
 
 class RegisteredThreadedCommentForm(ThreadedCommentForm):
