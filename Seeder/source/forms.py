@@ -57,4 +57,4 @@ class BaseSeedFormset(BaseFormSet):
             raise forms.ValidationError(_('There must be at least one seed!'))
 
 SeedFormset = modelformset_factory(
-    models.Seed, fields=('url', ), extra=3, formset=BaseSeedFormset)
+    models.Seed, fields=('url', ), extra=1, formset=BaseSeedFormset)
