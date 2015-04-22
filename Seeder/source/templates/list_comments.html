@@ -1,0 +1,15 @@
+{% load humanize %}
+
+<div class="comment-group">
+    {% for comment in comments %}
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <span> {{ comment.name }}</span>
+                <span class="pull-right">{{ comment.submit_date|naturaltime }}</span>
+            </div>
+            <div class="panel-body">
+                {{ comment.text }}
+            </div>
+        </div>
+    {% endfor %}
+</div>

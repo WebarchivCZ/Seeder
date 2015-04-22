@@ -34,12 +34,15 @@
           <dt>{% trans 'Last update' %}</dt>
           <dd>{{ source.last_changed|naturaltime }}</dd>
         </dl>
+    </div>
 
-        <h3>{% trans 'Voting rounds' %}</h3>
+    <div class="pull-right">
+    <p>{% trans 'Voting rounds:' %}</p>
         {% for voting_round in source.votinground_set.all %}
             <a href="" class="btn {{ voting_round.get_btn_class }}">{{ voting_round }}</a>
         {% endfor %}
     </div>
+
 
     <div class="col-xs-12 col-md-12">
         <h2>{% trans 'Comments' %}</h2>
