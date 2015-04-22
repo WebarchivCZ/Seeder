@@ -9,3 +9,4 @@ django-tables2
 django_filters
 django-bootstrap3
 django-fsm
+django-mptt

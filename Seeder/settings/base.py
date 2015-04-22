@@ -37,10 +37,12 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.humanize',
+
     'djangobower',
     'django_tables2',
     'django_filters',
     'bootstrap3',
+    'mptt',
 
     'core',
     'publishers',

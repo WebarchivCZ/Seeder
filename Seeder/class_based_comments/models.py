@@ -7,13 +7,19 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.utils import timezone
 
+from mptt.models import MPTTModel, TreeForeignKey
 from managers import CommentManager
 
 
-class Comment(models.Model):
+class Comment(MPTTModel):
     """
         A user comment about some object.
     """
+
+    # Threading:
+    parent = TreeForeignKey('self', null=True, blank=True,
+                            related_name='children', db_index=True)
+
     # Content-object field
     content_type = models.ForeignKey(
         ContentType,
@@ -119,6 +125,9 @@ class Comment(models.Model):
         if self.is_removed:
             return _('This comment has been removed')
         return self.comment
+
+    class MPTTMeta:
+        order_insertion_by = ('submit_date',)
 
     class Meta:
         ordering = ('submit_date',)
