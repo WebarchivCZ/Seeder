@@ -1,7 +1,7 @@
 import constants
 
 from django.conf import settings
-from django.contrib.contenttypes import generic
+from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
@@ -27,7 +27,7 @@ class Comment(MPTTModel):
         related_name="content_type_set_for_%(class)s")
 
     object_pk = models.TextField(_('object ID'))
-    content_object = generic.GenericForeignKey(ct_field="content_type",
+    content_object = GenericForeignKey(ct_field="content_type",
                                                fk_field="object_pk")
     # Identity fields:
     user = models.ForeignKey(

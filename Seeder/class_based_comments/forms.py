@@ -4,7 +4,7 @@ import constants
 
 from django import forms
 from django.shortcuts import get_object_or_404
-from django.forms.util import ErrorDict
+from django.forms.utils import ErrorDict
 from django.contrib.contenttypes.models import ContentType
 from django.utils.crypto import salted_hmac, constant_time_compare
 from django.utils.translation import ugettext_lazy as _
