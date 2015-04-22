@@ -13,7 +13,7 @@ from managers import CommentManager
 
 class Comment(MPTTModel):
     """
-        A user comment about some object.
+        User comment model
     """
 
     # Threading:
