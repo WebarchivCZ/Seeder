@@ -9,7 +9,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.utils.crypto import salted_hmac, constant_time_compare
 from django.utils.translation import ugettext_lazy as _
 
-COMMENT_MODEL = models.Comment
+CommentModel = models.Comment
 
 
 class CommentSecurityForm(forms.Form):
@@ -137,7 +137,7 @@ class ThreadedCommentForm(CommentForm):
 
     def save(self, commit=True):
         comment = super(ThreadedCommentForm, self).save(commit=False)
-        comment.parent = get_object_or_404(COMMENT_MODEL,
+        comment.parent = get_object_or_404(CommentModel,
                                            pk=self.cleaned_data['parent'])
         if commit:
             comment.save()
@@ -150,7 +150,7 @@ class AnonymousCommentForm(forms.ModelForm, CommentForm):
     """
 
     class Meta:
-        model = COMMENT_MODEL
+        model = CommentModel
         fields = ('user_name', 'user_email', 'comment')
 
 
@@ -159,7 +159,7 @@ class RegisteredCommentForm(forms.ModelForm, CommentForm):
     Comment form for registered users
     """
     class Meta:
-        model = COMMENT_MODEL
+        model = CommentModel
         fields = ('comment',)
 
 
@@ -169,7 +169,7 @@ class AnonymousThreadedCommentForm(forms.ModelForm, ThreadedCommentForm):
     """
 
     class Meta:
-        model = COMMENT_MODEL
+        model = CommentModel
         fields = ('user_name', 'user_email', 'comment', 'parent')
 
 
@@ -178,5 +178,5 @@ class RegisteredThreadedCommentForm(forms.ModelForm, ThreadedCommentForm):
     Threaded comment form for registered users
     """
     class Meta:
-        model = COMMENT_MODEL
+        model = CommentModel
         fields = ('comment', 'parent')
