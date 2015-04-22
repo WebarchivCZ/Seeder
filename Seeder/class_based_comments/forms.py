@@ -3,10 +3,13 @@ import models
 import constants
 
 from django import forms
+from django.shortcuts import get_object_or_404
 from django.forms.util import ErrorDict
 from django.contrib.contenttypes.models import ContentType
 from django.utils.crypto import salted_hmac, constant_time_compare
 from django.utils.translation import ugettext_lazy as _
+
+COMMENT_MODEL = models.Comment
 
 
 class CommentSecurityForm(forms.Form):
@@ -107,28 +110,73 @@ class CommentSecurityForm(forms.Form):
         return salted_hmac(key_salt, value).hexdigest()
 
 
-class AnonymousCommentForm(forms.ModelForm, CommentSecurityForm):
+class CommentForm(CommentSecurityForm):
     """
-    Comment form displayed to anonymous users
+    Mixin for comments form
     """
 
     def save(self, commit=True):
         """
         Fills out object details received in initialization.
+        Note: super means 'Next in line' in this context:
+            https://www.youtube.com/watch?v=EiOglTERPEo
         """
-        comment = super(AnonymousCommentForm, self).save(commit=False)
+        comment = super(CommentForm, self).save(commit=False)
         comment.content_type = self.ct_type
         comment.object_pk = self.target_object.pk
+        if commit:
+            comment.save()
+        return comment
+
+
+class ThreadedCommentForm(CommentForm):
+    """
+    Mixin for threaded comments, contains hidden input for pk of the parent
+    """
+    parent = forms.IntegerField(widget=forms.HiddenInput)
+
+    def save(self, commit=True):
+        comment = super(ThreadedCommentForm, self).save(commit=False)
+        comment.parent = get_object_or_404(COMMENT_MODEL,
+                                           pk=self.cleaned_data['parent'])
+        if commit:
+            comment.save()
+        return comment
+
+
+class AnonymousCommentForm(forms.ModelForm, CommentForm):
+    """
+    Comment form displayed to anonymous users
+    """
 
     class Meta:
-        model = models.Comment
+        model = COMMENT_MODEL
         fields = ('user_name', 'user_email', 'comment')
 
 
-class RegisteredCommentForm(AnonymousCommentForm):
+class RegisteredCommentForm(forms.ModelForm, CommentForm):
     """
     Comment form for registered users
     """
     class Meta:
-        model = models.Comment
+        model = COMMENT_MODEL
         fields = ('comment',)
+
+
+class AnonymousThreadedCommentForm(forms.ModelForm, ThreadedCommentForm):
+    """
+    Threaded comment form displayed to anonymous users
+    """
+
+    class Meta:
+        model = COMMENT_MODEL
+        fields = ('user_name', 'user_email', 'comment', 'parent')
+
+
+class RegisteredThreadedCommentForm(forms.ModelForm, ThreadedCommentForm):
+    """
+    Threaded comment form for registered users
+    """
+    class Meta:
+        model = COMMENT_MODEL
+        fields = ('comment', 'parent')
