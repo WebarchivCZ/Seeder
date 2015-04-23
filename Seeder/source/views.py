@@ -9,7 +9,7 @@ from django.utils.translation import ugettext as _
 from django_tables2 import SingleTableView
 
 from core.utils import LoginMixin, MultipleFormView
-from class_based_comments.views import CommentView
+from class_based_comments.views import CommentViewGeneric
 
 
 class AddSource(LoginMixin, MultipleFormView):
@@ -57,7 +57,7 @@ class AddSource(LoginMixin, MultipleFormView):
         return HttpResponseRedirect(source.get_absolute_url())
 
 
-class SourceDetail(LoginMixin, DetailView, CommentView):
+class SourceDetail(LoginMixin, DetailView, CommentViewGeneric):
     template_name = 'source.html'
     view_name = 'sources'
     context_object_name = 'source'
