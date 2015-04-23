@@ -10,4 +10,5 @@ class VotingDetail(LoginMixin, DetailView, CommentViewGeneric):
     template_name = 'voting_round.html'
     view_name = 'voting'
     model = models.VotingRound
-    anonymous = False
+    context_object_name = 'round'
+
