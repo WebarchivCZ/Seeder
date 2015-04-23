@@ -20,7 +20,7 @@
           <dt>{% trans 'Web propsal' %}</dt>
           <dd>{{ source.web_proposal }}</dd>
           <dt>{% trans 'Publisher' %}</dt>
-          <dd>{{ source.publisher }}</dd>
+          <dd><a href="{{ source.publisher.get_absolute_url }}">{{ source.publisher }}</a></dd>
           <dt>{% trans "Specific contact" %}</dt>
           <dd>{{ source.special_contact }}</dd>
           <dt>{% trans 'Status' %}</dt>
