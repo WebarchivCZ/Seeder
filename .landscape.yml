@@ -1,0 +1,12 @@
+doc-warnings: yes
+test-warnings: no
+strictness: veryhigh
+max-line-length: 79
+uses:
+    - django
+autodetect: yes
+requirements:
+    - requirements.txt
+    - requirements_dev.txt
+pep8:
+    full: true
