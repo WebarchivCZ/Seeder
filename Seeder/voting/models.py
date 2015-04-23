@@ -40,6 +40,12 @@ class VotingRound(BaseModel):
         return '{score}: {state}'.format(score=score,
                                          state=self.get_state_display())
 
+
+    def get_absolute_url(self):
+        return reverse('voting:detail', kwargs={'pk': self.pk})
+
+
+
     def get_score_tuple(self):
         """
         Aggregation function that returns tuple with score parts
