@@ -15,10 +15,10 @@ VOTING_STATES = (
 
 # dict that maps voting states to bootstrap button colours
 VOTING_STATES_TO_COLOURS = {
-    VOTING_INITIAL: 'btn-info',
-    VOTING_INCLUDE: 'btn-success',
-    VOTING_EXCLUDE: 'btn-danger',
-    VOTING_WAIT: 'btn-warning',
+    VOTING_INITIAL: 'info',
+    VOTING_INCLUDE: 'success',
+    VOTING_EXCLUDE: 'danger',
+    VOTING_WAIT: 'warning',
 }
 
 
@@ -31,3 +31,10 @@ VOTE_CHOICES = (
     (VOTE_EXCLUDE, _('Exclude source')),
     (VOTE_NEUTRAL, _('Undecided')),
 )
+
+# mapping of vote states to bootstrap classes
+VOTE_TO_BOOTSTRAP = {
+    VOTE_INCLUDE: 'info',
+    VOTE_EXCLUDE: 'success',
+    VOTE_NEUTRAL: 'danger',
+}
