@@ -47,7 +47,7 @@
                     <a href="">{% trans 'Change password' %}</a>
                 </li>
                 <li>
-                    <a href="{% url 'logout' %}">{% trans 'Logout' %}</a>
+                    <a href="{% url 'auth:logout' %}">{% trans 'Logout' %}</a>
                 </li>
             </ul>
             <form class="navbar-form navbar-right">
@@ -65,10 +65,10 @@
                     <a href="/" >{% trans 'Dashboard' %}</a>
                 </li>
                 <li id="add_source">
-                    <a href="{% url 'add_source' %}">{% trans 'Add source' %}</a>
+                    <a href="{% url 'source:add' %}">{% trans 'Add source' %}</a>
                 </li>
                 <li id="sources">
-                    <a href="{% url 'list_sources' %}">{% trans 'List sources' %}</a>
+                    <a href="{% url 'source:list' %}">{% trans 'List sources' %}</a>
                 </li>
                 <li>
                     <a href="">Analytics</a>
