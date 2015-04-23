@@ -158,4 +158,8 @@ def create_form_class(threaded=False, anonymous=False, title=False):
             model = CommentModel
             fields = form_fields
 
+            widgets = {
+                'comment': forms.Textarea(attrs={'rows': 4}),
+            }
+
     return CommentForm
