@@ -7,7 +7,7 @@ from django.views.generic.detail import SingleObjectMixin
 from models import Comment
 
 
-class CommentView(TemplateResponseMixin, SingleObjectMixin, View):
+class CommentViewGeneric(TemplateResponseMixin, SingleObjectMixin, View):
     """
     View for creating and listing comments.
     """
@@ -44,7 +44,7 @@ class CommentView(TemplateResponseMixin, SingleObjectMixin, View):
             return self.render_to_response(context)
 
     def get_context_data(self, **kwargs):
-        context = super(CommentView, self).get_context_data(**kwargs)
+        context = super(CommentViewGeneric, self).get_context_data(**kwargs)
         context['comments'] = Comment.objects.for_model(self.get_object())
         context[self.form_name] = self.initialize_form()
         return context
