@@ -18,5 +18,5 @@ class CommentManager(models.Manager):
         ct = ContentType.objects.get_for_model(model)
         qs = self.get_queryset().filter(content_type=ct)
         if isinstance(model, models.Model):
-            qs = qs.filter(object_pk=force_text(model._get_pk_val()))
+            qs = qs.filter(object_pk=force_text(model.pk))
         return qs
