@@ -95,6 +95,22 @@ class CommentSecurityForm(forms.ModelForm):
         return salted_hmac(key_salt, value).hexdigest()
 
 
+class ModerationForm(forms.Form):
+    action = forms.CharField(max_length=10)
+    comment = forms.IntegerField()
+
+    def clean_comment(self):
+        try:
+            return CommentModel.objects.get(pk=self.cleaned_data['comment'])
+        except ObjectDoesNotExist:
+            raise forms.ValidationError('Comment id incorrect')
+
+    def clean_action(self):
+        action = self.cleaned_data['action']
+        if action not in ('moderate', 'hide'):
+            raise forms.ValidationError('Action not recognised')
+
+
 def create_form_class(threaded=False, anonymous=False, title=False):
     """
     Dynamically creates user form with custom fields depending on situation.

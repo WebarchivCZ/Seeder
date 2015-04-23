@@ -21,7 +21,6 @@ class CommentView(TemplateResponseMixin, SingleObjectMixin, View):
     # enable titles in form
     titles = False
 
-
     def initialize_form(self, data=None):
         """
         This might be overridden if default does not accept target_object
@@ -30,7 +29,6 @@ class CommentView(TemplateResponseMixin, SingleObjectMixin, View):
         return self.comment_form(target_object=self.get_object(), data=data)
 
     def post(self, request, **kwargs):
-
         form = self.initialize_form(data=request.POST)
         user = self.request.user
 
