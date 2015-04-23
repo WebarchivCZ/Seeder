@@ -103,8 +103,3 @@ body {
   display: inline-block;
   border-radius: 50%;
 }
-
-
-#filter_toggle {
-    float: right;
-}
