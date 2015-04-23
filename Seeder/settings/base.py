@@ -99,8 +99,8 @@ BOWER_INSTALLED_APPS = (
 )
 
 
-LOGIN_URL = '/login/'
-LOGOUT_URL = '/logout/'
+LOGIN_URL = '/auth/login/'
+LOGOUT_URL = '/auth/logout/'
 LOGIN_REDIRECT_URL = '/'
 
 LANGUAGE_CODE = 'en-us'
