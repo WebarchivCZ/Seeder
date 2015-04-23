@@ -45,7 +45,6 @@
     </ul>
     </div>
 
-
     <div class="pull-right">
     <p>{% trans 'Voting rounds' %}:</p>
         {% for voting_round in source.votinground_set.all %}
@@ -53,18 +52,8 @@
         {% endfor %}
     </div>
 
-
     <div class="col-xs-12 col-md-12">
         <h2>{% trans 'Comments' %}</h2>
-        {% include 'list_comments.html' with comments=comments %}
-
-        <form class="" method="post">
-            {% csrf_token %}
-            {% bootstrap_form comment_form %}
-            <input type="submit" class="btn btn-primary btn-lg btn-block"/>
-
-        </form>
-
-
+        {% include 'bootstrap_comments.html' with comments=comments form=comment_form %}
     </div>
 {% endblock %}

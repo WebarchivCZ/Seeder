@@ -1,4 +1,5 @@
 {% load humanize %}
+{% load bootstrap3 %}
 
 <div class="comment-group">
     {% for comment in comments %}
@@ -13,3 +14,10 @@
         </div>
     {% endfor %}
 </div>
+
+
+<form class="" method="post">
+    {% csrf_token %}
+    {% bootstrap_form form %}
+    <input type="submit" class="btn btn-primary btn-lg btn-block"/>
+</form>
