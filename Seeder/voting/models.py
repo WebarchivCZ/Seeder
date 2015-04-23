@@ -93,7 +93,7 @@ class Vote(BaseModel):
     round = models.ForeignKey(verbose_name=_('Round'), to=VotingRound)
     vote = models.CharField(
         _('Vote'),
-        max_length=3,
+        max_length=10,
         choices=constants.VOTE_CHOICES)
 
     def get_css_class(self):

@@ -3,24 +3,24 @@
 {% load humanize %}
 {% load bootstrap3 %}
 
-{% block title %} {{ round }} {% endblock %}
+{% block title %} {{ voting_round }} {% endblock %}
 {% block page_header %} 
-    {{ round }} 
-    <span class="pull-right"><a href="{{ round.source.get_absolute_url }}">{% trans 'Back' %}</a></span>
+    {{ voting_round }}
+    <span class="pull-right"><a href="{{ voting_round.source.get_absolute_url }}">{% trans 'Back' %}</a></span>
 {% endblock %}
 
 {% block content %}
 
     <div class="progress">
-        <div class="progress-bar progress-bar-success" style="width: {{ round.get_score_percents.positive }}%"></div>
-        <div class="progress-bar progress-bar-warning progress-bar-striped" style="width: {{ round.get_score_percents.neutral }}%"></div>
-        <div class="progress-bar progress-bar-danger" style="width: {{ round.get_score_percents.negative }}%"></div>
+        <div class="progress-bar progress-bar-success" style="width: {{ voting_round.get_score_percents.positive }}%"></div>
+        <div class="progress-bar progress-bar-warning" style="width: {{ voting_round.get_score_percents.neutral }}%"></div>
+        <div class="progress-bar progress-bar-danger" style="width: {{ voting_round.get_score_percents.negative }}%"></div>
     </div>
 
     <div class="col-md-4">
         <h3>{% trans 'Votes' %}:</h3>
         <ul class="list-group">
-            {% for vote in round.votes_set.all %}
+            {% for vote in voting_round.vote_set.all %}
                 <li class="list-group-item list-group-item-{{ vote.get_css_class }}">{{ vote.author }}</li>
             {% empty %}
                 <li class="list-group-item list-group-item-info">{% trans 'No votes yet :(' %}</li>
@@ -31,7 +31,7 @@
     <div class="col-md-4">
         <h3>{% trans 'Links to review' %}:</h3>
         <ul class="list-group">
-            {% for seed in round.source.seed_set.all %}
+            {% for seed in voting_round.source.seed_set.all %}
                 <li class="list-group-item"><a href="{{ seed.url }}">{{ seed }}</a></li>
             {% endfor %}
         </ul>
@@ -39,9 +39,9 @@
 
     <div class="col-md-4">
         <h3>{% trans 'Vote' %}:</h3>
-        <a class="btn btn-block btn-success" href="">{% trans 'Accept' %}</a>
-        <a class="btn btn-block btn-danger" href="">{% trans 'Decline' %}</a>
-        <a class="btn btn-block btn-warning" href="">{% trans 'Neutral vote' %}</a>
+        <a class="btn btn-block btn-success" href="{% url 'voting:cast' pk=voting_round.pk action='approve' %}">{% trans 'Accept' %}</a>
+        <a class="btn btn-block btn-danger" href="{% url 'voting:cast' pk=voting_round.pk action='decline' %}">{% trans 'Decline' %}</a>
+        <a class="btn btn-block btn-warning" href="{% url 'voting:cast' pk=voting_round.pk action='neutral' %}">{% trans 'Neutral vote' %}</a>
 
     </div>
 

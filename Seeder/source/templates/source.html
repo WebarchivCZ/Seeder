@@ -46,7 +46,6 @@
 
 
     <div class="col-md-4 pull-right">
-    <p>{% trans 'Voting rounds' %}:</p>
         {% for voting_round in source.votinground_set.all %}
             <a href="{{ voting_round.get_absolute_url }}" class="btn btn-{{ voting_round.get_css_class }}">{{ voting_round }}</a>
         {% endfor %}

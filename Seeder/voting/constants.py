@@ -22,9 +22,11 @@ VOTING_STATES_TO_COLOURS = {
 }
 
 
-VOTE_INCLUDE = 'inc'
-VOTE_EXCLUDE = 'exc'
-VOTE_NEUTRAL = 'neu'
+VOTE_INCLUDE = 'approve'
+VOTE_EXCLUDE = 'decline'
+VOTE_NEUTRAL = 'neutral'
+
+VOTES = (VOTE_INCLUDE, VOTE_EXCLUDE, VOTE_NEUTRAL)
 
 VOTE_CHOICES = (
     (VOTE_INCLUDE, _('Include source')),
@@ -34,7 +36,7 @@ VOTE_CHOICES = (
 
 # mapping of vote states to bootstrap classes
 VOTE_TO_BOOTSTRAP = {
-    VOTE_INCLUDE: 'info',
-    VOTE_EXCLUDE: 'success',
-    VOTE_NEUTRAL: 'danger',
+    VOTE_INCLUDE: 'success',
+    VOTE_EXCLUDE: 'danger',
+    VOTE_NEUTRAL: 'warning',
 }

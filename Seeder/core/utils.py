@@ -36,7 +36,7 @@ class MultipleFormView(TemplateView):
     def post(self, request):
         forms_initialized = self.initialize_forms(data=request.POST)
         valid = all([form.is_valid() for form in forms_initialized.values()])
-        
+
         if valid:
             return self.forms_valid(forms_initialized)
         else:
