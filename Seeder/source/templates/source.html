@@ -36,14 +36,14 @@
         </dl>
     </div>
 
-    <div class="col-xs-4 col-md-4">
-    <p>{% trans 'Seeds' %}:</p>
-    <ul>
-        {% for seed in source.seed_set.all %}
-            <li>{{ seed.url }}</li>
-        {% endfor %}
-    </ul>
+    <div class="col-md-4">
+        <ul class="list-group">
+            {% for seed in source.seed_set.all %}
+                <li class="list-group-item"><a href="{{ seed.url }}">{{ seed }}</a></li>
+            {% endfor %}
+        </ul>
     </div>
+
 
     <div class="col-md-4 pull-right">
     <p>{% trans 'Voting rounds' %}:</p>
