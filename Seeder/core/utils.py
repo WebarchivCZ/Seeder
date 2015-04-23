@@ -44,4 +44,4 @@ class MultipleFormView(TemplateView):
             return self.render_to_response(context)
 
     def forms_valid(self, form_instances):
-        raise NotImplemented
+        raise NotImplementedError('Implement this in your view!')
