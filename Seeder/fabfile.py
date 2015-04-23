@@ -1,4 +1,4 @@
-from fabric.api import local, cd, run, env, prefix, task
+from fabric.api import local, task
 
 
 @task(alias='rns')
