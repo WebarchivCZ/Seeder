@@ -1,23 +1,24 @@
+{% load bootstrap3 %}
 {% load i18n %}
-<!DOCTYPE html>
 <html>
-<head lang="en">
-    <meta charset="UTF-8">
-    <title>{% trans 'Login' %} | {% trans 'Seeder' %}</title>
-    <link rel="stylesheet" href="{{ STATIC_URL }}pure/pure-min.css">
-    <link rel="stylesheet" href="{{ STATIC_URL }}pure/base-min.css">
-    <link rel="stylesheet" href="{{ STATIC_URL }}pure/buttons-min.css">
-<link rel="stylesheet" href="{{ STATIC_URL }}login.css">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% trans 'Login' %}</title>
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+    <link href="{{ STATIC_URL }}login.css" rel="stylesheet">
+  </head>
 
-</head>
-<body>
-    <div class="login-box">
-        <h2>{% trans 'Log in please' %}</h2>
-        <form action="" method="post" class="pure-form">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <input type="submit" class="pure-button pure-button-primary"/>
-        </form>
+  <body>
+
+    <div class="container">
+      <form class="login-box" method="post">
+          {% csrf_token %}
+          {% bootstrap_form form %}
+          <button class="btn btn-lg btn-primary btn-block" type="submit">{% trans 'Login to Seeder' %}</button>
+      </form>
     </div>
-</body>
+  </body>
 </html>

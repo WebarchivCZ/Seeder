@@ -1,14 +1,14 @@
+body {
+    background-color: #eee;
+}
 
 .login-box {
-    width: 30%;
-    height: 50%;
-    margin: auto;
-    position: absolute;
-    top: 100px; left: 0; bottom: 0; right: 0;
-    text-align: center;
-    text-transform: uppercase;
+    max-width: 330px;
+    padding: 15px;
+    padding-top: 30%;
+    margin: 0 auto;
 }
 
-.errorlist li {
-    list-style-type: none;
-}
+/*.errorlist li {*/
+    /*list-style-type: none;*/
+/*}*/
