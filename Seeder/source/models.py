@@ -66,7 +66,7 @@ class Source(BaseModel):
         return self.name
 
     def get_absolute_url(self):
-        return reverse('source_detail', args=[str(self.id)])
+        return reverse('source:detail', args=[str(self.id)])
 
 
 class Seed(BaseModel):

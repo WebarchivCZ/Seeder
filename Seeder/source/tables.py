@@ -37,7 +37,7 @@ class NaturalDatetimeColumn(Column):
 
 class SourceTable(tables.Table):
     name = AbsoluteURLColumn()
-    # publisher = AbsoluteURLColumn(accessor='publisher')
+    publisher = AbsoluteURLColumn(accessor='publisher')
     created = NaturalDatetimeColumn()
     last_changed = NaturalDatetimeColumn()
 
