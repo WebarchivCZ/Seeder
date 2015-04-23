@@ -11,6 +11,13 @@ from core.models import BaseModel
 from source.models import Source
 
 
+def percentage(part, whole):
+    """
+    Simple utility for calculating percentages
+    """
+    return 100 * float(part)/float(whole)
+
+
 class VotingRound(BaseModel):
     """
         Voting round about source.
@@ -32,21 +39,22 @@ class VotingRound(BaseModel):
         verbose_name_plural = _('Elections')
 
     def __unicode__(self):
-        positive_votes, negative_votes, overall = self.get_score_tuple()
+        return _('Voting round: {source}').format(source=self.source)
+
+    def score_display(self):
+        score = self.get_score_dict()
         score = u'{vote_sum}/{overall} | +{positive} | -{negative}'.format(
-            vote_sum=sum((positive_votes, negative_votes)),
-            overall=overall, positive=positive_votes, negative=negative_votes)
+            vote_sum=score['positive'] - score['negative'],
+            overall=score['overall'], positive=score['positive'],
+            negative=score['negative'])
 
         return '{score}: {state}'.format(score=score,
                                          state=self.get_state_display())
 
-
     def get_absolute_url(self):
         return reverse('voting:detail', kwargs={'pk': self.pk})
 
-
-
-    def get_score_tuple(self):
+    def get_score_dict(self):
         """
         Aggregation function that returns tuple with score parts
         """
@@ -54,9 +62,23 @@ class VotingRound(BaseModel):
         negative_votes = 3
         neutral_votes = 5
         overall = positive_votes + negative_votes + neutral_votes
-        return positive_votes, negative_votes, overall
+        return {
+            'positive': positive_votes,
+            'negative': negative_votes,
+            'neutral': neutral_votes,
+            'overall': overall,
+        }
 
-    def get_btn_class(self):
+    def get_score_percents(self):
+        score = self.get_score_dict()
+        overall = score['overall']
+        return {
+            'positive': percentage(score['positive'], overall),
+            'negative': percentage(score['negative'], overall),
+            'neutral': percentage(score['neutral'], overall),
+        }
+
+    def get_css_class(self):
         """
             Returns bootstrap btn class
         """
@@ -67,9 +89,15 @@ class Vote(BaseModel):
     """
         Individual vote in voting round
     """
-    casted_by = models.ForeignKey(User)
-    comment = models.TextField(_('Comment'), blank=True)
+    author = models.ForeignKey(User)
     round = models.ForeignKey(verbose_name=_('Round'), to=VotingRound)
-    vote = models.CharField(_('Vote'),
-                            max_length=3,
-                            choices=constants.VOTE_CHOICES)
+    vote = models.CharField(
+        _('Vote'),
+        max_length=3,
+        choices=constants.VOTE_CHOICES)
+
+    def get_css_class(self):
+        """
+            Returns bootstrap status class
+        """
+        return constants.VOTE_TO_BOOTSTRAP[self.vote]
