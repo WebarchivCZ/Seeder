@@ -18,6 +18,7 @@ class SourceFilter(django_filters.FilterSet):
     }
     
     def __init__(self, *args, **kwargs):
+        # pylint: disable=E1002
         super(SourceFilter, self).__init__(*args, **kwargs)
         # add empty choice to all choice fields:
         choices = filter(
