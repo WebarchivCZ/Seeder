@@ -6,4 +6,5 @@ class CoreConfig(AppConfig):
     verbose_name = "core"
 
     def ready(self):
-        import signals
+        # pylint: disable=W0611,W0612
+        import signals   # noqa
