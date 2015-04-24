@@ -12,6 +12,13 @@ def merge_dicts(x, y):
     return z
 
 
+def percentage(part, whole):
+    """
+    Simple utility for calculating percentages
+    """
+    return 100 * float(part) / float(whole)
+
+
 class LoginMixin(object):
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):

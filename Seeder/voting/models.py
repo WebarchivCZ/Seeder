@@ -5,17 +5,12 @@ from django.utils.translation import ugettext as _
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 
+from collections import Counter
 from django_fsm import FSMField, transition
 
 from core.models import BaseModel
+from core.utils import percentage
 from source.models import Source
-
-
-def percentage(part, whole):
-    """
-    Simple utility for calculating percentages
-    """
-    return 100 * float(part)/float(whole)
 
 
 class VotingRound(BaseModel):
@@ -41,16 +36,6 @@ class VotingRound(BaseModel):
     def __unicode__(self):
         return _('Voting round: {source}').format(source=self.source)
 
-    def score_display(self):
-        score = self.get_score_dict()
-        score = u'{vote_sum}/{overall} | +{positive} | -{negative}'.format(
-            vote_sum=score['positive'] - score['negative'],
-            overall=score['overall'], positive=score['positive'],
-            negative=score['negative'])
-
-        return '{score}: {state}'.format(score=score,
-                                         state=self.get_state_display())
-
     def get_absolute_url(self):
         return reverse('voting:detail', kwargs={'pk': self.pk})
 
@@ -58,25 +43,13 @@ class VotingRound(BaseModel):
         """
         Aggregation function that returns tuple with score parts
         """
-        positive_votes = 6
-        negative_votes = 3
-        neutral_votes = 5
-        overall = positive_votes + negative_votes + neutral_votes
-        return {
-            'positive': positive_votes,
-            'negative': negative_votes,
-            'neutral': neutral_votes,
-            'overall': overall,
-        }
+        return Counter(self.vote_set.values_list('vote', flat=True))
 
     def get_score_percents(self):
         score = self.get_score_dict()
-        overall = score['overall']
-        return {
-            'positive': percentage(score['positive'], overall),
-            'negative': percentage(score['negative'], overall),
-            'neutral': percentage(score['neutral'], overall),
-        }
+        overall = sum(score.values())
+        return {label: percentage(value, overall)
+                for label, value in score.items()}
 
     def get_css_class(self):
         """

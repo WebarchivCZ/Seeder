@@ -12,16 +12,16 @@
 {% block content %}
 
     <div class="progress">
-        <div class="progress-bar progress-bar-success" style="width: {{ voting_round.get_score_percents.positive }}%"></div>
+        <div class="progress-bar progress-bar-success" style="width: {{ voting_round.get_score_percents.approve }}%"></div>
         <div class="progress-bar progress-bar-warning" style="width: {{ voting_round.get_score_percents.neutral }}%"></div>
-        <div class="progress-bar progress-bar-danger" style="width: {{ voting_round.get_score_percents.negative }}%"></div>
+        <div class="progress-bar progress-bar-danger" style="width: {{ voting_round.get_score_percents.decline }}%"></div>
     </div>
 
     <div class="col-md-4">
         <h3>{% trans 'Votes' %}:</h3>
         <ul class="list-group">
             {% for vote in voting_round.vote_set.all %}
-                <li class="list-group-item list-group-item-{{ vote.get_css_class }}">{{ vote.author }}</li>
+                <li class="list-group-item list-group-item-{{ vote.get_css_class }}">{{ vote.author }} <span class="pull-right">{{ vote.created|naturaltime }}</span></li>
             {% empty %}
                 <li class="list-group-item list-group-item-info">{% trans 'No votes yet :(' %}</li>
             {% endfor %}
