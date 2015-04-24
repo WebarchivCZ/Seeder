@@ -6,8 +6,6 @@ from django_tables2.columns.linkcolumn import BaseLinkColumn
 from django_tables2.columns.base import Column
 from django.contrib.humanize.templatetags.humanize import naturaltime
 
-#
-
 
 class AbsoluteURLColumn(BaseLinkColumn):
     """
