@@ -15,6 +15,8 @@ class Comment(MPTTModel):
     """
         User comment model
     """
+    # Disable pylint rants about lambda use
+    # pylint: disable=W0108
 
     # Threading:
     parent = TreeForeignKey('self', null=True, blank=True,
