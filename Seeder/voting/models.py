@@ -63,7 +63,7 @@ class Vote(BaseModel):
         Individual vote in voting round
     """
     author = models.ForeignKey(User)
-    round = models.ForeignKey(verbose_name=_('Round'), to=VotingRound)
+    voting_round = models.ForeignKey(verbose_name=_('Round'), to=VotingRound)
     vote = models.CharField(
         _('Vote'),
         max_length=10,
