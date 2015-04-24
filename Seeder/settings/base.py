@@ -114,3 +114,5 @@ CRISPY_TEMPLATE_PACK = 'bootstrap3'
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static_root')
+
+MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'

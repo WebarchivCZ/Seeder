@@ -4,51 +4,114 @@
 {% load bootstrap3 %}
 
 {% block title %} {{ voting_round }} {% endblock %}
-{% block page_header %} 
+{% block page_header %}
     {{ voting_round }}
-    <span class="pull-right"><a href="{{ voting_round.source.get_absolute_url }}">{% trans 'Back' %}</a></span>
+    <span class="pull-right"><a
+            href="{{ voting_round.source.get_absolute_url }}">{% trans 'Back' %}</a></span>
 {% endblock %}
 
 {% block content %}
 
     <div class="progress">
-        <div class="progress-bar progress-bar-success" style="width: {{ voting_round.get_score_percents.approve }}%"></div>
-        <div class="progress-bar progress-bar-warning" style="width: {{ voting_round.get_score_percents.neutral }}%"></div>
-        <div class="progress-bar progress-bar-danger" style="width: {{ voting_round.get_score_percents.decline }}%"></div>
+        <div class="progress-bar progress-bar-success"
+             style="width: {{ voting_round.get_score_percents.approve }}%"></div>
+        <div class="progress-bar progress-bar-warning"
+             style="width: {{ voting_round.get_score_percents.neutral }}%"></div>
+        <div class="progress-bar progress-bar-danger"
+             style="width: {{ voting_round.get_score_percents.decline }}%"></div>
     </div>
 
-    <div class="col-md-4">
+    <div class="col-md-3 col-sm-6">
+        <h3>{% trans 'Info' %}</h3>
+        {% blocktrans with source=voting_round.source source_created=voting_round.source.created|naturaltime %}
+            <p>
+                <b>{{ source }}</b> was added to system
+                <b>{{ source_created }}</b>. This voting round determines
+                whether {{ source }} will be archived
+                or die in the shadows of unarchived internet.
+            </p>
+        {% endblocktrans %}
+        {% if voting_round.round_open %}
+            {% blocktrans with round_created=voting_round.created|naturaltime %}
+                <p>
+                    This voting round opened <b>{{ round_created }}</b>.
+                    Remember you have the power to change how future
+                    generations remember us. Cast a vote!
+                </p>
+            {% endblocktrans %}
+        {% else %}
+            {% blocktrans with resolved_by=voting_round.closed_by status=voting_round.get_state_display round_closed=voting_round.date_ended|naturaltime %}
+                <p>
+                    Our hero <b>{{ resolved_by }}</b> resolved this
+                    <b>{{ round_closed }}</b>.
+                    The final decision is <b>{{ status }}</b>
+                </p>
+            {% endblocktrans %}
+        {% endif %}
+    </div>
+
+    <div class="col-md-3 col-sm-6">
         <h3>{% trans 'Votes' %}:</h3>
         <ul class="list-group">
             {% for vote in voting_round.vote_set.all %}
-                <li class="list-group-item list-group-item-{{ vote.get_css_class }}">{{ vote.author }} <span class="pull-right">{{ vote.created|naturaltime }}</span></li>
+                <li class="list-group-item list-group-item-{{ vote.get_css_class }}">{{ vote.author }}
+                    <span class="pull-right">{{ vote.created|naturaltime }}</span>
+                </li>
             {% empty %}
                 <li class="list-group-item list-group-item-info">{% trans 'No votes yet :(' %}</li>
             {% endfor %}
         </ul>
     </div>
 
-    <div class="col-md-4">
+    <div class="col-md-2 col-sm-6">
         <h3>{% trans 'Links to review' %}:</h3>
         <ul class="list-group">
             {% for seed in voting_round.source.seed_set.all %}
-                <li class="list-group-item"><a href="{{ seed.url }}">{{ seed }}</a></li>
+                <li class="list-group-item"><a
+                        href="{{ seed.url }}">{{ seed }}</a></li>
             {% endfor %}
         </ul>
     </div>
 
-    <div class="col-md-4">
+    <div class="col-md-4 col-sm-4">
         <h3>{% trans 'Vote' %}:</h3>
-        <a class="btn btn-block btn-success" href="{% url 'voting:cast' pk=voting_round.pk action='approve' %}">{% trans 'Accept' %}</a>
-        <a class="btn btn-block btn-danger" href="{% url 'voting:cast' pk=voting_round.pk action='decline' %}">{% trans 'Decline' %}</a>
-        <a class="btn btn-block btn-warning" href="{% url 'voting:cast' pk=voting_round.pk action='neutral' %}">{% trans 'Neutral vote' %}</a>
-
+        {% if voting_round.round_open %}
+            <ul class="list-group">
+                <li class="list-group-item">
+                    <form method="post"
+                          action="{% url 'voting:cast' pk=voting_round.pk %}">
+                        {% csrf_token %}
+                        <input name="action" type="hidden" value="approve"/>
+                        <input class="btn btn-block btn-success" type="submit"
+                               value="{% trans 'Accept' %}"/>
+                    </form>
+                </li>
+                <li class="list-group-item">
+                    <form method="post"
+                          action="{% url 'voting:cast' pk=voting_round.pk %}">
+                        {% csrf_token %}
+                        <input name="action" type="hidden" value="decline"/>
+                        <input class="btn btn-block btn-danger" type="submit"
+                               value="{% trans 'Decline' %}"/>
+                    </form>
+                </li>
+                <li class="list-group-item">
+                    <form method="post"
+                          action="{% url 'voting:cast' pk=voting_round.pk %}">
+                        {% csrf_token %}
+                        <input name="action" type="hidden" value="neutral"/>
+                        <input class="btn btn-block btn-warning" type="submit"
+                               value="{% trans 'Neutral vote' %}"/>
+                    </form>
+                </li>
+            </ul>
+        {% else %}
+            {% trans 'Sorry round closed.' %}
+        {% endif %}
+        {% if perms.source.manage_sources %}
+            <h3>{% trans 'Close this round:' %}</h3>
+        {% endif %}
     </div>
-
-
-
-
-
     <div class="col-xs-12 col-md-12">
         <h2>{% trans 'Comments' %}</h2>
         {% include 'bootstrap_comments.html' with comments=comments form=comment_form %}

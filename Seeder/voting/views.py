@@ -3,10 +3,8 @@ import constants
 
 from django.views.generic import DetailView
 from django.views.generic.detail import SingleObjectMixin
-from django.views.generic.base import View
-from django.http.response import Http404, HttpResponseRedirect
 
-from core.utils import LoginMixin
+from core.utils import LoginMixin, ActionView
 from class_based_comments.views import CommentViewGeneric
 
 
@@ -17,25 +15,24 @@ class VotingDetail(LoginMixin, DetailView, CommentViewGeneric):
     context_object_name = 'voting_round'
 
 
-class CastVote(LoginMixin, SingleObjectMixin, View):
+class CastVote(LoginMixin, SingleObjectMixin, ActionView):
     """
-    View for casting votes... Be design it is not secure against malicious
-    linking.
+    View for casting votes
     """
     model = models.VotingRound
+    allowed_actions = constants.VOTES
 
-    def get(self, request, **kwargs):
-        voting_round = self.get_object()
-        action = kwargs['action']
-        if action not in constants.VOTES:
-            raise Http404()
-
+    def process_action(self, action):
         vote, created = models.Vote.objects.get_or_create(
-            author=request.user,
-            voting_round=voting_round,
+            author=self.request.user,
+            voting_round=self.get_object(),
             defaults={'vote': action})
         if not created and vote.vote != action:
             vote.vote = action
             vote.save()
 
-        return HttpResponseRedirect(voting_round.get_absolute_url())
+    def get_success_url(self):
+        return self.get_object().get_absolute_url()
+
+    def get_fail_url(self):
+        return self.get_object().get_absolute_url()

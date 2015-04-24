@@ -1,6 +1,10 @@
+from django.contrib import messages
+from django.http.response import HttpResponseRedirect
 from django.views.generic.base import TemplateView
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
+from django.views.generic.base import View
+from django.utils.translation import ugettext as _
 
 
 def merge_dicts(x, y):
@@ -52,3 +56,51 @@ class MultipleFormView(TemplateView):
 
     def forms_valid(self, form_instances):
         raise NotImplementedError('Implement this in your view!')
+
+
+class MessageView(object):
+    """
+        Simple view for making it easier to work with Message framework.
+    """
+
+    def add_message(self, message, level=messages.INFO):
+        messages.add_message(self.request, level, message)
+
+
+class ActionView(View, MessageView):
+    """
+    View for processing actions etc.
+    """
+    allowed_actions = ()
+
+    def process_action(self, action):
+        """
+        Override this method
+        """
+        raise NotImplementedError('You must implement this method')
+
+    def get_success_url(self):
+        """
+        This method will be used when action is successfully performed
+        """
+        raise NotImplementedError('Implement this!')
+
+    def get_fail_url(self):
+        """
+        This method will be used when something goes awry.
+        """
+        raise NotImplementedError('Why would you not implement this?!')
+
+    def get(self, request, *args, **kwargs):
+        return HttpResponseRedirect(self.get_fail_url())
+
+    def post(self, request, *args, **kwargs):
+        action = request.POST.get('action', None)
+        if action in self.allowed_actions:
+            self.process_action(action)
+            return HttpResponseRedirect(self.get_fail_url())
+        else:
+            self.add_message(_('Action {0} not allowed.').format(action),
+                             messages.ERROR)
+
+        return HttpResponseRedirect(self.get_fail_url())
