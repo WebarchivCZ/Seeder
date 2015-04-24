@@ -24,7 +24,7 @@ class CastVote(LoginMixin, SingleObjectMixin, View):
     """
     model = models.VotingRound
 
-    def get(self, request, *args, **kwargs):
+    def get(self, request, **kwargs):
         voting_round = self.get_object()
         action = kwargs['action']
         if action not in constants.VOTES:
@@ -40,7 +40,3 @@ class CastVote(LoginMixin, SingleObjectMixin, View):
             vote.save()
 
         return HttpResponseRedirect(voting_round.get_absolute_url())
-
-
-
-
