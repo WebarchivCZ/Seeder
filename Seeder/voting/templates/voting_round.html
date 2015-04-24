@@ -13,12 +13,9 @@
 {% block content %}
 
     <div class="progress">
-        <div class="progress-bar progress-bar-success"
-             style="width: {{ voting_round.get_score_percents.approve }}%"></div>
-        <div class="progress-bar progress-bar-warning"
-             style="width: {{ voting_round.get_score_percents.neutral }}%"></div>
-        <div class="progress-bar progress-bar-danger"
-             style="width: {{ voting_round.get_score_percents.decline }}%"></div>
+        <div class="progress-bar progress-bar-success" style="width: {{ voting_round.get_score_percents.approve }}%"></div>
+        <div class="progress-bar progress-bar-warning" style="width: {{ voting_round.get_score_percents.neutral }}%"></div>
+        <div class="progress-bar progress-bar-danger" style="width: {{ voting_round.get_score_percents.decline }}%"></div>
     </div>
 
     <div class="col-md-3 col-sm-6">
@@ -82,8 +79,7 @@
                           action="{% url 'voting:cast' pk=voting_round.pk %}">
                         {% csrf_token %}
                         <input name="action" type="hidden" value="approve"/>
-                        <input class="btn btn-block btn-success" type="submit"
-                               value="{% trans 'Accept' %}"/>
+                        <input class="btn btn-block btn-success" type="submit" value="{% trans 'Accept' %}"/>
                     </form>
                 </li>
                 <li class="list-group-item">
@@ -91,8 +87,7 @@
                           action="{% url 'voting:cast' pk=voting_round.pk %}">
                         {% csrf_token %}
                         <input name="action" type="hidden" value="decline"/>
-                        <input class="btn btn-block btn-danger" type="submit"
-                               value="{% trans 'Decline' %}"/>
+                        <input class="btn btn-block btn-danger" type="submit" value="{% trans 'Decline' %}"/>
                     </form>
                 </li>
                 <li class="list-group-item">
@@ -100,8 +95,7 @@
                           action="{% url 'voting:cast' pk=voting_round.pk %}">
                         {% csrf_token %}
                         <input name="action" type="hidden" value="neutral"/>
-                        <input class="btn btn-block btn-warning" type="submit"
-                               value="{% trans 'Neutral vote' %}"/>
+                        <input class="btn btn-block btn-warning" type="submit" value="{% trans 'Neutral vote' %}"/>
                     </form>
                 </li>
             </ul>
