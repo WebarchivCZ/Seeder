@@ -1,10 +1,10 @@
-from django.http.response import Http404, HttpResponseRedirect
 import models
 import constants
 
 from django.views.generic import DetailView
 from django.views.generic.detail import SingleObjectMixin
 from django.views.generic.base import View
+from django.http.response import Http404, HttpResponseRedirect
 
 from core.utils import LoginMixin
 from class_based_comments.views import CommentViewGeneric
