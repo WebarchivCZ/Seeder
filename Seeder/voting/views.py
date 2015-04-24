@@ -30,15 +30,9 @@ class CastVote(LoginMixin, SingleObjectMixin, View):
         if action not in constants.VOTES:
             raise Http404()
 
-        # vote = models.Vote(
-        #     author=request.user,
-        #     round=voting_round,
-        #     vote=action)
-        # vote.save()
-
         vote, created = models.Vote.objects.get_or_create(
             author=request.user,
-            round=voting_round,
+            voting_round=voting_round,
             defaults={'vote': action})
         if not created and vote.vote != action:
             vote.vote = action
