@@ -5,7 +5,6 @@ from django.utils.translation import ugettext as _
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 
-from collections import Counter
 from django_fsm import FSMField, transition
 
 from core.models import BaseModel
@@ -36,6 +35,10 @@ class VotingRound(BaseModel):
     def __unicode__(self):
         return _('Voting round: {source}').format(source=self.source)
 
+    @property
+    def round_open(self):
+        return self.state == constants.VOTING_INITIAL
+
     def get_absolute_url(self):
         return reverse('voting:detail', kwargs={'pk': self.pk})
 
@@ -43,7 +46,14 @@ class VotingRound(BaseModel):
         """
         Aggregation function that returns tuple with score parts
         """
-        return Counter(self.vote_set.values_list('vote', flat=True))
+        # count_list is something like this:
+        # [{'vote': 'approve', 'count': 2}, {'vote': 'decline', 'count': 5}]
+        count_list = self.vote_set.values('vote').annotate(
+            count=models.Count('vote')).distinct().order_by()
+
+        # convert count_list to dict syntax:
+        # {'approve': 2, 'decline': 5}
+        return {d['vote']: d['count'] for d in count_list}
 
     def get_score_percents(self):
         score = self.get_score_dict()
