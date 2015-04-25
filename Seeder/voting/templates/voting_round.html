@@ -11,11 +11,10 @@
 {% endblock %}
 
 {% block content %}
-
     <div class="progress">
-        <div class="progress-bar progress-bar-success" style="width: {{ voting_round.get_score_percents.approve }}%"></div>
-        <div class="progress-bar progress-bar-warning" style="width: {{ voting_round.get_score_percents.neutral }}%"></div>
-        <div class="progress-bar progress-bar-danger" style="width: {{ voting_round.get_score_percents.decline }}%"></div>
+        {% for css, value in voting_round.get_status_bar %}
+                <div class="progress-bar progress-bar-{{ css }}" style="width: {{ value }}%"></div>
+        {% endfor %}
     </div>
 
     <div class="col-md-3 col-sm-6">
@@ -72,38 +71,24 @@
 
     <div class="col-md-4 col-sm-4">
         <h3>{% trans 'Vote' %}:</h3>
-        {% if voting_round.round_open %}
-            <ul class="list-group">
+        <ul class="list-group">
+            {% for choice in voting_round.get_choices.values %}
                 <li class="list-group-item">
-                    <form method="post"
-                          action="{% url 'voting:cast' pk=voting_round.pk %}">
+                    <form method="post" action="{% url 'voting:cast' pk=voting_round.pk %}">
                         {% csrf_token %}
-                        <input name="action" type="hidden" value="approve"/>
-                        <input class="btn btn-block btn-success" type="submit" value="{% trans 'Accept' %}"/>
+                        <input name="action" type="hidden" value="{{ choice.value }}"/>
+                        <input class="btn btn-block btn-{{ choice.css }}" type="submit" value="{{ choice.label }}"/>
                     </form>
                 </li>
-                <li class="list-group-item">
-                    <form method="post"
-                          action="{% url 'voting:cast' pk=voting_round.pk %}">
-                        {% csrf_token %}
-                        <input name="action" type="hidden" value="decline"/>
-                        <input class="btn btn-block btn-danger" type="submit" value="{% trans 'Decline' %}"/>
-                    </form>
+            {% empty %}
+                <li class="list-group-item list-group-item-danger">
+                    {% trans 'Sorry round closed.' %}
                 </li>
-                <li class="list-group-item">
-                    <form method="post"
-                          action="{% url 'voting:cast' pk=voting_round.pk %}">
-                        {% csrf_token %}
-                        <input name="action" type="hidden" value="neutral"/>
-                        <input class="btn btn-block btn-warning" type="submit" value="{% trans 'Neutral vote' %}"/>
-                    </form>
-                </li>
-            </ul>
-        {% else %}
-            {% trans 'Sorry round closed.' %}
-        {% endif %}
+            {% endfor %}
+        </ul>
+
         {% if perms.source.manage_sources %}
-            <h3>{% trans 'Close this round:' %}</h3>
+            <h3>{% trans 'Management powers:' %}</h3>
         {% endif %}
     </div>
     <div class="col-xs-12 col-md-12">

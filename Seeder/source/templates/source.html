@@ -26,9 +26,9 @@
           <dt>{% trans 'Status' %}</dt>
           <dd>{{ source.get_state_display }}</dd>
           <dt>{% trans 'Conspectus' %}</dt>
-          <dd>{{ source.conspectus }}</dd>
+          <dd>{{ source.get_conspectus_display }}</dd>
           <dt>{% trans 'Sub conspectus' %}</dt>
-          <dd>{{ source.sub_conspectus }}</dd>
+          <dd>{{ source.get_sub_conspectus_display }}</dd>
           <dt>{% trans 'Created' %}</dt>
           <dd>{{ source.created|naturaltime }}</dd>
           <dt>{% trans 'Last update' %}</dt>

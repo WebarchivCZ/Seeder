@@ -55,25 +55,29 @@ class VotingRound(BaseModel):
         # {'approve': 2, 'decline': 5}
         return {d['vote']: d['count'] for d in count_list}
 
-    def get_score_percents(self):
+    def get_status_bar(self):
+        """
+        Returns iterable with tuple (color, percentage) of status bar
+        representing the votes
+        """
         score = self.get_score_dict()
         overall = sum(score.values())
-        return {label: percentage(value, overall)
-                for label, value in score.items()}
+        return ((constants.VOTES[vote]['css'], percentage(value, overall))
+                for vote, value in score.items())
 
     def get_css_class(self):
         """
         Returns bootstrap btn class
         """
-        return constants.VOTE_ALL_DICT[self.state]['css']
+        return constants.VOTES[self.state]['css']
 
-    def vote_choices(self):
+    def get_choices(self):
         """
         Returns dict options of possible vote options that can be performed.
         """
         if not self.round_open:
-            return []
-        return constants.VOTE_CHOICES
+            return {}
+        return constants.VOTE_DICT
 
 
 class Vote(BaseModel):
@@ -91,4 +95,4 @@ class Vote(BaseModel):
         """
             Returns bootstrap status class
         """
-        return constants.VOTE_ALL_DICT[self.vote]['css']
+        return constants.VOTES[self.vote]['css']
