@@ -72,6 +72,8 @@ class ActionView(View, MessageView):
     View for processing actions etc.
     """
     allowed_actions = ()
+    # required permission for doing any kind of action
+    permission = None
 
     def process_action(self, action):
         """
@@ -95,12 +97,14 @@ class ActionView(View, MessageView):
         return HttpResponseRedirect(self.get_fail_url())
 
     def post(self, request, *args, **kwargs):
-        action = request.POST.get('action', None)
-        if action in self.allowed_actions:
-            self.process_action(action)
-            return HttpResponseRedirect(self.get_fail_url())
+        if self.permission and not request.user.has_perm(self.permission):
+            self.add_message(_('Insufficient permissions.'), messages.ERROR)
         else:
-            self.add_message(_('Action {0} not allowed.').format(action),
-                             messages.ERROR)
-
+            action = request.POST.get('action', None)
+            if action in self.allowed_actions:
+                self.process_action(action)
+                return HttpResponseRedirect(self.get_fail_url())
+            else:
+                self.add_message(_('Action {0} not allowed.').format(action),
+                                 messages.ERROR)
         return HttpResponseRedirect(self.get_fail_url())
