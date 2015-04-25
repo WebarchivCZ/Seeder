@@ -5,7 +5,6 @@ from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
-from django.utils import timezone
 
 from mptt.models import MPTTModel, TreeForeignKey
 from managers import CommentManager
@@ -15,9 +14,6 @@ class Comment(MPTTModel):
     """
         User comment model
     """
-    # Disable pylint rants about lambda use
-    # pylint: disable=W0108
-
     # Threading:
     parent = TreeForeignKey('self', null=True, blank=True,
                             related_name='children', db_index=True)
@@ -60,9 +56,9 @@ class Comment(MPTTModel):
         max_length=constants.COMMENT_MAX_LENGTH)
 
     # Metadata about the comment
-    submit_date = models.DateTimeField(
-        _('date/time submitted'),
-        default=lambda: timezone.now())
+    submit_date = models.DateTimeField(_('date/time submitted'),
+                                       auto_now_add=True, editable=False)
+    last_changed = models.DateTimeField(auto_now=True, editable=False)
 
     is_public = models.BooleanField(
         verbose_name=_('is public'),

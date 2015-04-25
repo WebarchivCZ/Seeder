@@ -5,6 +5,7 @@ from django.contrib import messages
 from django.views.generic import DetailView
 from django.views.generic.detail import SingleObjectMixin
 from django.utils.translation import ugettext as _
+from django.utils import timezone
 
 from core.utils import LoginMixin, ActionView
 from class_based_comments.views import CommentViewGeneric
@@ -52,7 +53,11 @@ class Resolve(LoginMixin, SingleObjectMixin, ActionView):
     permission = 'sources.manage_sources'
 
     def process_action(self, action):
-        pass
+        voting_round = self.get_object()
+        voting_round.state = action
+        voting_round.resolved_by = self.request.user
+        voting_round.date_resolved = timezone.now()
+        voting_round.save()
 
     def get_success_url(self):
         return self.get_object().get_absolute_url()

@@ -5,8 +5,6 @@ from django.utils.translation import ugettext as _
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 
-from django_fsm import FSMField, transition
-
 from core.models import BaseModel
 from core.utils import percentage
 from source.models import Source
@@ -21,12 +19,11 @@ class VotingRound(BaseModel):
     resolved_by = models.ForeignKey(User, blank=True, null=True)
     date_resolved = models.DateTimeField(blank=True, null=True)
 
-    state = FSMField(
+    state = models.CharField(
         verbose_name=_('State'),
         max_length=10,
         choices=constants.VOTE_STATES,
-        default=constants.VOTE_INITIAL,
-        protected=True)
+        default=constants.VOTE_INITIAL)
 
     class Meta:
         verbose_name = _('Election')
