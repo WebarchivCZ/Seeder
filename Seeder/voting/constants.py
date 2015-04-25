@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+# disable pylint rants about odict:
+# pylint: disable=E1127
+
 from django.utils.translation import ugettext as _
 from odictliteral import odict
 
