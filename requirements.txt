@@ -1,3 +1,4 @@
+odictliteral
 django==1.8
 pillow
 sorl-thumbnail

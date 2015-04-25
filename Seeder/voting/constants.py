@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
 from django.utils.translation import ugettext as _
+from odictliteral import odict
 
-VOTE_ALL_DICT = {
+
+VOTES = odict[
     'initial': {
         'label': _('Vote in progress'),
         'value': 'initial',
@@ -22,17 +24,17 @@ VOTE_ALL_DICT = {
         'value': 'wait',
         'css': 'warning'
     },
-}
+]
 
-VOTE_INITIAL = VOTE_ALL_DICT['initial']['value']
+VOTE_INITIAL = VOTES['initial']['value']
 
-VOTE_STATES = (
-    (info['value'], info['label']) for info in VOTE_ALL_DICT.values()
+VOTE_STATES = tuple(
+    (info['value'], info['label']) for info in VOTES.values()
 )
 
-VOTE_DICT = VOTE_ALL_DICT.copy()
+VOTE_DICT = VOTES.copy()
 VOTE_DICT.pop('initial')  # blank vote not allowed
 
-VOTE_CHOICES = (
+VOTE_CHOICES = tuple(
     (info['value'], info['label']) for info in VOTE_DICT.values()
 )
