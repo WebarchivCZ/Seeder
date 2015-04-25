@@ -73,7 +73,7 @@
         <h3>{% trans 'Vote' %}:</h3>
         <ul class="list-group">
             {% for choice in voting_round.get_choices.values %}
-                <li class="list-group-item">
+                <li class="list-group-item  list-group-item-{{ choice.css }}">
                     <form method="post" action="{% url 'voting:cast' pk=voting_round.pk %}">
                         {% csrf_token %}
                         <input name="action" type="hidden" value="{{ choice.value }}"/>
@@ -86,9 +86,23 @@
                 </li>
             {% endfor %}
         </ul>
-
-        {% if perms.source.manage_sources %}
+        {% if voting_round.round_open and perms.source.manage_sources %}
             <h3>{% trans 'Management powers:' %}</h3>
+            <ul class="list-group">
+            {% for choice in voting_round.get_choices.values %}
+                <li class="list-group-item">
+                    <form method="post" action="{% url 'voting:resolve' pk=voting_round.pk %}">
+                        {% csrf_token %}
+                        <input name="action" type="hidden" value="{{ choice.value }}"/>
+                        <input class="btn btn-block btn-{{ choice.css }}" type="submit" value="{% trans 'Close with result' %}: {{ choice.label }}"/>
+                    </form>
+                </li>
+            {% empty %}
+                <li class="list-group-item list-group-item-danger">
+                    {% trans 'Sorry round closed.' %}
+                </li>
+            {% endfor %}
+        </ul>
         {% endif %}
     </div>
     <div class="col-xs-12 col-md-12">

@@ -43,9 +43,9 @@ class CastVote(LoginMixin, SingleObjectMixin, ActionView):
         return self.get_object().get_absolute_url()
 
 
-class ResolveVote(LoginMixin, SingleObjectMixin, ActionView):
+class Resolve(LoginMixin, SingleObjectMixin, ActionView):
     """
-    View for casting votes
+    View for resolving the round
     """
     model = models.VotingRound
     allowed_actions = constants.VOTE_DICT.keys()
