@@ -1,26 +1,38 @@
 # -*- coding: utf-8 -*-
 from django.utils.translation import ugettext as _
 
+VOTE_ALL_DICT = {
+    'initial': {
+        'label': _('Vote in progress'),
+        'value': 'initial',
+        'css': 'info'
+    },
+    'approve': {
+        'label': _('Include source'),
+        'value': 'approve',
+        'css': 'success'
+    },
+    'decline': {
+        'label': _('Exclude source'),
+        'value': 'decline',
+        'css': 'danger'
+    },
+    'wait': {
+        'label': _('Postpone decision'),
+        'value': 'wait',
+        'css': 'warning'
+    },
+}
 
-VOTE_INITIAL = 'initial'
-VOTE_INCLUDE = 'approve'
-VOTE_EXCLUDE = 'decline'
-VOTE_WAIT = 'wait'
+VOTE_INITIAL = VOTE_ALL_DICT['initial']['value']
 
 VOTE_STATES = (
-    (VOTE_INITIAL, _('Vote in progress')),
-    (VOTE_INCLUDE, _('Include source')),
-    (VOTE_EXCLUDE, _('Exclude source')),
-    (VOTE_WAIT, _('Postpone decision')),
+    (info['value'], info['label']) for info in VOTE_ALL_DICT.values()
 )
 
-# options that user can select
-VOTE_OPTIONS = (VOTE_INCLUDE, VOTE_EXCLUDE, VOTE_WAIT)
+VOTE_DICT = VOTE_ALL_DICT.copy()
+VOTE_DICT.pop('initial')  # blank vote not allowed
 
-# dict that maps voting states to bootstrap button colours
-VOTE_STATES_TO_COLOURS = {
-    VOTE_INITIAL: 'info',
-    VOTE_INCLUDE: 'success',
-    VOTE_EXCLUDE: 'danger',
-    VOTE_WAIT: 'warning',
-}
+VOTE_CHOICES = (
+    (info['value'], info['label']) for info in VOTE_DICT.values()
+)

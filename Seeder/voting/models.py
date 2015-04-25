@@ -18,14 +18,14 @@ class VotingRound(BaseModel):
     """
 
     source = models.ForeignKey(Source)
-    ended_by = models.ForeignKey(User, blank=True, null=True)
-    date_ended = models.DateTimeField(_('End of the election'),
-                                      blank=True, null=True)
+    resolved_by = models.ForeignKey(User, blank=True, null=True)
+    date_resolved = models.DateTimeField(blank=True, null=True)
+
     state = FSMField(
         verbose_name=_('State'),
-        max_length=3,
-        choices=constants.VOTING_STATES,
-        default=constants.VOTING_INITIAL,
+        max_length=10,
+        choices=constants.VOTE_STATES,
+        default=constants.VOTE_INITIAL,
         protected=True)
 
     class Meta:
@@ -37,7 +37,7 @@ class VotingRound(BaseModel):
 
     @property
     def round_open(self):
-        return self.state == constants.VOTING_INITIAL
+        return self.state == constants.VOTE_INITIAL
 
     def get_absolute_url(self):
         return reverse('voting:detail', kwargs={'pk': self.pk})
@@ -63,9 +63,17 @@ class VotingRound(BaseModel):
 
     def get_css_class(self):
         """
-            Returns bootstrap btn class
+        Returns bootstrap btn class
         """
-        return constants.VOTING_STATES_TO_COLOURS[self.state]
+        return constants.VOTE_ALL_DICT[self.state]['css']
+
+    def vote_choices(self):
+        """
+        Returns dict options of possible vote options that can be performed.
+        """
+        if not self.round_open:
+            return []
+        return constants.VOTE_CHOICES
 
 
 class Vote(BaseModel):
@@ -83,4 +91,4 @@ class Vote(BaseModel):
         """
             Returns bootstrap status class
         """
-        return constants.VOTE_TO_BOOTSTRAP[self.vote]
+        return constants.VOTE_ALL_DICT[self.vote]['css']
