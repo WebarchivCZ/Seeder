@@ -6,8 +6,7 @@
 {% block title %} {{ voting_round }} {% endblock %}
 {% block page_header %}
     {{ voting_round }}
-    <span class="pull-right"><a
-            href="{{ voting_round.source.get_absolute_url }}">{% trans 'Back' %}</a></span>
+    <span class="pull-right"><a href="{{ voting_round.source.get_absolute_url }}">{% trans 'Back' %}</a></span>
 {% endblock %}
 
 {% block content %}
@@ -63,8 +62,7 @@
         <h3>{% trans 'Links to review' %}:</h3>
         <ul class="list-group">
             {% for seed in voting_round.source.seed_set.all %}
-                <li class="list-group-item"><a
-                        href="{{ seed.url }}">{{ seed }}</a></li>
+                <li class="list-group-item"><a href="{{ seed.url }}">{{ seed }}</a></li>
             {% endfor %}
         </ul>
     </div>
