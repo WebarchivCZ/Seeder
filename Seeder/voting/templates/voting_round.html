@@ -5,15 +5,19 @@
 
 {% block title %} {{ voting_round }} {% endblock %}
 {% block page_header %}
-    {{ voting_round }}
-    <span class="pull-right"><a href="{{ voting_round.source.get_absolute_url }}">{% trans 'Back' %}</a></span>
+    {% trans 'Voting round' %}: <a href="{{ voting_round.source.get_absolute_url }}">{{ voting_round.source }}</a>
 {% endblock %}
 
 {% block content %}
     <div class="progress">
-        {% for css, value in voting_round.get_status_bar %}
+        {% if voting_round.is_open %}
+            {% for css, value in voting_round.get_status_bar %}
                 <div class="progress-bar progress-bar-{{ css }}" style="width: {{ value }}%"></div>
-        {% endfor %}
+            {% endfor %}
+        {% else %}
+            <div class="progress-bar progress-bar-{{ voting_round.get_css_class }}" style="width: 100%"></div>
+        {% endif %}
+
     </div>
 
     <div class="col-md-3 col-sm-6">
@@ -39,7 +43,7 @@
                 <p>
                     Our hero <b>{{ resolved_by }}</b> resolved this
                     <b>{{ round_closed }}</b>.
-                    The final decision is <b>{{ status }}</b>
+                    The final decision is to <b>{{ status }}</b>.
                 </p>
             {% endblocktrans %}
         {% endif %}
