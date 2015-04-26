@@ -4,6 +4,7 @@
 
 from django.utils.translation import ugettext as _
 from odictliteral import odict
+from source import constants as source_constants
 
 
 VOTES = odict[
@@ -28,6 +29,16 @@ VOTES = odict[
         'css': 'warning'
     },
 ]
+
+# dict describing what does each vote state represent in source state:
+VOTE_TO_SOURCE = {
+    'approve': source_constants.STATE_ACCEPTED_BY_STAFF,
+    'decline': source_constants.STATE_DECLINED_BY_STAFF,
+    'wait': source_constants.STATE_WAITING
+
+}
+
+
 
 VOTE_INITIAL = VOTES['initial']['value']
 

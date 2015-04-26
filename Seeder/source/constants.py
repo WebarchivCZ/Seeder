@@ -2,28 +2,28 @@
 from django.utils.translation import ugettext as _
 
 
-SOURCE_STATE_VOTE = 'v'
-SOURCE_STATE_DUPLICITY = 'dpl'
-SOURCE_STATE_WAITING = 'w'
-SOURCE_STATE_COMMUNICATING = 'c'
-SOURCE_STATE_ACCEPTED = 'a'
-SOURCE_STATE_DECLINED_BY_STAFF = 'd'
-SOURCE_STATE_DECLINED_BY_PUBLISHER = 'n'
-SOURCE_STATE_PUBLISHER_IGNORED_REQUEST = 'm'
-SOURCE_STATE_CONTRACT_EXPIRED = 'e'
-SOURCE_STATE_CONTRACT_TERMINATED = 't'
+STATE_VOTE = 'v'
+STATE_DUPLICITY = 'dpl'
+STATE_WAITING = 'w'
+STATE_COMMUNICATING = 'c'
+STATE_ACCEPTED_BY_STAFF = 'a'
+STATE_DECLINED_BY_STAFF = 'd'
+STATE_DECLINED_BY_PUBLISHER = 'n'
+STATE_PUBLISHER_IGNORED_REQUEST = 'm'
+STATE_CONTRACT_EXPIRED = 'e'
+STATE_CONTRACT_TERMINATED = 't'
 
 SOURCE_STATES = (
-    (SOURCE_STATE_VOTE, _('Voting')),
-    (SOURCE_STATE_DUPLICITY, _('Duplicated record')),
-    (SOURCE_STATE_WAITING, _('Waiting for response')),
-    (SOURCE_STATE_COMMUNICATING, _('In communication')),
-    (SOURCE_STATE_ACCEPTED, _('Accepted')),
-    (SOURCE_STATE_DECLINED_BY_STAFF, _('Declined by staff')),
-    (SOURCE_STATE_DECLINED_BY_PUBLISHER, _('Declined by publisher')),
-    (SOURCE_STATE_PUBLISHER_IGNORED_REQUEST, _('Publisher ignored requests')),
-    (SOURCE_STATE_CONTRACT_EXPIRED, _('Contract expired')),
-    (SOURCE_STATE_CONTRACT_TERMINATED, _('Contract terminated')),
+    (STATE_VOTE, _('Voting')),
+    (STATE_DUPLICITY, _('Duplicated record')),
+    (STATE_WAITING, _('Waiting for response')),
+    (STATE_COMMUNICATING, _('In communication')),
+    (STATE_ACCEPTED_BY_STAFF, _('Accepted')),
+    (STATE_DECLINED_BY_STAFF, _('Declined by staff')),
+    (STATE_DECLINED_BY_PUBLISHER, _('Declined by publisher')),
+    (STATE_PUBLISHER_IGNORED_REQUEST, _('Publisher ignored requests')),
+    (STATE_CONTRACT_EXPIRED, _('Contract expired')),
+    (STATE_CONTRACT_TERMINATED, _('Contract terminated')),
 )
 
 
