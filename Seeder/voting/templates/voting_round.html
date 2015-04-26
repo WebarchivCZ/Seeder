@@ -35,7 +35,7 @@
                 </p>
             {% endblocktrans %}
         {% else %}
-            {% blocktrans with resolved_by=voting_round.closed_by status=voting_round.get_state_display round_closed=voting_round.date_ended|naturaltime %}
+            {% blocktrans with resolved_by=voting_round.resolved_by status=voting_round.get_state_display round_closed=voting_round.date_resolved|naturaltime %}
                 <p>
                     Our hero <b>{{ resolved_by }}</b> resolved this
                     <b>{{ round_closed }}</b>.
