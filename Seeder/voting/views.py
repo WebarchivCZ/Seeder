@@ -13,7 +13,7 @@ from class_based_comments.views import CommentViewGeneric
 
 class VotingDetail(LoginMixin, DetailView, CommentViewGeneric):
     template_name = 'voting_round.html'
-    view_name = 'voting'
+    view_name = 'sources'
     model = models.VotingRound
     context_object_name = 'voting_round'
 
