@@ -10,7 +10,7 @@
 
 {% block content %}
     <div class="progress">
-        {% if voting_round.is_open %}
+        {% if voting_round.round_open %}
             {% for css, value in voting_round.get_status_bar %}
                 <div class="progress-bar progress-bar-{{ css }}" style="width: {{ value }}%"></div>
             {% endfor %}
