@@ -51,8 +51,9 @@ class AddSource(LoginMixin, MultipleFormView):
 
         for form in seed_formset.forms:
             seed = form.save(commit=False)
-            seed.source = source
-            seed.save()
+            if seed.url:  # prevent saving empty fields
+                seed.source = source
+                seed.save()
 
         return HttpResponseRedirect(source.get_absolute_url())
 
