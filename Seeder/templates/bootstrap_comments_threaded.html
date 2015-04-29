@@ -3,19 +3,19 @@
 {% load mptt_tags %}
 {% load i18n %}
 
-<ul class="root">
-    {% recursetree comments %}
-        <li>
-            {{ node.name }} <a class="respond" data-comment-id="{{ node.id }}">{% trans 'Respond' %}</a>  <br/>
-            {{ node.text }}
-            {% if not node.is_leaf_comment %}
-                <ul class="children">
-                    {{ children }}
-                </ul>
-            {% endif %}
-        </li>
-    {% endrecursetree %}
-</ul>
+{% recursetree comments %}
+    <div class="media">
+      <div class="media-left">
+      </div>
+      <div class="media-body">
+        <h4 class="media-heading">{{ node.name }} <a class="respond" href="#comment-form" data-comment-id="{{ node.id }}">{% trans 'Respond' %}</a></h4>
+        {{ node.text }}
+        {% if not node.is_leaf_comment %}
+            {{ children }}
+        {% endif %}
+      </div>
+    </div>
+{% endrecursetree %}
 
 <script>
     $('.respond').click(function (trigger) {
@@ -26,8 +26,8 @@
 </script>
 
 
-<form class="" method="post">
+<form class="" id="comment-form" method="post">
     {% csrf_token %}
     {% bootstrap_form form %}
-    <input type="submit" class="btn btn-primary btn-lg btn-block"/>
+    <input type="submit" value="{% trans 'Submit comment' %}" class="btn btn-primary btn-lg btn-block"/>
 </form>
