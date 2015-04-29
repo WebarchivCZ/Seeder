@@ -1,0 +1,33 @@
+{% load humanize %}
+{% load bootstrap3 %}
+{% load mptt_tags %}
+{% load i18n %}
+
+<ul class="root">
+    {% recursetree comments %}
+        <li>
+            {{ node.name }} <a class="respond" data-comment-id="{{ node.id }}">{% trans 'Respond' %}</a>  <br/>
+            {{ node.text }}
+            {% if not node.is_leaf_comment %}
+                <ul class="children">
+                    {{ children }}
+                </ul>
+            {% endif %}
+        </li>
+    {% endrecursetree %}
+</ul>
+
+<script>
+    $('.respond').click(function (trigger) {
+        var parent_id = trigger.target.getAttribute('data-comment-id');
+        $('#id_parent').val(parent_id);
+        console.log(parent_id);
+    })
+</script>
+
+
+<form class="" method="post">
+    {% csrf_token %}
+    {% bootstrap_form form %}
+    <input type="submit" class="btn btn-primary btn-lg btn-block"/>
+</form>

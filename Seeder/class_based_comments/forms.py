@@ -111,21 +111,17 @@ class ModerationForm(forms.Form):
             raise forms.ValidationError('Action not recognised')
 
 
-def create_form_class(threaded=False, anonymous=False, title=False):
+def create_form_class(anonymous=False, title=False):
     """
     Dynamically creates user form with custom fields depending on situation.
     This is encapsulated class generator.
 
-
-    :param threaded: enable threading of comments
     :param anonymous: set if user is not logged in
     :param title: select if you want to enable titles for the comment
     :return: CommentForm
     """
 
-    form_fields = ('timestamp', 'security_hash', 'honeypot')
-    if threaded:
-        form_fields += ('parent',)
+    form_fields = ('timestamp', 'security_hash', 'honeypot', 'parent')
     if title:
         form_fields += ('title',)
     if anonymous:
@@ -133,18 +129,11 @@ def create_form_class(threaded=False, anonymous=False, title=False):
     form_fields += ('comment',)  # this should be at the end of the form
 
     class CommentForm(CommentSecurityForm):
-        if threaded:
-            parent = forms.IntegerField(widget=forms.HiddenInput)
-
-        def clean_parent(self):
-            pid = self.cleaned_data['parent']
-            if pid:
-                try:
-                    return CommentModel.objects.get(pk=pid)
-                except ObjectDoesNotExist:
-                    raise forms.ValidationError('Parent comment id incorrect')
-            else:
-                return pid
+        parent = forms.ModelChoiceField(
+            queryset=CommentModel.objects.filter(is_public=True,
+                                                 is_removed=False),
+            widget=forms.HiddenInput(),
+            required=False)
 
         def save(self, commit=True):
             comment = super(CommentForm, self).save(commit=False)

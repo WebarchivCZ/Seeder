@@ -53,6 +53,6 @@
 
     <div class="col-xs-12 col-md-12">
         <h2>{% trans 'Comments' %}</h2>
-        {% include 'bootstrap_comments.html' with comments=comments form=comment_form %}
+        {% include 'bootstrap_comments_threaded.html' with comments=comments form=comment_form %}
     </div>
 {% endblock %}

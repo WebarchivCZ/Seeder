@@ -64,6 +64,7 @@ class SourceDetail(LoginMixin, DetailView, CommentViewGeneric):
     context_object_name = 'source'
     model = models.Source
     anonymous = False
+    threaded_comments = True
 
 
 class SourceList(LoginMixin, SingleTableView):

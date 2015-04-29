@@ -2,8 +2,10 @@ from django.db import models
 from django.contrib.contenttypes.models import ContentType
 from django.utils.encoding import force_text
 
+from mptt.managers import TreeManager
 
-class CommentManager(models.Manager):
+
+class CommentManager(TreeManager):
     def in_moderation(self):
         """
         QuerySet for all comments currently in the moderation queue.

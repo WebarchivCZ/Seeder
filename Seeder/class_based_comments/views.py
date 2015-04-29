@@ -15,7 +15,7 @@ class CommentViewGeneric(TemplateResponseMixin, SingleObjectMixin, View):
     # set to true if some of your users are anonymous
     anonymous = False
     # enable threading of comments
-    threaded = False
+    threaded_comments = False
     # form variable in templates
     form_name = 'comment_form'
     # enable titles in form
@@ -39,6 +39,8 @@ class CommentViewGeneric(TemplateResponseMixin, SingleObjectMixin, View):
             comment.save()
             return HttpResponseRedirect('')  # reload the page
         else:
+            # little bit of dark magic to fix some inheritance related bugs
+            self.object = self.get_object()  # noqa
             context = self.get_context_data(**kwargs)
             context[self.form_name] = form
             return self.render_to_response(context)
@@ -51,5 +53,4 @@ class CommentViewGeneric(TemplateResponseMixin, SingleObjectMixin, View):
 
     @property
     def comment_form(self):
-        return forms.create_form_class(self.threaded, self.anonymous,
-                                       self.titles)
+        return forms.create_form_class(self.anonymous, self.titles)
