@@ -5,15 +5,21 @@
 
 {% recursetree comments %}
     <div class="media">
-      <div class="media-left">
-      </div>
-      <div class="media-body">
-        <h4 class="media-heading">{{ node.name }} <a class="respond" href="#comment-form" data-comment-id="{{ node.id }}">{% trans 'Respond' %}</a></h4>
-        {{ node.text }}
-        {% if not node.is_leaf_comment %}
-            {{ children }}
-        {% endif %}
-      </div>
+        <div class="media-left">
+        </div>
+
+        <div class="media-body panel panel-default">
+            <div class="panel-heading">
+                <span> {{ node.name }}</span>
+                <span class="pull-right">{{ node.submit_date|naturaltime }} | <a class="respond" href="#comment-form" data-comment-id="{{ node.id }}">{% trans 'Respond' %}</a></span>
+            </div>
+            <div class="panel-body">
+                {{ node.text }}
+            </div>
+            {% if not node.is_leaf_comment %}
+                {{ children }}
+            {% endif %}
+        </div>
     </div>
 {% endrecursetree %}
 
