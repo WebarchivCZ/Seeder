@@ -11,7 +11,7 @@
         <div class="media-body panel panel-default">
             <div class="panel-heading">
                 <span> {{ node.name }}</span>
-                <span class="pull-right">{{ node.submit_date|naturaltime }} | <a class="respond" href="#comment-form" data-comment-id="{{ node.id }}">{% trans 'Respond' %}</a></span>
+                <span class="pull-right">{{ node.submit_date|naturaltime }} | <a class="respond" data-comment-author="{{ node.name }}" data-comment-id="{{ node.id }}">{% trans 'Respond' %}</a></span>
             </div>
             <div class="panel-body">
                 {{ node.text }}
@@ -26,12 +26,15 @@
 <script>
     $('.respond').click(function (trigger) {
         var parent_id = trigger.target.getAttribute('data-comment-id');
+        var comment_author = trigger.target.getAttribute('data-comment-author');
         $('#id_parent').val(parent_id);
-        console.log(parent_id);
+        var comment = $('#id_comment');
+        comment.focus();
+        comment.attr('placeholder', "{% trans 'Respond to ' %}" + comment_author);
     })
 </script>
 
-
+<br/>
 <form class="" id="comment-form" method="post">
     {% csrf_token %}
     {% bootstrap_form form %}
