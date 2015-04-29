@@ -8,35 +8,36 @@
 
 {% block content %}
     <div class="col-xs-4 col-md-4">
-        <dl class="dl-horizontal">
-          <dt>{% trans 'Owner' %}</dt>
-          <dd>{{ source.owner }}</dd>
-          <dt>{% trans 'Created by' %}</dt>
-          <dd>{{ source.created_by }}</dd>
-          <dt>{% trans 'Name' %}</dt>
-          <dd>{{ source.name }}</dd>
-          <dt>{% trans 'Comment' %}</dt>
-          <dd>{{ source.comment }}</dd>
-          <dt>{% trans 'Web propsal' %}</dt>
-          <dd>{{ source.web_proposal }}</dd>
-          <dt>{% trans 'Publisher' %}</dt>
-          <dd><a href="{{ source.publisher.get_absolute_url }}">{{ source.publisher }}</a></dd>
-          <dt>{% trans "Specific contact" %}</dt>
-          <dd>{{ source.special_contact }}</dd>
-          <dt>{% trans 'Status' %}</dt>
-          <dd>{{ source.get_state_display }}</dd>
-          <dt>{% trans 'Conspectus' %}</dt>
-          <dd>{{ source.get_conspectus_display }}</dd>
-          <dt>{% trans 'Sub conspectus' %}</dt>
-          <dd>{{ source.get_sub_conspectus_display }}</dd>
-          <dt>{% trans 'Created' %}</dt>
-          <dd>{{ source.created|naturaltime }}</dd>
-          <dt>{% trans 'Last update' %}</dt>
-          <dd>{{ source.last_changed|naturaltime }}</dd>
-        </dl>
+    <h4>{% trans 'Info' %}</h4>
+        <p>
+            {% trans 'This source was created by' %} {{ source.owner }} <b>{{ source.created|naturaltime }}</b>.
+            {% trans "It's published by" %} <a href="{{ source.publisher.get_absolute_url }}">{{ source.publisher }}</a>.
+            {% if source.specific_contact %}
+                {% trans 'Specific contacting information' %}: {{ source.specific_contact }}
+            {% endif %} 
+            
+
+            {% if source.web_proposal %}
+                {% trans 'This source was proposed by visiotor.' %}
+            {% endif %}
+
+            {% if source.comment %}
+                {% trans 'Note' %}: {{ source.comment }}.
+            {% endif %}
+
+            {% if source.cospectus %}
+                {% trans 'Conspectus' %}: {{ source.get_conspectus_display }}.
+            {% endif %}
+
+            {% if source.sub_cospectus %}
+                {% trans 'Conspectus' %}: {{ source.get_sub_conspectus_display }}.
+            {% endif %}
+            {% trans 'Current status is' %} <b>{{ source.get_state_display }}</b>.
+        </p>
     </div>
 
     <div class="col-md-2">
+    <h4>{% trans 'Seeds' %}</h4>
         <ul class="list-group">
             {% for seed in source.seed_set.all %}
                 <li class="list-group-item"><a href="{{ seed.url }}">{{ seed }}</a></li>
@@ -46,6 +47,7 @@
 
 
     <div class="col-md-4 pull-right">
+    <h4>{% trans 'Voting rounds' %}</h4>
         {% for voting_round in source.votinground_set.all %}
             <a href="{{ voting_round.get_absolute_url }}" class="btn btn-{{ voting_round.get_css_class }}">{{ voting_round }}</a>
         {% endfor %}
