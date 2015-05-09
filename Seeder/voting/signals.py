@@ -8,6 +8,7 @@ from source.models import Source
 from voting.models import VotingRound
 from source import constants as source_constants
 
+
 @receiver(signal=post_save, sender=Source)
 def create_voting_round(instance, created, **kwargs):
     """
