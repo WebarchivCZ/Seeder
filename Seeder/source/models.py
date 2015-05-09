@@ -102,4 +102,5 @@ class Contract(BaseModel):
     contract_type = models.CharField(choices=constants.CONTRACT_TYPE_CHOICES,
                                      max_length=12)
 
-    is_valid = models.BooleanField(default=True)
+    valid = models.BooleanField(default=True)
+
