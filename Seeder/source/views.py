@@ -2,12 +2,14 @@ import forms
 import models
 import tables
 import field_filters
+import constants
 
 from django.views.generic import DetailView
 from django.http.response import HttpResponseRedirect
 from django.utils.translation import ugettext as _
 from django_tables2 import SingleTableView
 
+from datetime import datetime
 from core.utils import LoginMixin, MultipleFormView
 from class_based_comments.views import CommentViewGeneric
 
@@ -48,6 +50,14 @@ class AddSource(LoginMixin, MultipleFormView):
             new_publisher.save()
             source.publisher = new_publisher
         source.save()
+
+        if source_form.cleaned_data['open_license']:
+            contract = models.Contract(
+                source=source,
+                date_start=datetime.now(),
+                contract_type=constants.CONTRACT_CREATIVE_COMMONS
+            )
+            contract.save()
 
         for form in seed_formset.forms:
             seed = form.save(commit=False)

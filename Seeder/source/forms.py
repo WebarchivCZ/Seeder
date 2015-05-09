@@ -11,6 +11,10 @@ class SourceForm(forms.ModelForm):
         required=False,
         help_text=_('Instantly create publisher'))
 
+    open_license = forms.BooleanField(
+        help_text=_('Is text distributed under open license?')
+    )
+
     def clean(self):
         cleaned_data = super(SourceForm, self).clean()
 
