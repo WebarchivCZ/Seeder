@@ -16,7 +16,7 @@ class Source(BaseModel):
         represent individual urls. In most of the cases there will be one seed
         which will be equal to ``base_url``.
     """
-    created_by = models.ForeignKey(User, related_name='created_by')
+    created_by = models.ForeignKey(User, related_name='sources_created')
     owner = models.ForeignKey(User, verbose_name=_('Curator'))
     name = models.CharField(_('Name'), max_length=64)
     comment = models.TextField(_('Comment'), null=True, blank=True)
@@ -90,3 +90,16 @@ class Seed(BaseModel):
 
     def __unicode__(self):
         return self.url
+
+
+class Contract(BaseModel):
+    source = models.ForeignKey(Source)
+
+    date_start = models.DateField()
+    date_end = models.DateField(null=True, blank=True)
+
+    contract_file = models.FileField(null=True, blank=True)
+    contract_type = models.CharField(choices=constants.CONTRACT_TYPE_CHOICES,
+                                     max_length=12)
+
+    is_valid = models.BooleanField(default=True)
