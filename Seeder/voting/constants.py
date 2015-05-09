@@ -32,16 +32,13 @@ VOTES = odict[
 
 # dict describing what does each vote state represent in source state:
 VOTE_TO_SOURCE = {
+    'initial': source_constants.STATE_VOTE,
     'approve': source_constants.STATE_ACCEPTED_BY_STAFF,
     'decline': source_constants.STATE_DECLINED_BY_STAFF,
     'wait': source_constants.STATE_WAITING
-
 }
 
-
-
 VOTE_INITIAL = VOTES['initial']['value']
-
 VOTE_STATES = tuple(
     (info['value'], info['label']) for info in VOTES.values()
 )
