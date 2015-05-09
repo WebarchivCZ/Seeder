@@ -46,6 +46,15 @@ SEED_STATES = (
 )
 
 
+CONTRACT_CREATIVE_COMMONS = 'CCOMONS'
+CONTRACT_PROPRIETARY = 'PROPRIETARY'
+
+CONTRACT_TYPE_CHOICES = (
+    (CONTRACT_CREATIVE_COMMONS, _('Creative commons')),
+    (CONTRACT_PROPRIETARY, _('Proprietary')),
+)
+
+
 CONSPECTUS_CHOICES = (
     ('1',  'Antropologie, etnografie'),
     ('2',  'Biologické vědy'),
