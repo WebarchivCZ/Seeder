@@ -66,6 +66,13 @@ class Source(BaseModel):
     def get_absolute_url(self):
         return reverse('source:detail', args=[str(self.id)])
 
+    def get_valid_contracts(self):
+        """
+        Returns contracts linking to this model that are valid and did not
+        expire.
+        """
+        self.contract_set.filter(valid=True)
+
 
 class Seed(BaseModel):
     """
@@ -103,4 +110,3 @@ class Contract(BaseModel):
                                      max_length=12)
 
     valid = models.BooleanField(default=True)
-
