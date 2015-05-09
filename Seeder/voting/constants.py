@@ -39,6 +39,8 @@ VOTE_TO_SOURCE = {
 }
 
 VOTE_INITIAL = VOTES['initial']['value']
+VOTE_APPROVE = VOTES['approve']['value']
+VOTE_DECLINE = VOTES['decline']['value']
 VOTE_STATES = tuple(
     (info['value'], info['label']) for info in VOTES.values()
 )

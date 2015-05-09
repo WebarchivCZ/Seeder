@@ -10,6 +10,7 @@ STATE_ACCEPTED_BY_STAFF = 'a'
 STATE_DECLINED_BY_STAFF = 'd'
 STATE_DECLINED_BY_PUBLISHER = 'n'
 STATE_PUBLISHER_IGNORED_REQUEST = 'm'
+STATE_RUNNING = 'on'
 STATE_CONTRACT_EXPIRED = 'e'
 STATE_CONTRACT_TERMINATED = 't'
 
@@ -18,12 +19,13 @@ SOURCE_STATES = (
     (STATE_DUPLICITY, _('Duplicated record')),
     (STATE_WAITING, _('Waiting for response')),
     (STATE_COMMUNICATING, _('In communication')),
-    (STATE_ACCEPTED_BY_STAFF, _('Accepted')),
-    (STATE_DECLINED_BY_STAFF, _('Declined by staff')),
+    (STATE_ACCEPTED_BY_STAFF, _('Accepted by staff')),
+    (STATE_RUNNING, _('Passed all requirements')),
     (STATE_DECLINED_BY_PUBLISHER, _('Declined by publisher')),
     (STATE_PUBLISHER_IGNORED_REQUEST, _('Publisher ignored requests')),
     (STATE_CONTRACT_EXPIRED, _('Contract expired')),
     (STATE_CONTRACT_TERMINATED, _('Contract terminated')),
+
 )
 
 
