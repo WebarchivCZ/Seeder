@@ -1,16 +1,27 @@
-from fabric.api import local, task
+from fabric.api import local, task, run
+
+
+commands = {
+    'runserver': ['./manage.py runserver'],
+    'syncdb': [
+        './manage.py migrate auth',
+        './manage.py syncdb --noinput',
+        './manage.py migrate'],
+    'static': [
+        './<manage.py bower_install>',
+        './manage.py <collectstatic --noinput>'],
+    'pull': ['git pull --rebase']
+}
 
 
 @task(alias='rns')
 def runserver():
-    local('./manage.py runserver')
+    map(local, commands['runserver'])
 
 
 @task(alias='sdb')
 def syncdb():
-    local('./manage.py migrate auth')  # bug in 1.8
-    local('./manage.py syncdb --noinput')
-    local('./manage.py migrate')
+    map(local, commands['syncdb'])
 
 
 @task(alias='sm')
@@ -22,10 +33,19 @@ def schemamigration():
 
 @task(alias='cs')
 def collect_static():
-    local('./manage.py bower_install')
-    local('./manage.py collectstatic --noinput')
+    map(local, commands['static'])
 
 
 @task(alias='s')
 def shell():
     local('./manage.py shell')
+
+
+@task(alias='dl')
+def deploy_locally():
+    map(local, commands['pull'] + commands['syncdb'] + commands['static'])
+
+
+@task(alias='d')
+def deploy():
+    map(run, commands['pull'] + commands['syncdb'] + commands['static'])

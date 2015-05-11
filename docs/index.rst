@@ -9,4 +9,4 @@ This project is a web management tool for Czech web archive.
    :maxdepth: 2
 
    installation
-   updating
+   deploying

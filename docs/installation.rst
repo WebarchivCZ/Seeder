@@ -16,7 +16,8 @@ Prerequisites:
 Virtualenv
 ----------
 
-Installation instructions: https://virtualenv.pypa.io/en/latest/installation.html
+Installation instructions: https://virtualenv.pypa.io/en/latest/installation.html .
+
 Then create virtualenv seeder: ``$virtualenv seeder``
 
 
@@ -62,3 +63,4 @@ After configuring all of the above lets restart servers ::
     $ sudo service supervisor restart
     $ sudo service nginx restart
 
+The proceed with deploying.
