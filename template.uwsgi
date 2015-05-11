@@ -1,0 +1,17 @@
+[uwsgi]
+virtualenv      = <virtualenv path>
+pythonpath      = <path to seeder>
+plugins         = python
+master          = 1
+pidfile         = <path where .pid file should be created>/seeder.pid
+touch-reload    = <path where touch-to-reload file should be created>/reload.touch
+socket          = <path where socket file should be created>/seeder.sock
+chmod-socket    = 777
+cheaper-algo    = spare
+cheaper         = 2
+cheaper-initial = 2
+cheaper-step    = 1
+processes       = 6
+vacuum          = 1
+harakiri        = 60
+wsgi-file       = <path to seeder>/Seeder/wsgi.py

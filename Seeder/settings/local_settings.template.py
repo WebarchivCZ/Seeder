@@ -8,7 +8,7 @@ assert SECRET_KEY, 'You must set secret key!'
 DEBUG = True
 TEMPLATE_DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['example.com', 'www.example.com']
 
 # Database
 # https://docs.djangoproject.com/en/1.7/ref/settings/#databases
