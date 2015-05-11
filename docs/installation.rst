@@ -54,6 +54,9 @@ supervisor
 Put something like `template.supervisor.conf` to ``/etc/supervisor/conf.d/``.
 
 
+Final restart
+-------------
+
 After configuring all of the above lets restart servers ::
 
     $ sudo service supervisor restart
