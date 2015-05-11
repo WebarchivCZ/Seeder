@@ -8,7 +8,7 @@ commands = {
         './manage.py syncdb --noinput',
         './manage.py migrate'],
     'static': [
-        './<manage.py bower_install>',
+        './manage.py bower_install',
         './manage.py collectstatic --noinput'],
     'pull': ['git pull --rebase']
 }
