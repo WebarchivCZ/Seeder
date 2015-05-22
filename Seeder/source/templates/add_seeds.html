@@ -3,8 +3,12 @@
 {% load bootstrap3 %}
 
 
+{% block title %}
+    {{ view.get_title }}
+{% endblock %}
+
 {% block page_header %}
-    {{ view.title }} <span class="pull-right">{{ wizard.steps.step1 }} / {{ wizard.steps.count }}</span>
+    {{ view.get_title }} <span class="pull-right">{{ wizard.steps.step1 }} / {{ wizard.steps.count }}</span>
 {% endblock %}
 
 

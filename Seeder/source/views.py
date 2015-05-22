@@ -30,7 +30,6 @@ def show_publisher_form(wizard):
 
 class AddSource(LoginMixin, SessionWizardView):
     template_name = 'add_source.html'
-    title = _('Add source')
     view_name = 'add_source'
 
     form_list = [
@@ -40,9 +39,24 @@ class AddSource(LoginMixin, SessionWizardView):
         ('duplicity', forms.DuplicityForm),
     ]
 
+    template_names = {
+        'seeds': 'add_seeds.html',
+        'duplicity': 'duplicity_check.html',
+    }
+
+    titles = {
+        'source': _('Add source'),
+        'publisher': _('Add publisher'),
+        'seeds': _('Add seeds'),
+        'duplicity': _('Check for duplicities'),
+    }
+
     condition_dict = {
         'publisher': show_publisher_form
     }
+
+    def get_title(self):
+        return self.titles[self.steps.current]
 
     def get_form(self, step=None, data=None, files=None):
         """
@@ -59,8 +73,8 @@ class AddSource(LoginMixin, SessionWizardView):
         return super(AddSource, self).get_form(step, data, files)
 
     def get_template_names(self):
-        if self.steps.current == 'seeds':
-            return 'add_seeds.html'
+        if self.steps.current in self.template_names:
+            return self.template_names[self.steps.current]
         return super(AddSource, self).get_template_names()
 
     def done(self, form_list, **kwargs):
