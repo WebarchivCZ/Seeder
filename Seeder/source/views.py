@@ -85,12 +85,12 @@ class AddSource(LoginMixin, SessionWizardView):
         source_data = self.get_cleaned_data_for_step('source')
         # publisher_data = self.get_cleaned_data_for_step('publisher')
         seeds_data = self.get_cleaned_data_for_step('seeds')
-        seeds_url = [s['url'] for s in seeds_data]
+        seeds_url = [s.get('url', '') for s in seeds_data]
 
         return models.Source.objects.filter(
             Q(name__icontains=source_data['name']) |
             Q(seed__url__in=seeds_url)
-        )
+        ).distinct()
 
     def done(self, form_list, **kwargs):
         form_dict = kwargs['form_dict']

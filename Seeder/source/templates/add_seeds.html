@@ -34,7 +34,7 @@
         // django stores info about number of forms in management forms
         // so we have to update these values
 
-        var prefix = "{{ seed_formset.prefix }}";
+        var prefix = "{{ form.prefix }}";
         var total_form_id = '#id_' + prefix + '-TOTAL_FORMS';
         $('#add_seed').click(function () {
             var new_form_content = $('#seed_empty_form').html();

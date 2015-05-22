@@ -13,13 +13,18 @@
 
 {% block content %}
     <h4>{% trans 'Potential duplicities' %}:</h4>
-    <ul class="list-group">
+    <ul>
         {% for source in view.get_duplicities %}
-            <li class="list-group-item">
+            <li>
                 <a href="{{ source.get_absolute_url }}" target="_blank">{{ source }}</a>
+                <ul>
+                {% for seed in source.seed_set.all %}
+                    <li>{{ seed.url }}</li>
+                {% endfor %}
+                </ul>
             </li>
         {% empty %}
-            <li class="list-group-item list-group-item-success">{% trans 'Sorry, we could not find any duplicities' %}</li>
+            {% trans 'Sorry, we could not find any duplicities' %}
         {% endfor %}
     </ul>
     <form class="" method="post">
