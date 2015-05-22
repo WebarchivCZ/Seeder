@@ -36,6 +36,16 @@ class ManagementSourceForm(SourceForm):
         fields = ('owner',) + source_fields
 
 
+class DuplicityForm(forms.Form):
+    """
+        This is very simple form that requires user to check that he
+        is not creating duplicities.
+    """
+    unique_record = forms.BooleanField(
+        required=True,
+        help_text=_('Check if this is really unique source.'))
+
+
 class BaseSeedFormset(BaseFormSet):
     def clean(self):
         """

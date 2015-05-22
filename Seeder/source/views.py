@@ -37,6 +37,7 @@ class AddSource(LoginMixin, SessionWizardView):
         ('source', forms.SourceForm),
         ('publisher', PublisherForm),
         ('seeds', forms.SeedFormset),
+        ('duplicity', forms.DuplicityForm),
     ]
 
     condition_dict = {
