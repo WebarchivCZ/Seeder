@@ -11,7 +11,7 @@ from django_tables2 import SingleTableView
 
 from datetime import datetime
 from core.utils import LoginMixin, MultipleFormView
-from class_based_comments.views import CommentViewGeneric
+from comments.views import CommentViewGeneric
 
 
 class AddSource(LoginMixin, MultipleFormView):

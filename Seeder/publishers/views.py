@@ -3,7 +3,7 @@ import models
 from django.views.generic import DetailView
 
 from core.utils import LoginMixin
-from class_based_comments.views import CommentViewGeneric
+from comments.views import CommentViewGeneric
 
 
 class PublisherDetail(LoginMixin, DetailView, CommentViewGeneric):

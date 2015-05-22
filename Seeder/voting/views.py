@@ -8,7 +8,7 @@ from django.utils.translation import ugettext as _
 from django.utils import timezone
 
 from core.utils import LoginMixin, ActionView
-from class_based_comments.views import CommentViewGeneric
+from comments.views import CommentViewGeneric
 
 
 class VotingDetail(LoginMixin, DetailView, CommentViewGeneric):

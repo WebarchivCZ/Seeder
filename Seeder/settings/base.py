@@ -40,12 +40,13 @@ INSTALLED_APPS = (
     'django_filters',
     'bootstrap3',
     'mptt',
+    'formtools',
 
     'core',
     'publishers',
     'source',
     'voting',
-    'class_based_comments'
+    'comments'
 )
 
 
