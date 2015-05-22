@@ -77,7 +77,7 @@ class Source(BaseModel):
         expire.
         """
         return self.contract_set.filter(Q(valid=True) & Q(
-            Q(date_ended__gte=datetime.now()) | Q(date_ended=None)))
+            Q(date_end__gte=datetime.now()) | Q(date_end=None)))
 
 
 class Seed(BaseModel):
