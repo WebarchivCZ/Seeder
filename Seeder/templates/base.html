@@ -70,16 +70,10 @@
                 <li id="sources">
                     <a href="{% url 'source:list' %}">{% trans 'List sources' %}</a>
                 </li>
-                <li>
-                    <a href="">Analytics</a>
-                </li>
-                <li>
-                    <a href="">Export</a>
-                </li>
             </ul>
             <ul class="nav nav-sidebar">
                 <li><a href="https://github.com/WebArchivCZ/Seeder">Github</a></li>
-                <li><a href="https://github.com/WebArchivCZ/Seeder/issues/new">{% trans 'New issue' %}</a></li>
+                <li><a href="https://github.com/WebArchivCZ/Seeder/issues/new">{% trans 'Bug report' %}</a></li>
                 <li><a href="https://seeder.readthedocs.org/en/latest/">{% trans 'Read the docs' %}</a></li>
             </ul>
         </div>
@@ -89,10 +83,8 @@
                 {% bootstrap_messages %}
 
                 {% block content %}
-
                 {% endblock %}
             </div>
-
         {% endblock %}
     </div>
 </div>
