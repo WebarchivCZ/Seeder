@@ -30,6 +30,8 @@ class Source(BaseModel):
     auto_imported = models.BooleanField(_('Imported from old portal'),
                                         default=False)
 
+    alef_number = models.IntegerField(null=True, blank=True)
+
     state = models.CharField(
         verbose_name=_('State'),
         max_length=3,
