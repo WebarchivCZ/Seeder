@@ -2,6 +2,7 @@ import views
 
 from django.conf.urls import patterns, url
 
-urlpatterns = patterns('',
+urlpatterns = patterns(
+    '',
     url(r'^$', views.DashboardView.as_view(), name='dashboard'),
 )
