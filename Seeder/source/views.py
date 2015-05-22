@@ -154,4 +154,5 @@ class SourceList(LoginMixin, SingleTableView):
     def get_context_data(self, **kwargs):
         context = super(SourceList, self).get_context_data(**kwargs)
         context['filter'] = self.filter_class(data=self.request.GET)
+        context['filter_active'] = bool(self.request.GET)
         return context
