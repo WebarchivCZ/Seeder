@@ -9,6 +9,7 @@ from django.http.response import HttpResponseRedirect
 from django.utils.translation import ugettext as _
 from django_tables2 import SingleTableView
 from formtools.wizard.views import SessionWizardView
+from django.db.models import Q
 
 from publishers.forms import PublisherForm
 from datetime import datetime
@@ -76,6 +77,20 @@ class AddSource(LoginMixin, SessionWizardView):
         if self.steps.current in self.template_names:
             return self.template_names[self.steps.current]
         return super(AddSource, self).get_template_names()
+
+    def get_duplicities(self):
+        """
+        Returns queryset with similar records
+        """
+        source_data = self.get_cleaned_data_for_step('source')
+        # publisher_data = self.get_cleaned_data_for_step('publisher')
+        seeds_data = self.get_cleaned_data_for_step('seeds')
+        seeds_url = [s['url'] for s in seeds_data]
+
+        return models.Source.objects.filter(
+            Q(name__icontains=source_data['name']) |
+            Q(seed__url__in=seeds_url)
+        )
 
     def done(self, form_list, **kwargs):
         form_dict = kwargs['form_dict']

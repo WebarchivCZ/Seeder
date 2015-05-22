@@ -7,11 +7,21 @@
 {% endblock %}
 
 {% block page_header %}
-{{ view.get_title }} <span class="pull-right">{{ wizard.steps.step1 }} / {{ wizard.steps.count }}</span>
+    {{ view.get_title }} <span class="pull-right">{{ wizard.steps.step1 }} / {{ wizard.steps.count }}</span>
 {% endblock %}
 
 
 {% block content %}
+    <h4>{% trans 'Potential duplicities' %}:</h4>
+    <ul class="list-group">
+        {% for source in view.get_duplicities %}
+            <li class="list-group-item">
+                <a href="{{ source.get_absolute_url }}" target="_blank">{{ source }}</a>
+            </li>
+        {% empty %}
+            <li class="list-group-item list-group-item-success">{% trans 'Sorry, we could not find any duplicities' %}</li>
+        {% endfor %}
+    </ul>
     <form class="" method="post">
         {% csrf_token %}
         {% bootstrap_form form %}
