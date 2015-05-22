@@ -16,6 +16,18 @@ from core.utils import LoginMixin
 from comments.views import CommentViewGeneric
 
 
+def show_publisher_form(wizard):
+    """
+        This will be called to decide whether publisher form
+        should be shown or not...
+
+        If user already filled out publisher in step `source`
+        then step `publisher` should be skipped.
+    """
+    cleaned_data = wizard.get_cleaned_data_for_step('source') or {}
+    return not cleaned_data.get('publisher', False)
+
+
 class AddSource(LoginMixin, SessionWizardView):
     template_name = 'add_source.html'
     title = _('Add source')
@@ -26,18 +38,6 @@ class AddSource(LoginMixin, SessionWizardView):
         ('publisher', PublisherForm),
         ('seeds', forms.SeedFormset),
     ]
-
-    @staticmethod
-    def show_publisher_form(wizard):
-        """
-            This will be called to decide whether publisher form
-            should be shown or not...
-
-            If user already filled out publisher in step `source`
-            then step `publisher` should be skipped.
-        """
-        cleaned_data = wizard.get_cleaned_data_for_step('source') or {}
-        return not cleaned_data.get('publisher', False)
 
     condition_dict = {
         'publisher': show_publisher_form
@@ -66,7 +66,7 @@ class AddSource(LoginMixin, SessionWizardView):
         form_dict = kwargs['form_dict']
         user = self.request.user
         source_form = form_dict['source']
-        publisher_form = form_dict['publisher']
+        publisher_form = form_dict.get('publisher', None)
         seed_formset = form_dict['seeds']
         is_manager = user.has_perm('core.manage_sources')
 
@@ -76,10 +76,9 @@ class AddSource(LoginMixin, SessionWizardView):
         if not is_manager or not source.created_by:
             source.owner = user
 
-        if not source.publisher:
+        if publisher_form:
             new_publisher = publisher_form.save()
             source.publisher = new_publisher
-
         source.save()
 
         if source_form.cleaned_data['open_license']:
