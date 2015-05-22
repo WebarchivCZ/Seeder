@@ -12,6 +12,7 @@ class SourceForm(forms.ModelForm):
         help_text=_('Instantly create publisher'))
 
     open_license = forms.BooleanField(
+        required=False,
         help_text=_('Is text distributed under open license?')
     )
 
