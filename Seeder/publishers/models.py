@@ -10,6 +10,9 @@ class Publisher(BaseModel):
         Publisher of the Source(s), Publisher can have multiple contacts.
     """
     name = models.CharField(_('Name'), max_length=64)
+    email = models.EmailField(_('E-mail'), blank=True, null=True)
+    phone = models.CharField(_('Phone'), blank=True, null=True, max_length=64)
+    website = models.URLField(_('Website'), blank=True, null=True)
 
     class Meta:
         verbose_name = _('Publisher')

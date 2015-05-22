@@ -8,47 +8,78 @@ from django.views.generic import DetailView
 from django.http.response import HttpResponseRedirect
 from django.utils.translation import ugettext as _
 from django_tables2 import SingleTableView
+from formtools.wizard.views import SessionWizardView
 
+from publishers.forms import PublisherForm
 from datetime import datetime
-from core.utils import LoginMixin, MultipleFormView
+from core.utils import LoginMixin
 from comments.views import CommentViewGeneric
 
 
-class AddSource(LoginMixin, MultipleFormView):
-    """
-    Custom view for processing source form and seed formset
-    """
-
+class AddSource(LoginMixin, SessionWizardView):
     template_name = 'add_source.html'
     title = _('Add source')
     view_name = 'add_source'
-    form_classes = {
-        'source_form': forms.SourceForm,
-        'seed_formset': forms.SeedFormset,
+
+    form_list = [
+        ('source', forms.SourceForm),
+        ('publisher', PublisherForm),
+        ('seeds', forms.SeedFormset),
+    ]
+
+    @staticmethod
+    def show_publisher_form(wizard):
+        """
+            This will be called to decide whether publisher form
+            should be shown or not...
+
+            If user already filled out publisher in step `source`
+            then step `publisher` should be skipped.
+        """
+        cleaned_data = wizard.get_cleaned_data_for_step('source') or {}
+        return not cleaned_data.get('publisher', False)
+
+    condition_dict = {
+        'publisher': show_publisher_form
     }
 
-    def dispatch(self, request, *args, **kwargs):
-        # dynamically set source form according to user rights
-        if self.request.user.has_perm('core.manage_sources'):
-            self.form_classes['source_form'] = forms.ManagementSourceForm
-        return super(AddSource, self).dispatch(request, *args, **kwargs)
-
-    def forms_valid(self, form_instances):
-        source_form = form_instances['source_form']
-        seed_formset = form_instances['seed_formset']
-        user = self.request.user
+    def get_form(self, step=None, data=None, files=None):
+        """
+            Dynamically set source form according to user rights
+        """
+        step = step or self.steps.current
         is_manager = self.request.user.has_perm('core.manage_sources')
+        if step == 'source' and is_manager:
+            form_class = self.form_list[step]
+            return forms.ManagementSourceForm(
+                data=data,
+                files=files,
+                prefix=self.get_form_prefix(step, form_class))
+        return super(AddSource, self).get_form(step, data, files)
+
+    def get_template_names(self):
+        if self.steps.current == 'seeds':
+            return 'add_seeds.html'
+        return super(AddSource, self).get_template_names()
+
+    def done(self, form_list, **kwargs):
+        form_dict = kwargs['form_dict']
+        user = self.request.user
+        source_form = form_dict['source']
+        publisher_form = form_dict['publisher']
+        seed_formset = form_dict['seeds']
+        is_manager = user.has_perm('core.manage_sources')
 
         source = source_form.save(commit=False)
         source.created_by = user
-        if not is_manager or not source_form.cleaned_data.get('owner', None):
+
+        if not is_manager or not source.created_by:
             source.owner = user
 
-        new_publisher = source_form.cleaned_data.get('new_publisher', None)
-        if new_publisher:
-            new_publisher = models.Publisher(name=new_publisher)
-            new_publisher.save()
+        if not source.publisher:
+            new_publisher = publisher_form.save()
             source.publisher = new_publisher
+
         source.save()
 
         if source_form.cleaned_data['open_license']:

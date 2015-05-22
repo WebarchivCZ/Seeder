@@ -12,3 +12,4 @@ django-bootstrap3
 django-fsm
 django-mptt
 fabric
+django-formtools
