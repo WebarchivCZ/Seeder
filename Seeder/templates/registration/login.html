@@ -1,24 +1,20 @@
-{% load bootstrap3 %}
+{% extends 'registration/base_login.html' %}
 {% load i18n %}
-<html>
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{% trans 'Login' %}</title>
-    {% bootstrap_css %}
-    {% bootstrap_javascript %}
+{% load bootstrap3 %}
+
+{% block title %}{% trans 'Login' %} | Seeder {% endblock %}
+
+{% block extrahead %}
     <link href="{{ STATIC_URL }}login.css" rel="stylesheet">
-  </head>
+{% endblock %}
 
-  <body>
-
-    <div class="container">
-      <form class="login-box" method="post">
-          {% csrf_token %}
-          {% bootstrap_form form %}
-          <button class="btn btn-lg btn-primary btn-block" type="submit">{% trans 'Login to Seeder' %}</button>
-      </form>
-    </div>
-  </body>
-</html>
+{% block content %}
+    <form class="login-box" method="post">
+        {% csrf_token %}
+        {% bootstrap_form form %}
+        <button class="btn btn-lg btn-primary btn-block" type="submit">{% trans 'Login to Seeder' %}</button>
+        {% if form.errors %}
+            <a href="{% url 'password_reset' %}" class="btn btn-lg btn-primary btn-block btn-danger">{% trans 'Reset password' %}</a>
+        {% endif %}
+    </form>
+{% endblock %}
