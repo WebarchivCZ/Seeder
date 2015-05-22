@@ -7,6 +7,49 @@
 {% block page_header %} {{ publisher }} {% endblock %}
 
 {% block content %}
+    <div class="col-md-6 col-sm-6">
+        <h4>{% trans 'Info' %}</h4>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>{% trans 'Value' %}</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{% trans 'Name' %}</td>
+                    <td>{{ publisher.name }}</td>
+                </tr>
+                <tr>
+                    <td>{% trans 'Email' %}</td>
+                    <td>{{ publisher.email }}</td>
+                </tr>
+                <tr>
+                    <td>{% trans 'Website' %}</td>
+                    <td>{{ publisher.url }}</td>
+                </tr>
+                <tr>
+                    <td>{% trans 'Phone' %}</td>
+                    <td>{{ publisher.phone }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="col-md-6 col-sm-6">
+        <h4>{% trans 'Sources' %}</h4>
+        <ul class="list-group">
+            {% for source in publisher.source_set.all %}
+                <li class="list-group-item">
+                    <a href="{{ source.get_absolute_url }}">{{ source }}</a>
+                </li>
+            {% endfor %}
+
+
+
+        </ul>
+    </div>
+
 
 
 
