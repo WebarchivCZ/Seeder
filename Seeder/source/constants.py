@@ -20,7 +20,7 @@ SOURCE_STATES = (
     (STATE_WAITING, _('Waiting for response')),
     (STATE_COMMUNICATING, _('In communication')),
     (STATE_ACCEPTED_BY_STAFF, _('Accepted by staff')),
-    (STATE_RUNNING, _('Passed all requirements')),
+    (STATE_RUNNING, _('Archiving accepted')),
     (STATE_DECLINED_BY_PUBLISHER, _('Declined by publisher')),
     (STATE_PUBLISHER_IGNORED_REQUEST, _('Publisher ignored requests')),
     (STATE_CONTRACT_EXPIRED, _('Contract expired')),
