@@ -3,8 +3,6 @@
 {% load render_table from django_tables2 %}
 {% load bootstrap3 %}
 
-
-
 {% block content_raw %}
     <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
         <h1 class="page-header">{% block page_header %}{{ view.title }}{% endblock %}
@@ -22,20 +20,4 @@
         </div>
         {% render_table table 'bootstrap_table.html' %}
     </div>
-{% endblock %}
-
-
-{% block extrahead %}
-    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/css/select2.min.css" rel="stylesheet" />
-    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0-rc.2/js/select2.min.js"></script>
-{% endblock %}
-
-{% block extrajs %}
-{#    <script type="text/javascript">#}
-{#      $('#id_publisher').select2({#}
-{#          placeholder: "{% trans "Publisher" %}",#}
-{#          width: "resolve",#}
-{#          allowClear: true#}
-{#      });#}
-{#    </script>#}
 {% endblock %}

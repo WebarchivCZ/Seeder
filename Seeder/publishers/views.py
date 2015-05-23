@@ -3,7 +3,7 @@ import forms
 
 from django.views.generic import DetailView
 
-from core.utils import LoginMixin, HistoryView, EditView
+from core.generic_views import LoginMixin, HistoryView, EditView
 from comments.views import CommentViewGeneric
 
 

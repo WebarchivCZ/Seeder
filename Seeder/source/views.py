@@ -13,7 +13,7 @@ from django.db.models import Q
 from formtools.wizard.views import SessionWizardView
 from publishers.forms import PublisherForm
 from datetime import datetime
-from core.utils import LoginMixin, HistoryView, EditView
+from core.generic_views import LoginMixin, HistoryView, EditView
 from comments.views import CommentViewGeneric
 
 
@@ -150,7 +150,7 @@ class History(SourceView, HistoryView):
 
 
 class SourceList(SourceView, SingleTableView):
-    template_name = 'source_list.html'
+    template_name = 'filtered_list.html'
     title = _('Sources')
     context_object_name = 'sources'
     table_class = tables.SourceTable

@@ -7,7 +7,7 @@ from django.views.generic.detail import SingleObjectMixin
 from django.utils.translation import ugettext as _
 from django.utils import timezone
 
-from core.utils import LoginMixin, ActionView
+from core.generic_views import LoginMixin, ActionView
 from comments.views import CommentViewGeneric
 
 

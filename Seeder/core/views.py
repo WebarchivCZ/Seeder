@@ -6,7 +6,7 @@ from django.utils.translation import ugettext as _
 from django.contrib import messages
 from django.views.generic.edit import UpdateView
 
-from utils import LoginMixin, MessageView
+from generic_views import LoginMixin, MessageView
 
 
 class DashboardView(LoginMixin, TemplateView):
