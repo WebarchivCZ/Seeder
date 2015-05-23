@@ -90,7 +90,7 @@ class Seed(BaseModel):
     url = models.URLField(_('Seed url'))
     state = models.CharField(choices=constants.SEED_STATES,
                              default=constants.SEED_STATE_INCLUDE,
-                             max_length=3)
+                             max_length=15)
     source = models.ForeignKey(Source)
     redirect = models.BooleanField(_('Redirect on seed'), default=False)
     robots = models.BooleanField(_('Robots.txt active'), default=False)
