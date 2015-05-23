@@ -4,10 +4,11 @@
 {% load bootstrap3 %}
 
 {% block title %} {{ source }} {% endblock %}
-{% block page_header %} {{ source }} {% endblock %}
+{% block page_header %} {{ source }}{% endblock %}
+
 
 {% block content %}
-    <div class="col-md-3 col-sm-3">
+    <div class="col-md-6 col-sm-3">
     <h4>{% trans 'Info' %}</h4>
         <table class="table table-striped">
 
@@ -48,6 +49,10 @@
                     <td>{% trans 'Sub cospectus' %}</td>
                     <td>{{ source.get_sub_conspectus_display }}</td>
                 </tr>
+                <tr>
+                    <td>{% trans 'Alef id' %}</td>
+                    <td>{{ source.alef_number }}</td>
+                </tr>
             </tbody>
         </table>
     </div>
@@ -63,10 +68,14 @@
 
 
     <div class="col-md-3 col-sm-3 pull-right">
-    <h4>{% trans 'Voting rounds' %}</h4>
+        <h4>{% trans 'Voting rounds' %}</h4>
         {% for voting_round in source.votinground_set.all %}
-            <a href="{{ voting_round.get_absolute_url }}" class="btn btn-{{ voting_round.get_css_class }}">{{ voting_round }}</a>
+            <a href="{{ voting_round.get_absolute_url }}" class="btn btn-block btn-{{ voting_round.get_css_class }}">{{ voting_round }}</a>
         {% endfor %}
+
+        <h4>{% trans 'Links' %}:</h4>
+        <a href="{% url 'source:history' pk=source.pk %}" class="btn btn-primary btn-info btn-block">{% trans 'History' %}</a>
+        <a href="{% url 'source:edit' pk=source.pk %}" class="btn btn-primary btn-warning btn-block">{% trans 'Edit' %}</a>
     </div>
 
     <div class="col-xs-12 col-md-12">

@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load humanize %}
+{% load bootstrap3 %}
+
+{% block title %} {{ source }} {% trans 'history' %} {% endblock %}
+{% block page_header %} <a href="{{ source.get_absolute_url }}">{{ source }}</a> {% trans 'history' %} {% endblock %}
+
+
+{% block content %}
+{% for diff in diffs %}
+    <div class="well">
+        <h4>{{ diff.user }} {{ diff.date|naturaltime }}</h4>
+        <table class="table">
+            <tr>
+                <th>{% trans 'Field' %}</th>
+                <th>{% trans 'Original' %}</th>
+                <th>{% trans 'New' %}</th>
+            </tr>
+            <tbody>
+            {% for field, values in diff.fields_changed.items %}
+                <tr>
+                    <td>{{ field }}</td>
+                    <td>{{ values.original }}</td>
+                    <td>{{ values.changed }}</td>
+                </tr>
+            {% endfor %}
+
+            </tbody>
+        </table>
+
+
+
+
+
+    </div>
+
+
+{% endfor %}
+
+
+
+{% endblock %}

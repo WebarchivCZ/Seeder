@@ -13,3 +13,4 @@ django-fsm
 django-mptt
 fabric
 django-formtools
+django-reversion

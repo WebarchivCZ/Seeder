@@ -6,9 +6,9 @@ from django.forms.formsets import BaseFormSet
 from django.utils.translation import ugettext as _
 
 
-source_fields = (
-    'name', 'publisher', 'frequency', 'special_contact', 'conspectus',
-    'sub_conspectus', 'web_proposal', 'open_license', 'comment')
+source_fields = ('name', 'publisher', 'frequency', 'special_contact',
+                 'conspectus', 'sub_conspectus', 'web_proposal',
+                 'open_license', 'comment')
 
 
 class SourceForm(forms.ModelForm):
@@ -57,3 +57,10 @@ class BaseSeedFormset(BaseFormSet):
 
 SeedFormset = modelformset_factory(models.Seed, fields=('url',), extra=7,
                                    formset=BaseSeedFormset)
+
+
+class SourceEditForm(forms.ModelForm):
+    class Meta:
+        model = models.Source
+        fields = ('name', 'frequency', 'special_contact', 'conspectus',
+                  'sub_conspectus', 'comment', 'alef_number')

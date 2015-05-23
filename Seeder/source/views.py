@@ -8,12 +8,14 @@ from django.views.generic import DetailView
 from django.http.response import HttpResponseRedirect
 from django.utils.translation import ugettext as _
 from django_tables2 import SingleTableView
-from formtools.wizard.views import SessionWizardView
+from django.views.generic.edit import UpdateView
 from django.db.models import Q
+from django.contrib import messages
 
+from formtools.wizard.views import SessionWizardView
 from publishers.forms import PublisherForm
 from datetime import datetime
-from core.utils import LoginMixin
+from core.utils import LoginMixin, HistoryView, MessageView
 from comments.views import CommentViewGeneric
 
 
@@ -135,6 +137,26 @@ class SourceDetail(LoginMixin, DetailView, CommentViewGeneric):
     model = models.Source
     anonymous = False
     threaded_comments = True
+
+
+class SourceEdit(LoginMixin, UpdateView, MessageView):
+    form_class = forms.SourceEditForm
+    view_name = 'source'
+    template_name = 'source_edit.html'
+    model = models.Source
+
+
+    def form_valid(self, form):
+        form.save()
+        self.add_message(_('Source changed.'), messages.SUCCESS)
+        return HttpResponseRedirect(self.get_object().get_absolute_url())
+
+
+class History(LoginMixin, HistoryView):
+    template_name = 'source_history.html'
+    view_name = 'sources'
+    context_object_name = 'source'
+    model = models.Source
 
 
 class SourceList(LoginMixin, SingleTableView):

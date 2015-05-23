@@ -43,7 +43,7 @@ def shell():
 
 @task(alias='dl')
 def deploy_locally():
-    map(local, commands['pull'] + commands['syncdb'] + commands['static'])
+    map(local, commands['syncdb'] + commands['static'])
 
 
 @task(alias='d')

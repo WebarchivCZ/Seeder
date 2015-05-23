@@ -41,6 +41,7 @@ INSTALLED_APPS = (
     'bootstrap3',
     'mptt',
     'formtools',
+    'reversion',
 
     'core',
     'publishers',
@@ -63,6 +64,8 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 
 
 MIDDLEWARE_CLASSES = (
+    'reversion.middleware.RevisionMiddleware',
+
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',

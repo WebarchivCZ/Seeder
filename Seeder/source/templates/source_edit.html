@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load bootstrap3 %}
+
+{% block title %}
+    {% trans 'Edit' %} {{ source }}
+{% endblock %}
+
+{% block page_header %}
+    {% trans 'Edit' %} {{ source }}
+{% endblock %}
+
+
+{% block content %}
+    <form class="" method="post">
+        {% csrf_token %}
+        {% bootstrap_form form %}
+        {{ wizard.management_form }}
+        <input type="submit" class="btn btn-primary btn-block"/>
+    </form>
+{% endblock %}

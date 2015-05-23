@@ -1,4 +1,5 @@
 import constants
+import reversion
 
 from django.db import models
 from django.utils.translation import ugettext as _
@@ -10,6 +11,7 @@ from core.utils import percentage
 from source.models import Source
 
 
+@reversion.register(exclude=('last_changed',))
 class VotingRound(BaseModel):
     """
         Voting round about source.
@@ -77,6 +79,7 @@ class VotingRound(BaseModel):
         return constants.VOTE_DICT
 
 
+@reversion.register(exclude=('last_changed',))
 class Vote(BaseModel):
     """
         Individual vote in voting round

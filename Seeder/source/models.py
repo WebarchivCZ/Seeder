@@ -1,4 +1,5 @@
 import constants
+import reversion
 
 from datetime import datetime
 
@@ -12,6 +13,7 @@ from core.models import BaseModel
 from publishers.models import Publisher
 
 
+@reversion.register(exclude=('last_changed',))
 class Source(BaseModel):
     """
         Source in the context of this project means an information source that
@@ -80,6 +82,7 @@ class Source(BaseModel):
             Q(date_end__gte=datetime.now()) | Q(date_end=None)))
 
 
+@reversion.register(exclude=('last_changed',))
 class Seed(BaseModel):
     """
         Seeds are individual urls in Source.
@@ -105,6 +108,7 @@ class Seed(BaseModel):
         return self.url
 
 
+@reversion.register(exclude=('last_changed',))
 class Contract(BaseModel):
     source = models.ForeignKey(Source)
 
