@@ -7,19 +7,20 @@ from core.utils import LoginMixin, HistoryView, EditView
 from comments.views import CommentViewGeneric
 
 
-class Detail(LoginMixin, DetailView, CommentViewGeneric):
+class PublisherView(LoginMixin):
+    view_name = 'publishers'
+    model = models.Publisher
+
+
+class Detail(PublisherView, DetailView, CommentViewGeneric):
     template_name = 'publisher.html'
-    view_name = 'publishers'
-    context_object_name = 'publisher'
-    model = models.Publisher
 
 
-class Edit(EditView):
+class Edit(PublisherView, EditView):
     form_class = forms.PublisherForm
-    view_name = 'publishers'
-    model = models.Publisher
 
 
-class History(LoginMixin, HistoryView):
-    view_name = 'publishers'
-    model = models.Publisher
+class History(PublisherView, HistoryView):
+    """
+        History of changes to publishers
+    """

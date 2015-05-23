@@ -17,6 +17,11 @@ from core.utils import LoginMixin, HistoryView, EditView
 from comments.views import CommentViewGeneric
 
 
+class SourceView(LoginMixin):
+    view_name = 'sources'
+    model = models.Source
+
+
 def show_publisher_form(wizard):
     """
         This will be called to decide whether publisher form
@@ -128,33 +133,26 @@ class AddSource(LoginMixin, SessionWizardView):
         return HttpResponseRedirect(source.get_absolute_url())
 
 
-class SourceDetail(LoginMixin, DetailView, CommentViewGeneric):
+class SourceDetail(SourceView, DetailView, CommentViewGeneric):
     template_name = 'source.html'
-    view_name = 'sources'
     context_object_name = 'source'
-    model = models.Source
-    anonymous = False
     threaded_comments = True
 
 
-class SourceEdit(EditView):
+class SourceEdit(SourceView, EditView):
     form_class = forms.SourceEditForm
-    view_name = 'source'
-    model = models.Source
 
 
-class History(LoginMixin, HistoryView):
-    view_name = 'sources'
-    context_object_name = 'source'
-    model = models.Source
+class History(SourceView, HistoryView):
+    """
+        History log
+    """
 
 
-class SourceList(LoginMixin, SingleTableView):
-    model = models.Source
+class SourceList(SourceView, SingleTableView):
     template_name = 'source_list.html'
     title = _('Sources')
     context_object_name = 'sources'
-    view_name = 'sources'
     table_class = tables.SourceTable
     filter_class = field_filters.SourceFilter
     table_pagination = {"per_page": 20}
