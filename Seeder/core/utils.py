@@ -136,7 +136,7 @@ class ActionView(View, MessageView):
         return HttpResponseRedirect(self.get_fail_url())
 
 
-class EditView(LoginMixin, UpdateView, MessageView):
+class EditView(UpdateView, MessageView):
     template_name = 'edit_form.html'
 
     def form_valid(self, form):
