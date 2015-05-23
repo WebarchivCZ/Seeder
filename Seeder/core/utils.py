@@ -8,6 +8,7 @@ from django.utils.decorators import method_decorator
 from django.views.generic.base import View
 from django.utils.translation import ugettext as _
 from django.views.generic import DetailView
+from django.views.generic.edit import UpdateView
 
 
 def merge_dicts(x, y):
@@ -133,6 +134,15 @@ class ActionView(View, MessageView):
                 self.add_message(_('Action {0} not allowed.').format(action),
                                  messages.ERROR)
         return HttpResponseRedirect(self.get_fail_url())
+
+
+class EditView(LoginMixin, UpdateView, MessageView):
+    template_name = 'edit_form.html'
+
+    def form_valid(self, form):
+        form.save()
+        self.add_message(_('Changes successfully saved.'), messages.SUCCESS)
+        return HttpResponseRedirect(self.get_object().get_absolute_url())
 
 
 class HistoryView(DetailView):

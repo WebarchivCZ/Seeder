@@ -3,11 +3,11 @@
 {% load bootstrap3 %}
 
 {% block title %}
-    {% trans 'Edit' %} {{ source }}
+    {% trans 'Edit' %} {{ object }}
 {% endblock %}
 
 {% block page_header %}
-    {% trans 'Edit' %} {{ source }}
+    {% trans 'Edit' %} {{ object }}
 {% endblock %}
 
 
@@ -15,7 +15,6 @@
     <form class="" method="post">
         {% csrf_token %}
         {% bootstrap_form form %}
-        {{ wizard.management_form }}
         <input type="submit" class="btn btn-primary btn-block"/>
     </form>
 {% endblock %}

@@ -26,7 +26,7 @@
                 </tr>
                 <tr>
                     <td>{% trans 'Website' %}</td>
-                    <td>{{ publisher.url }}</td>
+                    <td>{{ publisher.website }}</td>
                 </tr>
                 <tr>
                     <td>{% trans 'Phone' %}</td>
@@ -35,7 +35,7 @@
             </tbody>
         </table>
     </div>
-    <div class="col-md-6 col-sm-6">
+    <div class="col-md-3 col-sm-3">
         <h4>{% trans 'Sources' %}</h4>
         <ul class="list-group">
             {% for source in publisher.source_set.all %}
@@ -43,16 +43,13 @@
                     <a href="{{ source.get_absolute_url }}">{{ source }}</a>
                 </li>
             {% endfor %}
-
-
-
         </ul>
     </div>
-
-
-
-
-
+    <div class="col-md-3 col-sm-3">
+        <h4>{% trans 'Links' %}:</h4>
+        <a href="{% url 'publishers:history' pk=object.pk %}" class="btn btn-primary btn-info btn-block">{% trans 'History' %}</a>
+        <a href="{% url 'publishers:edit' pk=object.pk %}" class="btn btn-primary btn-warning btn-block">{% trans 'Edit' %}</a>
+    </div>
     <div class="col-xs-12 col-md-12">
         <h2>{% trans 'Comments' %}</h2>
         {% include 'bootstrap_comments.html' with comments=comments form=comment_form %}
