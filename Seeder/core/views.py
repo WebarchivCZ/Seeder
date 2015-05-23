@@ -12,7 +12,7 @@ class DashboardView(LoginMixin, TemplateView):
     view_name = 'dashboard'
 
 
-class PasswordChangeDone(LoginMixin, MessageView, View):
+class PasswordChangeDone(MessageView, View):
     """
         Redirect page that adds success message
     """

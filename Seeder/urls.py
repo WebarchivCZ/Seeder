@@ -11,7 +11,7 @@ auth_patterns = patterns(
     url(r'^reset/$', 'password_reset', name='password_reset'),
     url(r'^reset/done/$', 'password_reset_done', name='password_reset_done'),
     url(r'^reset/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$', 'password_reset_confirm', name='password_reset_confirm'),  # noqa
-    url(r'^reset/done/$', 'password_reset_complete', name='password_reset_complete'),  # noqa
+    url(r'^reset/complete/$', PasswordChangeDone.as_view(), name='password_reset_complete'),  # noqa
     url(r'^passwd/done/$', PasswordChangeDone.as_view(), name='password_change_done'),  # noqa
 
 )
