@@ -4,38 +4,36 @@
 {% load bootstrap3 %}
 
 {% block title %} {{ source }} {% trans 'history' %} {% endblock %}
-{% block page_header %} <a href="{{ source.get_absolute_url }}">{{ source }}</a> {% trans 'history' %} {% endblock %}
+{% block page_header %}{% trans 'History of' %}  <a href="{{ source.get_absolute_url }}">{{ source }}</a> {% endblock %}
 
 
 {% block content %}
 {% for diff in diffs %}
-    <div class="well">
-        <h4>{{ diff.user }} {{ diff.date|naturaltime }}</h4>
-        <table class="table">
-            <tr>
-                <th>{% trans 'Field' %}</th>
-                <th>{% trans 'Original' %}</th>
-                <th>{% trans 'New' %}</th>
-            </tr>
-            <tbody>
-            {% for field, values in diff.fields_changed.items %}
-                <tr>
-                    <td>{{ field }}</td>
-                    <td>{{ values.original }}</td>
-                    <td>{{ values.changed }}</td>
-                </tr>
-            {% endfor %}
-
-            </tbody>
-        </table>
-
-
-
-
-
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            {{ diff.user.get_full_name }} <span class="pull-right">{{ diff.date|naturaltime }}</span>
+        </div>
+        <div class="panel-body">
+            <table class="table table-condensed table-hover">
+                <thead>
+                    <tr>
+                        <th>{% trans 'Field' %}</th>
+                        <th>{% trans 'Original value' %}</th>
+                        <th>{% trans 'New value' %}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for field, values in diff.fields_changed.items %}
+                    <tr>
+                        <td>{{ field }}</td>
+                        <td>{{ values.original }}</td>
+                        <td>{{ values.changed }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
     </div>
-
-
 {% endfor %}
 
 

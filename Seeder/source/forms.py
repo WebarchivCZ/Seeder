@@ -62,5 +62,5 @@ SeedFormset = modelformset_factory(models.Seed, fields=('url',), extra=7,
 class SourceEditForm(forms.ModelForm):
     class Meta:
         model = models.Source
-        fields = ('name', 'frequency', 'special_contact', 'conspectus',
-                  'sub_conspectus', 'comment', 'alef_number')
+        fields = ('name', 'state', 'frequency', 'special_contact',
+                  'conspectus', 'sub_conspectus', 'comment', 'alef_number')
