@@ -67,6 +67,9 @@
                 <li id="sources">
                     <a href="{% url 'source:list' %}">{% trans 'List sources' %}</a>
                 </li>
+                <li id="publishers">
+                    <a href="{% url 'source:list' %}">{% trans 'List publishers' %}</a>
+                </li>
             </ul>
             <ul class="nav nav-sidebar">
                 <li><a href="https://github.com/WebArchivCZ/Seeder">Github</a></li>
@@ -92,9 +95,9 @@
 
 <script>
     // dynamically activate menu link, yes this seem like a barbaric think to do, but think of all the if conditions in django that does not need to exist!
-    $("#{{ view.view_name }}").addClass('active');
+    var view_name = "#{{ view.view_name }}";
+    $(view_name).addClass('active');
 </script>
-
 
 </body>
 </html>
