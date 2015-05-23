@@ -139,6 +139,7 @@ class HistoryView(DetailView):
     """
         Simple generic view for django reversion history
     """
+    template_name = 'history.html'
 
     def get_context_data(self, **kwargs):
         context = super(HistoryView, self).get_context_data(**kwargs)

@@ -153,7 +153,6 @@ class SourceEdit(LoginMixin, UpdateView, MessageView):
 
 
 class History(LoginMixin, HistoryView):
-    template_name = 'source_history.html'
     view_name = 'sources'
     context_object_name = 'source'
     model = models.Source
