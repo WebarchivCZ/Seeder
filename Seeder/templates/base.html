@@ -38,7 +38,7 @@
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right">
                 <li>
-                    <a href="">{% trans 'Profile' %}</a>
+                    <a href="{% url 'core:user_edit' %}">{% trans 'Profile' %}</a>
                 </li>
                 <li>
                     <a href="{% url 'password_change' %}">{% trans 'Change password' %}</a>

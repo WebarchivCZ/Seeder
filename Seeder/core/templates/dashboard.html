@@ -1,4 +1,9 @@
 {% extends 'base.html' %}
+{% load i18n %}
+
+{% block page_header %}
+{% trans 'Welcome' %}, {{ user.get_full_name }}
+{% endblock %}
 
 {% block content %}
     Lorem ipsum dolor sit amet, consectetur adipisicing elit. A accusamus delectus dignissimos distinctio doloribus est excepturi inventore iste libero, magnam maxime minus nemo non obcaecati quaerat vel voluptatem. Et, voluptatum!
