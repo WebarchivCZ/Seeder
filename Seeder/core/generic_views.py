@@ -14,6 +14,7 @@ from django.utils.translation import ugettext as _
 from django.views.generic import DetailView
 from django.views.generic.edit import UpdateView
 
+from django_tables2 import SingleTableView
 from utils import dict_diff, merge_dicts
 
 
@@ -137,4 +138,23 @@ class HistoryView(DetailView):
                     })
         context['diffs'] = diffs
         context['versions'] = versions
+        return context
+
+
+class FilteredListView(SingleTableView):
+    template_name = 'filtered_list.html'
+    context_object_name = 'objects'
+    table_pagination = {"per_page": 20}
+
+    table_class = None
+    filter_class = None
+
+    def get_table_data(self):
+        queryset = super(FilteredListView, self).get_table_data()
+        return self.filter_class(self.request.GET, queryset=queryset)
+
+    def get_context_data(self, **kwargs):
+        context = super(FilteredListView, self).get_context_data(**kwargs)
+        context['filter'] = self.filter_class(data=self.request.GET)
+        context['filter_active'] = bool(self.request.GET)
         return context

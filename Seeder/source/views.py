@@ -7,17 +7,16 @@ import constants
 from django.views.generic import DetailView
 from django.http.response import HttpResponseRedirect
 from django.utils.translation import ugettext as _
-from django_tables2 import SingleTableView
 from django.db.models import Q
 
 from formtools.wizard.views import SessionWizardView
 from publishers.forms import PublisherForm
 from datetime import datetime
-from core.generic_views import LoginMixin, HistoryView, EditView
+from core import generic_views
 from comments.views import CommentViewGeneric
 
 
-class SourceView(LoginMixin):
+class SourceView(generic_views.LoginMixin):
     view_name = 'sources'
     model = models.Source
 
@@ -34,7 +33,7 @@ def show_publisher_form(wizard):
     return not cleaned_data.get('publisher', False)
 
 
-class AddSource(LoginMixin, SessionWizardView):
+class AddSource(generic_views.LoginMixin, SessionWizardView):
     template_name = 'add_source.html'
     view_name = 'add_source'
 
@@ -139,30 +138,17 @@ class SourceDetail(SourceView, DetailView, CommentViewGeneric):
     threaded_comments = True
 
 
-class SourceEdit(SourceView, EditView):
+class SourceEdit(SourceView, generic_views.EditView):
     form_class = forms.SourceEditForm
 
 
-class History(SourceView, HistoryView):
+class History(SourceView, generic_views.HistoryView):
     """
         History log
     """
 
 
-class SourceList(SourceView, SingleTableView):
-    template_name = 'filtered_list.html'
+class SourceList(SourceView, generic_views.FilteredListView):
     title = _('Sources')
-    context_object_name = 'sources'
     table_class = tables.SourceTable
     filter_class = field_filters.SourceFilter
-    table_pagination = {"per_page": 20}
-
-    def get_table_data(self):
-        queryset = super(SourceList, self).get_table_data()
-        return self.filter_class(self.request.GET, queryset=queryset)
-
-    def get_context_data(self, **kwargs):
-        context = super(SourceList, self).get_context_data(**kwargs)
-        context['filter'] = self.filter_class(data=self.request.GET)
-        context['filter_active'] = bool(self.request.GET)
-        return context
