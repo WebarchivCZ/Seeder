@@ -142,12 +142,15 @@ class HistoryView(DetailView):
 
 
 class FilteredListView(SingleTableView):
+    """
+        Abstract view class for list views with filters
+    """
     template_name = 'filtered_list.html'
     context_object_name = 'objects'
     table_pagination = {"per_page": 20}
 
-    table_class = None
-    filter_class = None
+    table_class = NotImplemented
+    filter_class = NotImplemented
 
     def get_table_data(self):
         queryset = super(FilteredListView, self).get_table_data()

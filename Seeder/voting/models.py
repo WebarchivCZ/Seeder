@@ -91,6 +91,9 @@ class Vote(BaseModel):
         max_length=10,
         choices=constants.VOTE_CHOICES)
 
+    def __unicode__(self):
+        return _('{0} - {1}').format(self.author, self.get_vote_display())
+
     def get_css_class(self):
         """
             Returns bootstrap status class
