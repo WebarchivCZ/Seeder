@@ -120,3 +120,10 @@ class Contract(BaseModel):
                                      max_length=12)
 
     valid = models.BooleanField(default=True)
+
+    def __unicode__(self):
+        return _('{0} contract from {1} to {1}').format(
+            self.get_contract_type_display(),
+            self.date_start,
+            self.date_end or '---'
+        )
