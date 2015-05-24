@@ -18,7 +18,14 @@
         {{ wizard.management_form }}
 
         <div id="seed_holder">
-            {% bootstrap_formset form %}
+            {{ form.management_form }}
+            {% if form.non_form_errors %}
+              <div class="non-field-errors">
+                {% for err in form.non_form_errors %}
+                  <div class="alert alert-danger">{{ err }}</div>
+                {% endfor %}
+              </div>
+            {% endif %}
         </div>
         <input type="button" class="btn btn-block" id="add_seed" value="{% trans 'Add seed url' %}">
         <input type="submit" class="btn btn-primary btn-block"/>
@@ -35,16 +42,25 @@
         // so we have to update these values
 
         var prefix = "{{ form.prefix }}";
-        var total_form_id = '#id_' + prefix + '-TOTAL_FORMS';
-        $('#add_seed').click(function () {
-            var new_form_content = $('#seed_empty_form').html();
-            var n_index = parseInt($(total_form_id).val());
+        var n_index = 0;
+        var new_form_content = $('#seed_empty_form').html();
+        function new_seed() {
             var new_content = new_form_content;
             n_index += 1;
-            $(total_form_id).val(parseInt(n_index));
             $('#seed_holder').append(
                 new_content.replace(/__prefix__/g, n_index)
             );
+        }
+
+        $('#add_seed').click(function () {
+            new_seed();
         });
+
+        // initial seeds:
+        for (i=0; i>7; i++) {
+            new_seed();
+        }
+
+
     </script>
 {% endblock %}
