@@ -73,14 +73,6 @@ class Source(BaseModel):
     def get_absolute_url(self):
         return reverse('source:detail', args=[str(self.id)])
 
-    def get_valid_contracts(self):
-        """
-        Returns contracts linking to this model that are valid and did not
-        expire.
-        """
-        return self.contract_set.filter(Q(valid=True) & Q(
-            Q(date_end__gte=datetime.now()) | Q(date_end=None)))
-
 
 @reversion.register(exclude=('last_changed',))
 class Seed(BaseModel):
@@ -108,6 +100,18 @@ class Seed(BaseModel):
         return self.url
 
 
+class ContractManager(models.Manager):
+    """
+        Custom manager for filtering active contracts
+    """
+
+    def valid(self):
+        return self.get_queryset().filter(
+            Q(valid=True) &
+            Q(Q(date_end__gte=datetime.now()) | Q(date_end=None))
+        )
+
+
 @reversion.register(exclude=('last_changed',))
 class Contract(BaseModel):
     source = models.ForeignKey(Source)
@@ -121,8 +125,10 @@ class Contract(BaseModel):
 
     valid = models.BooleanField(default=True)
 
+    objects = ContractManager()
+
     def __unicode__(self):
-        return _('{0} contract from {1} to {1}').format(
+        return _('{0} from {1} to {2}').format(
             self.get_contract_type_display(),
             self.date_start,
             self.date_end or '---'
