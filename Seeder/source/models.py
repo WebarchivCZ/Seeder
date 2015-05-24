@@ -36,7 +36,7 @@ class Source(BaseModel):
 
     state = models.CharField(
         verbose_name=_('State'),
-        max_length=3,
+        max_length=15,
         choices=constants.SOURCE_STATES,
         default=constants.STATE_VOTE)
 

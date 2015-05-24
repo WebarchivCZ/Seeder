@@ -29,7 +29,7 @@ def process_voting_round(instance, created, **kwargs):
     if not created:
         source = instance.source
         if (instance.state == constants.VOTE_APPROVE and
-                source.get_valid_contracts()):
+                source.contract_set.valid()):
             source.state = source_constants.STATE_RUNNING
         else:
             source.state = constants.VOTE_TO_SOURCE[instance.state]
