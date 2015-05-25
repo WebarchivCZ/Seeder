@@ -47,7 +47,8 @@ INSTALLED_APPS = (
     'publishers',
     'source',
     'voting',
-    'comments'
+    'comments',
+    'contracts',
 )
 
 
