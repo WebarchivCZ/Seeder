@@ -10,8 +10,10 @@ from django.utils.translation import ugettext as _
 from django.db.models import Q
 
 from formtools.wizard.views import SessionWizardView
-from publishers.forms import PublisherForm
 from datetime import datetime
+
+from contracts.models import Contract
+from publishers.forms import PublisherForm
 from core import generic_views
 from comments.views import CommentViewGeneric
 
@@ -116,7 +118,7 @@ class AddSource(generic_views.LoginMixin, SessionWizardView):
         source.save()
 
         if source_form.cleaned_data['open_license']:
-            contract = models.Contract(
+            contract = Contract(
                 source=source,
                 date_start=datetime.now(),
                 contract_type=constants.CONTRACT_CREATIVE_COMMONS

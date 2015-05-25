@@ -35,7 +35,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'django.contrib.humanize',
 
-    'djangobower',
+    # 'djangobower', # everything is on cdn
     'django_tables2',
     'django_filters',
     'bootstrap3',
@@ -96,11 +96,7 @@ TEMPLATE_DIRS = (
 
 
 BOWER_COMPONENTS_ROOT = BASE_DIR
-BOWER_INSTALLED_APPS = (
-    'jquery',
-    'typeahead.js',
-    'bootstrap'
-)
+BOWER_INSTALLED_APPS = ()   # everything is on CDN now
 
 
 LOGIN_URL = '/auth/login/'
