@@ -78,8 +78,17 @@
         {% endfor %}
 
         <h4>{% trans 'Links' %}:</h4>
-        <a href="{% url 'source:history' pk=source.pk %}" class="btn btn-primary btn-info btn-block">{% trans 'History' %}</a>
-        <a href="{% url 'source:edit' pk=source.pk %}" class="btn btn-primary btn-warning btn-block">{% trans 'Edit' %}</a>
+            <a href="{% url 'source:history' pk=source.pk %}" class="btn btn-primary btn-info btn-block">{% trans 'History' %}</a>
+            <a href="{% url 'source:edit' pk=source.pk %}" class="btn btn-primary btn-warning btn-block">{% trans 'Edit' %}</a>
+        <h4>{% trans 'Contracts' %}:</h4>
+        {% for contract in source.contract_set.all %}
+            <a href="" class="btn btn-primary btn-block btn-{{ contract.get_style }}">{{ contract }}</a>
+        {% empty %}
+            <p>Sorry no contracts yet.</p>
+        {% endfor %}
+        
+    
+    
     </div>
 
     <div class="col-xs-12 col-md-12">
