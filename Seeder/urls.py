@@ -18,6 +18,7 @@ auth_patterns = patterns(
 
 urlpatterns = patterns(
     '',
+    url(r'^ckeditor/', include('ckeditor.urls')),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^auth/', include(auth_patterns)),
     url(r'^source/', include('source.urls', namespace='source')),

@@ -1,5 +1,6 @@
 import constants
 import reversion
+import uuid
 
 from datetime import datetime
 
@@ -9,6 +10,7 @@ from django.utils.translation import ugettext as _
 
 from core.models import BaseModel
 from source.models import Source
+from ckeditor.fields import RichTextField
 
 
 class ContractManager(models.Manager):
@@ -26,6 +28,8 @@ class ContractManager(models.Manager):
 @reversion.register(exclude=('last_changed',))
 class Contract(BaseModel):
     source = models.ForeignKey(Source)
+    state = models.CharField(choices=constants.CONTRACT_STATES,
+                             max_length=15)
 
     date_start = models.DateField()
     date_end = models.DateField(null=True, blank=True)
@@ -34,7 +38,12 @@ class Contract(BaseModel):
     contract_type = models.CharField(choices=constants.CONTRACT_TYPE_CHOICES,
                                      max_length=12)
 
-    valid = models.BooleanField(default=True)
+    in_communication = models.BooleanField(
+        help_text=_('Does the publisher responds to the emails'),
+        default=False)
+
+    access_token = models.CharField(default=lambda: str(uuid.uuid4()),
+                                    max_length=37)
 
     objects = ContractManager()
 
@@ -50,20 +59,36 @@ class Contract(BaseModel):
         Checks that contract is valid and that it did not expire.
         If it is expired self.valid will be set to false.
         """
-        if self.valid:
+        if self.state == constants.CONTRACT_STATE_SIGNED:
             expired = (self.date_end < datetime.now()
                        if self.date_end else False)
             if expired:
-                self.valid = False
+                self.state = constants.CONTRACT_STATE_EXPIRED
                 self.save()
             return not expired
-        return self.valid
+        return False
 
     def get_style(self):
         """
         Helper class to get css class according to status of the contract
-        :return:
         """
         if self.is_valid():
             return 'success'
         return 'danger'
+
+
+@reversion.register(exclude=('last_changed',))
+class EmailNegotiation(models.Model):
+    """
+        This model represents an email that is going to be sent to the
+        publisher, its content will be pre-filled with html template.
+    """
+    contract = models.ForeignKey(Contract)
+    sent = models.BooleanField(default=False)
+
+    scheduled_date = models.DateField(_('When to send this message'))
+    content = RichTextField()
+    template = models.CharField(max_length=64)
+
+    class Meta:
+        ordering = ('scheduled_date', )

@@ -42,6 +42,7 @@ INSTALLED_APPS = (
     'mptt',
     'formtools',
     'reversion',
+    'ckeditor',
 
     'core',
     'publishers',
@@ -117,3 +118,5 @@ STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static_root')
 
 MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
+CKEDITOR_UPLOAD_PATH = "uploads/"
+CKEDITOR_IMAGE_BACKEND = 'pillow'
