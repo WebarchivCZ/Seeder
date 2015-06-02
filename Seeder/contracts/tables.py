@@ -5,14 +5,17 @@ from core.utils import AbsoluteURLColumn, NaturalDatetimeColumn
 
 
 class ContractTable(tables.Table):
-    name = AbsoluteURLColumn()
+    link = AbsoluteURLColumn(accessor='__unicode__')
+    source = AbsoluteURLColumn()
+    publisher = AbsoluteURLColumn(accessor='source.publisher')
     created = NaturalDatetimeColumn()
     last_changed = NaturalDatetimeColumn()
 
     class Meta:
         model = models.Contract
-        fields = ('source', 'state', 'date_start', 'date_end',
-                  'contract_type', 'in_communication')
+        fields = ('source', 'publisher', 'state', 'date_start', 'date_end',
+                  'contract_type', 'in_communication', 'created',
+                  'last_changed', 'link')
 
         attrs = {
             'class': 'table table-striped table-hover'

@@ -7,6 +7,7 @@ from datetime import datetime
 from django.db import models
 from django.db.models.query_utils import Q
 from django.utils.translation import ugettext as _
+from django.core.urlresolvers import reverse
 
 from core.models import BaseModel
 from source.models import Source
@@ -29,6 +30,7 @@ class ContractManager(models.Manager):
 class Contract(BaseModel):
     source = models.ForeignKey(Source)
     state = models.CharField(choices=constants.CONTRACT_STATES,
+                             default=constants.CONTRACT_STATE_NEGOTIATION,
                              max_length=15)
 
     date_start = models.DateField()
@@ -53,6 +55,10 @@ class Contract(BaseModel):
             self.date_start,
             self.date_end or '---'
         )
+
+    def get_absolute_url(self):
+        return reverse('contracts:detail', args=[str(self.id)])
+
 
     def is_valid(self):
         """

@@ -1,4 +1,3 @@
-# pylint: disable=W0613
 import models
 import django_tables2 as tables
 
