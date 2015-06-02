@@ -39,7 +39,7 @@ class Contract(BaseModel):
                                      max_length=12)
 
     in_communication = models.BooleanField(
-        help_text=_('Does the publisher responds to the emails'),
+        help_text=_('Does the publisher responds to the emails?'),
         default=False)
 
     access_token = models.CharField(default=lambda: str(uuid.uuid4()),
