@@ -24,6 +24,7 @@ urlpatterns = patterns(
     url(r'^source/', include('source.urls', namespace='source')),
     url(r'^publisher/', include('publishers.urls', namespace='publishers')),
     url(r'^voting/', include('voting.urls', namespace='voting')),
+    url(r'^contracts/', include('contracts.urls', namespace='contracts')),
 
     # beware: wild card regexp!
     url(r'^', include('core.urls', namespace='core'))
