@@ -20,16 +20,16 @@ class Detail(ContractView, DetailView, CommentViewGeneric):
 
 
 class Edit(ContractView, generic_views.EditView):
-    form_class = forms.PublisherForm
+    form_class = forms.EditForm
 
 
 class History(ContractView, generic_views.HistoryView):
     """
-        History of changes to publishers
+        History of changes to contracts
     """
 
 
 class ListView(ContractView, generic_views.FilteredListView):
-    title = _('Sources')
-    table_class = tables.PublisherTable
-    filter_class = field_filters.PublisherFilter
+    title = _('Contracts')
+    table_class = tables.ContractTable
+    filter_class = field_filters.ContractFilter
