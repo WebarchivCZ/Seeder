@@ -122,7 +122,7 @@ class AddSource(generic_views.LoginMixin, SessionWizardView):
                 source=source,
                 date_start=datetime.now(),
                 contract_type=contract_constants.CONTRACT_CREATIVE_COMMONS,
-                state=contract_constants.CONTRACT_STATE_SIGNED
+                state=contract_constants.CONTRACT_STATE_VALID
             )
             contract.save()
 

@@ -21,7 +21,7 @@ class ContractManager(models.Manager):
 
     def valid(self):
         return self.get_queryset().filter(
-            Q(state=constants.CONTRACT_STATE_SIGNED) &
+            Q(state=constants.CONTRACT_STATE_VALID) &
             Q(Q(date_end__gte=datetime.now()) | Q(date_end=None))
         )
 
@@ -63,7 +63,7 @@ class Contract(BaseModel):
         Checks that contract is valid and that it did not expire.
         If it is expired self.valid will be set to false.
         """
-        if self.state == constants.CONTRACT_STATE_SIGNED:
+        if self.state == constants.CONTRACT_STATE_VALID:
             expired = (self.date_end < datetime.now()
                        if self.date_end else False)
             if expired:
