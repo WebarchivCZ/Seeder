@@ -78,3 +78,4 @@ bower_components/
 
 local_settings.py
 static_root/
+media/*
