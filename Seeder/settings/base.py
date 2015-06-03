@@ -116,6 +116,8 @@ CRISPY_TEMPLATE_PACK = 'bootstrap3'
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static_root')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
 
 MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
 CKEDITOR_UPLOAD_PATH = "uploads/"
