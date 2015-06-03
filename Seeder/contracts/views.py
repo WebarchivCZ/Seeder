@@ -3,7 +3,7 @@ import forms
 import tables
 import field_filters
 
-from django.views.generic import DetailView
+from django.views.generic import DetailView, CreateView
 from django.utils.translation import ugettext as _
 
 from core import generic_views
@@ -17,6 +17,10 @@ class ContractView(generic_views.LoginMixin):
 
 class Detail(ContractView, DetailView, CommentViewGeneric):
     template_name = 'contract.html'
+
+
+class Create(ContractView, CreateView):
+    form_class = forms.CreateForm
 
 
 class Edit(ContractView, generic_views.EditView):
