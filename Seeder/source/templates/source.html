@@ -72,14 +72,15 @@
 
 
     <div class="col-md-3 col-sm-3 pull-right">
+        <h4>{% trans 'Links' %}:</h4>
+            <a href="{% url 'source:history' pk=source.pk %}" class="btn btn-primary btn-info btn-block">{% trans 'History' %}</a>
+            <a href="{% url 'source:edit' pk=source.pk %}" class="btn btn-primary btn-warning btn-block">{% trans 'Edit' %}</a>
+    
         <h4>{% trans 'Voting rounds' %}</h4>
         {% for voting_round in source.votinground_set.all %}
             <a href="{{ voting_round.get_absolute_url }}" class="btn btn-block btn-{{ voting_round.get_css_class }}">{{ voting_round }}</a>
         {% endfor %}
 
-        <h4>{% trans 'Links' %}:</h4>
-            <a href="{% url 'source:history' pk=source.pk %}" class="btn btn-primary btn-info btn-block">{% trans 'History' %}</a>
-            <a href="{% url 'source:edit' pk=source.pk %}" class="btn btn-primary btn-warning btn-block">{% trans 'Edit' %}</a>
         <h4>{% trans 'Contracts' %}:</h4>
         {% for contract in source.contract_set.all %}
             <a href="{{ contract.get_absolute_url }}" class="btn btn-primary btn-block btn-{{ contract.get_style }}">{{ contract }}</a>

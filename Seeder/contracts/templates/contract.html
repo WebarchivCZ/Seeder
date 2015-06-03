@@ -63,7 +63,7 @@
             {% endfor %}
         </ul>
     </div>
-    <div class="col-md-3 col-sm-3">
+    <div class="col-md-3 col-sm-3 pull-right">
         <h4>{% trans 'Links' %}:</h4>
         <a href="{% url 'contracts:history' pk=object.pk %}" class="btn btn-primary btn-info btn-block">{% trans 'History' %}</a>
         <a href="{% url 'contracts:edit' pk=object.pk %}" class="btn btn-primary btn-warning btn-block">{% trans 'Edit' %}</a>
