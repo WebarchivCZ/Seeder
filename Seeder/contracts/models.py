@@ -21,7 +21,7 @@ class ContractManager(models.Manager):
 
     def valid(self):
         return self.get_queryset().filter(
-            Q(valid=True) &
+            Q(state=constants.CONTRACT_STATE_SIGNED) &
             Q(Q(date_end__gte=datetime.now()) | Q(date_end=None))
         )
 
@@ -50,15 +50,13 @@ class Contract(BaseModel):
     objects = ContractManager()
 
     def __unicode__(self):
-        return _('{0} valid from {1} to {2}').format(
-            self.get_contract_type_display(),
-            self.date_start,
-            self.date_end or '---'
+        return _('{pk}/{year}').format(
+            pk=self.pk,
+            year=self.date_start.year
         )
 
     def get_absolute_url(self):
         return reverse('contracts:detail', args=[str(self.id)])
-
 
     def is_valid(self):
         """
