@@ -2,7 +2,6 @@ import forms
 import models
 import tables
 import field_filters
-import constants
 
 from django.views.generic import DetailView
 from django.http.response import HttpResponseRedirect
@@ -16,6 +15,7 @@ from contracts.models import Contract
 from publishers.forms import PublisherForm
 from core import generic_views
 from comments.views import CommentViewGeneric
+from contracts import constants as contract_constants
 
 
 class SourceView(generic_views.LoginMixin):
@@ -121,7 +121,8 @@ class AddSource(generic_views.LoginMixin, SessionWizardView):
             contract = Contract(
                 source=source,
                 date_start=datetime.now(),
-                contract_type=constants.CONTRACT_CREATIVE_COMMONS
+                contract_type=contract_constants.CONTRACT_CREATIVE_COMMONS,
+                state=contract_constants.CONTRACT_STATE_SIGNED
             )
             contract.save()
 
