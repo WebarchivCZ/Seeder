@@ -13,9 +13,9 @@ class ContractTable(tables.Table):
 
     class Meta:
         model = models.Contract
-        fields = ('source', 'publisher', 'state', 'date_start', 'date_end',
+        fields = ('link', 'source', 'publisher', 'state', 'date_start', 'date_end',
                   'contract_type', 'in_communication', 'created',
-                  'last_changed', 'link')
+                  'last_changed')
 
         attrs = {
             'class': 'table table-striped table-hover'
