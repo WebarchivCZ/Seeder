@@ -1,4 +1,5 @@
 from django.utils.translation import ugettext as _
+from source import constants as source_constants
 
 
 CONTRACT_STATE_NEGOTIATION = 'NEGOTIATION'
@@ -13,6 +14,13 @@ CONTRACT_STATES = (
     (CONTRACT_STATE_VALID, _('Contract is valid')),
     (CONTRACT_STATE_EXPIRED, _('Contract expired')),
 )
+
+
+STATE_CONVERSION = {
+    CONTRACT_STATE_DECLINED: source_constants.STATE_DECLINED_BY_PUBLISHER,
+    CONTRACT_STATE_VALID: source_constants.STATE_RUNNING,
+    CONTRACT_STATE_EXPIRED: source_constants.STATE_CONTRACT_EXPIRED,
+}
 
 
 NEGOTIATION_TEMPLATES = [
