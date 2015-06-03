@@ -75,7 +75,7 @@
         <h4>{% trans 'Links' %}:</h4>
             <a href="{% url 'source:history' pk=source.pk %}" class="btn btn-primary btn-info btn-block">{% trans 'History' %}</a>
             <a href="{% url 'source:edit' pk=source.pk %}" class="btn btn-primary btn-warning btn-block">{% trans 'Edit' %}</a>
-    
+
         <h4>{% trans 'Voting rounds' %}</h4>
         {% for voting_round in source.votinground_set.all %}
             <a href="{{ voting_round.get_absolute_url }}" class="btn btn-block btn-{{ voting_round.get_css_class }}">{{ voting_round }}</a>
