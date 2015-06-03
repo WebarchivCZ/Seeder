@@ -82,7 +82,7 @@
             <a href="{% url 'source:edit' pk=source.pk %}" class="btn btn-primary btn-warning btn-block">{% trans 'Edit' %}</a>
         <h4>{% trans 'Contracts' %}:</h4>
         {% for contract in source.contract_set.all %}
-            <a href="" class="btn btn-primary btn-block btn-{{ contract.get_style }}">{{ contract }}</a>
+            <a href="{{ contract.get_absolute_url }}" class="btn btn-primary btn-block btn-{{ contract.get_style }}">{{ contract }}</a>
         {% empty %}
             <p>Sorry no contracts yet.</p>
         {% endfor %}
