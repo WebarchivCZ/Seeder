@@ -120,7 +120,7 @@ class AddSource(generic_views.LoginMixin, SessionWizardView):
         if source_form.cleaned_data['open_license']:
             contract = Contract(
                 source=source,
-                date_start=datetime.now(),
+                valid_from=datetime.now(),
                 contract_type=contract_constants.CONTRACT_CREATIVE_COMMONS,
                 state=contract_constants.CONTRACT_STATE_VALID
             )

@@ -13,8 +13,8 @@ class ContractTable(tables.Table):
 
     class Meta:
         model = models.Contract
-        fields = ('link', 'source', 'publisher', 'state', 'date_start', 'date_end',
-                  'contract_type', 'in_communication', 'created',
+        fields = ('link', 'source', 'publisher', 'state', 'valid_to',
+                  'valid_from', 'contract_type', 'in_communication', 'created',
                   'last_changed')
 
         attrs = {

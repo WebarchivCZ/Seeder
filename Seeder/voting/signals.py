@@ -36,7 +36,6 @@ def process_voting_round(instance, created, **kwargs):
             else:
                 contract = Contract(
                     source=source,
-                    date_start=datetime.now(),
                     contract_type=contract_constants.CONTRACT_PROPRIETARY)
                 contract.save()
         else:

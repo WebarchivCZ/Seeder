@@ -22,7 +22,7 @@ class ContractManager(models.Manager):
     def valid(self):
         return self.get_queryset().filter(
             Q(state=constants.CONTRACT_STATE_VALID) &
-            Q(Q(date_end__gte=datetime.now()) | Q(date_end=None))
+            Q(Q(valid_to__gte=datetime.now()) | Q(valid_to=None))
         )
 
 
@@ -33,10 +33,11 @@ class Contract(BaseModel):
                              default=constants.CONTRACT_STATE_NEGOTIATION,
                              max_length=15)
 
-    date_start = models.DateField()
-    date_end = models.DateField(null=True, blank=True)
+    valid_from = models.DateField(null=True, blank=True)
+    valid_to = models.DateField(null=True, blank=True)
 
-    contract_file = models.FileField(null=True, blank=True)
+    contract_file = models.FileField(null=True, blank=True,
+                                     upload_to='contracts')
     contract_type = models.CharField(choices=constants.CONTRACT_TYPE_CHOICES,
                                      max_length=12)
 
@@ -52,7 +53,7 @@ class Contract(BaseModel):
     def __unicode__(self):
         return _('{pk}/{year}').format(
             pk=self.pk,
-            year=self.date_start.year
+            year=self.created.year
         )
 
     def get_absolute_url(self):
@@ -64,8 +65,8 @@ class Contract(BaseModel):
         If it is expired self.valid will be set to false.
         """
         if self.state == constants.CONTRACT_STATE_VALID:
-            expired = (self.date_end < datetime.now()
-                       if self.date_end else False)
+            expired = (self.valid_to < datetime.now()
+                       if self.valid_to else False)
             if expired:
                 self.state = constants.CONTRACT_STATE_EXPIRED
                 self.save()
