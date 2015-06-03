@@ -25,7 +25,6 @@ SOURCE_STATES = (
     (STATE_PUBLISHER_IGNORED_REQUEST, _('Publisher ignored requests')),
     (STATE_CONTRACT_EXPIRED, _('Contract expired')),
     (STATE_CONTRACT_TERMINATED, _('Contract terminated')),
-
 )
 
 
@@ -45,15 +44,6 @@ SEED_STATES = (
     (SEED_STATE_INCLUDE, _('Include in harvest')),
     (SEED_STATE_EXCLUDE, _('Exclude from harvest')),
     (SEED_STATE_OLD, _('Seed is no longer published')),
-)
-
-
-CONTRACT_CREATIVE_COMMONS = 'CCOMONS'
-CONTRACT_PROPRIETARY = 'PROPRIETARY'
-
-CONTRACT_TYPE_CHOICES = (
-    (CONTRACT_CREATIVE_COMMONS, _('Creative commons')),
-    (CONTRACT_PROPRIETARY, _('Proprietary')),
 )
 
 
