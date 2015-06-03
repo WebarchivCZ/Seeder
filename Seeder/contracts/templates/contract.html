@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}{% trans 'Contract for' %} {{ object.source }}{% endblock %}
+{% block page_header %}{% trans 'Contract for' %} {{ object.source }}{% endblock %}
+
+{% block content %}
+    <div class="col-md-4 col-sm-4">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>{% trans 'Value' %}</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{% trans 'State' %}</td>
+                    <td>{{ object.get_state_display }}</td>
+                </tr>
+                <tr>
+                    <td>{% trans 'Type' %}</td>
+                    <td>{{ object.get_contract_type_display }}</td>
+                </tr>
+                <tr>
+                    <td>{% trans 'Source' %}</td>
+                    <td><a href="{{ object.source.get_absolute_url }}">{{ object.source }}</a></td>
+                </tr>
+                <tr>
+                    <td>{% trans 'Publisher' %}</td>
+                    <td><a href="{{ object.source.publisher.get_absolute_url }}">{{ object.source.publisher }}</a></td>
+                </tr>
+                <tr>
+                    <td>{% trans 'Valid from' %}</td>
+                    <td>{{ object.date_start }}</td>
+                </tr>
+                <tr>
+                    <td>{% trans 'Valid to' %}</td>
+                    <td>{{ publisher.date_end }}</td>
+                </tr>
+                {% if object.contract_file %}
+                    <tr>
+                        <td>{% trans 'Contract file' %}</td>
+                        <td><a href="{{ object.contract_file.url }}">{{ object.contract_file }}</a></td>
+                    </tr>
+                {% endif %}
+                <tr>
+                    <td>{% trans 'Publisher responds to communication' %}</td>
+                    <td>{{ publisher.in_communication|yesno }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="col-md-3 col-sm-3">
+        <h4>{% trans 'Scheduled emails' %}</h4>
+        <ul class="list-group">
+            {% for email in object.emailnegotiation_set.all %}
+                <li class="list-group-item">
+                    <a href="{{ source.get_absolute_url }}">{{ source }}</a>
+                </li>
+            {% empty %}
+                <p>{% trans 'Sorry, nothing found.' %}</p>
+            {% endfor %}
+        </ul>
+    </div>
+    <div class="col-md-3 col-sm-3">
+        <h4>{% trans 'Links' %}:</h4>
+        <a href="{% url 'contracts:history' pk=object.pk %}" class="btn btn-primary btn-info btn-block">{% trans 'History' %}</a>
+        <a href="{% url 'contracts:edit' pk=object.pk %}" class="btn btn-primary btn-warning btn-block">{% trans 'Edit' %}</a>
+    </div>
+    <div class="col-xs-12 col-md-12">
+        <h2>{% trans 'Comments' %}</h2>
+        {% include 'bootstrap_comments.html' with comments=comments form=comment_form %}
+    </div>
+
+{% endblock %}
