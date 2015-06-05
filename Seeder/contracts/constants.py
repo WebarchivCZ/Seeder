@@ -22,10 +22,12 @@ STATE_CONVERSION = {
     CONTRACT_STATE_EXPIRED: source_constants.STATE_CONTRACT_EXPIRED,
 }
 
+# number of days between each email reminder:
+NEGOTIATION_DELAY = 14
 
 NEGOTIATION_TEMPLATES = [
-    'negotiation/first.html', 'negotiation/second.html',
-    'negotiation/third.html', 'last.html'
+    'negotiations/first.html', 'negotiations/second.html',
+    'negotiations/third.html', 'negotiations/last.html'
 ]
 
 
