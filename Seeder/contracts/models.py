@@ -91,6 +91,8 @@ class EmailNegotiation(models.Model):
     contract = models.ForeignKey(Contract)
     sent = models.BooleanField(default=False)
 
+    title = models.CharField(max_length=64)
+
     scheduled_date = models.DateField(_('When to send this message'))
     content = RichTextField()
     template = models.CharField(max_length=64)
