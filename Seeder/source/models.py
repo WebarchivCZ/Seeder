@@ -7,7 +7,7 @@ from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 
 from core.models import BaseModel
-from publishers.models import Publisher
+from publishers.models import Publisher, ContactPerson
 
 
 @reversion.register(exclude=('last_changed',))
@@ -25,7 +25,8 @@ class Source(BaseModel):
     web_proposal = models.BooleanField(_('Proposed by visitor'), default=False)
     publisher = models.ForeignKey(verbose_name=_('Publisher'), to=Publisher,
                                   null=True, blank=True)
-    special_contact = models.CharField(null=True, blank=True, max_length=64)
+    publisher_contact = models.ForeignKey(ContactPerson)
+
     auto_imported = models.BooleanField(_('Imported from old portal'),
                                         default=False)
 
