@@ -12,10 +12,26 @@ from formtools.wizard.views import SessionWizardView
 from datetime import datetime
 
 from contracts.models import Contract
-from publishers.forms import PublisherForm
+from publishers import forms as publisher_forms
 from core import generic_views
 from comments.views import CommentViewGeneric
 from contracts import constants as contract_constants
+
+
+def show_publisher_create_form(wizard):
+    """
+        Django form wizard condition
+    """
+    cleaned_data = wizard.get_cleaned_data_for_step('source') or {}
+    return not cleaned_data.get('publisher', False)
+
+
+def show_publisher_choose_form(wizard):
+    """
+        Django form wizard condition
+    """
+    cleaned_data = wizard.get_cleaned_data_for_step('source') or {}
+    return cleaned_data.get('publisher', False)
 
 
 class SourceView(generic_views.LoginMixin):
@@ -23,28 +39,17 @@ class SourceView(generic_views.LoginMixin):
     model = models.Source
 
 
-def show_publisher_form(wizard):
-    """
-        This will be called to decide whether publisher form
-        should be shown or not...
-
-        If user already filled out publisher in step `source`
-        then step `publisher` should be skipped.
-    """
-    cleaned_data = wizard.get_cleaned_data_for_step('source') or {}
-    return not cleaned_data.get('publisher', False)
-
-
 class AddSource(generic_views.LoginMixin, SessionWizardView):
     template_name = 'add_source.html'
     view_name = 'add_source'
 
-    form_list = [
+    form_list = (
         ('source', forms.SourceForm),
-        ('publisher', PublisherForm),
+        ('choose_publisher', publisher_forms.ContactChoiceForm),
+        ('create_publisher', publisher_forms.PublisherForm),
         ('seeds', forms.SeedFormset),
         ('duplicity', forms.DuplicityForm),
-    ]
+    )
 
     template_names = {
         'seeds': 'add_seeds.html',
@@ -53,13 +58,15 @@ class AddSource(generic_views.LoginMixin, SessionWizardView):
 
     titles = {
         'source': _('Add source'),
-        'publisher': _('Add publisher'),
+        'create_publisher': _('Add publisher'),
+        'choose_publisher': _('Choose contact person'),
         'seeds': _('Add seeds'),
         'duplicity': _('Check for duplicities'),
     }
 
     condition_dict = {
-        'publisher': show_publisher_form
+        'create_publisher': show_publisher_create_form,
+        'choose_publisher': show_publisher_choose_form
     }
 
     def get_title(self):
@@ -71,13 +78,21 @@ class AddSource(generic_views.LoginMixin, SessionWizardView):
         """
         step = step or self.steps.current
         is_manager = self.request.user.has_perm('core.manage_sources')
+        form_class = self.form_list[step]
+
         if step == 'source' and is_manager:
-            form_class = self.form_list[step]
-            return forms.ManagementSourceForm(
-                data=data,
-                files=files,
-                prefix=self.get_form_prefix(step, form_class))
-        return super(AddSource, self).get_form(step, data, files)
+            form_class = forms.ManagementSourceForm
+        if step == 'choose_publisher':
+            publisher = self.get_cleaned_data_for_step('source')['publisher']
+            form = form_class(prefix=self.get_form_prefix(step, form_class),
+                              data=data, files=files)
+            contact = form.fields['contact']
+            contact.queryset = publisher.contactperson_set.all()
+            contact.initial = contact.queryset[0]
+            return form
+
+        return form_class(prefix=self.get_form_prefix(step, form_class),
+                          data=data, files=files)
 
     def get_template_names(self):
         if self.steps.current in self.template_names:
@@ -102,7 +117,8 @@ class AddSource(generic_views.LoginMixin, SessionWizardView):
         form_dict = kwargs['form_dict']
         user = self.request.user
         source_form = form_dict['source']
-        publisher_form = form_dict.get('publisher', None)
+        publisher_new = form_dict.get('create_publisher', None)
+        publisher_choice = form_dict.get('choose_publisher', None)
         seed_formset = form_dict['seeds']
         is_manager = user.has_perm('core.manage_sources')
 
@@ -112,9 +128,16 @@ class AddSource(generic_views.LoginMixin, SessionWizardView):
         if not is_manager or not source.created_by:
             source.owner = user
 
-        if publisher_form:
-            new_publisher = publisher_form.save()
-            source.publisher = new_publisher
+        if publisher_new:
+            source.publisher, source.publisher_contact = publisher_new.save()
+        if publisher_choice:
+            # this forms has two modes - create new object or choose existing
+            contact = publisher_choice.cleaned_data['contact']
+            if not contact:
+                contact = publisher_choice.save(commit=False)
+                contact.publisher = source.publisher
+                contact.save()
+            source.publisher_contact = contact
         source.save()
 
         if source_form.cleaned_data['open_license']:
