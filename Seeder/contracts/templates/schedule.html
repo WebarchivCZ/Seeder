@@ -3,7 +3,20 @@
 {% load bootstrap3 %}
 {% load staticfiles %}
 
+{% block extrahead %}
+
+{% endblock %}
+
+
 {% block content %}
+    <p>
+        {% blocktrans with contact=source.publisher_contact %}
+            Here you can schedule contact emails that will be sent to {{ contact }},
+            these emails will be sent until you check that publisher responds to communication in contract edit.
+        {% endblocktrans %}
+    </p>
+    <br/>
+
     <form class="" method="post">
         {{ form.media }}
         {% bootstrap_formset form layout='inline' %}

@@ -61,6 +61,8 @@
             {% empty %}
                 <p>{% trans 'Sorry, nothing found.' %}</p>
             {% endfor %}
+            <a href="{% url 'contracts:schedule' pk=object.pk %}" class="btn btn-primary btn-block">{% trans 'Schedule' %}</a>
+
         </ul>
     </div>
     <div class="col-md-3 col-sm-3 pull-right">

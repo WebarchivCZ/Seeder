@@ -5,17 +5,19 @@ import field_filters
 import constants
 
 from datetime import datetime, timedelta
-from django.views.generic.detail import SingleObjectMixin
 from django.views.generic import DetailView, FormView
 from django.utils.translation import ugettext as _
 from django.template.loader import render_to_string
+from django.forms.models import modelformset_factory
+from django.http.response import HttpResponseRedirect
 
-from core import generic_views
 from comments.views import CommentViewGeneric
 from source.models import Source
+from core.generic_views import (ObjectMixinFixed, LoginMixin, EditView,
+                                HistoryView, FilteredListView)
 
 
-class ContractView(generic_views.LoginMixin):
+class ContractView(LoginMixin):
     view_name = 'contracts'
     model = models.Contract
 
@@ -24,16 +26,12 @@ class Detail(ContractView, DetailView, CommentViewGeneric):
     template_name = 'contract.html'
 
 
-class Create(generic_views.LoginMixin, FormView, SingleObjectMixin):
+class Create(LoginMixin, FormView, ObjectMixinFixed):
     form_class = forms.CreateForm
     template_name = 'add_form.html'
     title = _('Add contract')
     view_name = 'contracts'
     model = Source
-
-    def dispatch(self, *args, **kwargs):
-        self.object = self.get_object()
-        return super(Create, self).dispatch(*args, **kwargs)
 
     def form_valid(self, form):
         contract = form.save(commit=False)
@@ -41,26 +39,38 @@ class Create(generic_views.LoginMixin, FormView, SingleObjectMixin):
         contract.save()
 
 
-class Edit(ContractView, generic_views.EditView):
+class Edit(ContractView, EditView):
     form_class = forms.EditForm
 
 
-class History(ContractView, generic_views.HistoryView):
+class History(ContractView, HistoryView):
     """
         History of changes to contracts
     """
 
 
-class ListView(ContractView, generic_views.FilteredListView):
+class ListView(ContractView, FilteredListView):
     title = _('Contracts')
     table_class = tables.ContractTable
     filter_class = field_filters.ContractFilter
 
 
-class Schedule(ContractView, FormView):
-    form_class = forms.ScheduledFormset
+class Schedule(ContractView, FormView, ObjectMixinFixed):
     template_name = 'schedule.html'
     title = _('Schedule emails')
+
+    def get_context_data(self, **kwargs):
+        context = super(Schedule, self).get_context_data(**kwargs)
+        context['source'] = self.object.source
+        return context
+
+    def get_form_class(self):
+        queryset = self.object.emailnegotiation_set.all()
+        extra = 0 if queryset else len(constants.NEGOTIATION_TEMPLATES)
+        return modelformset_factory(
+            models.EmailNegotiation,
+            fields=('scheduled_date', 'title', 'content'),
+            extra=extra, can_delete=True)
 
     def get_initial(self):
         initial = []
@@ -76,3 +86,13 @@ class Schedule(ContractView, FormView):
                 'scheduled_date': date,
             })
         return initial
+
+    def form_valid(self, form):
+        for email in form.save(commit=False):
+            email.contract = self.object
+            email.save()
+
+        for obj in form.deleted_objects:
+            obj.delete()
+
+        return HttpResponseRedirect(self.object.get_absolute_url())
