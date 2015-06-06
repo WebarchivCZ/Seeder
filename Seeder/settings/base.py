@@ -110,7 +110,6 @@ USE_I18N = True
 USE_L10N = True
 USE_TZ = True
 
-CRISPY_TEMPLATE_PACK = 'bootstrap3'
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.7/howto/static-files/
 
@@ -122,3 +121,15 @@ MEDIA_URL = '/media/'
 MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
 CKEDITOR_UPLOAD_PATH = "uploads/"
 CKEDITOR_IMAGE_BACKEND = 'pillow'
+
+
+CKEDITOR_CONFIGS = {
+    'default': {
+        'toolbar': 'Custom',
+        'toolbar_Custom': [
+            ['Bold', 'Italic', 'Underline'],
+            ['NumberedList', 'BulletedList'],
+        ],
+        # 'width': '100%',
+    }
+}
