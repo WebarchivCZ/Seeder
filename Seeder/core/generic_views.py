@@ -12,6 +12,7 @@ from django.views.generic.base import View
 from django.utils.translation import ugettext as _
 from django.views.generic import DetailView
 from django.views.generic.edit import UpdateView
+from django.views.generic.detail import SingleObjectMixin
 
 from django_tables2 import SingleTableView
 from utils import dict_diff
@@ -82,6 +83,16 @@ class EditView(UpdateView, MessageView):
         form.save()
         self.add_message(_('Changes successfully saved.'), messages.SUCCESS)
         return HttpResponseRedirect(self.get_object().get_absolute_url())
+
+
+class ObjectMixinFixed(SingleObjectMixin):
+    """
+    This is fixes mixin that can be used with login and form mixin
+    """
+    def dispatch(self, *args, **kwargs):
+        self.object = self.get_object()
+        return super(ObjectMixinFixed, self).dispatch(*args, **kwargs)
+
 
 
 class HistoryView(DetailView):
