@@ -20,7 +20,7 @@ class Detail(PublisherView, DetailView, CommentViewGeneric):
 
 
 class Edit(PublisherView, generic_views.EditView):
-    form_class = forms.PublisherForm
+    form_class = forms.PublisherEditForm
 
 
 class History(PublisherView, generic_views.HistoryView):
