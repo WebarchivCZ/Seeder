@@ -5,4 +5,4 @@ from core.utils import EmptyFilter
 class PublisherFilter(EmptyFilter):
     class Meta:
         model = models.Publisher
-        fields = ('name', 'website', 'email', 'phone')
+        fields = ('name', 'website')

@@ -11,7 +11,7 @@ class PublisherTable(tables.Table):
 
     class Meta:
         model = models.Publisher
-        fields = ('name', 'website', 'email', 'phone')
+        fields = ('name', 'website')
 
         attrs = {
             'class': 'table table-striped table-hover'
