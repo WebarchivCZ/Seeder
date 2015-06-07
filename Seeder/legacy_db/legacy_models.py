@@ -1,22 +1,8 @@
-# This is an auto-generated Django model module.
-# legacy models as printed by inspectdb
+# Legacy model for extracting data from old system
 
 from __future__ import unicode_literals
 
 from django.db import models
-
-
-class ApplicationInfo(models.Model):
-    key = models.CharField(unique=True, max_length=255)
-    value = models.CharField(max_length=255, blank=True, null=True)
-    group = models.CharField(max_length=4)
-    description = models.CharField(max_length=255, blank=True, null=True)
-    date_created = models.DateTimeField()
-    date_changed = models.DateTimeField(blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'application_info'
 
 
 class Conspectus(models.Model):
@@ -26,15 +12,6 @@ class Conspectus(models.Model):
     class Meta:
         managed = False
         db_table = 'conspectus'
-
-
-class ConspectusEn(models.Model):
-    category = models.CharField(unique=True, max_length=150)
-    comments = models.TextField(blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'conspectus_en'
 
 
 class ConspectusSubcategories(models.Model):
@@ -50,21 +27,9 @@ class ConspectusSubcategories(models.Model):
         unique_together = (('id', 'conspectus_id'),)
 
 
-class ConspectusSubcategoriesEn(models.Model):
-    id = models.IntegerField()
-    conspectus_id = models.IntegerField()
-    subcategory_id = models.CharField(max_length=40, blank=True, null=True)
-    subcategory = models.CharField(max_length=255)
-    comments = models.TextField(blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'conspectus_subcategories_en'
-        unique_together = (('id', 'conspectus_id'),)
-
 
 class Contacts(models.Model):
-    publisher_id = models.IntegerField(blank=True, null=True)
+    publisher = models.ForeignKey(Publishers)
     name = models.CharField(max_length=150, blank=True, null=True)
     email = models.CharField(max_length=150)
     phone = models.CharField(max_length=20, blank=True, null=True)
@@ -116,22 +81,6 @@ class CorrespondenceType(models.Model):
         db_table = 'correspondence_type'
 
 
-class CrawlFreq(models.Model):
-    frequency = models.CharField(max_length=45)
-    comments = models.TextField(blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'crawl_freq'
-
-
-class Crawls(models.Model):
-    date = models.DateField(blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'crawls'
-
 
 class CuratorTokens(models.Model):
     curator_id = models.IntegerField()
@@ -166,15 +115,6 @@ class Curators(models.Model):
         db_table = 'curators'
 
 
-class CuratorsRoles(models.Model):
-    curator_id = models.IntegerField()
-    role_id = models.IntegerField()
-
-    class Meta:
-        managed = False
-        db_table = 'curators_roles'
-        unique_together = (('curator_id', 'role_id'),)
-
 
 class Keywords(models.Model):
     id = models.IntegerField(primary_key=True)
@@ -195,17 +135,6 @@ class KeywordsResources(models.Model):
         db_table = 'keywords_resources'
         unique_together = (('resource_id', 'keyword_id'),)
 
-
-class Nominations(models.Model):
-    resource_id = models.IntegerField()
-    date_nominated = models.DateTimeField()
-    date_resolved = models.DateTimeField(blank=True, null=True)
-    accepted = models.IntegerField(blank=True, null=True)
-    proposer_id = models.IntegerField()
-
-    class Meta:
-        managed = False
-        db_table = 'nominations'
 
 
 class Publishers(models.Model):
