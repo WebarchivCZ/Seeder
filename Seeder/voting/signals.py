@@ -1,5 +1,4 @@
 # pylint: disable=W0613
-from datetime import datetime
 from django.dispatch import receiver
 from django.db.models.signals import post_save
 
@@ -33,11 +32,13 @@ def process_voting_round(instance, created, **kwargs):
         if instance.state == constants.VOTE_APPROVE:
             if source.contract_set.valid():
                 source.state = source_constants.STATE_RUNNING
+                source.save()
+                return
             else:
                 contract = Contract(
                     source=source,
                     contract_type=contract_constants.CONTRACT_PROPRIETARY)
                 contract.save()
-        else:
-            source.state = constants.VOTE_TO_SOURCE[instance.state]
+
+        source.state = constants.VOTE_TO_SOURCE[instance.state]
         source.save()
