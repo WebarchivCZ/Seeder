@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 {% load i18n %}
+{% load humanize %}
+
 
 {% block title %}{% trans 'Contract for' %} {{ object.source }}{% endblock %}
 {% block page_header %}{% trans 'Contract for' %} {{ object.source }}{% endblock %}
@@ -51,12 +53,13 @@
             </tbody>
         </table>
     </div>
-    <div class="col-md-3 col-sm-3">
+    <div class="col-md-5 col-sm-5">
         <h4>{% trans 'Scheduled emails' %}</h4>
         <ul class="list-group">
             {% for email in object.emailnegotiation_set.all %}
                 <li class="list-group-item">
-                    <a href="{{ source.get_absolute_url }}">{{ source }}</a>
+                    {{ email.title }}<br/>
+                    {{ email.scheduled_date|naturalday }}, {% trans 'sent' %}: {{ email.sent|yesno }}
                 </li>
             {% empty %}
                 <p>{% trans 'Sorry, nothing found.' %}</p>
@@ -65,7 +68,7 @@
 
         </ul>
     </div>
-    <div class="col-md-3 col-sm-3 pull-right">
+    <div class="col-md-3 col-sm-3">
         <h4>{% trans 'Links' %}:</h4>
         <a href="{% url 'contracts:history' pk=object.pk %}" class="btn btn-primary btn-info btn-block">{% trans 'History' %}</a>
         <a href="{% url 'contracts:edit' pk=object.pk %}" class="btn btn-primary btn-warning btn-block">{% trans 'Edit' %}</a>
