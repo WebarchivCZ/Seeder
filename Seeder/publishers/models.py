@@ -12,7 +12,7 @@ class Publisher(BaseModel):
     """
         Publisher of the Source(s), Publisher can have multiple contacts.
     """
-    name = models.CharField(_('Name'), max_length=64)
+    name = models.CharField(_('Name'), max_length=150)
     website = models.URLField(_('Website'), blank=True, null=True)
 
     class Meta:
