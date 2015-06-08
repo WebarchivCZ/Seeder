@@ -37,6 +37,9 @@ class ContactPerson(BaseModel):
     name = models.CharField(_('Name'), max_length=64)
     email = models.EmailField(_('E-mail'), blank=True, null=True)
     phone = models.CharField(_('Phone'), blank=True, null=True, max_length=64)
+    address = models.TextField(_('Address'), blank=True, null=True)
+    position = models.CharField(_('Position'), max_length=64,
+                                blank=True, null=True)
 
     class Meta:
         verbose_name = _('Publisher contact')
