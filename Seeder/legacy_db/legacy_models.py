@@ -27,7 +27,6 @@ class ConspectusSubcategories(models.Model):
         unique_together = (('id', 'conspectus_id'),)
 
 
-
 class Contacts(models.Model):
     publisher = models.ForeignKey(Publishers)
     name = models.CharField(max_length=150, blank=True, null=True)
@@ -81,7 +80,6 @@ class CorrespondenceType(models.Model):
         db_table = 'correspondence_type'
 
 
-
 class CuratorTokens(models.Model):
     curator_id = models.IntegerField()
     user_agent = models.CharField(max_length=40)
@@ -92,28 +90,6 @@ class CuratorTokens(models.Model):
     class Meta:
         managed = False
         db_table = 'curator_tokens'
-
-
-class Curators(models.Model):
-    username = models.CharField(unique=True, max_length=50)
-    password = models.CharField(max_length=50)
-    vocative = models.CharField(max_length=30)
-    firstname = models.CharField(max_length=50)
-    lastname = models.CharField(max_length=100)
-    email = models.CharField(max_length=100)
-    icq = models.IntegerField(blank=True, null=True)
-    skype = models.CharField(max_length=100, blank=True, null=True)
-    active = models.IntegerField()
-    active_from = models.DateField(blank=True, null=True)
-    active_to = models.DateField(blank=True, null=True)
-    comments = models.TextField(blank=True, null=True)
-    logins = models.IntegerField()
-    last_login = models.IntegerField(blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'curators'
-
 
 
 class Keywords(models.Model):
@@ -134,7 +110,6 @@ class KeywordsResources(models.Model):
         managed = False
         db_table = 'keywords_resources'
         unique_together = (('resource_id', 'keyword_id'),)
-
 
 
 class Publishers(models.Model):
