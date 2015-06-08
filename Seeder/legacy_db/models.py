@@ -38,3 +38,12 @@ class Curators(models.Model):
     class Meta:
         managed = False
         db_table = 'curators'
+
+
+class Publishers(models.Model):
+    name = models.CharField(max_length=150)
+    comments = models.TextField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'publishers'

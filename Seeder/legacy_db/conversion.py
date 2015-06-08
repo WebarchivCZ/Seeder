@@ -2,8 +2,8 @@ from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
 from django.conf import settings
 
-from models import TransferRecord, Curators
-
+from models import TransferRecord, Curators, Publishers
+from publishers.models import Publisher
 
 DATABASE = 'legacy_seeder'
 
@@ -80,6 +80,12 @@ class UserConversion(Conversion):
     }
 
 
+class PublisherConversion(Conversion):
+    source_model = Publishers
+    target_model = Publisher
+    field_map = {'name': 'name'}    # yeah very hard-core map
+
+
 CONVERSIONS = [
-    UserConversion
+    UserConversion, PublisherConversion
 ]

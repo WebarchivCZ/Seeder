@@ -80,18 +80,6 @@ class CorrespondenceType(models.Model):
         db_table = 'correspondence_type'
 
 
-class CuratorTokens(models.Model):
-    curator_id = models.IntegerField()
-    user_agent = models.CharField(max_length=40)
-    token = models.CharField(unique=True, max_length=32)
-    created = models.IntegerField()
-    expires = models.IntegerField()
-
-    class Meta:
-        managed = False
-        db_table = 'curator_tokens'
-
-
 class Keywords(models.Model):
     id = models.IntegerField(primary_key=True)
     keyword = models.CharField(max_length=100)
