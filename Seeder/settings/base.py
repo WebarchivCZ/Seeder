@@ -50,6 +50,7 @@ INSTALLED_APPS = (
     'voting',
     'comments',
     'contracts',
+    'legacy_db',
 )
 
 
