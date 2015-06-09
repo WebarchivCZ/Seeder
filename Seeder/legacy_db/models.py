@@ -44,6 +44,9 @@ class Publishers(models.Model):
     name = models.CharField(max_length=150)
     comments = models.TextField(blank=True, null=True)
 
+    def __unicode__(self):
+        return self.name
+
     class Meta:
         managed = False
         db_table = 'publishers'
@@ -57,6 +60,9 @@ class Contacts(models.Model):
     address = models.CharField(max_length=255, blank=True, null=True)
     position = models.CharField(max_length=45, blank=True, null=True)
     comments = models.TextField(blank=True, null=True)
+
+    def __unicode__(self):
+        return self.name
 
     class Meta:
         managed = False
