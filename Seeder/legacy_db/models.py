@@ -47,3 +47,17 @@ class Publishers(models.Model):
     class Meta:
         managed = False
         db_table = 'publishers'
+
+
+class Contacts(models.Model):
+    publisher = models.ForeignKey(Publishers)
+    name = models.CharField(max_length=150, blank=True, null=True)
+    email = models.CharField(max_length=150)
+    phone = models.CharField(max_length=20, blank=True, null=True)
+    address = models.CharField(max_length=255, blank=True, null=True)
+    position = models.CharField(max_length=45, blank=True, null=True)
+    comments = models.TextField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'contacts'

@@ -46,7 +46,7 @@ class ContactPerson(BaseModel):
         verbose_name_plural = _('Publisher contacts')
 
     def __unicode__(self):
-        return self.name
+        return self.email
 
     def get_absolute_url(self):
         return reverse('publishers:detail', kwargs={'pk': self.publisher.id})
