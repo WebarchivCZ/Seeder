@@ -1,4 +1,7 @@
+import os
+
 from fabric.api import local, task, run
+from settings.base import INSTALLED_APPS
 
 
 commands = {
@@ -15,6 +18,17 @@ commands = {
     ]
 }
 
+
+@task(alias='ym')
+def yapf_migrations():
+    """
+    Refines migrations files so they would comply to pep8
+    :return:
+    """
+    for app in INSTALLED_APPS:
+        migration_dir = os.path.join(app, 'migrations')
+        if os.path.isdir(app) and os.path.isdir(migration_dir):
+            local('yapf -r -i {0}'.format(migration_dir))
 
 @task(alias='rns')
 def runserver():
