@@ -7,4 +7,6 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         for conversion in CONVERSIONS:
-            conversion().start_conversion()
+            conversion = conversion()
+            conversion.start_conversion()
+            conversion.print_skipped()

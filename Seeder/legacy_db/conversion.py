@@ -1,6 +1,6 @@
 import sys
 
-from django.db.models import Model, ObjectDoesNotExist
+from django.db.models import ObjectDoesNotExist
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
 
@@ -8,6 +8,7 @@ from models import TransferRecord, Curators, Publishers, Contacts
 from publishers.models import Publisher, ContactPerson
 
 DATABASE = 'legacy_seeder'
+get_ct = lambda m: ContentType.objects.get_for_model(m)
 
 
 class Conversion(object):
@@ -18,12 +19,18 @@ class Conversion(object):
     target_model = NotImplemented
     db_name = DATABASE
     # set to false if you want to omit synced records
-    update_existing = True
+    update_existing = False
     field_map = {}
     skipped = []
+    initial_data = {}
+    foreign_keys = {}
 
-    current_step = 0
+    step = 0
     steps = 0
+
+    def __init__(self):
+        self.source_type = get_ct(self.source_model)
+        self.target_type = get_ct(self.target_model)
 
     def progress_bar(self):
         """
@@ -31,96 +38,91 @@ class Conversion(object):
         """
 
         bar_len = 80
-        filled_len = int(round(bar_len * self.current_step / float(self.steps)))
+        filled_len = int(round(bar_len * self.step / float(self.steps)))
         bar_filling = '=' * filled_len + '-' * (bar_len - filled_len)
         status_bar = '[{0}]'.format(bar_filling)
         name = self.__class__.__name__
-        sys.stdout.write('{status_bar}: {name}\r'.format(name=name, status_bar=status_bar))
+        sys.stdout.write('{bar}: {name}\r'.format(name=name, bar=status_bar))
 
     def start_conversion(self):
-        source_objects = self.source_model.objects.using(self.db_name).all()
-        self.steps = source_objects.count()
-        for source in source_objects:
-            self.current_step += 1
+        if self.update_existing:
+            dict_list = self.source_model.objects.using(
+                self.db_name).all().distinct().values()
+        else:
+            
+
+
+        self.steps = len(dict_list)
+
+        for source_dict in dict_list:
+            self.step += 1
             self.progress_bar()
-            record = self.get_record_for_legacy_model(source)
-            clean_source = self.clean(source)
-            if record and self.update_existing:
-                self.process_existing(clean_source, record)
-            else:
-                self.create_new(clean_source)
 
-        skipped_ids = ', '.join([str(s.id) for s in self.skipped])
+            cleaned = self.clean(source_dict)
+            try:
+                record = TransferRecord.objects.get(
+                    original_type=self.source_type,
+                    original_id=source_dict['id'])
+                if self.update_existing:
+                    self.process_existing(cleaned, record)
+            except ObjectDoesNotExist:
+                target = self.create_new(cleaned)
+                if target:
+                    TransferRecord(
+                        original_type=self.source_type,
+                        original_id=source_dict['id'],
+                        target_type=self.target_type,
+                        target_id=target.pk
+                    ).save()
 
+    def print_skipped(self):
+        skipped_ids = ', '.join([str(s['id']) for s in self.skipped])
         print('\nSkipped objects: {0}'.format(skipped_ids))
 
+    def create_new(self, source_dict):
+        try:
+            data = self.get_field_data(source_dict)
+            updated_data = self.pre_save(data)
+        except ObjectDoesNotExist:  # this means that the fk is invalid
+            self.skipped.append(source_dict)
+            return
+
+        new_object = self.target_model(**updated_data)
+        new_object.save()
+        return new_object
+
+    def get_field_data(self, source_dict):
+        data = self.initial_data.copy()
+        for original_name, new_name in self.field_map.items():
+            if original_name in self.foreign_keys:
+                record = TransferRecord.objects.get(
+                    original_type=get_ct(self.foreign_keys[original_name]),
+                    original_id=source_dict[original_name + '_id'])
+                value = record.target_object
+            else:
+                value = source_dict[original_name]
+            data[new_name] = value
+        return data
+
     def process_existing(self, source, record):
-        target = self.sync_fields(source, record.target_object)
-        target.save()
+        target = record.target_object
+        target.save(update_fields=self.get_field_data(source))
 
-    def get_record_for_legacy_model(self, instance):
-        """
-        :param instance: legacy instance
-        :return: TransferRecord or None
-        """
-        records = TransferRecord.objects.filter(
-            original_type=ContentType.objects.get_for_model(instance),
-            original_id=instance.id)
-        return records[0] if records else None
-
-    def clean(self, instance):
+    def clean(self, source_dict):
         """
         This method should be overridden in case you need to do
         custom cleaning of model - converting fields values etc
         """
-        return instance
+        return source_dict
 
-    def pre_save(self, obj_instance):
+    def pre_save(self, target_dict):
         """
         This method should be overridden in case you need to change some
         stuff on the instance before its saved.
-        :param obj_instance: unsaved instance
+        :param target_dict: unsaved instance
         :return: modified instance
         """
-        return obj_instance
-
-    def sync_fields(self, original_object, new_object):
-        for original, new in self.field_map.items():
-            value = original_object.__getattribute__(original)
-            # watch-out, we might have a fk rel
-            if isinstance(value, Model):
-                value = self.find_fk_object(value)
-                new_object.__setattr__(new, value)
-        return new_object
-
-    def find_fk_object(self, fk_object):
-        """
-        Tries to find the new representation of the fk_object
-        :param fk_object: instance of the object
-        :return: new model representation
-        """
-        record = self.get_record_for_legacy_model(fk_object)
-        if record:
-            return record.target_object
-        else:
-            raise Exception('Object {0} was not synced yet'.format(fk_object))
-
-    def create_new(self, source):
-        new_record = TransferRecord(
-            original_type=ContentType.objects.get_for_model(source),
-            original_id=source.id)
-        try:
-            new_object = self.sync_fields(source, self.target_model())
-        except ObjectDoesNotExist:  # this means that the fk is invalid
-            self.skipped.append(source)
-            return
-
-        new_object = self.pre_save(new_object)
-        new_object.save()
-
-        new_record.target_type = ContentType.objects.get_for_model(new_object)
-        new_record.target_id = new_object.pk
-        new_record.save()
+        return target_dict
 
 
 class UserConversion(Conversion):
@@ -153,10 +155,11 @@ class ContactsConversion(Conversion):
         'address': 'address',
         'position': 'position',
     }
+    foreign_keys = {'publisher': Publishers}
 
     def clean(self, instance):
-        if instance.name is None:
-            instance.name = instance.email
+        if instance['name'] is None:
+            instance['name'] = instance['email']
         return instance
 
 CONVERSIONS = [
