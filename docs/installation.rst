@@ -4,6 +4,7 @@ Installation
 Prerequisites:
 --------------
 
+ - python 2.7
  - PostgreSQL
  - `PIP <https://pip.pypa.io/en/latest/installing.html>`_
  - nginx
@@ -16,9 +17,11 @@ Prerequisites:
 Virtualenv
 ----------
 
+Virtualenv is something like chroot for python libraries.
 Installation instructions: https://virtualenv.pypa.io/en/latest/installation.html .
-
 Then create virtualenv seeder: ``$virtualenv seeder``
+You have to activate it every time before using python:
+``source seeder/bin/activate``.
 
 
 Configuration
