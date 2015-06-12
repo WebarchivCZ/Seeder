@@ -46,12 +46,17 @@ class Conversion(object):
 
     def start_conversion(self):
         if self.update_existing:
-            dict_list = self.source_model.objects.using(
-                self.db_name).all().distinct().values()
+            queryset = self.source_model.objects.using(self.db_name).all()
         else:
-            
+            synced_ids = TransferRecord.objects.filter(
+                original_type=self.source_type).order_by(
+                'id').values_list('original_id', flat=True)
 
+            # we need to convert synced_ids to list because its on different db
+            queryset = self.source_model.objects.using(self.db_name).exclude(
+                id__in=list(synced_ids))
 
+        dict_list = queryset.distinct().values()
         self.steps = len(dict_list)
 
         for source_dict in dict_list:
@@ -141,7 +146,6 @@ class PublisherConversion(Conversion):
     source_model = Publishers
     target_model = Publisher
     field_map = {'name': 'name'}    # yeah very hard-core map
-    update_existing = False         # no need to update them now
 
 
 class ContactsConversion(Conversion):
