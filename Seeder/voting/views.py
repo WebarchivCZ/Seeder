@@ -52,6 +52,10 @@ class Resolve(LoginMixin, SingleObjectMixin, ActionView):
     allowed_actions = constants.VOTE_DICT.keys()
     permission = 'sources.manage_sources'
 
+    def check_permissions(self, user):
+        manager = super(Resolve, self).check_permissions(user)
+        return manager or self.get_object().source.owner == user
+
     def process_action(self, action):
         voting_round = self.get_object()
         voting_round.state = action

@@ -62,8 +62,11 @@ class ActionView(View, MessageView):
     def get(self, request, *args, **kwargs):
         return HttpResponseRedirect(self.get_fail_url())
 
+    def check_permissions(self, user):
+        return self.permission and user.has_perm(self.permission)
+
     def post(self, request, *args, **kwargs):
-        if self.permission and not request.user.has_perm(self.permission):
+        if not self.check_permissions(request.user):
             self.add_message(_('Insufficient permissions.'), messages.ERROR)
         else:
             action = request.POST.get('action', None)
@@ -92,7 +95,6 @@ class ObjectMixinFixed(SingleObjectMixin):
     def dispatch(self, *args, **kwargs):
         self.object = self.get_object()
         return super(ObjectMixinFixed, self).dispatch(*args, **kwargs)
-
 
 
 class HistoryView(DetailView):
