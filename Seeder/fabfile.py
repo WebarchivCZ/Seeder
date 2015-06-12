@@ -12,6 +12,7 @@ commands = {
         './manage.py migrate'],
     'static': ['./manage.py collectstatic --noinput'],
     'pull': ['git pull --rebase'],
+    'touch_reload': ['touch ../../reload_seeder.touch'],
     'reqs': [
         'pip install -r ../requirements.txt',
         'pip install -r ../requirements_dev.txt'
