@@ -49,7 +49,7 @@ class Contract(BaseModel):
         help_text=_('Does the publisher responds to the emails?'),
         default=False)
 
-    access_token = models.CharField(default=get_str_uuid(),
+    access_token = models.CharField(null=True, blank=True,
                                     max_length=37)
 
     objects = ContractManager()

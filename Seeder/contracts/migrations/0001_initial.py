@@ -25,7 +25,7 @@ class Migration(migrations.Migration):
                 ('contract_file', models.FileField(null=True, upload_to=b'contracts', blank=True)),
                 ('contract_type', models.CharField(max_length=12, choices=[(b'CCOMMONS', 'Creative commons'), (b'PROPRIETARY', 'Proprietary')])),
                 ('in_communication', models.BooleanField(default=False, help_text='Does the publisher responds to the emails?')),
-                ('access_token', models.CharField(default=b'd519081b-1064-42c1-a16d-cd62581d2c67', max_length=37)),
+                ('access_token', models.CharField(max_length=37)),
                 ('source', models.ForeignKey(to='source.Source')),
             ],
             options={
