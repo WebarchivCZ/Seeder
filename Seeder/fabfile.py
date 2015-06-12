@@ -50,5 +50,5 @@ def deploy_locally():
 
 @task(alias='d')
 def deploy():
-    map(run, commands['pull'] + commands['reqs'] +  commands['syncdb'] +
+    map(run, commands['pull'] + commands['reqs'] + commands['syncdb'] +
         commands['static'])
