@@ -10,6 +10,9 @@ https://docs.djangoproject.com/en/1.7/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
+
+from django.utils.translation import ugettext_lazy as _
+
 # that double dirname is necessary since setting is in folder...
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
@@ -25,7 +28,6 @@ ALLOWED_HOSTS = []
 
 
 # Application definition
-
 INSTALLED_APPS = (
     'django.contrib.admin',
     'django.contrib.auth',
@@ -96,6 +98,11 @@ TEMPLATE_DIRS = (
     os.path.join(BASE_DIR, 'templates'),
 )
 
+
+LANGUAGES = (
+    ('cs', _('Czech')),
+    ('en', _('English')),
+)
 
 BOWER_COMPONENTS_ROOT = BASE_DIR
 BOWER_INSTALLED_APPS = ()   # everything is on CDN now
