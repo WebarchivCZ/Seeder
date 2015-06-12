@@ -86,15 +86,6 @@ class KeywordsResources(models.Model):
         unique_together = (('resource_id', 'keyword_id'),)
 
 
-class Publishers(models.Model):
-    name = models.CharField(max_length=150)
-    comments = models.TextField(blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'publishers'
-
-
 class QaChecks(models.Model):
     resource = models.ForeignKey('Resources')
     curator = models.ForeignKey(Curators)

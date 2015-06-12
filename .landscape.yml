@@ -5,3 +5,6 @@ uses:
 autodetect: yes
 requirements:
     - requirements.txt
+pylint:
+    disable:
+        - old-style-class
