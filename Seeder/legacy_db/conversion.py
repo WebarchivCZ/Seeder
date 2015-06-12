@@ -24,6 +24,7 @@ class Conversion(object):
     skipped = []
     initial_data = {}
     foreign_keys = {}
+    ignore_broken_fks = False   # ignore broken foreign key links
 
     step = 0
     steps = 0
@@ -100,10 +101,16 @@ class Conversion(object):
         data = self.initial_data.copy()
         for original_name, new_name in self.field_map.items():
             if original_name in self.foreign_keys:
-                record = TransferRecord.objects.get(
-                    original_type=get_ct(self.foreign_keys[original_name]),
-                    original_id=source_dict[original_name + '_id'])
-                value = record.target_object
+                try:
+                    record = TransferRecord.objects.get(
+                        original_type=get_ct(self.foreign_keys[original_name]),
+                        original_id=source_dict[original_name + '_id'])
+                    value = record.target_object
+                except ObjectDoesNotExist, e:
+                    if self.ignore_broken_fks:
+                        value = None
+                    else:
+                        raise e
             else:
                 value = source_dict[original_name]
             data[new_name] = value
