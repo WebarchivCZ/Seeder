@@ -34,7 +34,7 @@ class ContactPerson(BaseModel):
     """
     publisher = models.ForeignKey(Publisher)
 
-    name = models.CharField(_('Name'), max_length=128)
+    name = models.CharField(_('Name'), max_length=256)
     email = models.EmailField(_('E-mail'), blank=True, null=True)
     phone = models.CharField(_('Phone'), blank=True, null=True, max_length=128)
     address = models.TextField(_('Address'), blank=True, null=True)
