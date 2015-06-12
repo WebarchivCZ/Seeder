@@ -34,11 +34,11 @@ class ContactPerson(BaseModel):
     """
     publisher = models.ForeignKey(Publisher)
 
-    name = models.CharField(_('Name'), max_length=64)
+    name = models.CharField(_('Name'), max_length=128)
     email = models.EmailField(_('E-mail'), blank=True, null=True)
-    phone = models.CharField(_('Phone'), blank=True, null=True, max_length=64)
+    phone = models.CharField(_('Phone'), blank=True, null=True, max_length=128)
     address = models.TextField(_('Address'), blank=True, null=True)
-    position = models.CharField(_('Position'), max_length=64,
+    position = models.CharField(_('Position'), max_length=256,
                                 blank=True, null=True)
 
     class Meta:
