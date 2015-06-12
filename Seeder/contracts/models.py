@@ -14,6 +14,10 @@ from source.models import Source
 from ckeditor.fields import RichTextField
 
 
+def get_str_uuid():
+    return str(uuid.uuid4())
+
+
 class ContractManager(models.Manager):
     """
         Custom manager for filtering active contracts
@@ -45,7 +49,7 @@ class Contract(BaseModel):
         help_text=_('Does the publisher responds to the emails?'),
         default=False)
 
-    access_token = models.CharField(default=lambda: str(uuid.uuid4()),
+    access_token = models.CharField(default=get_str_uuid(),
                                     max_length=37)
 
     objects = ContractManager()
