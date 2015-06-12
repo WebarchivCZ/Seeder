@@ -7,9 +7,12 @@ commands = {
         './manage.py migrate auth',
         './manage.py syncdb --noinput',
         './manage.py migrate'],
-    'static': [
-        './manage.py collectstatic --noinput'],
-    'pull': ['git pull --rebase']
+    'static': ['./manage.py collectstatic --noinput'],
+    'pull': ['git pull --rebase'],
+    'reqs': [
+        'pip install -r ../requirements.txt',
+        'pip install -r ../requirements_dev.txt'
+    ]
 }
 
 
@@ -47,4 +50,5 @@ def deploy_locally():
 
 @task(alias='d')
 def deploy():
-    map(run, commands['pull'] + commands['syncdb'] + commands['static'])
+    map(run, commands['pull'] + commands['reqs'] +  commands['syncdb'] +
+        commands['static'])
