@@ -30,6 +30,7 @@ def yapf_migrations():
         if os.path.isdir(app) and os.path.isdir(migration_dir):
             local('yapf -r -i {0}'.format(migration_dir))
 
+
 @task(alias='rns')
 def runserver():
     map(local, commands['runserver'])
