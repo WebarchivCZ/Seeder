@@ -10,6 +10,22 @@ from core.models import BaseModel
 from publishers.models import Publisher, ContactPerson
 
 
+class Category(models.Model):
+    name = models.CharField(unique=True, max_length=150)
+
+    def __unicode__(self):
+        return self.name
+
+
+class SubCategory(models.Model):
+    category = models.ForeignKey(Category)
+    name = models.CharField(max_length=255)
+    subcategory_id = models.CharField(max_length=40, blank=True, null=True)
+
+    def __unicode__(self):
+        return self.name
+
+
 @reversion.register(exclude=('last_changed',))
 class Source(BaseModel):
     """
@@ -25,12 +41,15 @@ class Source(BaseModel):
     web_proposal = models.BooleanField(_('Proposed by visitor'), default=False)
     publisher = models.ForeignKey(verbose_name=_('Publisher'), to=Publisher,
                                   null=True, blank=True)
-    publisher_contact = models.ForeignKey(ContactPerson)
 
-    auto_imported = models.BooleanField(_('Imported from old portal'),
-                                        default=False)
+    publisher_contact = models.ForeignKey(ContactPerson, null=True, blank=True)
+    suggested_by = models.CharField(_('Suggested by'),
+                                    max_length=10,
+                                    null=True, blank=True,
+                                    choices=constants.SUGGESTED_CHOICES)
 
-    alef_number = models.IntegerField(null=True, blank=True)
+    aleph_id = models.CharField(max_length=100, blank=True, null=True)
+    issn = models.CharField(max_length=20, blank=True, null=True)
 
     state = models.CharField(
         verbose_name=_('State'),
@@ -42,18 +61,11 @@ class Source(BaseModel):
         verbose_name=_('Frequency'),
         choices=constants.SOURCE_FREQUENCY_PER_YEAR)
 
-    conspectus = models.CharField(
-        verbose_name=_('Conspectus'),
-        choices=constants.CONSPECTUS_CHOICES,
-        null=True,
-        blank=True,
-        max_length=5)
-    sub_conspectus = models.CharField(
-        verbose_name=_('Sub conspectus'),
-        choices=constants.SUB_CONSPECTUS_CHOICES,
-        null=True,
-        blank=True,
-        max_length=5)
+    category = models.ForeignKey(Category, verbose_name=_('Category'),
+                                 null=True, blank=True)
+    sub_category = models.ForeignKey(SubCategory,
+                                     verbose_name=_('Sub category'),
+                                     null=True, blank=True)
 
     class Meta:
         verbose_name = _('Source')

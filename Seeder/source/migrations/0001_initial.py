@@ -112,28 +112,27 @@ class Migration(migrations.Migration):
                          b'Chemie. Krystalografie. Mineralogick\xc3\xa9 v\xc4\x9bdy'
                      ),
                      (b'11',
-                      b'Jazyk, lingvistika, liter\xc3\xa1rn\xc3\xad v\xc4\x9bda'),
-                     (
-                         b'12',
-                         b'Knihovnictv\xc3\xad, informatika, v\xc5\xa1eobecn\xc3\xa9, referen\xc4\x8dn\xc3\xad literatura'
-                     ), (b'13', b'Matematika'),
-                     (b'14',
-                      b'L\xc3\xa9ka\xc5\x99stv\xc3\xad'), (
-                          b'15',
-                          b'Politick\xc3\xa9 v\xc4\x9bdy (Politologie, politika, ve\xc5\x99ejn\xc3\xa1 spr\xc3\xa1va, vojenstv\xc3\xad)'
-                      ), (b'16', b'Pr\xc3\xa1vo'), (b'17', b'Psychologie'),
+                      b'Jazyk, lingvistika, liter\xc3\xa1rn\xc3\xad v\xc4\x9bda'
+                      ), (
+                          b'12',
+                          b'Knihovnictv\xc3\xad, informatika, v\xc5\xa1eobecn\xc3\xa9, referen\xc4\x8dn\xc3\xad literatura'
+                      ), (b'13', b'Matematika'),
+                     (b'14', b'L\xc3\xa9ka\xc5\x99stv\xc3\xad'), (
+                         b'15',
+                         b'Politick\xc3\xa9 v\xc4\x9bdy (Politologie, politika, ve\xc5\x99ejn\xc3\xa1 spr\xc3\xa1va, vojenstv\xc3\xad)'
+                     ), (b'16', b'Pr\xc3\xa1vo'), (b'17', b'Psychologie'),
                      (b'18', b'Sociologie'), (
                          b'19',
                          b'Technika, technologie, in\xc5\xbeen\xc3\xbdrstv\xc3\xad'
                      ),
                      (b'20',
-                      b'T\xc4\x9blesn\xc3\xa1 v\xc3\xbdchova a sport. Rekreace'),
-                     (b'21', b'Um\xc4\x9bn\xc3\xad, architektura'), (
-                         b'22',
-                         b'V\xc3\xbdchova a vzd\xc4\x9bl\xc3\xa1v\xc3\xa1n\xc3\xad'
-                     ), (b'23', b'V\xc3\xbdpo\xc4\x8detn\xc3\xad technika'), (
-                         b'24', b'Zem\xc4\x9bd\xc4\x9blstv\xc3\xad'
-                     ), (b'25', b'Beletrie'),
+                      b'T\xc4\x9blesn\xc3\xa1 v\xc3\xbdchova a sport. Rekreace'
+                      ), (b'21', b'Um\xc4\x9bn\xc3\xad, architektura'), (
+                          b'22',
+                          b'V\xc3\xbdchova a vzd\xc4\x9bl\xc3\xa1v\xc3\xa1n\xc3\xad'
+                      ), (b'23', b'V\xc3\xbdpo\xc4\x8detn\xc3\xad technika'), (
+                          b'24', b'Zem\xc4\x9bd\xc4\x9blstv\xc3\xad'
+                      ), (b'25', b'Beletrie'),
                      (b'26',
                       b'Literatura pro d\xc4\x9bti a ml\xc3\xa1de\xc5\xbe')])),
                 ('sub_conspectus', models.CharField(
@@ -141,24 +140,27 @@ class Migration(migrations.Migration):
                     max_length=5,
                     null=True,
                     verbose_name='Sub conspectus',
-                    choices=
-                    [(b'1548', b'304 - Kulturn\xc3\xad politika'),
-                     (b'1549',
-                      b'316.7 - Sociologie kultury Kulturn\xc3\xad \xc5\xbeivot'),
-                     (b'1550', b'39 - Etnologie. Etnografie. Folklor'),
-                     (b'1551', b'391 - Od\xc4\x9bv, m\xc3\xb3da, ozdoby'), (
-                         b'1552',
-                         b'392 - Zvyky, mravy, oby\xc4\x8deje v soukrom\xc3\xa9m \xc5\xbeivot\xc4\x9b'
-                     ), (
-                         b'1553', b'393 - Smrt. Poh\xc5\x99by. Oby\xc4\x8deje p\xc5\x99i \xc3\xbamrt\xc3\xad'
-                     ), (
-                         b'1554', b'394 - Ve\xc5\x99ejn\xc3\xbd a spole\xc4\x8densk\xc3\xbd \xc5\xbeivot. Ka\xc5\xbedodenn\xc3\xad \xc5\xbeivot'
-                     ), (
-                         b'1555', b'395 - Spole\xc4\x8densk\xc3\xa9 chov\xc3\xa1n\xc3\xad. Etiketa'
-                     ), (b'1556', b'398 - Folklor'), (
-                         b'1557', b'572 - Antropologie'
-                     ), (b'1558',
-                         b'599.89 - Hominidae. Hominidi - lid\xc3\xa9')])),
+                    choices=[(b'1548', b'304 - Kulturn\xc3\xad politika'), (
+                        b'1549',
+                        b'316.7 - Sociologie kultury Kulturn\xc3\xad \xc5\xbeivot'
+                    ), (b'1550', b'39 - Etnologie. Etnografie. Folklor'), (
+                        b'1551', b'391 - Od\xc4\x9bv, m\xc3\xb3da, ozdoby'
+                    ), (
+                        b'1552',
+                        b'392 - Zvyky, mravy, oby\xc4\x8deje v soukrom\xc3\xa9m \xc5\xbeivot\xc4\x9b'
+                    ), (
+                        b'1553',
+                        b'393 - Smrt. Poh\xc5\x99by. Oby\xc4\x8deje p\xc5\x99i \xc3\xbamrt\xc3\xad'
+                    ), (
+                        b'1554',
+                        b'394 - Ve\xc5\x99ejn\xc3\xbd a spole\xc4\x8densk\xc3\xbd \xc5\xbeivot. Ka\xc5\xbedodenn\xc3\xad \xc5\xbeivot'
+                    ), (
+                        b'1555',
+                        b'395 - Spole\xc4\x8densk\xc3\xa9 chov\xc3\xa1n\xc3\xad. Etiketa'
+                    ), (b'1556', b'398 - Folklor'), (
+                        b'1557', b'572 - Antropologie'
+                    ), (b'1558',
+                        b'599.89 - Hominidae. Hominidi - lid\xc3\xa9')])),
                 ('created_by', models.ForeignKey(related_name='sources_created',
                                                  to=settings.AUTH_USER_MODEL)),
                 ('owner', models.ForeignKey(verbose_name='Curator',
