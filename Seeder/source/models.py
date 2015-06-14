@@ -36,7 +36,7 @@ class Source(BaseModel):
     """
     created_by = models.ForeignKey(User, related_name='sources_created')
     owner = models.ForeignKey(User, verbose_name=_('Curator'))
-    name = models.CharField(_('Name'), max_length=64)
+    name = models.CharField(_('Name'), max_length=256)
     comment = models.TextField(_('Comment'), null=True, blank=True)
     web_proposal = models.BooleanField(_('Proposed by visitor'), default=False)
     publisher = models.ForeignKey(verbose_name=_('Publisher'), to=Publisher,
@@ -59,7 +59,8 @@ class Source(BaseModel):
 
     frequency = models.IntegerField(
         verbose_name=_('Frequency'),
-        choices=constants.SOURCE_FREQUENCY_PER_YEAR)
+        choices=constants.SOURCE_FREQUENCY_PER_YEAR,
+        blank=True, null=True)
 
     category = models.ForeignKey(Category, verbose_name=_('Category'),
                                  null=True, blank=True)

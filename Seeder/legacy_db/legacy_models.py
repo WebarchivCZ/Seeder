@@ -164,38 +164,6 @@ class ResourceStatus(models.Model):
         db_table = 'resource_status'
 
 
-class Resources(models.Model):
-    title = models.CharField(max_length=200, blank=True, null=True)
-    url = models.CharField(max_length=255, blank=True, null=True)
-    curator = models.ForeignKey(Curators, blank=True, null=True)
-    creator_id = models.IntegerField(blank=True, null=True)
-    contact_id = models.IntegerField(blank=True, null=True)
-    publisher_id = models.IntegerField(blank=True, null=True)
-    contract_id = models.IntegerField(blank=True, null=True)
-    conspectus_id = models.IntegerField(blank=True, null=True)
-    conspectus_subcategory_id = models.IntegerField(blank=True, null=True)
-    crawl_freq_id = models.IntegerField(blank=True, null=True)
-    resource_status_id = models.IntegerField(blank=True, null=True)
-    suggested_by_id = models.IntegerField(blank=True, null=True)
-    rating_result = models.SmallIntegerField(blank=True, null=True)
-    rating_last_round = models.IntegerField()
-    important = models.IntegerField(blank=True, null=True)
-    reevaluate_date = models.DateField(blank=True, null=True)
-    date = models.DateTimeField(blank=True, null=True)
-    aleph_id = models.CharField(max_length=100, blank=True, null=True)
-    issn = models.CharField(max_length=20, blank=True, null=True)
-    catalogued = models.DateTimeField(blank=True, null=True)
-    creative_commons = models.IntegerField(blank=True, null=True)
-    tech_problems = models.TextField(blank=True, null=True)
-    annotation = models.TextField(blank=True, null=True)
-    screenshot_date = models.CharField(max_length=10, blank=True, null=True)
-    comments = models.TextField(blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'resources'
-
-
 class Roles(models.Model):
     name = models.CharField(unique=True, max_length=45)
     description = models.CharField(max_length=255)

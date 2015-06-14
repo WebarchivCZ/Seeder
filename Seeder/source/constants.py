@@ -5,6 +5,7 @@ from django.utils.translation import ugettext as _
 STATE_VOTE = 'voting'
 STATE_DUPLICITY = 'duplicity'
 STATE_WAITING = 'waiting'
+STATE_REEVALUTATION = 'reevaluation'
 STATE_COMMUNICATING = 'communication'
 STATE_ACCEPTED_BY_STAFF = 'vote_accepted'
 STATE_DECLINED_BY_STAFF = 'vote_declined'
@@ -18,6 +19,7 @@ SOURCE_STATES = (
     (STATE_VOTE, _('Voting')),
     (STATE_DUPLICITY, _('Duplicated record')),
     (STATE_WAITING, _('Waiting for response')),
+    (STATE_REEVALUTATION, _('Waiting for reevaluation')),
     (STATE_COMMUNICATING, _('In communication')),
     (STATE_ACCEPTED_BY_STAFF, _('Accepted by staff')),
     (STATE_RUNNING, _('Archiving accepted')),
@@ -29,6 +31,7 @@ SOURCE_STATES = (
 
 
 SOURCE_FREQUENCY_PER_YEAR = (
+    (0, _('Once only')),
     (1, _('Once a year')),
     (2, _('Twice a year')),
     (6, _('Six times per year')),

@@ -1,11 +1,13 @@
 import sys
+import models
+import constants
 
 from django.db.models import ObjectDoesNotExist
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
 
-from models import TransferRecord, Curators, Publishers, Contacts
 from publishers.models import Publisher, ContactPerson
+from source import models as source_models
 
 DATABASE = 'legacy_seeder'
 get_ct = lambda m: ContentType.objects.get_for_model(m)
@@ -21,7 +23,6 @@ class Conversion(object):
     # set to false if you want to omit synced records
     update_existing = False
     field_map = {}
-    skipped = []
     initial_data = {}
     foreign_keys = {}
     ignore_broken_fks = False   # ignore broken foreign key links
@@ -32,6 +33,7 @@ class Conversion(object):
     def __init__(self):
         self.source_type = get_ct(self.source_model)
         self.target_type = get_ct(self.target_model)
+        self.skipped = []
 
     def progress_bar(self):
         """
@@ -46,10 +48,11 @@ class Conversion(object):
         sys.stdout.write('{bar}: {name}\r'.format(name=name, bar=status_bar))
 
     def start_conversion(self):
+        print self.__class__.__name__
         if self.update_existing:
             queryset = self.source_model.objects.using(self.db_name).all()
         else:
-            synced_ids = TransferRecord.objects.filter(
+            synced_ids = models.TransferRecord.objects.filter(
                 original_type=self.source_type).order_by(
                 'id').values_list('original_id', flat=True)
 
@@ -66,7 +69,7 @@ class Conversion(object):
 
             cleaned = self.clean(source_dict)
             try:
-                record = TransferRecord.objects.get(
+                record = models.TransferRecord.objects.get(
                     original_type=self.source_type,
                     original_id=source_dict['id'])
                 if self.update_existing:
@@ -74,7 +77,7 @@ class Conversion(object):
             except ObjectDoesNotExist:
                 target = self.create_new(cleaned)
                 if target:
-                    TransferRecord(
+                    models.TransferRecord(
                         original_type=self.source_type,
                         original_id=source_dict['id'],
                         target_type=self.target_type,
@@ -82,8 +85,9 @@ class Conversion(object):
                     ).save()
 
     def print_skipped(self):
-        skipped_ids = ', '.join([str(s['id']) for s in self.skipped])
-        print('\nSkipped objects: {0}'.format(skipped_ids))
+        if self.skipped:
+            skipped_ids = ', '.join([str(s['id']) for s in self.skipped])
+            print('\nSkipped objects: {0}'.format(skipped_ids))
 
     def create_new(self, source_dict):
         try:
@@ -102,19 +106,30 @@ class Conversion(object):
         for original_name, new_name in self.field_map.items():
             if original_name in self.foreign_keys:
                 try:
-                    record = TransferRecord.objects.get(
+                    record = models.TransferRecord.objects.get(
                         original_type=get_ct(self.foreign_keys[original_name]),
                         original_id=source_dict[original_name + '_id'])
                     value = record.target_object
                 except ObjectDoesNotExist, e:
                     if self.ignore_broken_fks:
-                        value = None
+                        value = self.process_broken_record(source_dict,
+                                                           original_name)
                     else:
                         raise e
             else:
                 value = source_dict[original_name]
             data[new_name] = value
         return data
+
+    def process_broken_record(self, source_dict, field_name):
+        """
+        Method for overriding the behaviour of broken fk records
+        :param source_dict:  source data
+        :param field_name:  field name that failed
+        :return: new value
+        :rtype: object
+        """
+        return None
 
     def process_existing(self, source, record):
         target = record.target_object
@@ -138,7 +153,7 @@ class Conversion(object):
 
 
 class UserConversion(Conversion):
-    source_model = Curators
+    source_model = models.Curators
     target_model = User
 
     field_map = {
@@ -150,13 +165,13 @@ class UserConversion(Conversion):
 
 
 class PublisherConversion(Conversion):
-    source_model = Publishers
+    source_model = models.Publishers
     target_model = Publisher
     field_map = {'name': 'name'}    # yeah very hard-core map
 
 
 class ContactsConversion(Conversion):
-    source_model = Contacts
+    source_model = models.Contacts
     target_model = ContactPerson
     field_map = {
         'publisher': 'publisher',
@@ -166,13 +181,83 @@ class ContactsConversion(Conversion):
         'address': 'address',
         'position': 'position',
     }
-    foreign_keys = {'publisher': Publishers}
+    foreign_keys = {'publisher': models.Publishers}
 
-    def clean(self, instance):
-        if instance['name'] is None:
-            instance['name'] = instance['email']
-        return instance
+    def clean(self, source_dict):
+        if source_dict['name'] is None:
+            source_dict['name'] = source_dict['email']
+        return source_dict
+
+
+class ConspectusConversion(Conversion):
+    source_model = models.Conspectus
+    target_model = source_models.Category
+    field_map = {
+        'category': 'name'
+    }
+
+
+class SubConspectusConversion(Conversion):
+    source_model = models.ConspectusSubcategories
+    target_model = source_models.SubCategory
+    field_map = {
+        'conspectus': 'category',
+        'subcategory_id': 'subcategory_id',
+        'subcategory': 'name',
+    }
+    foreign_keys = {'conspectus': models.Conspectus}
+
+
+class ResourceConversion(Conversion):
+    source_model = models.Resources
+    target_model = source_models.Source
+    ignore_broken_fks = True
+    field_map = {
+        'title': 'name',
+        'curator': 'owner',
+        'publisher': 'publisher',
+        'contact': 'publisher_contact',
+        'crawl_freq_id': 'frequency',
+        'resource_status_id': 'state',
+        'date': 'created',
+        'annotation': 'comment',
+        'creator': 'created_by',
+        'conspectus': 'category',
+        'conspectus_subcategory': 'sub_category',
+        'suggested_by_id': 'suggested_by',
+        'aleph_id': 'aleph_id',
+        'issn': 'issn',
+    }
+
+    foreign_keys = {
+        'conspectus': models.Conspectus,
+        'conspectus_subcategory': models.ConspectusSubcategories,
+        'contact': models.Contacts,
+        'curator': models.Curators,
+        'creator': models.Curators,
+        'publisher': models.Publishers,
+    }
+
+    first_user = None
+
+    def clean(self, source_dict):
+        source_dict['resource_status_id'] = constants.STATE[
+            source_dict['resource_status_id']]
+        source_dict['suggested_by_id'] = constants.SUGGESTED_BY[
+            source_dict['suggested_by_id']]
+        source_dict['crawl_freq_id'] = constants.FREQ[
+            source_dict['crawl_freq_id']]
+        return source_dict
+
+    def process_broken_record(self, source_dict, field_name):
+        if field_name == 'creator':
+            if not self.first_user:
+                self.first_user = User.objects.all()[0]
+            return self.first_user
+        return None
+
 
 CONVERSIONS = [
-    UserConversion, PublisherConversion, ContactsConversion
+    UserConversion, PublisherConversion, ContactsConversion,
+    ConspectusConversion, SubConspectusConversion, ResourceConversion
 ]

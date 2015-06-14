@@ -10,3 +10,4 @@ class Command(BaseCommand):
             conversion = conversion()
             conversion.start_conversion()
             conversion.print_skipped()
+            print '----------'
