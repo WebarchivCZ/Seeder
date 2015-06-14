@@ -1,3 +1,5 @@
+# coding=utf-8
+
 from source import constants as source_constants
 from voting import constants as voting_constants
 
@@ -50,4 +52,11 @@ VOTE_RATING = {
     1: voting_constants.VOTE_APPROVE,
     2: voting_constants.VOTE_APPROVE,
     4: voting_constants.VOTE_DECLINE
+}
+
+SEED_STATE = {
+    1: source_constants.SEED_STATE_INCLUDE,
+    2: source_constants.SEED_STATE_EXCLUDE,
+    3: source_constants.SEED_STATE_OLD,
+    4: source_constants.SEED_STATE_EXCLUDE
 }

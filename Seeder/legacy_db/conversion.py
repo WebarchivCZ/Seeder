@@ -296,8 +296,30 @@ class VoteConversion(Conversion):
     }
 
 
+class SeedConversion(Conversion):
+    source_model = models.Seeds
+    target_model = source_models.Seed
+    field_map = {
+        'resource': 'source',
+        'url': 'url',
+        'seed_status_id': 'state',
+        'redirect': 'redirect',
+        'robots': 'robots',
+        'valid_from': 'from_time',
+        'valid_to': 'to_time',
+    }
+    foreign_keys = {
+        'resource': models.Resources
+    }
+
+    value_conversion = {
+        'seed_status_id': constants.SEED_STATE
+    }
+
+
+
 CONVERSIONS = [
     UserConversion, PublisherConversion, ContactsConversion,
     ConspectusConversion, SubConspectusConversion, ResourceConversion,
-    RatingRoundConversion, VoteConversion
+    RatingRoundConversion, VoteConversion, SeedConversion
 ]

@@ -162,19 +162,6 @@ class SeedStatus(models.Model):
         db_table = 'seed_status'
 
 
-class Seeds(models.Model):
-    resource_id = models.IntegerField(blank=True, null=True)
-    url = models.CharField(max_length=255)
-    seed_status = models.ForeignKey(SeedStatus, blank=True, null=True)
-    redirect = models.IntegerField(blank=True, null=True)
-    robots = models.IntegerField(blank=True, null=True)
-    valid_from = models.DateField(blank=True, null=True)
-    valid_to = models.DateField(blank=True, null=True)
-    comments = models.TextField(blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'seeds'
 
 
 class Subcontracts(models.Model):
