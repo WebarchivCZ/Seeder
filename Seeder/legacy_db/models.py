@@ -131,3 +131,30 @@ class Resources(models.Model):
     class Meta:
         managed = False
         db_table = 'resources'
+
+
+class RatingRounds(models.Model):
+    resource = models.ForeignKey('Resources')
+    round = models.IntegerField()
+    rating_result = models.IntegerField(blank=True, null=True)
+    date_created = models.DateTimeField()
+    date_closed = models.DateTimeField(blank=True, null=True)
+    curator = models.ForeignKey(Curators, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'rating_rounds'
+
+
+class Ratings(models.Model):
+    curator = models.ForeignKey(Curators, blank=True, null=True)
+    resource = models.ForeignKey(Resources, blank=True, null=True)
+    rating = models.SmallIntegerField()
+    tech_problems = models.IntegerField()
+    date = models.DateTimeField()
+    round = models.ForeignKey(RatingRounds, blank=True, null=True)
+    comments = models.TextField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'ratings'

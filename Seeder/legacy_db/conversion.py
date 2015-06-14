@@ -8,6 +8,8 @@ from django.contrib.contenttypes.models import ContentType
 
 from publishers.models import Publisher, ContactPerson
 from source import models as source_models
+from voting.models import VotingRound, Vote
+
 
 DATABASE = 'legacy_seeder'
 get_ct = lambda m: ContentType.objects.get_for_model(m)
@@ -20,12 +22,13 @@ class Conversion(object):
     source_model = NotImplemented
     target_model = NotImplemented
     db_name = DATABASE
-    # set to false if you want to omit synced records
-    update_existing = False
+    update_existing = False  # set to false if you want to omit synced records
     field_map = {}
     initial_data = {}
     foreign_keys = {}
     ignore_broken_fks = False   # ignore broken foreign key links
+    value_conversion = {}       # field name: dict
+    source_dict = None
 
     step = 0
     steps = 0
@@ -67,15 +70,15 @@ class Conversion(object):
             self.step += 1
             self.progress_bar()
 
-            cleaned = self.clean(source_dict)
+            self.source_dict = self.values_conversion(self.clean(source_dict))
             try:
                 record = models.TransferRecord.objects.get(
                     original_type=self.source_type,
                     original_id=source_dict['id'])
                 if self.update_existing:
-                    self.process_existing(cleaned, record)
+                    self.process_existing(record)
             except ObjectDoesNotExist:
-                target = self.create_new(cleaned)
+                target = self.create_new()
                 if target:
                     models.TransferRecord(
                         original_type=self.source_type,
@@ -89,35 +92,34 @@ class Conversion(object):
             skipped_ids = ', '.join([str(s['id']) for s in self.skipped])
             print('\nSkipped objects: {0}'.format(skipped_ids))
 
-    def create_new(self, source_dict):
+    def create_new(self):
         try:
-            data = self.get_field_data(source_dict)
-            updated_data = self.pre_save(data)
+            data = self.get_field_data()
         except ObjectDoesNotExist:  # this means that the fk is invalid
-            self.skipped.append(source_dict)
+            self.skipped.append(self.source_dict)
             return
 
-        new_object = self.target_model(**updated_data)
+        new_object = self.target_model(**data)
         new_object.save()
         return new_object
 
-    def get_field_data(self, source_dict):
+    def get_field_data(self,):
         data = self.initial_data.copy()
         for original_name, new_name in self.field_map.items():
             if original_name in self.foreign_keys:
                 try:
                     record = models.TransferRecord.objects.get(
                         original_type=get_ct(self.foreign_keys[original_name]),
-                        original_id=source_dict[original_name + '_id'])
+                        original_id=self.source_dict[original_name + '_id'])
                     value = record.target_object
                 except ObjectDoesNotExist, e:
                     if self.ignore_broken_fks:
-                        value = self.process_broken_record(source_dict,
+                        value = self.process_broken_record(self.source_dict,
                                                            original_name)
                     else:
                         raise e
             else:
-                value = source_dict[original_name]
+                value = self.source_dict[original_name]
             data[new_name] = value
         return data
 
@@ -131,9 +133,17 @@ class Conversion(object):
         """
         return None
 
-    def process_existing(self, source, record):
+    def process_existing(self, record):
         target = record.target_object
-        target.save(update_fields=self.get_field_data(source))
+        target.save(update_fields=self.get_field_data())
+
+    def values_conversion(self, source_dict):
+        """
+        Converts individual fields
+        """
+        for field_name, conversion_dict in self.value_conversion.items():
+            source_dict[field_name] = conversion_dict[source_dict[field_name]]
+        return source_dict
 
     def clean(self, source_dict):
         """
@@ -141,15 +151,6 @@ class Conversion(object):
         custom cleaning of model - converting fields values etc
         """
         return source_dict
-
-    def pre_save(self, target_dict):
-        """
-        This method should be overridden in case you need to change some
-        stuff on the instance before its saved.
-        :param target_dict: unsaved instance
-        :return: modified instance
-        """
-        return target_dict
 
 
 class UserConversion(Conversion):
@@ -239,15 +240,12 @@ class ResourceConversion(Conversion):
     }
 
     first_user = None
-
-    def clean(self, source_dict):
-        source_dict['resource_status_id'] = constants.STATE[
-            source_dict['resource_status_id']]
-        source_dict['suggested_by_id'] = constants.SUGGESTED_BY[
-            source_dict['suggested_by_id']]
-        source_dict['crawl_freq_id'] = constants.FREQ[
-            source_dict['crawl_freq_id']]
-        return source_dict
+    
+    value_conversions = {
+        'resource_status_id': constants.STATE,
+        'suggested_by_id': constants.SUGGESTED_BY,
+        'crawl_freq_id': constants.FREQ
+    }
 
     def process_broken_record(self, source_dict, field_name):
         if field_name == 'creator':
@@ -257,7 +255,49 @@ class ResourceConversion(Conversion):
         return None
 
 
+class RatingRoundConversion(Conversion):
+    source_model = models.RatingRounds
+    target_model = VotingRound
+    ignore_broken_fks = True
+
+    field_map = {
+        'resource': 'source',
+        'rating_result': 'state',
+        'date_created': 'created',
+        'date_closed': 'date_resolved',
+        'curator': 'resolved_by',
+    }
+    foreign_keys = {
+        'resource': models.Resources,
+        'curator': models.Curators
+    }
+
+    value_conversion = {
+        'rating_result': constants.VOTE_RESULT
+    }
+
+
+class VoteConversion(Conversion):
+    source_model = models.Ratings
+    target_model = Vote
+
+    field_map = {
+        'curator': 'author',
+        'rating': 'vote',
+        'date': 'created',
+        'round': 'voting_round',
+    }
+    foreign_keys = {
+        'curator': models.Curators,
+        'round': models.RatingRounds,
+    }
+    value_conversion = {
+        'rating': constants.VOTE_RATING
+    }
+
+
 CONVERSIONS = [
     UserConversion, PublisherConversion, ContactsConversion,
-    ConspectusConversion, SubConspectusConversion, ResourceConversion
+    ConspectusConversion, SubConspectusConversion, ResourceConversion,
+    RatingRoundConversion, VoteConversion
 ]

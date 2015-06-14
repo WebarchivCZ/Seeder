@@ -5,27 +5,6 @@ from __future__ import unicode_literals
 from django.db import models
 
 
-class Conspectus(models.Model):
-    category = models.CharField(unique=True, max_length=150)
-    comments = models.TextField(blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'conspectus'
-
-
-class ConspectusSubcategories(models.Model):
-    id = models.AutoField()
-    conspectus = models.ForeignKey(Conspectus)
-    subcategory_id = models.CharField(max_length=40, blank=True, null=True)
-    subcategory = models.CharField(max_length=255)
-    comments = models.TextField(blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'conspectus_subcategories'
-        unique_together = (('id', 'conspectus_id'),)
-
 
 class Contracts(models.Model):
     parent = models.ForeignKey('self', blank=True, null=True)

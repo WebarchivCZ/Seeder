@@ -1,6 +1,5 @@
-# -*- coding: utf-8 -*-
-
 from source import constants as source_constants
+from voting import constants as voting_constants
 
 SUGGESTED_BY = {
     1: None,
@@ -11,7 +10,7 @@ SUGGESTED_BY = {
     None: None
 }
 
-
+# https://github.com/WebArchivCZ/WA-Admin/blob/f4864f3449974174a660852f347067fe87afbc02/application/config/constants.php
 STATE = {
     1: source_constants.STATE_VOTE,
     2: source_constants.STATE_ACCEPTED_BY_STAFF,
@@ -33,4 +32,22 @@ FREQ = {
     4: 1,
     5: 0,
     None: None
+}
+
+VOTE_RESULT = {
+    1: voting_constants.VOTE_INITIAL,
+    2: voting_constants.VOTE_APPROVE,
+    3: voting_constants.VOTE_WAIT,
+    4: voting_constants.VOTE_DECLINE,
+    None: voting_constants.VOTE_INITIAL
+}
+
+# https://github.com/WebArchivCZ/WA-Admin/blob/master/application/models/rating.php
+VOTE_RATING = {
+    -2: voting_constants.VOTE_DECLINE,
+    -1: voting_constants.VOTE_DECLINE,
+    0: voting_constants.VOTE_WAIT,
+    1: voting_constants.VOTE_APPROVE,
+    2: voting_constants.VOTE_APPROVE,
+    4: voting_constants.VOTE_DECLINE
 }
