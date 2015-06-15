@@ -103,5 +103,6 @@ class EmptyFilter(django_filters.FilterSet):
                                 self.filters[field_name].extra['choices'])
             self.filters[field_name].extra['choices'] = extended_choices
 
+
 def show_toolbar(request):
     return not request.is_ajax() and not request.user.is_anonymous()

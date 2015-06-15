@@ -1,3 +1,4 @@
+import tld
 import constants
 import reversion
 
@@ -5,9 +6,18 @@ from django.db import models
 from django.utils.translation import ugettext as _
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
+from django.core.exceptions import ValidationError
 
+from tld.exceptions import TldDomainNotFound
 from core.models import BaseModel
 from publishers.models import Publisher, ContactPerson
+
+
+def validate_tld(value):
+    try:
+        tld.get_tld(value)
+    except TldDomainNotFound:
+        raise ValidationError('Invalid domain name')
 
 
 class Category(models.Model):
@@ -90,7 +100,7 @@ class Seed(BaseModel):
     """
         Seeds are individual urls in Source.
     """
-    url = models.URLField(_('Seed url'))
+    url = models.URLField(_('Seed url'), validators=[validate_tld])
     state = models.CharField(choices=constants.SEED_STATES,
                              default=constants.SEED_STATE_INCLUDE,
                              max_length=15)
