@@ -24,7 +24,7 @@ STATE = {
     8: source_constants.STATE_COMMUNICATING,
     9: source_constants.STATE_CONTRACT_EXPIRED,
     10: source_constants.STATE_CONTRACT_TERMINATED,
-    None: None
+    None: source_constants.STATE_VOTE,
 }
 
 FREQ = {

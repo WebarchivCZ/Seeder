@@ -79,7 +79,7 @@ class Conversion(object):
 
     def process_record(self, source_dict):
         try:
-            self.source_dict = self.values_conversion(self.clean(source_dict))
+            self.source_dict = self.convert_values(self.clean(source_dict))
             try:
                 record = models.TransferRecord.objects.get(
                     original_type=self.source_type,
@@ -110,7 +110,11 @@ class Conversion(object):
             raise BrokenRecord
 
         new_object = self.target_model(**data)
-        new_object.save()
+        try:
+            new_object.save()
+        except:
+            import ipdb
+            ipdb.set_trace()
         return new_object
 
     def get_field_data(self,):
@@ -147,7 +151,7 @@ class Conversion(object):
         target = record.target_object
         target.save(update_fields=self.get_field_data())
 
-    def values_conversion(self, source_dict):
+    def convert_values(self, source_dict):
         """
         Converts individual fields
         """
@@ -251,7 +255,7 @@ class ResourceConversion(Conversion):
 
     first_user = None
     
-    value_conversions = {
+    value_conversion = {
         'resource_status_id': constants.STATE,
         'suggested_by_id': constants.SUGGESTED_BY,
         'crawl_freq_id': constants.FREQ
