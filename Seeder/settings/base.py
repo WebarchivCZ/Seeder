@@ -70,9 +70,10 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 
 MIDDLEWARE_CLASSES = (
     'reversion.middleware.RevisionMiddleware',
-
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
+
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
@@ -98,7 +99,7 @@ TEMPLATE_DIRS = (
     os.path.join(BASE_DIR, 'templates'),
 )
 
-
+LANGUAGE_CODE = 'cs'
 LANGUAGES = (
     ('cs', _('Czech')),
     ('en', _('English')),
@@ -112,7 +113,6 @@ LOGIN_URL = '/auth/login/'
 LOGOUT_URL = '/auth/logout/'
 LOGIN_REDIRECT_URL = '/'
 
-LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_L10N = True

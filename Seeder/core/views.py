@@ -6,7 +6,7 @@ from django.utils.translation import ugettext as _
 from django.contrib import messages
 from django.views.generic.edit import UpdateView
 from django.utils.http import is_safe_url
-from django.utils.translation import LANGUAGE_SESSION_KEY, check_for_language
+from django.utils import translation
 
 from generic_views import LoginMixin, MessageView
 
@@ -22,9 +22,8 @@ class ChangeLanguage(View):
         redirect = request.META.get('HTTP_REFERER')
         if not is_safe_url(url=redirect, host=request.get_host()):
             redirect = '/'
-        if code and check_for_language(code):
-            if hasattr(request, 'session'):
-                request.session[LANGUAGE_SESSION_KEY] = code
+        if translation.check_for_language(code):
+            request.session[translation.LANGUAGE_SESSION_KEY] = code
         return HttpResponseRedirect(redirect)
 
 
