@@ -149,3 +149,7 @@ CKEDITOR_CONFIGS = {
         # 'width': '100%',
     }
 }
+
+DEBUG_TOOLBAR_CONFIG = {
+    'SHOW_TOOLBAR_CALLBACK': 'core.utils.show_toolbar',
+}

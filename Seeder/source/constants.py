@@ -22,6 +22,7 @@ SOURCE_STATES = (
     (STATE_REEVALUTATION, _('Waiting for reevaluation')),
     (STATE_COMMUNICATING, _('In communication')),
     (STATE_ACCEPTED_BY_STAFF, _('Accepted by staff')),
+    (STATE_DECLINED_BY_STAFF, _('Declined by staff')),
     (STATE_RUNNING, _('Archiving accepted')),
     (STATE_DECLINED_BY_PUBLISHER, _('Declined by publisher')),
     (STATE_PUBLISHER_IGNORED_REQUEST, _('Publisher ignored requests')),
