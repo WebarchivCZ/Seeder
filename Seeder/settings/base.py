@@ -45,6 +45,7 @@ INSTALLED_APPS = (
     'formtools',
     'reversion',
     'ckeditor',
+    'debug_toolbar',
 
     'core',
     'publishers',
@@ -72,13 +73,14 @@ MIDDLEWARE_CLASSES = (
     'reversion.middleware.RevisionMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    'django.middleware.locale.LocaleMiddleware',
-
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.middleware.security.SecurityMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
 )
 
 ROOT_URLCONF = 'urls'
@@ -104,6 +106,12 @@ LANGUAGES = (
     ('cs', _('Czech')),
     ('en', _('English')),
 )
+
+
+LOCALE_DIRS = (
+    os.path.join(BASE_DIR, 'locale'),
+)
+
 
 BOWER_COMPONENTS_ROOT = BASE_DIR
 BOWER_INSTALLED_APPS = ()   # everything is on CDN now
