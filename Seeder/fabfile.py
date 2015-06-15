@@ -15,7 +15,13 @@ commands = {
     'touch_reload': ['touch ../../reload_seeder.touch'],
     'reqs': [
         'pip install -r ../requirements.txt',
-        'pip install -r ../requirements_dev.txt'
+        'pip install -r ../requirements_dev.txt'],
+    'push_messages': [
+        './manage.py makemessages -a'
+        'tx push -t'],
+    'pull_messages': [
+        'tx pull -a',
+        './manage.py compilemessages'
     ]
 }
 
@@ -54,6 +60,16 @@ def collect_static():
     map(local, commands['static'])
 
 
+@task(alias='mpull')
+def pull_messages():
+    map(local, commands['pull_messages'])
+
+
+@task(alias='mpush')
+def pull_messages():
+    map(local, commands['push_messages'])
+
+
 @task(alias='s')
 def shell():
     local('./manage.py shell')
@@ -66,5 +82,5 @@ def deploy_locally():
 
 @task(alias='d')
 def deploy():
-    map(run, commands['pull'] + commands['reqs'] + commands['syncdb'] +
-        commands['static'])
+    map(run, commands['pull'] + commands['reqs'] + commands['pull_messages'] +
+        commands['syncdb'] + commands['static'] + commands['touch_reload'])
