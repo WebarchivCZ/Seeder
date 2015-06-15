@@ -16,3 +16,4 @@ django-formtools
 django-reversion
 mysql-python
 django-ckeditor
+transifex-client
