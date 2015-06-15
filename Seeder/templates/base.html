@@ -37,6 +37,18 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right">
+                <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">{% trans 'Languages' %}<span class="caret"></span></a>
+                  <ul class="dropdown-menu" role="menu">
+                    {% get_current_language as LANGUAGE_CODE %}
+                    {% get_available_languages as LANGUAGES %}
+                    {% get_language_info_list for LANGUAGES as languages %}
+                    {% for language in languages %}
+                        <li><a href="{% url 'core:change_language' code=language.code %}">{{ language.name_local }}</a></li>
+                    {% endfor %}
+                  </ul>
+                </li>
+
                 <li>
                     <a href="{% url 'core:user_edit' %}">{% trans 'Profile' %}</a>
                 </li>
@@ -47,9 +59,6 @@
                     <a href="{% url 'logout' %}">{% trans 'Logout' %}</a>
                 </li>
             </ul>
-            <form class="navbar-form navbar-right">
-                <input type="text" class="form-control" placeholder="Search">
-            </form>
         </div>
     </div>
 </nav>
