@@ -101,14 +101,14 @@ TEMPLATE_DIRS = (
     os.path.join(BASE_DIR, 'templates'),
 )
 
-LANGUAGE_CODE = 'cs'
+
 LANGUAGES = (
     ('cs', _('Czech')),
     ('en', _('English')),
 )
 
 
-LOCALE_DIRS = (
+LOCALE_PATHS = (
     os.path.join(BASE_DIR, 'locale'),
 )
 
