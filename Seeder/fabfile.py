@@ -17,7 +17,7 @@ commands = {
         'pip install -r ../requirements.txt',
         'pip install -r ../requirements_dev.txt'],
     'push_messages': [
-        './manage.py makemessages -a'
+        './manage.py makemessages -a',
         'tx push -t'],
     'pull_messages': [
         'tx pull -a',
@@ -66,7 +66,7 @@ def pull_messages():
 
 
 @task(alias='mpush')
-def pull_messages():
+def push_messages():
     map(local, commands['push_messages'])
 
 
