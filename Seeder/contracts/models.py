@@ -44,6 +44,7 @@ class Contract(BaseModel):
                                      upload_to='contracts')
     contract_type = models.CharField(choices=constants.CONTRACT_TYPE_CHOICES,
                                      max_length=12)
+    contract_number = models.IntegerField(null=True, blank=True)
 
     in_communication = models.BooleanField(
         help_text=_('Does the publisher responds to the emails?'),
@@ -51,7 +52,7 @@ class Contract(BaseModel):
 
     access_token = models.CharField(null=True, blank=True,
                                     max_length=37)
-
+    description = models.TextField(null=True, blank=True)
     objects = ContractManager()
 
     def __unicode__(self):

@@ -58,5 +58,6 @@ SEED_STATE = {
     1: source_constants.SEED_STATE_INCLUDE,
     2: source_constants.SEED_STATE_EXCLUDE,
     3: source_constants.SEED_STATE_OLD,
-    4: source_constants.SEED_STATE_EXCLUDE
+    4: source_constants.SEED_STATE_EXCLUDE,
+    None: source_constants.SEED_STATE_EXCLUDE,
 }

@@ -164,8 +164,8 @@ class Seeds(models.Model):
     resource = models.ForeignKey(Resources, blank=True, null=True)
     url = models.CharField(max_length=255)
     seed_status_id = models.IntegerField(blank=True, null=True)
-    redirect = models.BooleanField(blank=True, null=True)
-    robots = models.BooleanField(blank=True, null=True)
+    redirect = models.NullBooleanField(blank=True, null=True)
+    robots = models.NullBooleanField(blank=True, null=True)
     valid_from = models.DateField(blank=True, null=True)
     valid_to = models.DateField(blank=True, null=True)
     comments = models.TextField(blank=True, null=True)
@@ -173,3 +173,21 @@ class Seeds(models.Model):
     class Meta:
         managed = False
         db_table = 'seeds'
+
+
+class Contracts(models.Model):
+    parent = models.ForeignKey('self', blank=True, null=True)
+    contract_no = models.IntegerField()
+    active = models.IntegerField(blank=True, null=True)
+    date_signed = models.DateField(blank=True, null=True)
+    year = models.IntegerField()
+    addendum = models.IntegerField(blank=True, null=True)
+    cc = models.NullBooleanField()
+    blanco_contract = models.IntegerField(blank=True, null=True)
+    domain = models.CharField(max_length=255, blank=True, null=True)
+    type = models.CharField(max_length=150, blank=True, null=True)
+    comments = models.TextField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'contracts'

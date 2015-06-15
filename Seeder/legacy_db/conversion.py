@@ -9,10 +9,16 @@ from django.contrib.contenttypes.models import ContentType
 from publishers.models import Publisher, ContactPerson
 from source import models as source_models
 from voting.models import VotingRound, Vote
+from contracts.models import Contract
+from contracts import constants as contract_constants
 
 
 DATABASE = 'legacy_seeder'
 get_ct = lambda m: ContentType.objects.get_for_model(m)
+
+
+class BrokenRecord(Exception):
+    pass
 
 
 class Conversion(object):
@@ -69,7 +75,10 @@ class Conversion(object):
         for source_dict in dict_list:
             self.step += 1
             self.progress_bar()
+            self.process_record(source_dict)
 
+    def process_record(self, source_dict):
+        try:
             self.source_dict = self.values_conversion(self.clean(source_dict))
             try:
                 record = models.TransferRecord.objects.get(
@@ -86,6 +95,8 @@ class Conversion(object):
                         target_type=self.target_type,
                         target_id=target.pk
                     ).save()
+        except BrokenRecord:
+            self.skipped.append(source_dict)
 
     def print_skipped(self):
         if self.skipped:
@@ -96,8 +107,7 @@ class Conversion(object):
         try:
             data = self.get_field_data()
         except ObjectDoesNotExist:  # this means that the fk is invalid
-            self.skipped.append(self.source_dict)
-            return
+            raise BrokenRecord
 
         new_object = self.target_model(**data)
         new_object.save()
@@ -316,10 +326,50 @@ class SeedConversion(Conversion):
         'seed_status_id': constants.SEED_STATE
     }
 
+    def clean(self, source_dict):
+        source_dict['robots'] = bool(source_dict['robots'])
+        source_dict['redirect'] = bool(source_dict['redirect'])
+        return source_dict
+
+
+class ContractConversion(Conversion):
+    source_model = models.Contracts
+    target_model = Contract
+
+    field_map = {
+        'contract_no': 'contract_number',
+        'active': 'active',
+        'date_signed': 'valid_from',
+        'type': 'contract_type',
+        'comments': 'description',
+        'state': 'state',
+        'source': 'source',
+    }
+
+    def clean(self, source_dict):
+        # we have to find Resource that links to this contract:
+        resources = models.Resources.objects.using(DATABASE).filter(
+            contract_id=source_dict['id'])
+
+        if not resources:
+            raise BrokenRecord
+
+        record = models.TransferRecord.objects.get(
+            original_type=get_ct(models.Resources),
+            original_id=resources[0].id)
+        source_dict['source'] = record.target_object
+
+        if source_dict['cc']:
+            source_dict['type'] = contract_constants.CONTRACT_CREATIVE_COMMONS
+        else:
+            source_dict['type'] = contract_constants.CONTRACT_PROPRIETARY
+        source_dict['state'] = contract_constants.CONTRACT_STATE_VALID
+
+        return source_dict
 
 
 CONVERSIONS = [
     UserConversion, PublisherConversion, ContactsConversion,
     ConspectusConversion, SubConspectusConversion, ResourceConversion,
-    RatingRoundConversion, VoteConversion, SeedConversion
+    RatingRoundConversion, VoteConversion, SeedConversion, ContractConversion
 ]
