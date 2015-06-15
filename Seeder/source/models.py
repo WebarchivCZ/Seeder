@@ -48,7 +48,6 @@ class Source(BaseModel):
     owner = models.ForeignKey(User, verbose_name=_('Curator'))
     name = models.CharField(_('Name'), max_length=256)
     comment = models.TextField(_('Comment'), null=True, blank=True)
-    web_proposal = models.BooleanField(_('Proposed by visitor'), default=False)
     publisher = models.ForeignKey(verbose_name=_('Publisher'), to=Publisher,
                                   null=True, blank=True)
 

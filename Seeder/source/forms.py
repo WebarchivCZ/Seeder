@@ -7,7 +7,7 @@ from django.utils.translation import ugettext as _
 
 
 source_fields = ('name', 'publisher', 'frequency', 'category',
-                 'sub_category', 'web_proposal', 'open_license', 'comment')
+                 'sub_category', 'suggested_by', 'open_license', 'comment')
 
 
 class SourceForm(forms.ModelForm):
