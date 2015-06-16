@@ -32,7 +32,7 @@ class VotingRound(BaseModel):
         verbose_name_plural = _('Elections')
 
     def __unicode__(self):
-        return _('Voting round: {source}').format(source=self.source)
+        return self.get_state_display()
 
     @property
     def round_open(self):

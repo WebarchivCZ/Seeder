@@ -103,3 +103,12 @@ body {
   display: inline-block;
   border-radius: 50%;
 }
+
+
+.list-group-item a {
+  word-wrap: break-word;
+}
+
+table td {
+  word-wrap: break-word;
+}
