@@ -4,7 +4,7 @@ import tables
 import field_filters
 
 from django.views.generic import DetailView
-from django.utils.translation import ugettext as _
+from django.utils.translation import ugettext_lazy as _
 
 from core import generic_views
 from comments.views import CommentViewGeneric

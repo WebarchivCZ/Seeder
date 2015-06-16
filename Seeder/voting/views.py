@@ -4,7 +4,7 @@ import constants
 from django.contrib import messages
 from django.views.generic import DetailView
 from django.views.generic.detail import SingleObjectMixin
-from django.utils.translation import ugettext as _
+from django.utils.translation import ugettext_lazy as _
 from django.utils import timezone
 
 from core.generic_views import LoginMixin, ActionView

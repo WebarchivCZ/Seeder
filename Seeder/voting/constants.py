@@ -2,7 +2,7 @@
 # disable pylint rants about odict:
 # pylint: disable=E1127
 
-from django.utils.translation import ugettext as _
+from django.utils.translation import ugettext_lazy as _
 from odictliteral import odict
 from source import constants as source_constants
 

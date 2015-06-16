@@ -6,7 +6,7 @@ import constants
 
 from datetime import datetime, timedelta
 from django.views.generic import DetailView, FormView
-from django.utils.translation import ugettext as _
+from django.utils.translation import ugettext_lazy as _
 from django.template.loader import render_to_string
 from django.forms.models import modelformset_factory
 from django.http.response import HttpResponseRedirect
