@@ -61,6 +61,10 @@ class Contract(BaseModel):
             year=self.created.year,
             type=self.get_contract_type_display())
 
+    def publisher_responds(self):
+        return (self.in_communication or
+                self.state != constants.CONTRACT_STATE_NEGOTIATION)
+
     def get_absolute_url(self):
         return reverse('contracts:detail', args=[str(self.id)])
 
