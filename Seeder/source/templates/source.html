@@ -30,8 +30,8 @@
                     <td>{{ source.created|naturaltime }}</td>
                 </tr>
                 <tr>
-                    <td>{% trans 'Proposed by visitor' %}</td>
-                    <td>{{ source.web_proposal|yesno }}</td>
+                    <td>{% trans 'Suggested by' %}</td>
+                    <td>{{ source.get_suggested_by_display }}</td>
                 </tr>
                 <tr>
                     <td>{% trans 'Publisher' %}</td>
@@ -46,17 +46,29 @@
                     <td>{{ source.comment }}</td>
                 </tr>
                 <tr>
-                    <td>{% trans 'Cospectus' %}</td>
-                    <td>{{ source.get_conspectus_display }}</td>
+                    <td>{% trans 'Category' %}</td>
+                    <td>{{ source.get_category_display }}</td>
                 </tr>
                 <tr>
-                    <td>{% trans 'Sub cospectus' %}</td>
-                    <td>{{ source.get_sub_conspectus_display }}</td>
+                    <td>{% trans 'Sub category' %}</td>
+                    <td>{{ source.get_sub_category_display }}</td>
                 </tr>
                 <tr>
-                    <td>{% trans 'Alef id' %}</td>
-                    <td>{{ source.alef_number }}</td>
+                    <td>{% trans 'Aleph id' %}</td>
+                    <td>{{ source.aleph_id }}</td>
                 </tr>
+                <tr>
+                    <td>{% trans 'ISSN' %}</td>
+                    <td>{{ source.issn }}</td>
+                </tr>
+                {% with source.get_legacy_url as legacy_url %}
+                    {% if legacy_url %}
+                        <tr>
+                            <td>{% trans 'WA-admin link' %}</td>
+                            <td><a href="{{ legacy_url }}" target="_blank">{% trans 'Legacy url' %}</a></td>
+                        </tr>
+                    {% endif %}
+                {% endwith %}
             </tbody>
         </table>
     </div>

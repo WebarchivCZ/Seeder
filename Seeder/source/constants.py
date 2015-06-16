@@ -59,3 +59,5 @@ SUGGESTED_CHOICES = (
     (SUGGESTED_VISITOR, _('Visitor')),
     (SUGGESTED_ISSN, _('ISSN')),
 )
+
+LEGACY_URL = 'http://intranet.webarchiv.cz/wadmin/tables/resources/view/{pk}'

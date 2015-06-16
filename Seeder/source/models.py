@@ -7,10 +7,12 @@ from django.utils.translation import ugettext as _
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.core.exceptions import ValidationError
+from django.contrib.contenttypes.models import ContentType
 
 from tld.exceptions import TldDomainNotFound
 from core.models import BaseModel
 from publishers.models import Publisher, ContactPerson
+from legacy_db.models import TransferRecord
 
 
 def validate_tld(value):
@@ -86,6 +88,16 @@ class Source(BaseModel):
         permissions = (
             ('manage_sources', 'Manage others sources'),
         )
+
+    def get_legacy_url(self):
+        """
+        Returns url to legacy system with this source
+        """
+        record = TransferRecord.objects.filter(
+            target_type=ContentType.objects.get_for_model(self),
+            target_id=self.id).first()
+        if record:
+            return constants.LEGACY_URL.format(pk=record.original_id)
 
     def __unicode__(self):
         return self.name
