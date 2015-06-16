@@ -63,7 +63,7 @@ class ActionView(View, MessageView):
         return HttpResponseRedirect(self.get_fail_url())
 
     def check_permissions(self, user):
-        return self.permission and user.has_perm(self.permission)
+        return user.has_perm(self.permission) if self.permission else True
 
     def post(self, request, *args, **kwargs):
         if not self.check_permissions(request.user):
