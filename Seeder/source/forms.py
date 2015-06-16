@@ -51,8 +51,11 @@ class BaseSeedFormset(BaseFormSet):
         Checks that there is always at least one valid seed
         """
         urls = [frm.cleaned_data.get('url', None) for frm in self.forms]
-        if not any(urls):
-            raise forms.ValidationError(_('There must be at least one seed!'))
+        valid_urls = filter(None, urls)
+        if not valid_urls:
+            raise forms.ValidationError(_('There must be at least one seed.'))
+        if len(set(valid_urls)) < len(valid_urls):
+            raise forms.ValidationError(_('All urls must be unique.'))
 
 SeedFormset = modelformset_factory(models.Seed, fields=('url',), extra=7,
                                    formset=BaseSeedFormset)
