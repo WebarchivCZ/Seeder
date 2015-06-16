@@ -1,8 +1,8 @@
+from django.forms.formsets import BaseFormSet
 import models
 
 from django import forms
 from django.forms.models import modelformset_factory
-from django.forms import BaseModelFormSet
 from django.utils.translation import ugettext_lazy as _
 
 
@@ -45,7 +45,7 @@ class DuplicityForm(forms.Form):
         help_text=_('Check if this is really unique source.'))
 
 
-class BaseSeedFormset(BaseModelFormSet):
+class BaseSeedFormset(BaseFormSet):
     def clean(self):
         """
         Checks that there is always at least one valid seed
@@ -64,7 +64,7 @@ EditFormset = modelformset_factory(
     models.Seed,
     fields=('url', 'state', 'redirect', 'robots'),
     extra=7,
-    formset=BaseSeedFormset)
+    can_delete=True)
 
 
 class SourceEditForm(forms.ModelForm):

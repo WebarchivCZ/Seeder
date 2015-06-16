@@ -82,7 +82,7 @@ class AddSource(generic_views.LoginMixin, SessionWizardView):
 
         if step == 'source' and is_manager:
             form_class = forms.ManagementSourceForm
-        if step == 'choose_publisher':
+        elif step == 'choose_publisher':
             publisher = self.get_cleaned_data_for_step('source')['publisher']
             form = form_class(prefix=self.get_form_prefix(step, form_class),
                               data=data, files=files)
@@ -187,6 +187,10 @@ class EditSeeds(SourceView, FormView, generic_views.ObjectMixinFixed):
             if seed.url:
                 seed.source = self.object
                 seed.save()
+
+        for obj in form.deleted_objects:
+            obj.delete()
+
         return HttpResponseRedirect(self.get_success_url())
 
 
