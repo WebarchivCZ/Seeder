@@ -30,7 +30,6 @@ commands = {
 def yapf_migrations():
     """
     Refines migrations files so they would comply to pep8
-    :return:
     """
     for app in INSTALLED_APPS:
         migration_dir = os.path.join(app, 'migrations')

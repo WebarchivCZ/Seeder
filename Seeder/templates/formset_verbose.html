@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load bootstrap3 %}
+
+
+{% block content %}
+    <form class="" method="post">
+        {% csrf_token %}
+        {% bootstrap_formset form %}
+        <input type="submit" class="btn btn-primary btn-block" value="{% trans 'Send' %}" />
+    </form>
+{% endblock %}

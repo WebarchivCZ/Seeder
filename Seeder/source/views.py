@@ -3,7 +3,7 @@ import models
 import tables
 import field_filters
 
-from django.views.generic import DetailView
+from django.views.generic import DetailView, FormView
 from django.http.response import HttpResponseRedirect
 from django.utils.translation import ugettext_lazy as _
 from django.db.models import Q
@@ -166,6 +166,28 @@ class SourceDetail(SourceView, DetailView, CommentViewGeneric):
 
 class SourceEdit(SourceView, generic_views.EditView):
     form_class = forms.SourceEditForm
+
+
+class EditSeeds(SourceView, FormView, generic_views.ObjectMixinFixed):
+    form_class = forms.EditFormset
+    template_name = 'formset_verbose.html'
+    title = _('Edit seeds')
+
+    def get_success_url(self):
+        return self.object.get_absolute_url()
+
+    def get_form_kwargs(self):
+        kwargs = super(EditSeeds, self).get_form_kwargs()
+        kwargs['queryset'] = self.object.seed_set.all()
+        return kwargs
+
+    def form_valid(self, form):
+        seeds = form.save(commit=False)
+        for seed in seeds:
+            if seed.url:
+                seed.source = self.object
+                seed.save()
+        return HttpResponseRedirect(self.get_success_url())
 
 
 class History(SourceView, generic_views.HistoryView):
