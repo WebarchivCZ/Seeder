@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load bootstrap3 %}
+
+
+{% block title %}
+    {{ view.get_title }}
+{% endblock %}
+
+{% block page_header %}
+    {{ view.get_title }} <span class="pull-right">{{ wizard.steps.step1 }} / {{ wizard.steps.count }}</span>
+{% endblock %}
+
+
+{% block content %}
+    <form class="" method="post">
+        {% csrf_token %}
+        {{ wizard.management_form }}
+
+        {% bootstrap_formset form %}
+        <input type="submit" class="btn btn-primary btn-block"/>
+    </form>
+
+    <div style="display: none" id="seed_empty_form">
+        {% bootstrap_form form.empty_form %}
+    </div>
+{% endblock %}

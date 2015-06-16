@@ -52,7 +52,7 @@ class AddSource(generic_views.LoginMixin, SessionWizardView):
     )
 
     template_names = {
-        'seeds': 'add_seeds.html',
+        'seeds': 'add_seeds_static.html',
         'duplicity': 'duplicity_check.html',
     }
 
