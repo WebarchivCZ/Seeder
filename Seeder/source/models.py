@@ -73,8 +73,7 @@ class Source(BaseModel):
         choices=constants.SOURCE_FREQUENCY_PER_YEAR,
         blank=True, null=True)
 
-    category = models.ForeignKey(Category, verbose_name=_('Category'),
-                                 null=True, blank=True)
+    category = models.ForeignKey(Category, verbose_name=_('Category'))
     sub_category = models.ForeignKey(SubCategory,
                                      verbose_name=_('Sub category'),
                                      null=True, blank=True)
