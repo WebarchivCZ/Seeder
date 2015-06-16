@@ -18,7 +18,7 @@ commands = {
         'pip install -r ../requirements_dev.txt'],
     'push_messages': [
         './manage.py makemessages -a',
-        'tx push -t'],
+        'tx push -t -s'],
     'pull_messages': [
         'tx pull -a',
         './manage.py compilemessages'
