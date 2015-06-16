@@ -55,9 +55,6 @@ class ContactChoiceForm(forms.ModelForm):
         if all(fields):
             raise forms.ValidationError(
                 _("You can't use old contact and create new at the same time"))
-        if not any(fields):
-            raise forms.ValidationError(
-                _('You have to choose or create contact.'))
         if self.cleaned_data['name'] and not self.cleaned_data['email']:
             self.add_error('email', _('Please fill-out the email'))
 

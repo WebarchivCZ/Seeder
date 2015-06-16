@@ -56,10 +56,10 @@ class Contract(BaseModel):
     objects = ContractManager()
 
     def __unicode__(self):
-        return _('{pk}/{year}').format(
-            pk=self.pk,
-            year=self.created.year
-        )
+        return _('{number}/{year}: {type}').format(
+            number=self.contract_number,
+            year=self.created.year,
+            type=self.get_contract_type_display())
 
     def get_absolute_url(self):
         return reverse('contracts:detail', args=[str(self.id)])
