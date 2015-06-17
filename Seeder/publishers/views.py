@@ -30,6 +30,6 @@ class History(PublisherView, generic_views.HistoryView):
 
 
 class ListView(PublisherView, generic_views.FilteredListView):
-    title = _('Sources')
+    title = _('Publishers')
     table_class = tables.PublisherTable
     filter_class = field_filters.PublisherFilter

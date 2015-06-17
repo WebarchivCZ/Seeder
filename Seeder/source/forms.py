@@ -7,8 +7,8 @@ from django.forms.models import modelformset_factory
 from django.utils.translation import ugettext_lazy as _
 
 
-source_fields = ('name', 'publisher', 'frequency', 'category',
-                 'sub_category', 'suggested_by', 'open_license', 'comment')
+source_fields = ('name', 'publisher', 'category', 'sub_category', 'frequency',
+                 'suggested_by', 'open_license', 'comment')
 
 
 class SourceForm(autocomplete_light.ModelForm):

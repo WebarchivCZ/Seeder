@@ -5,7 +5,7 @@ from models import Publisher
 
 
 class AutocompletePublisher(autocomplete_light.AutocompleteModelBase):
-    search_fields = ['^name', 'subcategory_id']
+    search_fields = ['^name']
     attrs = {
         'placeholder': _('Publisher'),
         'data-autocomplete-minimum-characters': 1,
