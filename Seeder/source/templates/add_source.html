@@ -14,19 +14,24 @@
     {% include 'autocomplete_light/static.html' %}
     <script>
         $(document).ready(function() {
-            $('body').on('change', '.autocomplete-light-widget select[name$=category]', function() {
+            var category_id = null;
+            var category_select = $('#id_source-category');
+            category_select.change(function() {
                 var sub_category_select = $('.autocomplete-light-widget select[name$=sub_category]');
                 var sub_category_widget = sub_category_select.parents('.autocomplete-light-widget');
-
-                value = $(this).val();
-
+                var value = $(this).val();
                 if (value) {
-                    sub_category_widget.yourlabsWidget().autocomplete.data = {
-                        'category_id': value[0]
-                    };
+                    console.log($(this), 'changed to', value);
+                    category_id = value[0];
                 }
 
-                console.log($(this), 'changed to', value);
+                if (category_id){
+                    sub_category_widget.yourlabsWidget().autocomplete.data = {
+                        'category_id': category_id};
+                }
+                else {
+                    sub_category_widget.yourlabsWidget().autocomplete.data = {}
+                }
             })
         });
 
