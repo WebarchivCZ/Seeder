@@ -10,6 +10,10 @@
 {{ view.get_title }} <span class="pull-right">{{ wizard.steps.step1 }} / {{ wizard.steps.count }}</span>
 {% endblock %}
 
+{% block extrahead %}
+    {% include 'autocomplete_light/static.html' %}
+{% endblock %}
+
 
 {% block content %}
     <form class="" method="post">

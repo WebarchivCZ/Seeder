@@ -1,7 +1,8 @@
-from django.forms.formsets import BaseFormSet
 import models
+import autocomplete_light
 
 from django import forms
+from django.forms.formsets import BaseFormSet
 from django.forms.models import modelformset_factory
 from django.utils.translation import ugettext_lazy as _
 
@@ -10,7 +11,7 @@ source_fields = ('name', 'publisher', 'frequency', 'category',
                  'sub_category', 'suggested_by', 'open_license', 'comment')
 
 
-class SourceForm(forms.ModelForm):
+class SourceForm(autocomplete_light.ModelForm):
     open_license = forms.BooleanField(
         required=False,
         help_text=_('Is text distributed under open license?')
