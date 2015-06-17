@@ -1,18 +1,17 @@
 import autocomplete_light
 
 from django.utils.translation import ugettext_lazy as _
-from models import Publisher
+from models import SubCategory
 
 
-class AutocompletePublisher(autocomplete_light.AutocompleteModelBase):
+class AutocompleteSubCategory(autocomplete_light.AutocompleteModelBase):
     search_fields = ['^name', 'subcategory_id']
     attrs = {
-        'placeholder': _('Publisher'),
+        'placeholder': _('Sub category'),
         'data-autocomplete-minimum-characters': 1,
     }
     widget_attrs = {
-        'data-widget-maximum-values': 5,
         # 'class': 'modern-style',
     }
 
-autocomplete_light.register(Publisher, AutocompletePublisher)
+autocomplete_light.register(SubCategory, AutocompleteSubCategory)
