@@ -46,18 +46,33 @@ class Source(BaseModel):
         represent individual urls. In most of the cases there will be one seed
         which will be equal to ``base_url``.
     """
-    created_by = models.ForeignKey(User, related_name='sources_created')
-    owner = models.ForeignKey(User, verbose_name=_('Curator'))
+    created_by = models.ForeignKey(
+        User, related_name='sources_created',
+        on_delete=models.PROTECT)
+
+    owner = models.ForeignKey(
+        User, verbose_name=_('Curator'),
+        on_delete=models.PROTECT)
+
+    publisher = models.ForeignKey(
+        verbose_name=_('Publisher'),
+        to=Publisher,
+        null=True, blank=True,
+        on_delete=models.SET_NULL)
+
+    publisher_contact = models.ForeignKey(
+        ContactPerson,
+        null=True, blank=True,
+        on_delete=models.SET_NULL)
+
     name = models.CharField(_('Name'), max_length=256)
     comment = models.TextField(_('Comment'), null=True, blank=True)
-    publisher = models.ForeignKey(verbose_name=_('Publisher'), to=Publisher,
-                                  null=True, blank=True)
 
-    publisher_contact = models.ForeignKey(ContactPerson, null=True, blank=True)
-    suggested_by = models.CharField(_('Suggested by'),
-                                    max_length=10,
-                                    null=True, blank=True,
-                                    choices=constants.SUGGESTED_CHOICES)
+    suggested_by = models.CharField(
+        _('Suggested by'),
+        max_length=10,
+        null=True, blank=True,
+        choices=constants.SUGGESTED_CHOICES)
 
     aleph_id = models.CharField(max_length=100, blank=True, null=True)
     issn = models.CharField(max_length=20, blank=True, null=True)
@@ -73,10 +88,15 @@ class Source(BaseModel):
         choices=constants.SOURCE_FREQUENCY_PER_YEAR,
         blank=True, null=True)
 
-    category = models.ForeignKey(Category, verbose_name=_('Category'))
-    sub_category = models.ForeignKey(SubCategory,
-                                     verbose_name=_('Sub category'),
-                                     null=True, blank=True)
+    category = models.ForeignKey(
+        Category, verbose_name=_('Category'),
+        on_delete=models.PROTECT)
+
+    sub_category = models.ForeignKey(
+        SubCategory,
+        verbose_name=_('Sub category'),
+        null=True, blank=True,
+        on_delete=models.SET_NULL)
 
     class Meta:
         verbose_name = _('Source')
@@ -110,11 +130,12 @@ class Seed(BaseModel):
     """
         Seeds are individual urls in Source.
     """
+    source = models.ForeignKey(Source, on_delete=models.PROTECT)
+
     url = models.URLField(_('Seed url'), validators=[validate_tld])
     state = models.CharField(choices=constants.SEED_STATES,
                              default=constants.SEED_STATE_INCLUDE,
                              max_length=15)
-    source = models.ForeignKey(Source)
     redirect = models.BooleanField(_('Redirect on seed'), default=False)
     robots = models.BooleanField(_('Robots.txt active'), default=False)
     comment = models.TextField(_('Comment'), null=True, blank=True)

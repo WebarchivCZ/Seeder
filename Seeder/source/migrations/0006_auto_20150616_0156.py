@@ -5,9 +5,7 @@ from django.db import models, migrations
 
 
 class Migration(migrations.Migration):
-    dependencies = [
-        ('source', '0005_auto_20150615_2240'),
-    ]
+    dependencies = [('source', '0005_auto_20150615_2240'), ]
     operations = [
         migrations.AlterField(
             model_name='source',
@@ -15,6 +13,5 @@ class Migration(migrations.Migration):
             preserve_default=False,
             field=models.ForeignKey(verbose_name='Category',
                                     to='source.Category',
-                                    default=1),
-        ),
+                                    default=1), ),
     ]
