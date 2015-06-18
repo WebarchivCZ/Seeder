@@ -18,6 +18,10 @@ def get_str_uuid():
     return str(uuid.uuid4())
 
 
+def this_year():
+    return datetime.now().year
+
+
 class ContractManager(models.Manager):
     """
         Custom manager for filtering active contracts
@@ -39,6 +43,7 @@ class Contract(BaseModel):
 
     valid_from = models.DateField(null=True, blank=True)
     valid_to = models.DateField(null=True, blank=True)
+    year = models.PositiveIntegerField(_('Year'), default=this_year())
 
     contract_file = models.FileField(null=True, blank=True,
                                      upload_to='contracts')
@@ -56,8 +61,8 @@ class Contract(BaseModel):
 
     def __unicode__(self):
         return _('{number}/{year}: {type}').format(
-            number=self.contract_number,
-            year=self.created.year,
+            number=self.contract_number or ' - ',
+            year=self.year,
             type=self.get_contract_type_display())
 
     def publisher_responds(self):
@@ -88,6 +93,11 @@ class Contract(BaseModel):
         if self.is_valid():
             return 'success'
         return 'danger'
+
+    @classmethod
+    def new_contract_number(cls):
+        return cls.objects.filter(year=this_year()).aggregate(
+            max_id=models.Max('contract_number')).get('max_id', 0) + 1
 
 
 @reversion.register(exclude=('last_changed',))

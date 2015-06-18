@@ -5,11 +5,13 @@ import field_filters
 import constants
 
 from datetime import datetime, timedelta
+
 from django.views.generic import DetailView, FormView
 from django.utils.translation import ugettext_lazy as _
 from django.template.loader import render_to_string
 from django.forms.models import modelformset_factory
 from django.http.response import HttpResponseRedirect
+from django.contrib import messages
 
 from comments.views import CommentViewGeneric
 from source.models import Source
@@ -41,6 +43,18 @@ class Create(LoginMixin, FormView, ObjectMixinFixed):
 
 class Edit(ContractView, EditView):
     form_class = forms.EditForm
+
+    def form_valid(self, form):
+        if (self.get_object().state == constants.CONTRACT_STATE_NEGOTIATION and
+                form.cleaned_data['state'] == constants.CONTRACT_STATE_VALID):
+            contract = form.save(commit=False)
+            contract.contract_number = models.Contract.new_contract_number()
+            contract.save()
+            self.add_message(_('Contract number assigned.'), messages.SUCCESS)
+            self.add_message(_('Changes saved.'), messages.SUCCESS)
+            return HttpResponseRedirect(self.get_object().get_absolute_url())
+        else:
+            return super(Edit, self).form_valid(form)
 
 
 class History(ContractView, HistoryView):

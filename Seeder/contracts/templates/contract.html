@@ -21,6 +21,10 @@
                     <td>{{ object.get_state_display }}</td>
                 </tr>
                 <tr>
+                    <td>{% trans 'Number' %}</td>
+                    <td>{{ object.contract_number }} / {{ object.year }}</td>
+                </tr>
+                <tr>
                     <td>{% trans 'Type' %}</td>
                     <td>{{ object.get_contract_type_display }}</td>
                 </tr>

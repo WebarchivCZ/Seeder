@@ -348,6 +348,7 @@ class ContractConversion(Conversion):
         'comments': 'description',
         'state': 'state',
         'source': 'source',
+        'year': 'year'
     }
 
     def clean(self, source_dict):

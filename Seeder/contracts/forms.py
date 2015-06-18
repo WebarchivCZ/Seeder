@@ -12,8 +12,8 @@ class CreateForm(forms.ModelForm):
 class EditForm(forms.ModelForm):
     class Meta:
         model = models.Contract
-        fields = ('state', 'valid_from', 'valid_to', 'contract_file',
-                  'contract_type', 'in_communication')
+        fields = ('state', 'year', 'contract_number', 'valid_from', 'valid_to',
+                  'contract_file', 'contract_type', 'in_communication')
 
 
 class EmailForm(forms.ModelForm):
