@@ -51,9 +51,6 @@ class Contract(BaseModel):
         help_text=_('Does the publisher responds to the emails?'),
         default=False)
 
-    access_token = models.UUIDField(primary_key=True, default=uuid.uuid4,
-                                    editable=False)
-
     description = models.TextField(null=True, blank=True)
     objects = ContractManager()
 
