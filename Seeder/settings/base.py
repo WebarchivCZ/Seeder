@@ -156,4 +156,6 @@ DEBUG_TOOLBAR_CONFIG = {
     'SHOW_TOOLBAR_CALLBACK': 'core.utils.show_toolbar',
 }
 
-CRON_CLASSES = []
+CRON_CLASSES = [
+    'voting.cron.RevivePostponedRounds'
+]
