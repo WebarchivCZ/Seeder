@@ -14,7 +14,7 @@ class PublisherForm(forms.ModelForm):
         max_length=64,
         help_text='Name of the contact person')
     email = forms.EmailField(required=False)
-    phone = forms.CharField(required=False)
+    position = forms.CharField(required=False)
 
     class Meta:
         model = models.Publisher
@@ -31,7 +31,7 @@ class PublisherForm(forms.ModelForm):
             new_contact = models.ContactPerson(
                 name=self.cleaned_data['contact_name'],
                 email=self.cleaned_data['email'],
-                phone=self.cleaned_data['phone'],
+                position=self.cleaned_data['position'],
                 publisher=publisher)
             new_contact.save()
         else:
@@ -42,7 +42,7 @@ class PublisherForm(forms.ModelForm):
 class PublisherEditForm(forms.ModelForm):
     class Meta:
         model = models.Publisher
-        fields = ('name', 'website')
+        fields = ('name', )
 
 
 class ContactChoiceForm(forms.ModelForm):
@@ -65,13 +65,13 @@ class ContactChoiceForm(forms.ModelForm):
 
     class Meta:
         model = models.ContactPerson
-        fields = ('contact', 'name', 'email', 'phone')
+        fields = ('contact', 'name', 'email', 'position')
 
 
 class ContactPersonForm(forms.ModelForm):
     class Meta:
         model = models.ContactPerson
-        fields = ('name', 'email', 'phone')
+        fields = ('name', 'email', 'position')
 
 
 ContactFormset = modelformset_factory(
