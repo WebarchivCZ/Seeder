@@ -9,9 +9,10 @@ class PublisherForm(forms.ModelForm):
         Form that creates new publisher along with new contact person
     """
     contact_name = forms.CharField(
+        required=False,
         max_length=64,
         help_text='Name of the contact person')
-    email = forms.EmailField()
+    email = forms.EmailField(required=False)
     phone = forms.CharField(required=False)
 
     class Meta:
@@ -25,12 +26,15 @@ class PublisherForm(forms.ModelForm):
         !Returns tuple of new objects!
         """
         publisher = super(PublisherForm, self).save()
-        new_contact = models.ContactPerson(
-            name=self.cleaned_data['contact_name'],
-            email=self.cleaned_data['email'],
-            phone=self.cleaned_data['phone'],
-            publisher=publisher)
-        new_contact.save()
+        if self.cleaned_data['contact_name']:
+            new_contact = models.ContactPerson(
+                name=self.cleaned_data['contact_name'],
+                email=self.cleaned_data['email'],
+                phone=self.cleaned_data['phone'],
+                publisher=publisher)
+            new_contact.save()
+        else:
+            new_contact = None
         return publisher, new_contact
 
 
