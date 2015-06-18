@@ -166,6 +166,7 @@ class SourceDetail(SourceView, DetailView, CommentViewGeneric):
 
 class SourceEdit(SourceView, generic_views.EditView):
     form_class = forms.SourceEditForm
+    template_name = 'edit_source.html'
 
 
 class EditSeeds(SourceView, FormView, generic_views.ObjectMixinFixed):

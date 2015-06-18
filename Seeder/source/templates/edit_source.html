@@ -2,28 +2,27 @@
 {% load i18n %}
 {% load bootstrap3 %}
 {% load static %}
+
 {% block title %}
-    {{ view.get_title }}
+    {% trans 'Edit' %} {{ object }}
 {% endblock %}
 
 {% block page_header %}
-{{ view.get_title }} <span class="pull-right">{{ wizard.steps.step1 }} / {{ wizard.steps.count }}</span>
+    {% trans 'Edit' %} {{ object }}
 {% endblock %}
 
 {% block extrahead %}
     {% include 'autocomplete_light/static.html' %}
     <script>
         {% include 'category_completion.js' %}
-        category_completion('#id_source-category', '#id_source-sub_category');
+        category_completion('#id_category', '#id_sub_category');
     </script>
 {% endblock %}
 
-
 {% block content %}
-    <form class="" method="post" novalidate>
+    <form class="" method="post" enctype="multipart/form-data" novalidate>
         {% csrf_token %}
         {% bootstrap_form form %}
-        {{ wizard.management_form }}
-        <input type="submit" class="btn btn-primary btn-block"/>
+        <input type="submit" class="btn btn-primary btn-block" value="{% trans 'Send' %}" />
     </form>
 {% endblock %}
