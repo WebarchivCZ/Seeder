@@ -58,6 +58,18 @@ supervisor
 Put something like `template.supervisor.conf` to ``/etc/supervisor/conf.d/``.
 
 
+Cron
+----
+
+You need to run ``python manage.py runcrons`` periodically, this commands runs periodical tasks that takes care of various thins - screenshots,
+postponed voting rounds, expiring contracts...
+
+So put something like ::
+
+    0 * * * * source <virtualenv>/bin/activate && python <seeder>Seeder/manage.py runcrons > <log_path>/django_cron.log
+
+
+
 Final restart
 -------------
 

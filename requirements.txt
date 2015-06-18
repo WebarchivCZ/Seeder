@@ -20,3 +20,4 @@ transifex-client
 django-debug-toolbar
 tld
 django-autocomplete-light>=2.0.0a1
+django_cron

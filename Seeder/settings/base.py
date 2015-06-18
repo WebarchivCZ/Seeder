@@ -47,6 +47,7 @@ INSTALLED_APPS = (
     'reversion',
     'ckeditor',
     'debug_toolbar',
+    'django_cron',
 
     'core',
     'publishers',
@@ -154,3 +155,5 @@ CKEDITOR_CONFIGS = {
 DEBUG_TOOLBAR_CONFIG = {
     'SHOW_TOOLBAR_CALLBACK': 'core.utils.show_toolbar',
 }
+
+CRON_CLASSES = []
