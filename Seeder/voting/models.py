@@ -20,6 +20,7 @@ class VotingRound(BaseModel):
     source = models.ForeignKey(Source)
     resolved_by = models.ForeignKey(User, blank=True, null=True)
     date_resolved = models.DateTimeField(blank=True, null=True)
+    postponed_until = models.DateField(blank=True, null=True)
 
     state = models.CharField(
         verbose_name=_('State'),
