@@ -18,7 +18,7 @@ class PublisherForm(forms.ModelForm):
 
     class Meta:
         model = models.Publisher
-        fields = ('name', 'website')
+        fields = ('name', )
 
     def save(self, commit=True):
         """
