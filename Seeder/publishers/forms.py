@@ -2,6 +2,7 @@ import models
 
 from django import forms
 from django.utils.translation import ugettext as _
+from django.forms.models import modelformset_factory
 
 
 class PublisherForm(forms.ModelForm):
@@ -71,3 +72,10 @@ class ContactPersonForm(forms.ModelForm):
     class Meta:
         model = models.ContactPerson
         fields = ('name', 'email', 'phone')
+
+
+ContactFormset = modelformset_factory(
+    models.ContactPerson,
+    fields=('name', 'email', 'position'),
+    extra=1,
+    can_delete=True)

@@ -11,11 +11,14 @@
         <ul class="list-group">
             {% for contact in publisher.contactperson_set.all %}
                 <li class="list-group-item">
-                    {{ contact }} {% if contact.phone %}, {{ contact.phone }}{% endif %}
-                    <span class="pull-right"><a href="mailto:{{ contact.email }}">{{ contact.email }}</a></span>
+                    {{ contact }}, <a href="mailto:{{ contact.email }}">{{ contact.email }}</a>
+                    <br/>
+                    {% trans 'Position' %}: {{ contact.position }}
                 </li>
             {% endfor %}
         </ul>
+        <a href="{% url 'publishers:edit_contacts' pk=object.pk %}" class="btn btn-primary btn-warning btn-block">{% trans 'Edit contacts' %}</a>
+
     </div>
     <div class="col-md-5 col-sm-5">
         <h4>{% trans 'Sources' %}</h4>
