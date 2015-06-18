@@ -10,3 +10,5 @@ This project is a web management tool for Czech web archive.
 
    installation
    deploying
+   crons
+   translation
