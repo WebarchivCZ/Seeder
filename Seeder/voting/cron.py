@@ -6,7 +6,7 @@ from models import VotingRound
 
 
 class RevivePostponedRounds(CronJobBase):
-    schedule = Schedule(run_every_mins=1)
+    schedule = Schedule(run_every_mins=60)
 
     code = 'voting.RevivePostponedRounds'
 
