@@ -82,6 +82,12 @@ class AddSource(generic_views.LoginMixin, SessionWizardView):
 
         if step == 'source' and is_manager:
             form_class = forms.ManagementSourceForm
+            form = form_class(prefix=self.get_form_prefix(step, form_class),
+                          data=data, files=files)
+            owner = form.fields['owner']
+            owner.initial = self.request.user
+            return form
+
         elif step == 'choose_publisher':
             publisher = self.get_cleaned_data_for_step('source')['publisher']
             form = form_class(prefix=self.get_form_prefix(step, form_class),
