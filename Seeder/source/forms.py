@@ -71,5 +71,5 @@ EditFormset = modelformset_factory(
 class SourceEditForm(autocomplete_light.ModelForm):
     class Meta:
         model = models.Source
-        fields = ('owner', 'name', 'state', 'frequency', 'category',
-                  'sub_category', 'comment', 'aleph_id')
+        fields = ('owner', 'name', 'publisher_contact', 'state', 'frequency',
+                  'category', 'sub_category', 'comment', 'aleph_id')

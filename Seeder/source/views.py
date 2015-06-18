@@ -83,7 +83,7 @@ class AddSource(generic_views.LoginMixin, SessionWizardView):
         if step == 'source' and is_manager:
             form_class = forms.ManagementSourceForm
             form = form_class(prefix=self.get_form_prefix(step, form_class),
-                          data=data, files=files)
+                              data=data, files=files)
             owner = form.fields['owner']
             owner.initial = self.request.user
             return form
@@ -173,6 +173,12 @@ class SourceDetail(SourceView, DetailView, CommentViewGeneric):
 class SourceEdit(SourceView, generic_views.EditView):
     form_class = forms.SourceEditForm
     template_name = 'edit_source.html'
+
+    def get_form(self, form_class=None):
+        form = super(SourceEdit, self).get_form(form_class)
+        contacts = self.object.publisher.contactperson_set.all()
+        form.fields['publisher_contact'].queryset = contacts
+        return form
 
 
 class EditSeeds(SourceView, FormView, generic_views.ObjectMixinFixed):
