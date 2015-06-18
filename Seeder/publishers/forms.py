@@ -42,7 +42,7 @@ class PublisherForm(forms.ModelForm):
 class PublisherEditForm(forms.ModelForm):
     class Meta:
         model = models.Publisher
-        fields = ('name', )
+        fields = ('active', 'name')
 
 
 class ContactChoiceForm(forms.ModelForm):

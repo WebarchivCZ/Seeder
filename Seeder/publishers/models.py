@@ -7,12 +7,24 @@ from django.core.urlresolvers import reverse
 from core.models import BaseModel
 
 
+class ContractManager(models.Manager):
+    """
+        Custom manager for filtering active Publishers
+    """
+
+    def get_queryset(self):
+        return self.get_queryset().filter(active=True)
+
+
 @reversion.register(exclude=('last_changed',))
 class Publisher(BaseModel):
     """
         Publisher of the Source(s), Publisher can have multiple contacts.
     """
     name = models.CharField(_('Name'), max_length=150)
+
+    objects = ContractManager()
+    all_objects = models.Manager()
 
     class Meta:
         verbose_name = _('Publisher')
