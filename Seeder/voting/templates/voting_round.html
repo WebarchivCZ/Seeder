@@ -47,6 +47,13 @@
                 </p>
             {% endblocktrans %}
         {% endif %}
+        {% if voting_round.postponed_until %}
+            <p>
+                {% trans 'Voting round will be reopened on' %} {{ voting_round.postponed_until|naturalday }}
+            </p>
+
+        {% endif  %}
+
     </div>
 
     <div class="col-md-3 col-sm-6">

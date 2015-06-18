@@ -41,6 +41,8 @@ class ActionView(View, MessageView):
     # required permission for doing any kind of action
     permission = None
 
+    action = NotImplemented
+
     def process_action(self, action):
         """
         Override this method
@@ -71,6 +73,7 @@ class ActionView(View, MessageView):
         else:
             action = request.POST.get('action', None)
             if action in self.allowed_actions:
+                self.action = action
                 self.process_action(action)
                 return HttpResponseRedirect(self.get_success_url())
             else:
