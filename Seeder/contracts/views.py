@@ -4,7 +4,7 @@ import tables
 import field_filters
 import constants
 
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, date
 
 from django.views.generic import DetailView, FormView
 from django.utils.translation import ugettext_lazy as _
@@ -90,15 +90,20 @@ class Schedule(ContractView, FormView, ObjectMixinFixed):
     def get_initial(self):
         initial = []
         delay = 0
+        today = date.today()
         for template in constants.NEGOTIATION_TEMPLATES:
             rendered = render_to_string(template, context={
-                'user': self.request.user
+                'source': self.object.source,
+                'seeds': self.object.source.seed_set.all(),
+                'user': self.request.user,
+                'today': today,
             })
-            date = datetime.now() + timedelta(days=delay)
+            scheduled_date = today + timedelta(days=delay)
             delay += constants.NEGOTIATION_DELAY
             initial.append({
                 'content': rendered,
-                'scheduled_date': date,
+                'title': constants.EMAILS_TITLE,
+                'scheduled_date': scheduled_date,
             })
         return initial
 

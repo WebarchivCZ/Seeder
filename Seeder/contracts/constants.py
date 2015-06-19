@@ -38,3 +38,5 @@ CONTRACT_TYPE_CHOICES = (
     (CONTRACT_CREATIVE_COMMONS, _('Creative commons')),
     (CONTRACT_PROPRIETARY, _('Proprietary')),
 )
+
+EMAILS_TITLE = _('Narodni knihovna CR - archivace Vasich webovych stranek')
