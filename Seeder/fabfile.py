@@ -81,5 +81,5 @@ def shell():
 
 @task(alias='dl')
 def deploy():
-    map(run, commands['pull'] + commands['reqs'] + commands['pull_messages'] +
+    map(local, commands['reqs'] + commands['pull_messages'] +
         commands['syncdb'] + commands['static'] + commands['touch_reload'])
