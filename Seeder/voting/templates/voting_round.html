@@ -12,7 +12,7 @@
     <div class="progress">
         {% if voting_round.round_open %}
             {% for css, value in voting_round.get_status_bar %}
-                <div class="progress-bar progress-bar-{{ css }}" style="width: {{ value }}%"></div>
+                <div class="progress-bar progress-bar-{{ css }}" style="width: {{ value|safe }}%"></div>
             {% endfor %}
         {% else %}
             <div class="progress-bar progress-bar-{{ voting_round.get_css_class }}" style="width: 100%"></div>

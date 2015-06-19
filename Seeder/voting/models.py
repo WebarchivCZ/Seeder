@@ -62,8 +62,8 @@ class VotingRound(BaseModel):
         """
         score = self.get_score_dict()
         overall = sum(score.values())
-        return ((constants.VOTES[vote]['css'], percentage(value, overall))
-                for vote, value in score.items())
+        return [(constants.VOTES[vote]['css'], percentage(value, overall))
+                for vote, value in score.items()]
 
     def get_css_class(self):
         """
