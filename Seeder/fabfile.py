@@ -73,13 +73,13 @@ def push_messages():
 def shell():
     local('./manage.py shell')
 
+#
+# @task(alias='dl')
+# def deploy_locally():
+#     map(local, commands['syncdb'] + commands['static'])
+
 
 @task(alias='dl')
-def deploy_locally():
-    map(local, commands['syncdb'] + commands['static'])
-
-
-@task(alias='d')
 def deploy():
     map(run, commands['pull'] + commands['reqs'] + commands['pull_messages'] +
         commands['syncdb'] + commands['static'] + commands['touch_reload'])
