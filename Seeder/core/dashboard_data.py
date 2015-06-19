@@ -1,7 +1,9 @@
 from django.utils.translation import ugettext_lazy as _
+from django.db.models import Count
 
 from source import models as source_models
 from contracts import models as contract_models
+from voting import models as voting_models
 
 
 class DashboardCard(object):
@@ -55,7 +57,25 @@ class ContractsCard(DashboardCard):
         return 'success' if element.publisher_responds else 'info'
 
 
-cards_registry = [ContractsCard]
+class ManagedVotingRounds(DashboardCard):
+    """
+    Cards with voting rounds that user manages
+    """
+    badges = True
+    color_classes = False
+    title = _('Voting rounds you manage')
+
+    def get_queryset(self):
+        return voting_models.VotingRound.objects.filter(
+            source__owner=self.user,
+            state=voting_models.constants.VOTE_INITIAL
+        ).annotate(Count('vote')).order_by('-vote__count')
+
+    def get_badge(self, element):
+        return element.vote__count
+
+
+cards_registry = [ContractsCard, ManagedVotingRounds]
 
 
 def get_cards(user):
