@@ -1,5 +1,7 @@
-from source.models import Source
-from source import constants as source_constants
+from django.utils.translation import ugettext_lazy as _
+
+from source import models as source_models
+from contracts import models as contract_models
 
 
 class DashboardCard(object):
@@ -19,27 +21,42 @@ class DashboardCard(object):
         raise NotImplementedError
 
     def get_badge(self, element):
-        raise NotImplementedError
+        if self.badges:
+            raise NotImplementedError
 
     def get_color(self, element):
-        raise NotImplementedError
+        if self.color_classes:
+            raise NotImplementedError
 
     def elements(self):
-        element = next(self.queryset)
-        context_element = {'element': element}
-        if self.badges:
-            context_element['badge'] = self.get_badge(element)
-        if self.color_classes:
-            context_element['color'] = self.get_color(element)
-        yield context_element
+        for element in self.queryset:
+            context_element = {'instance': element}
+            if self.badges:
+                context_element['badge'] = self.get_badge(element)
+            if self.color_classes:
+                context_element['color'] = self.get_color(element)
+            yield context_element
 
 
-cards_registry = []
+class ContractsCard(DashboardCard):
+    """
+        Cards that displays contracts in negotiation.
+    """
+    badges = False
+    color_classes = True
+    title = _('Contracts in negotiation')
+
+    def get_queryset(self):
+        return contract_models.Contract.objects.filter(
+            source__owner=self.user,
+            state=contract_models.constants.CONTRACT_STATE_NEGOTIATION)
+
+    def get_color(self, element):
+        return 'success' if element.publisher_responds else 'info'
+
+
+cards_registry = [ContractsCard]
 
 
 def get_cards(user):
     return map(lambda card_class: card_class(user), cards_registry)
-
-
-def get_dashboard_data(user, context):
-    return context
