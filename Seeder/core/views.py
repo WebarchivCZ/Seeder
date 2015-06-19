@@ -9,7 +9,8 @@ from django.utils.http import is_safe_url
 from django.utils import translation
 
 from generic_views import LoginMixin, MessageView
-from dashboard_data import get_dashboard_data
+from dashboard_data import get_cards
+
 
 class DashboardView(LoginMixin, TemplateView):
     template_name = 'dashboard.html'
@@ -18,7 +19,9 @@ class DashboardView(LoginMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(DashboardView, self).get_context_data()
-        return get_dashboard_data(self.request.user, context)
+        context['cards'] = get_cards(self.request.user)
+        return context
+
 
 class ChangeLanguage(View):
     def get(self, request, code):

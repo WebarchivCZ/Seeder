@@ -35,7 +35,7 @@ VOTE_TO_SOURCE = {
     'initial': source_constants.STATE_VOTE,
     'approve': source_constants.STATE_ACCEPTED_BY_STAFF,
     'decline': source_constants.STATE_DECLINED_BY_STAFF,
-    'wait': source_constants.STATE_WAITING
+    'wait': source_constants.STATE_REEVALUTATION
 }
 
 VOTE_INITIAL = VOTES['initial']['value']
