@@ -158,5 +158,6 @@ DEBUG_TOOLBAR_CONFIG = {
 
 CRON_CLASSES = [
     'voting.cron.RevivePostponedRounds',
-    'contracts.cron.ExpireContracts'
+    'contracts.cron.ExpireContracts',
+    'contracts.cron.SendEmails'
 ]

@@ -3,7 +3,10 @@ import constants
 from datetime import date
 from django_cron import CronJobBase, Schedule
 
-from models import Contract
+from django.core.mail import send_mail
+from django.utils.html import strip_tags
+
+from models import Contract, EmailNegotiation
 from source import constants as source_constants
 
 
@@ -24,3 +27,28 @@ class ExpireContracts(CronJobBase):
             contract.source.state = source_constants.STATE_CONTRACT_EXPIRED
             contract.save()
             contract.source.save()
+
+
+class SendEmails(CronJobBase):
+    schedule = Schedule(run_every_mins=60)
+
+    code = 'contracts.SendEmails'
+
+    def do(self):
+        today = date.today()
+        emails_to_send = EmailNegotiation.objects.filter(
+            scheduled_date__lte=today,
+            sent=False,
+            contract__state=constants.CONTRACT_STATE_NEGOTIATION,
+            contract__in_communication=False,
+            contract__source__publisher_contact__isnull=False)
+
+        for email in emails_to_send:
+            send_mail(
+                subject=email.title,
+                message=strip_tags(email.content),
+                html_message=email.content,
+                from_email=email.contract.source.owner.email,
+                recipient_list=[email.contract.source.publisher_contact.email])
+            email.sent = True
+            email.save()
