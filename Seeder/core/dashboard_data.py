@@ -18,6 +18,8 @@ class DashboardCard(object):
     def __init__(self, user):
         self.user = user
         self.queryset = self.get_queryset()[:self.elements_per_card]
+        if not self.queryset:
+            self.empty = True
 
     def get_queryset(self):
         raise NotImplementedError
@@ -69,7 +71,7 @@ class ManagedVotingRounds(DashboardCard):
         return voting_models.VotingRound.objects.filter(
             source__owner=self.user,
             state=voting_models.constants.VOTE_INITIAL
-        ).annotate(Count('vote')).order_by('-vote__count')
+        ).annotate(Count('vote')).order_by('vote__count')
 
     def get_badge(self, element):
         return element.vote__count
