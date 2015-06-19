@@ -1,10 +1,17 @@
 {% extends 'base.html' %}
 {% load i18n %}
 
-{% block page_header %}
-{% trans 'Welcome' %}, {{ user.get_full_name }}
-{% endblock %}
-
 {% block content %}
-    Lorem ipsum dolor sit amet, consectetur adipisicing elit. A accusamus delectus dignissimos distinctio doloribus est excepturi inventore iste libero, magnam maxime minus nemo non obcaecati quaerat vel voluptatem. Et, voluptatum!
+    <div class="col-md-3 col-sm-3 col-l-3">
+    <h4>{% trans 'Your sources' %}</h4>
+        <ul class="list-group">
+            {% for source in user_sources %}
+              <a href="{{ source.get_absolute_url }}" class="list-group-item">
+                {{ source }}
+              </a>
+            {% endfor %}
+        </ul>
+    </div>
+
+
 {% endblock %}
