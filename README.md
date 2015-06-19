@@ -8,8 +8,9 @@ Seeder
 Web archivists tool for moderating what parts of Czech Internet will be 
 archived and what parts should die in the shadows of unarchived wasteland.
 
-Translation happens at [Transifex/Seeder](https://www.transifex.com/projects/p/seeder/)
-Documentation is available at [Read the docs](http://seeder.readthedocs.org/en/latest/)
+Translation happens at [Transifex/Seeder](https://www.transifex.com/projects/p/seeder/).
+
+Documentation is available at [Read the docs](http://seeder.readthedocs.org/en/latest/).
 
 
 Features:
