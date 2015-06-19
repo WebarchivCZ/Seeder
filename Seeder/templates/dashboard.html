@@ -9,7 +9,11 @@
                 <ul class="list-group">
                     {% for element in card.elements %}
                         <a href="{{ element.instance.get_absolute_url }}" target="_blank" class="list-group-item list-group-item-{{ element.color }}">
-                            {{ element.instance }}
+                            {% if element.title %}
+                                {{ element.title }}
+                            {% else %}
+                                {{ element.instance }}
+                            {% endif %}
                             <span class="badge">{{ element.badge }}</span>
                         </a>
                     {% endfor %}
