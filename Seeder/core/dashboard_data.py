@@ -107,7 +107,27 @@ class OpenToVoteRounds(ManagedVotingRounds):
         ).annotate(Count('vote')).order_by('vote__count')
 
 
-cards_registry = [ContractsCard, ManagedVotingRounds, OpenToVoteRounds]
+class SourceOwned(DashboardCard):
+    """
+    Displays sources that you own and are
+    """
+    title = _('Sources curating')
+    badges = False
+    color_classes = False
+    custom_titles = True
+
+    def get_title(self, element):
+        return u'{0}: {1}'.format(element.name, element.get_state_display())
+
+    def get_queryset(self):
+        return source_models.Source.objects.filter(
+            # owner=self.user,
+            state__in=source_models.constants.STATES_WITH_POTENTIAL
+        )
+
+
+cards_registry = [ContractsCard, ManagedVotingRounds, OpenToVoteRounds,
+                  SourceOwned]
 
 
 def get_cards(user):
