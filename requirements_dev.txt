@@ -1,4 +1,4 @@
 django_debug_toolbar
 ipdb
 fabric
-yaft
+yapf
