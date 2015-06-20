@@ -1,25 +1,42 @@
 {% extends 'base.html' %}
 {% load i18n %}
 
-{% block content %}
-    {% for card in cards %}
-        {% if not card.empty %}
-            <div class="col-md-3 col-sm-3 col-l-3">
-                <h4>{{ card.title }}</h4>
-                <ul class="list-group">
-                    {% for element in card.elements %}
-                        <a href="{{ element.instance.get_absolute_url }}" target="_blank" class="list-group-item list-group-item-{{ element.color }}">
-                            {% if element.title %}
-                                {{ element.title }}
-                            {% else %}
-                                {{ element.instance }}
-                            {% endif %}
-                            <span class="badge">{{ element.badge }}</span>
-                        </a>
-                    {% endfor %}
-                </ul>
-            </div>
-        {% endif %}
+{% block extrahead %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/masonry/3.3.0/masonry.pkgd.min.js"></script>
+{% endblock %}
 
-    {% endfor %}
+
+{% block content %}
+    <div class="grid">
+        {% for card in cards %}
+            {% if not card.empty %}
+                <div class="col-md-5 col-sm-5 col-l-3 grid-item">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">{{ card.title }}</div>
+                        <ul class="list-group">
+                            {% for element in card.elements %}
+                                <a href="{{ element.instance.get_absolute_url }}" target="_blank" class="list-group-item list-group-item-{{ element.color }}">
+                                    {% if element.title %}
+                                        {{ element.title }}
+                                    {% else %}
+                                        {{ element.instance }}
+                                    {% endif %}
+                                    <span class="badge">{{ element.badge }}</span>
+                                </a>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+{% endblock %}
+
+{% block extrajs %}
+    <script>
+    $('.grid').masonry({
+        itemSelector: '.grid-item',
+        columnWidth: 300
+    });
+</script>
 {% endblock %}

@@ -112,3 +112,7 @@ body {
 table td {
   word-wrap: break-word;
 }
+
+.grid-item {
+  width: 300px;
+}
