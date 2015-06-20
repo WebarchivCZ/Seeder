@@ -121,7 +121,7 @@ class SourceOwned(DashboardCard):
 
     def get_queryset(self):
         return source_models.Source.objects.filter(
-            # owner=self.user,
+            owner=self.user,
             state__in=source_models.constants.STATES_WITH_POTENTIAL
         )
 
