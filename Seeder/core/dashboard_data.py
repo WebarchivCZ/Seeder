@@ -70,17 +70,26 @@ class ContractsCard(DashboardCard):
         return 'success' if element.publisher_responds else 'info'
 
 
-class ManagedVotingRounds(DashboardCard):
+class VoteCard(DashboardCard):
     """
-    Cards with voting rounds that user manages
+    Parent class for all voting rounds cards
     """
     badges = True
     color_classes = False
-    title = _('Voting rounds you manage')
     custom_titles = True
 
     def get_title(self, element):
         return element.source
+
+    def get_badge(self, element):
+        return element.vote__count
+
+
+class ManagedVotingRounds(VoteCard):
+    """
+    Cards with voting rounds that user manages
+    """
+    title = _('Voting rounds you manage')
 
     def get_queryset(self):
         return voting_models.VotingRound.objects.filter(
@@ -88,11 +97,8 @@ class ManagedVotingRounds(DashboardCard):
             state=voting_models.constants.VOTE_INITIAL
         ).annotate(Count('vote')).order_by('vote__count')
 
-    def get_badge(self, element):
-        return element.vote__count
 
-
-class OpenToVoteRounds(ManagedVotingRounds):
+class OpenToVoteRounds(VoteCard):
     """
     Cards listing all the rounds that are open to vote and where you did
     vote yet...
@@ -107,11 +113,7 @@ class OpenToVoteRounds(ManagedVotingRounds):
         ).annotate(Count('vote')).order_by('vote__count')
 
 
-class SourceOwned(DashboardCard):
-    """
-    Displays sources that you own and are
-    """
-    title = _('Sources curating')
+class SourceCard(DashboardCard):
     badges = False
     color_classes = False
     custom_titles = True
@@ -119,15 +121,32 @@ class SourceOwned(DashboardCard):
     def get_title(self, element):
         return u'{0}: {1}'.format(element.name, element.get_state_display())
 
+
+class SourceOwned(SourceCard):
+    """
+    Displays sources that you own and are
+    """
+    title = _('Sources curating')
+
     def get_queryset(self):
         return source_models.Source.objects.filter(
             owner=self.user,
             state__in=source_models.constants.STATES_WITH_POTENTIAL
         )
+    
+
+class WithoutAleph(SourceCard):
+    title = _('Source without Aleph ID')
+
+    def get_queryset(self):
+        return source_models.Source.objects.filter(
+            state=source_models.constants.STATE_RUNNING,
+            aleph_id=None
+        )
 
 
 cards_registry = [ContractsCard, ManagedVotingRounds, OpenToVoteRounds,
-                  SourceOwned]
+                  SourceOwned, WithoutAleph]
 
 
 def get_cards(user):
