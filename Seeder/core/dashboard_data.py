@@ -108,8 +108,9 @@ class OpenToVoteRounds(VoteCard):
     def get_queryset(self):
         return voting_models.VotingRound.objects.filter(
             ~Q(source__owner=self.user) &
+            ~Q(vote__author=self.user) &
             Q(state=voting_models.constants.VOTE_INITIAL) &
-            ~Q(vote__author=self.user)
+            Q(source__state__in=source_models.constants.VOTE_STATES)
         ).annotate(Count('vote')).order_by('vote__count')
 
 
@@ -133,7 +134,7 @@ class SourceOwned(SourceCard):
             owner=self.user,
             state__in=source_models.constants.STATES_WITH_POTENTIAL
         )
-    
+
 
 class WithoutAleph(SourceCard):
     title = _('Source without Aleph ID')
