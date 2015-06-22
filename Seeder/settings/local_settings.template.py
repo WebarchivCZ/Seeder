@@ -19,6 +19,12 @@ DATABASES = {
         'NAME': '<db name>',
         'USER': '<db user>',
         'PASSWORD': '<db pass>'
+    },
+    'legacy_seeder': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': '???',
+        'USER': '???',
+        'PASSWORD': '???'
     }
 }
 
