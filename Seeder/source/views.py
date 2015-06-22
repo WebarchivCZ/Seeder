@@ -2,8 +2,10 @@ import forms
 import models
 import tables
 import field_filters
+import constants
+import export
 
-from django.views.generic import DetailView, FormView
+from django.views.generic import DetailView, FormView, TemplateView
 from django.http.response import HttpResponseRedirect
 from django.utils.translation import ugettext_lazy as _
 from django.db.models import Q
@@ -217,3 +219,24 @@ class SourceList(SourceView, generic_views.FilteredListView):
     title = _('Sources')
     table_class = tables.SourceTable
     filter_class = field_filters.SourceFilter
+
+
+class SeedExport(TemplateView):
+    template_name = 'api.html'
+    title = _('Api description')
+    view_name = 'api'
+
+    def get_context_data(self, **kwargs):
+        context = super(SeedExport, self).get_context_data(**kwargs)
+        latest_exports = []
+        for freq in dict(constants.SOURCE_FREQUENCY_PER_YEAR):
+            first = models.SeedExport.objects.filter(
+                frequency=freq).order_by('-created').first()
+            latest_exports.append(first)
+
+        context['latest_exports'] = latest_exports
+        return context
+
+    def post(self, request):
+        export.export_seeds()
+        return HttpResponseRedirect('')

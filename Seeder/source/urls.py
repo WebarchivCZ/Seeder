@@ -9,5 +9,7 @@ urlpatterns = patterns(
     url(r'^history/(?P<pk>\d+)$', views.History.as_view(), name='history'),
     url(r'^edit/(?P<pk>\d+)$', views.SourceEdit.as_view(), name='edit'),
     url(r'^seeds/(?P<pk>\d+)$', views.EditSeeds.as_view(), name='edit_seeds'),
+    url(r'^export_seeds$', views.SeedExport.as_view(), name='export_seeds'),
+
     url(r'^list$', views.SourceList.as_view(), name='list'),
 )
