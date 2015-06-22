@@ -10,6 +10,7 @@ https://docs.djangoproject.com/en/1.7/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
+import re
 
 from django.utils.translation import ugettext_lazy as _
 
@@ -25,6 +26,16 @@ DEBUG = True
 TEMPLATE_DEBUG = True
 
 ALLOWED_HOSTS = []
+
+
+ADMINS = (
+    ('Visgean Skeloru', 'visgean@gmail.com')
+)
+
+IGNORABLE_404_URLS = (
+    re.compile(r'\.(php|cgi)$'),
+    re.compile(r'^/phpmyadmin/'),
+)
 
 
 # Application definition
