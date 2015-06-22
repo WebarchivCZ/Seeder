@@ -223,7 +223,7 @@ class SourceList(SourceView, generic_views.FilteredListView):
 
 class SeedExport(TemplateView):
     template_name = 'api.html'
-    title = _('Api description')
+    title = _('Export seeds')
     view_name = 'api'
 
     def get_context_data(self, **kwargs):
