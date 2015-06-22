@@ -11,6 +11,10 @@ from django.utils import translation
 from generic_views import LoginMixin, MessageView
 from dashboard_data import get_cards
 
+from source import export
+from source.models import SeedExport
+from source import constants as source_constants
+
 
 class DashboardView(LoginMixin, TemplateView):
     template_name = 'dashboard.html'
@@ -49,6 +53,27 @@ class UserProfileEdit(UpdateView, MessageView):
         form.save()
         self.add_message(_('Profile changed.'), messages.SUCCESS)
         return HttpResponseRedirect('/')
+
+
+class ApiPage(TemplateView):
+    template_name = 'api.html'
+    title = _('Api description')
+    view_name = 'api'
+    
+    def get_context_data(self, **kwargs):
+        context = super(ApiPage, self).get_context_data(**kwargs)
+        latest_exports = []
+        for freq in dict(source_constants.SOURCE_FREQUENCY_PER_YEAR):
+            first = SeedExport.objects.filter(
+                frequency=freq).order_by('-created').first()
+            latest_exports.append(first)
+
+        context['latest_exports'] = latest_exports
+        return context
+
+    def post(self, request):
+        export.export_seeds()
+        return HttpResponseRedirect('')
 
 
 class PasswordChangeDone(MessageView, View):

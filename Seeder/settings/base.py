@@ -172,3 +172,5 @@ CRON_CLASSES = [
     'contracts.cron.ExpireContracts',
     'contracts.cron.SendEmails'
 ]
+
+SEEDS_EXPORT_DIR = 'seeds'
