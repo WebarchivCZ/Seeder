@@ -13,6 +13,7 @@ STATE_DECLINED_BY_STAFF = 'vote_declined'
 STATE_DECLINED_BY_PUBLISHER = 'declined'
 STATE_PUBLISHER_IGNORED_REQUEST = 'ignored'
 STATE_RUNNING = 'success'
+STATE_WITHOUT_PUBLISHER = 'forced'
 STATE_CONTRACT_EXPIRED = 'expired'
 STATE_CONTRACT_TERMINATED = 'terminated'
 
@@ -26,6 +27,7 @@ SOURCE_STATES = (
     (STATE_ACCEPTED_BY_STAFF, _('Accepted by staff')),
     (STATE_DECLINED_BY_STAFF, _('Declined by staff')),
     (STATE_RUNNING, _('Archiving accepted')),
+    (STATE_WITHOUT_PUBLISHER, _('Archiving without publisher consent')),
     (STATE_DECLINED_BY_PUBLISHER, _('Declined by publisher')),
     (STATE_PUBLISHER_IGNORED_REQUEST, _('Publisher ignored requests')),
     (STATE_CONTRACT_EXPIRED, _('Contract expired')),
