@@ -6,6 +6,7 @@ STATE_VOTE = 'voting'
 STATE_DUPLICITY = 'duplicity'
 STATE_WAITING = 'waiting'
 STATE_REEVALUTATION = 'reevaluation'
+STATE_TECHNICAL_REVIEW = 'technical'
 STATE_COMMUNICATING = 'communication'
 STATE_ACCEPTED_BY_STAFF = 'vote_accepted'
 STATE_DECLINED_BY_STAFF = 'vote_declined'
@@ -20,6 +21,7 @@ SOURCE_STATES = (
     (STATE_DUPLICITY, _('Duplicated record')),
     (STATE_WAITING, _('Waiting for response')),
     (STATE_REEVALUTATION, _('Waiting for reevaluation')),
+    (STATE_TECHNICAL_REVIEW, _('Technical review')),
     (STATE_COMMUNICATING, _('In communication')),
     (STATE_ACCEPTED_BY_STAFF, _('Accepted by staff')),
     (STATE_DECLINED_BY_STAFF, _('Declined by staff')),
