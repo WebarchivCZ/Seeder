@@ -70,6 +70,21 @@ class ContractsCard(DashboardCard):
         return 'success' if element.publisher_responds else 'info'
 
 
+class ContractsWithoutCommunication(ContractsCard):
+    """
+        Cards with contracts that are in negotiation but don't have scheduled
+        email communication.
+    """
+
+    def get_queryset(self):
+        basic_qs = contract_models.Contract.objects.filter(
+            in_communication=False,
+            source__owner=self.user,
+            state=contract_models.constants.CONTRACT_STATE_NEGOTIATION)
+        return basic_qs.annotate(Count('emailnegotiation')).filter(
+            emailnegotiation__count=0)
+
+
 class VoteCard(DashboardCard):
     """
     Parent class for all voting rounds cards
@@ -147,7 +162,7 @@ class WithoutAleph(SourceCard):
 
 
 cards_registry = [ContractsCard, ManagedVotingRounds, OpenToVoteRounds,
-                  SourceOwned, WithoutAleph]
+                  SourceOwned, WithoutAleph, ContractsWithoutCommunication]
 
 
 def get_cards(user):
