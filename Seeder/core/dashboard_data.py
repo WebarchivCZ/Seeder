@@ -76,6 +76,8 @@ class ContractsWithoutCommunication(ContractsCard):
         email communication.
     """
 
+    title = _('Contracts without scheduled communication')
+
     def get_queryset(self):
         basic_qs = contract_models.Contract.objects.filter(
             in_communication=False,
