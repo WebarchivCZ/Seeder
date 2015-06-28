@@ -2,6 +2,7 @@ import forms
 
 from django.http.response import HttpResponseRedirect
 from django.views.generic.base import TemplateView, View
+from django.views.generic import ListView
 from django.utils.translation import ugettext_lazy as _
 from django.contrib import messages
 from django.views.generic.edit import UpdateView
@@ -30,14 +31,18 @@ class DashboardCard(LoginMixin, TemplateView):
 
     def get(self, request, *args, **kwargs):
         card = cards_registry[self.kwargs['card']]
-        self.card = card(request.user, card)
+        page_number = self.request.GET.get('page', 1)
+        self.card = card(request.user, card, page_number)
         return super(DashboardCard, self).get(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
         context = super(DashboardCard, self).get_context_data(**kwargs)
         context['card'] = self.card
         return context
-    
+
+    def get_queryset(self):
+        return self.card.get_queryset()
+
 
 class ChangeLanguage(View):
     def get(self, request, code):

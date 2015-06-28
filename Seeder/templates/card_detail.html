@@ -24,4 +24,17 @@
             {% endfor %}
         </ul>
     </div>
+
+    <nav>
+        <ul class="pager">
+            {% if card.page.has_previous %}
+                <li class="previous"><a href="?page={{ card.page.previous_page_number }}"><span aria-hidden="true">&larr;</span>{% trans 'Previous' %}</a></li>
+            {% endif %}
+
+            {% if card.page.has_next %}
+                <li class="next"><a href="?page={{ card.page.next_page_number }}">{% trans 'Next' %} <span aria-hidden="true">&rarr;</span></a></li>
+            {% endif %}
+          </ul>
+    </nav>
+
 {% endblock %}

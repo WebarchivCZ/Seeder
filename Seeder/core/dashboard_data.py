@@ -1,5 +1,6 @@
 from django.utils.translation import ugettext_lazy as _
 from django.db.models import Count, Q
+from django.core.paginator import Paginator
 
 from source import models as source_models
 from contracts import models as contract_models
@@ -17,14 +18,17 @@ class DashboardCard(object):
     custom_titles = False
     table = None
 
-    def __init__(self, user, url_name):
+    def __init__(self, user, url_name, page=1):
         """
         :param url_name: short url slug that identifies the card
         """
         self.user = user
         self.url_name = url_name
-        self.queryset = self.get_queryset()[:self.elements_per_card]
-        if not self.queryset:
+        self.paginator = Paginator(self.get_queryset(),
+                                   self.elements_per_card,
+                                   orphans=3)
+        self.page = self.paginator.page(page)
+        if not self.paginator.count:
             self.empty = True
 
     def get_queryset(self):
@@ -43,7 +47,7 @@ class DashboardCard(object):
             raise NotImplementedError
 
     def elements(self):
-        for element in self.queryset:
+        for element in self.page.object_list:
             context_element = {'instance': element}
             if self.badges:
                 context_element['badge'] = self.get_badge(element)
