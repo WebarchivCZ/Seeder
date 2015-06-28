@@ -12,7 +12,9 @@
             {% if not card.empty %}
                 <div class="col-md-5 col-sm-5 col-l-3 grid-item">
                     <div class="panel panel-default">
-                        <div class="panel-heading">{{ card.title }}</div>
+                        <div class="panel-heading">
+                            <a href="{% url 'core:card' card=card.url_name %}">{{ card.title }}</a>
+                        </div>
                         <ul class="list-group">
                             {% for element in card.elements %}
                                 <a href="{{ element.instance.get_absolute_url }}" target="_blank" class="list-group-item list-group-item-{{ element.color }}">

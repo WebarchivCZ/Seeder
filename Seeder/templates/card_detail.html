@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}
+{{ card.title }}
+{% endblock %}
+
+{% block page_header %}
+{% trans 'Dashboard' %}: {{ card.title }}
+{% endblock %}
+
+{% block content %}
+    <div class="panel panel-default">
+        <ul class="list-group">
+            {% for element in card.elements %}
+                <a href="{{ element.instance.get_absolute_url }}" target="_blank" class="list-group-item list-group-item-{{ element.color }}">
+                    {% if element.title %}
+                        {{ element.title }}
+                    {% else %}
+                        {{ element.instance }}
+                    {% endif %}
+                    <span class="badge">{{ element.badge }}</span>
+                </a>
+            {% endfor %}
+        </ul>
+    </div>
+{% endblock %}

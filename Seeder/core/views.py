@@ -9,7 +9,7 @@ from django.utils.http import is_safe_url
 from django.utils import translation
 
 from generic_views import LoginMixin, MessageView
-from dashboard_data import get_cards
+from dashboard_data import get_cards, cards_registry
 
 
 class DashboardView(LoginMixin, TemplateView):
@@ -22,6 +22,22 @@ class DashboardView(LoginMixin, TemplateView):
         context['cards'] = get_cards(self.request.user)
         return context
 
+
+class DashboardCard(LoginMixin, TemplateView):
+    card = None
+    template_name = 'card_detail.html'
+    view_name = 'dashboard'
+
+    def get(self, request, *args, **kwargs):
+        card = cards_registry[self.kwargs['card']]
+        self.card = card(request.user, card)
+        return super(DashboardCard, self).get(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super(DashboardCard, self).get_context_data(**kwargs)
+        context['card'] = self.card
+        return context
+    
 
 class ChangeLanguage(View):
     def get(self, request, code):

@@ -15,9 +15,14 @@ class DashboardCard(object):
     elements_per_card = 10  # number of objects per card
     title = NotImplemented  # title of the card
     custom_titles = False
+    table = None
 
-    def __init__(self, user):
+    def __init__(self, user, url_name):
+        """
+        :param url_name: short url slug that identifies the card
+        """
         self.user = user
+        self.url_name = url_name
         self.queryset = self.get_queryset()[:self.elements_per_card]
         if not self.queryset:
             self.empty = True
@@ -162,10 +167,15 @@ class WithoutAleph(SourceCard):
             aleph_id=None
         )
 
-
-cards_registry = [ContractsCard, ManagedVotingRounds, OpenToVoteRounds,
-                  SourceOwned, WithoutAleph, ContractsWithoutCommunication]
+cards_registry = {
+    'contracts': ContractsCard,
+    'voting_rounds': ManagedVotingRounds,
+    'open_votes': OpenToVoteRounds,
+    'sources_owned': SourceOwned,
+    'without_aleph': WithoutAleph,
+    'no_communication': ContractsWithoutCommunication
+}
 
 
 def get_cards(user):
-    return map(lambda card_class: card_class(user), cards_registry)
+    return map(lambda (name, card): card(user, name), cards_registry.items())
