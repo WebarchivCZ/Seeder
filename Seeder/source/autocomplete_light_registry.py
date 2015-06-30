@@ -34,13 +34,12 @@ class AutocompleteSubCategory(autocomplete_light.AutocompleteModelBase):
 
 
 class AutocompleteUser(autocomplete_light.AutocompleteModelBase):
+    choices = User.objects.filter(is_active=True)
     search_fields = ['^username', 'first_name', 'last_name', 'email']
     attrs = {
         'placeholder': _('User'),
         'data-autocomplete-minimum-characters': 0,
     }
-
-    choices = User.objects.filter(is_active=True)
 
 
 autocomplete_light.register(Category, AutocompleteCategory)
