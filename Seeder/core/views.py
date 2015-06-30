@@ -2,7 +2,6 @@ import forms
 
 from django.http.response import HttpResponseRedirect
 from django.views.generic.base import TemplateView, View
-from django.views.generic import ListView
 from django.utils.translation import ugettext_lazy as _
 from django.contrib import messages
 from django.views.generic.edit import UpdateView
