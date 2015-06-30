@@ -12,7 +12,7 @@ def export_seeds():
     now_formatted = now.strftime('%d.%m.%Y %H:%M')
     for freq, freq_name in dict(constants.SOURCE_FREQUENCY_PER_YEAR).items():
         urls = models.Seed.objects.filter(
-            source__state=constants.STATE_RUNNING,
+            source__state__in=constants.ARCHIVING_STATES,
             source__frequency=freq,
             state=constants.SEED_STATE_INCLUDE).values_list('url', flat=True)
         url_list = [url.encode('utf-8') for url in urls]
