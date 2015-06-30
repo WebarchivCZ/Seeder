@@ -72,4 +72,4 @@ class SourceEditForm(autocomplete_light.ModelForm):
     class Meta:
         model = models.Source
         fields = ('owner', 'name', 'publisher_contact', 'state', 'frequency',
-                  'category', 'sub_category', 'comment', 'aleph_id')
+                  'category', 'sub_category', 'comment', 'aleph_id', 'issn')
