@@ -43,7 +43,6 @@ class AutocompleteUser(autocomplete_light.AutocompleteModelBase):
     choices = User.objects.filter(is_active=True)
 
 
-
 autocomplete_light.register(Category, AutocompleteCategory)
 autocomplete_light.register(SubCategory, AutocompleteSubCategory)
 autocomplete_light.register(User, AutocompleteUser)
