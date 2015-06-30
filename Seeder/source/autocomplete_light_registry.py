@@ -2,6 +2,7 @@ import autocomplete_light
 
 from django.utils.translation import ugettext_lazy as _
 from models import SubCategory, Category
+from django.contrib.auth.models import User
 
 
 class AutocompleteCategory(autocomplete_light.AutocompleteModelBase):
@@ -32,5 +33,17 @@ class AutocompleteSubCategory(autocomplete_light.AutocompleteModelBase):
         return self.order_choices(choices)[0:self.limit_choices]
 
 
+class AutocompleteUser(autocomplete_light.AutocompleteModelBase):
+    search_fields = ['^username', 'first_name', 'last_name', 'email']
+    attrs = {
+        'placeholder': _('User'),
+        'data-autocomplete-minimum-characters': 0,
+    }
+
+    choices = User.objects.filter(is_active=True)
+
+
+
 autocomplete_light.register(Category, AutocompleteCategory)
 autocomplete_light.register(SubCategory, AutocompleteSubCategory)
+autocomplete_light.register(User, AutocompleteUser)
