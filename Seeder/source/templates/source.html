@@ -39,7 +39,10 @@
                 </tr>
                 <tr>
                     <td>{% trans 'Publisher contact' %}</td>
-                    <td>{{ source.publisher_contact }}</td>
+                    <td>
+                        {{ source.publisher_contact }} <br/>
+                        {{ source.publisher_contact.email }}
+                    </td>
                 </tr>
                 <tr>
                     <td>{% trans 'Comment' %}</td>
