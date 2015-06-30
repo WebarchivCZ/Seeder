@@ -142,11 +142,14 @@ class OpenToVoteRounds(VoteCard):
 
 class SourceCard(DashboardCard):
     badges = False
-    color_classes = False
+    color_classes = True
     custom_titles = True
 
+    def get_color(self, element):
+        return element.css_class()
+
     def get_title(self, element):
-        return u'{0}: {1}'.format(element.name, element.get_state_display())
+        return element.name
 
 
 class SourceOwned(SourceCard):

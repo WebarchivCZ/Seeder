@@ -121,6 +121,15 @@ class Source(BaseModel):
     def __unicode__(self):
         return self.name
 
+    def css_class(self):
+        """
+            Get css class based on status
+        """
+        for css_class, states in constants.STATE_COLORS.items():
+            if self.state in states:
+                return css_class
+        return ''
+
     def get_absolute_url(self):
         return reverse('source:detail', args=[str(self.id)])
 
