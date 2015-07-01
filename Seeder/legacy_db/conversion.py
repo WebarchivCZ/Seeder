@@ -235,7 +235,8 @@ class ResourceConversion(Conversion):
         'crawl_freq_id': 'frequency',
         'resource_status_id': 'state',
         'date': 'created',
-        'annotation': 'comment',
+        'annotation': 'annotation',
+        'comments': 'comment',
         'creator': 'created_by',
         'conspectus': 'category',
         'conspectus_subcategory': 'sub_category',
@@ -321,7 +322,9 @@ class SeedConversion(Conversion):
         'robots': 'robots',
         'valid_from': 'from_time',
         'valid_to': 'to_time',
+        'comments': 'comment'
     }
+
     foreign_keys = {
         'resource': models.Resources
     }

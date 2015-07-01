@@ -8,7 +8,7 @@ from django.utils.translation import ugettext_lazy as _
 
 
 source_fields = ('name', 'publisher', 'category', 'sub_category', 'frequency',
-                 'suggested_by', 'open_license', 'comment')
+                 'suggested_by', 'open_license', 'annotation',  'comment')
 
 
 class SourceForm(autocomplete_light.ModelForm):
@@ -72,4 +72,5 @@ class SourceEditForm(autocomplete_light.ModelForm):
     class Meta:
         model = models.Source
         fields = ('owner', 'name', 'publisher_contact', 'state', 'frequency',
-                  'category', 'sub_category', 'comment', 'aleph_id', 'issn')
+                  'category', 'sub_category', 'annotation',  'comment',
+                  'aleph_id', 'issn')

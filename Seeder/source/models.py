@@ -67,6 +67,7 @@ class Source(BaseModel):
 
     name = models.CharField(_('Name'), max_length=256)
     comment = models.TextField(_('Comment'), null=True, blank=True)
+    annotation = models.TextField(_('Annotation'), null=True, blank=True)
 
     suggested_by = models.CharField(
         _('Suggested by'),
