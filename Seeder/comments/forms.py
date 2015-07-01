@@ -27,6 +27,7 @@ class CommentSecurityForm(forms.ModelForm):
     def __init__(self, target_object, initial=None, **kwargs):
         self.target_object = target_object
         self.ct_type = ContentType.objects.get_for_model(target_object)
+        self.ct_label = self.ct_type.model  # fixing localization bug
 
         if initial is None:
             initial = {}
@@ -48,7 +49,7 @@ class CommentSecurityForm(forms.ModelForm):
         """
         hash_received = self.cleaned_data["security_hash"]
         expected_hash = self.generate_security_hash(
-            content_type=str(self.ct_type),
+            content_type=str(self.ct_label),
             object_pk=str(self.target_object.pk),
             timestamp=self.data.get('timestamp', ''),)
         if not constant_time_compare(expected_hash, hash_received):
@@ -79,7 +80,7 @@ class CommentSecurityForm(forms.ModelForm):
         """
 
         return self.generate_security_hash(
-            content_type=str(self.ct_type),
+            content_type=str(self.ct_label),
             object_pk=str(self.target_object.pk),
             timestamp=str(timestamp),
         )
