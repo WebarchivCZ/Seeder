@@ -2,14 +2,22 @@
 
 function category_completion(category_selector, category_sub_selector){
     $(document).ready(function() {
-        var category_id = null;
+        // initial value
         var category_select = $(category_selector);
+        var category_id = category_select.val();
+
+        if (category_id){
+            var sub_category_select = $(category_sub_selector);
+            var sub_category_widget = sub_category_select.parents('.autocomplete-light-widget');
+            sub_category_widget.yourlabsWidget().autocomplete.data = {
+                'parent': category_id[0]};
+        }
+
         category_select.change(function() {
             var sub_category_select = $(category_sub_selector);
             var sub_category_widget = sub_category_select.parents('.autocomplete-light-widget');
             var value = $(this).val();
             if (value) {
-                console.log($(this), 'changed to', value);
                 category_id = value[0];
             }
 
