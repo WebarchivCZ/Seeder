@@ -4,7 +4,7 @@ import tables
 import field_filters
 import constants
 
-from datetime import datetime, timedelta, date
+from datetime import timedelta, date
 
 from django.views.generic import DetailView, FormView
 from django.utils.translation import ugettext_lazy as _
@@ -78,14 +78,23 @@ class Schedule(ContractView, FormView, ObjectMixinFixed):
         context = super(Schedule, self).get_context_data(**kwargs)
         context['source'] = self.object.source
         return context
+    
+    def get_emails(self):
+        return self.object.emailnegotiation_set.all()
 
     def get_form_class(self):
-        queryset = self.object.emailnegotiation_set.all()
-        extra = 0 if queryset else len(constants.NEGOTIATION_TEMPLATES)
+        extra = (0 if self.get_emails()
+                 else len(constants.NEGOTIATION_TEMPLATES))
+
         return modelformset_factory(
             models.EmailNegotiation,
             fields=('scheduled_date', 'title', 'content'),
             extra=extra, can_delete=True)
+
+    def get_form_kwargs(self):
+        kwargs = super(Schedule, self).get_form_kwargs()
+        kwargs['queryset'] = self.get_emails()
+        return kwargs
 
     def get_initial(self):
         initial = []
