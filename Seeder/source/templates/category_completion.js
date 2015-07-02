@@ -15,7 +15,7 @@ function category_completion(category_selector, category_sub_selector){
 
             if (category_id){
                 sub_category_widget.yourlabsWidget().autocomplete.data = {
-                    'category_id': category_id};
+                    'parent': category_id};
             }
             else {
                 sub_category_widget.yourlabsWidget().autocomplete.data = {}

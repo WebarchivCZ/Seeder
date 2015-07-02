@@ -22,7 +22,7 @@ class AutocompleteSubCategory(autocomplete_light.AutocompleteModelBase):
 
     def choices_for_request(self):
         q = self.request.GET.get('q', '')
-        category_id = self.request.GET.get('category_id', None)
+        category_id = self.request.GET.get('parent', None)
 
         choices = self.choices.all()
         if q:

@@ -19,6 +19,8 @@ class SourceForm(autocomplete_light.ModelForm):
 
     comment = forms.CharField(widget=forms.Textarea(attrs={'rows': 2}),
                               required=False)
+    annotation = forms.CharField(widget=forms.Textarea(attrs={'rows': 2}),
+                                 required=False)
 
     class Meta:
         model = models.Source
@@ -71,6 +73,6 @@ EditFormset = modelformset_factory(
 class SourceEditForm(autocomplete_light.ModelForm):
     class Meta:
         model = models.Source
-        fields = ('owner', 'name', 'publisher_contact', 'state', 'frequency',
-                  'category', 'sub_category', 'annotation',  'comment',
-                  'aleph_id', 'issn')
+        fields = ('owner', 'name', 'publisher', 'publisher_contact', 'state',
+                  'frequency', 'category', 'sub_category', 'annotation',
+                  'comment', 'aleph_id', 'issn')
