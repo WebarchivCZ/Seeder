@@ -52,7 +52,6 @@ STATE_COLORS = {
 }
 
 
-
 SOURCE_FREQUENCY_PER_YEAR = (
     (0, _('Once only')),
     (1, _('Once a year')),
@@ -71,6 +70,12 @@ SEED_STATES = (
     (SEED_STATE_EXCLUDE, _('Exclude from harvest')),
     (SEED_STATE_OLD, _('Seed is no longer published')),
 )
+
+SEED_COLORS = {
+    SEED_STATE_INCLUDE: 'info',
+    SEED_STATE_EXCLUDE: 'danger',
+    SEED_STATE_OLD: 'danger',
+}
 
 SUGGESTED_PUBLISHER = 'publisher'
 SUGGESTED_VISITOR = 'visitor'

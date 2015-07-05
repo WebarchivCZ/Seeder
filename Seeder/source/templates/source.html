@@ -84,7 +84,7 @@
     <h4>{% trans 'Seeds' %}</h4>
         <ul class="list-group">
             {% for seed in source.seed_set.all %}
-                <li class="list-group-item"><a href="{{ seed.url }}">{{ seed }}</a></li>
+                <li class="list-group-item list-group-item-{{ seed.css_class }}"><a href="{{ seed.url }}">{{ seed }}</a></li>
             {% endfor %}
 
         <a href="{% url 'source:edit_seeds' pk=source.pk %}" class="btn btn-primary btn-warning btn-block">{% trans 'Edit' %}</a>

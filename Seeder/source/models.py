@@ -158,6 +158,11 @@ class Seed(BaseModel):
         verbose_name = _('Seed')
         verbose_name_plural = _('Seeds')
 
+    def css_class(self):
+        if self.active and self.from_time and self.to_time:
+            return 'success'
+        return constants.SEED_COLORS[self.state]
+
     def __unicode__(self):
         return self.url
 
