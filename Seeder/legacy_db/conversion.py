@@ -5,16 +5,19 @@ import constants
 from django.db.models import ObjectDoesNotExist
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
+from django.db.models.signals import post_save
 
 from publishers.models import Publisher, ContactPerson
 from source import models as source_models
 from voting.models import VotingRound, Vote
 from contracts.models import Contract
 from contracts import constants as contract_constants
+from voting.signals import create_voting_round
 
 
 DATABASE = 'legacy_seeder'
 get_ct = lambda m: ContentType.objects.get_for_model(m)
+post_save.disconnect(sender=source_models.Source, receiver=create_voting_round)
 
 
 class BrokenRecord(Exception):
@@ -110,11 +113,7 @@ class Conversion(object):
             raise BrokenRecord
 
         new_object = self.target_model(**data)
-        try:
-            new_object.save()
-        except:
-            import ipdb
-            ipdb.set_trace()
+        new_object.save()
         return new_object
 
     def get_field_data(self,):
