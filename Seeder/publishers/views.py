@@ -16,6 +16,17 @@ class PublisherView(generic_views.LoginMixin):
     model = models.Publisher
 
 
+class AddPublisher(PublisherView, FormView):
+    form_class = forms.PublisherForm
+    view_name = 'publisher_add'
+    template_name = 'add_form.html'
+    title = _('Add publisher')
+
+    def form_valid(self, form):
+        publisher, contact = form.save()
+        return HttpResponseRedirect(publisher.get_absolute_url())
+
+
 class Detail(PublisherView, DetailView, CommentViewGeneric):
     template_name = 'publisher.html'
 
