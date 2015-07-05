@@ -66,6 +66,7 @@ def pull_messages():
 
 @task(alias='mpush')
 def push_messages():
+    pull_messages()
     map(local, commands['push_messages'])
 
 
