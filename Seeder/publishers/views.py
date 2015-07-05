@@ -39,7 +39,7 @@ class ListView(PublisherView, generic_views.FilteredListView):
 class EditContacts(PublisherView, FormView, generic_views.ObjectMixinFixed):
     form_class = forms.ContactFormset
     template_name = 'formset_verbose.html'
-    title = _('Edit seeds')
+    title = _('Edit contacts')
 
     def get_form_kwargs(self):
         kwargs = super(EditContacts, self).get_form_kwargs()
