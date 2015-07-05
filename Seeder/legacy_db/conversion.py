@@ -2,6 +2,7 @@ import sys
 import models
 import constants
 
+from datetime import date
 from django.db.models import ObjectDoesNotExist
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
@@ -260,6 +261,12 @@ class ResourceConversion(Conversion):
         'suggested_by_id': constants.SUGGESTED_BY,
         'crawl_freq_id': constants.FREQ
     }
+
+    def clean(self, source_dict):
+        created = source_dict['date']
+        if not created:
+            source_dict['date'] = date(year=2009, month=1, day=1)
+        return source_dict
 
     def process_broken_record(self, source_dict, field_name):
         if field_name == 'creator':
