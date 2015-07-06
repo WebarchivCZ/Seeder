@@ -165,11 +165,13 @@ CKEDITOR_CONFIGS = {
 DEBUG_TOOLBAR_CONFIG = {
     'SHOW_TOOLBAR_CALLBACK': 'core.utils.show_toolbar',
 }
-
 CRON_CLASSES = [
+    'source.cron.CreateScreenshots',
     'voting.cron.RevivePostponedRounds',
     'contracts.cron.ExpireContracts',
-    'contracts.cron.SendEmails'
+    'contracts.cron.SendEmails',
+    'source.cron.ExportSeeds',
 ]
+
 
 SEEDS_EXPORT_DIR = 'seeds'

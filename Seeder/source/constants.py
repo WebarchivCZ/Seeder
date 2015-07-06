@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from datetime import timedelta
 from django.utils.translation import ugettext_lazy as _
 
 
@@ -88,3 +89,8 @@ SUGGESTED_CHOICES = (
 )
 
 LEGACY_URL = 'http://intranet.webarchiv.cz/wadmin/tables/resources/view/{pk}'
+
+SCREENSHOT_RESOLUTION = '1366x768'
+
+SCREENSHOT_MAX_AGE = timedelta(days=365)
+SCREENSHOT_DIR = 'screenshots'  # relative to media root

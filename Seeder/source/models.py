@@ -3,11 +3,13 @@ import constants
 import reversion
 
 from django.db import models
+from django.db.models import Q
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.core.exceptions import ValidationError
 from django.contrib.contenttypes.models import ContentType
+from django.utils import timezone
 
 from tld.exceptions import TldDomainNotFound
 from core.models import BaseModel
@@ -20,6 +22,21 @@ def validate_tld(value):
         tld.get_tld(value)
     except TldDomainNotFound:
         raise ValidationError('Invalid domain name')
+
+
+class SeedManager(models.Manager):
+    """
+    Auto-filters seeds that are ready to be archived
+    """
+    def get_queryset(self):
+        today = timezone.now()
+        return super(SeedManager, self).get_queryset().filter(
+            Q(source__state__in=constants.ARCHIVING_STATES,
+              state=constants.SEED_STATE_INCLUDE) &
+            Q(
+                Q(to_time__lte=today, from_time__gte=today) |
+                Q(to_time__isnull=True))
+        )
 
 
 class Category(models.Model):
@@ -158,6 +175,9 @@ class Seed(BaseModel):
                                    upload_to='screenshots',
                                    null=True, blank=True)
     screenshot_date = models.DateTimeField(null=True, blank=True)
+
+    objects = models.Manager()
+    archiving = SeedManager()
 
     class Meta:
         verbose_name = _('Seed')
