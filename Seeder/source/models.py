@@ -154,6 +154,11 @@ class Seed(BaseModel):
                                      blank=True)
     to_time = models.DateTimeField(verbose_name=_('To'), null=True, blank=True)
 
+    screenshot = models.ImageField(verbose_name=_('Screenshot'),
+                                   upload_to='screenshots',
+                                   null=True, blank=True)
+    screenshot_date = models.DateTimeField(null=True, blank=True)
+
     class Meta:
         verbose_name = _('Seed')
         verbose_name_plural = _('Seeds')
