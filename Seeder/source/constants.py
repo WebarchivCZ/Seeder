@@ -90,7 +90,10 @@ SUGGESTED_CHOICES = (
 
 LEGACY_URL = 'http://intranet.webarchiv.cz/wadmin/tables/resources/view/{pk}'
 
-SCREENSHOT_RESOLUTION = '1366x768'
+SCREENSHOT_RESOLUTION_X = '1366'
+SCREENSHOT_RESOLUTION_Y = '768'
+SCREENSHOT_RECTANGLE = '0,0,1366,768'
+
 
 SCREENSHOT_MAX_AGE = timedelta(days=365)
 SCREENSHOT_DIR = 'screenshots'  # relative to media root

@@ -68,12 +68,13 @@ So put something like ::
 
     0 * * * * source <virtualenv>/bin/activate && python <seeder>Seeder/manage.py runcrons > <log_path>/django_cron.log
 
-CaptureJS
----------
 
-You will need to install https://github.com/superbrothers/capturejs ::
+Manet
+-----
 
-    $ npm install -g capturejs
+Install https://github.com/vbauer/manet with PhantomJS support.
+Note that it must be running in order to take screenshots.
+There are also some cases where manet fails horribly for no reason.
 
 
 Final restart

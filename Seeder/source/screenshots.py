@@ -1,7 +1,8 @@
 import os
+import requests
 
-from sh import capturejs
 from datetime import datetime
+
 from django.db.models import Q
 from django.conf import settings
 
@@ -30,11 +31,19 @@ def take_screenshots():
                                      screenshot_name)
         absolute_path = os.path.join(settings.MEDIA_ROOT, relative_path)
 
-        capturejs(
-            uri=seed.url, output=absolute_path,
-            viewportsize=constants.SCREENSHOT_RESOLUTION,
-        )
-        if os.path.isfile(absolute_path):
+        r = requests.get(settings.MANET_URL, params={
+            'url': seed.url,
+            'width': constants.SCREENSHOT_RESOLUTION_X,
+            'height': constants.SCREENSHOT_RESOLUTION_Y,
+            'clipRect': constants.SCREENSHOT_RECTANGLE,
+            'format': 'png',
+            'delay': 1000
+        })
+
+        if r.status_code == requests.codes.ok:
+            with open(absolute_path, 'wb') as screen:
+                screen.write(r.content)
+
             seed.screenshot.name = relative_path
             seed.screenshot_date = now
             seed.save()
