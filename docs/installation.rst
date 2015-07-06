@@ -68,6 +68,12 @@ So put something like ::
 
     0 * * * * source <virtualenv>/bin/activate && python <seeder>Seeder/manage.py runcrons > <log_path>/django_cron.log
 
+CaptureJS
+---------
+
+You will need to install https://github.com/superbrothers/capturejs ::
+
+    $ npm install -g capturejs
 
 
 Final restart
