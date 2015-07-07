@@ -59,6 +59,7 @@ INSTALLED_APPS = (
     'ckeditor',
     # 'debug_toolbar',
     'django_cron',
+    'sorl.thumbnail',
 
     'core',
     'publishers',

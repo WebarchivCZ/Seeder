@@ -1,14 +1,12 @@
 {% extends 'base.html' %}
-{% load i18n %}
-{% load humanize %}
-{% load bootstrap3 %}
+{% load i18n humanize bootstrap3 thumbnail %}
 
 {% block title %} {{ source }} {% endblock %}
 {% block page_header %} {{ source }}{% endblock %}
 
 
 {% block content %}
-    <div class="col-md-6 col-sm-3">
+    <div class="col-md-6 col-sm-5">
     <h4>{% trans 'Info' %}</h4>
         <table class="table table-striped">
 
@@ -80,11 +78,20 @@
         </table>
     </div>
 
-    <div class="col-md-3 col-sm-3">
+    <div class="col-md-3 col-sm-5">
     <h4>{% trans 'Seeds' %}</h4>
         <ul class="list-group">
             {% for seed in source.seed_set.all %}
-                <li class="list-group-item list-group-item-{{ seed.css_class }}"><a href="{{ seed.url }}">{{ seed }}</a></li>
+                <li class="list-group-item list-group-item-{{ seed.css_class }}">
+                <a href="{{ seed.url }}">{{ seed }}</a>
+                {% if seed.screenshot %}
+                    {% thumbnail seed.screenshot '40' as im %}
+                        <a href="{{ seed.screenshot.url }}">
+                            <img src="{{ im.url }}" class='pull-right' alt=""/>
+                        </a>
+                    {% endthumbnail %}
+                {% endif %}
+                </li>
             {% endfor %}
 
         <a href="{% url 'source:edit_seeds' pk=source.pk %}" class="btn btn-primary btn-warning btn-block">{% trans 'Edit' %}</a>
@@ -92,7 +99,7 @@
     </div>
 
 
-    <div class="col-md-3 col-sm-3 pull-right">
+    <div class="col-md-3 col-sm-5">
         <h4>{% trans 'Links' %}:</h4>
             <a href="{% url 'source:history' pk=source.pk %}" class="btn btn-primary btn-info btn-block">{% trans 'History' %}</a>
             <a href="{% url 'source:edit' pk=source.pk %}" class="btn btn-primary btn-warning btn-block">{% trans 'Edit' %}</a>
