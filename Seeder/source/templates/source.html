@@ -1,8 +1,19 @@
 {% extends 'base.html' %}
-{% load i18n humanize bootstrap3 thumbnail %}
+{% load i18n humanize bootstrap3 thumbnail static %}
 
 {% block title %} {{ source }} {% endblock %}
 {% block page_header %} {{ source }}{% endblock %}
+
+{% block extrahead %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/blueimp-gallery/2.15.2/css/blueimp-gallery.min.css"/>
+    <link rel="stylesheet" href="{% static 'css/bootstrap-image-gallery.min.css' %}">
+{% endblock %}
+
+{% block extrajs %}
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="//blueimp.github.io/Gallery/js/jquery.blueimp-gallery.min.js"></script>
+<script src="{% static 'js/bootstrap-image-gallery.min.js' %}"></script>
+{% endblock %}
 
 
 {% block content %}
@@ -86,8 +97,8 @@
                 <a href="{{ seed.url }}">{{ seed }}</a>
                 {% if seed.screenshot %}
                     {% thumbnail seed.screenshot '40' as im %}
-                        <a href="{{ seed.screenshot.url }}">
-                            <img src="{{ im.url }}" class='pull-right' alt=""/>
+                        <a href="{{ seed.screenshot.url }}" data-gallery>
+                            <img src="{{ im.url }}" class='pull-right'>
                         </a>
                     {% endthumbnail %}
                 {% endif %}
@@ -122,4 +133,7 @@
         <h2>{% trans 'Comments' %}</h2>
         {% include 'bootstrap_comments_threaded.html' with comments=comments form=comment_form %}
     </div>
+
+    {% include 'bootstrap_gallery.html' %}
+
 {% endblock %}
