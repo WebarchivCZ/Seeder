@@ -81,11 +81,13 @@ SEED_COLORS = {
 SUGGESTED_PUBLISHER = 'publisher'
 SUGGESTED_VISITOR = 'visitor'
 SUGGESTED_ISSN = 'issn'
+SUGGESTED_CURATOR = 'curator'
 
 SUGGESTED_CHOICES = (
     (SUGGESTED_PUBLISHER, _('Publisher')),
     (SUGGESTED_VISITOR, _('Visitor')),
     (SUGGESTED_ISSN, _('ISSN')),
+    (SUGGESTED_CURATOR, _('Curator')),
 )
 
 LEGACY_URL = 'http://intranet.webarchiv.cz/wadmin/tables/resources/view/{pk}'
