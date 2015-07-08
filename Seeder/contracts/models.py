@@ -37,26 +37,30 @@ class ContractManager(models.Manager):
 @reversion.register(exclude=('last_changed',))
 class Contract(BaseModel):
     source = models.ForeignKey(Source)
-    state = models.CharField(choices=constants.CONTRACT_STATES,
+    state = models.CharField(_('State'),
+                             hoices=constants.CONTRACT_STATES,
                              default=constants.CONTRACT_STATE_NEGOTIATION,
                              max_length=15)
 
-    valid_from = models.DateField(null=True, blank=True)
-    valid_to = models.DateField(null=True, blank=True)
+    valid_from = models.DateField(_('Valid from'), null=True, blank=True)
+    valid_to = models.DateField(_('Valid to'), null=True, blank=True)
     year = models.PositiveIntegerField(_('Year'), default=this_year())
 
-    contract_file = models.FileField(null=True, blank=True,
+    contract_file = models.FileField(_('Contract file'), null=True, blank=True,
                                      upload_to='contracts')
-    contract_type = models.CharField(choices=constants.CONTRACT_TYPE_CHOICES,
+    contract_type = models.CharField(_('Contract type'),
+                                     choices=constants.CONTRACT_TYPE_CHOICES,
                                      max_length=12)
-    contract_number = models.IntegerField(null=True, blank=True,
+    contract_number = models.IntegerField(_('Contract number'),
+                                          null=True, blank=True,
                                           unique_for_year='created')
 
     in_communication = models.BooleanField(
+        _('In communication'),
         help_text=_('Does the publisher responds to the emails?'),
         default=False)
 
-    description = models.TextField(null=True, blank=True)
+    description = models.TextField(_('Description'), null=True, blank=True)
     objects = ContractManager()
 
     def __unicode__(self):
