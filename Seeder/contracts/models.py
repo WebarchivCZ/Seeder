@@ -38,7 +38,7 @@ class ContractManager(models.Manager):
 class Contract(BaseModel):
     source = models.ForeignKey(Source)
     state = models.CharField(_('State'),
-                             hoices=constants.CONTRACT_STATES,
+                             choices=constants.CONTRACT_STATES,
                              default=constants.CONTRACT_STATE_NEGOTIATION,
                              max_length=15)
 
