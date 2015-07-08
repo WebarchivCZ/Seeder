@@ -10,6 +10,9 @@
     {% trans 'Edit' %} {{ object }}
 {% endblock %}
 
+{% block extrahead %}
+{{ form.media }}
+{% endblock %}
 
 {% block content %}
     <form class="" method="post" enctype="multipart/form-data">
