@@ -6,7 +6,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 
-from core.models import BaseModel
+from core.models import BaseModel, DatePickerField
 from core.utils import percentage
 from source.models import Source
 
@@ -20,7 +20,7 @@ class VotingRound(BaseModel):
     source = models.ForeignKey(Source)
     resolved_by = models.ForeignKey(User, blank=True, null=True)
     date_resolved = models.DateTimeField(blank=True, null=True)
-    postponed_until = models.DateField(blank=True, null=True)
+    postponed_until = DatePickerField(blank=True, null=True)
 
     state = models.CharField(
         verbose_name=_('State'),
