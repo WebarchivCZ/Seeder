@@ -12,7 +12,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.utils import timezone
 
 from tld.exceptions import TldDomainNotFound
-from core.models import BaseModel
+from core.models import BaseModel, DatePickerField
 from publishers.models import Publisher, ContactPerson
 from legacy_db.models import TransferRecord
 
@@ -167,9 +167,9 @@ class Seed(BaseModel):
     robots = models.BooleanField(_('Robots.txt active'), default=False)
     comment = models.TextField(_('Comment'), null=True, blank=True)
 
-    from_time = models.DateTimeField(verbose_name=_('From'), null=True,
-                                     blank=True)
-    to_time = models.DateTimeField(verbose_name=_('To'), null=True, blank=True)
+    from_time = DatePickerField(verbose_name=_('From'), null=True,
+                                blank=True)
+    to_time = DatePickerField(verbose_name=_('To'), null=True, blank=True)
 
     screenshot = models.ImageField(verbose_name=_('Screenshot'),
                                    upload_to='screenshots',
