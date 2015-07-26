@@ -12,6 +12,7 @@ from django.db.models import Q
 
 from formtools.wizard.views import SessionWizardView
 from datetime import datetime
+from urljects import U, URLView, pk
 
 from contracts.models import Contract
 from publishers import forms as publisher_forms
@@ -41,9 +42,12 @@ class SourceView(generic_views.LoginMixin):
     model = models.Source
 
 
-class AddSource(generic_views.LoginMixin, SessionWizardView):
+class AddSource(generic_views.LoginMixin, SessionWizardView, URLView):
     template_name = 'add_source.html'
     view_name = 'add_source'
+
+    url = U / 'add'
+    url_name = 'add'
 
     form_list = (
         ('source', forms.SourceForm),
@@ -166,21 +170,30 @@ class AddSource(generic_views.LoginMixin, SessionWizardView):
         return HttpResponseRedirect(source.get_absolute_url())
 
 
-class SourceDetail(SourceView, DetailView, CommentViewGeneric):
+class SourceDetail(SourceView, DetailView, CommentViewGeneric, URLView):
     template_name = 'source.html'
     context_object_name = 'source'
     threaded_comments = True
 
+    url = U / 'detail' / pk
+    url_name = 'detail'
 
-class SourceEdit(SourceView, generic_views.EditView):
+
+class SourceEdit(SourceView, generic_views.EditView, URLView):
     form_class = forms.SourceEditForm
     template_name = 'edit_source.html'
 
+    url = U / 'edit' / pk
+    url_name = 'edit'
 
-class EditSeeds(SourceView, FormView, generic_views.ObjectMixinFixed):
+
+class EditSeeds(SourceView, FormView, generic_views.ObjectMixinFixed, URLView):
     form_class = forms.EditFormset
     template_name = 'formset_verbose.html'
     title = _('Edit seeds')
+
+    url = U / 'seeds' / pk
+    url_name = 'edit_seeds'
 
     def get_success_url(self):
         return self.object.get_absolute_url()
@@ -203,22 +216,30 @@ class EditSeeds(SourceView, FormView, generic_views.ObjectMixinFixed):
         return HttpResponseRedirect(self.get_success_url())
 
 
-class History(SourceView, generic_views.HistoryView):
+class History(SourceView, generic_views.HistoryView, URLView):
     """
         History log
     """
+    url = U / 'history' / pk
+    url_name = 'history'
 
 
-class SourceList(SourceView, generic_views.FilteredListView):
+class SourceList(SourceView, generic_views.FilteredListView, URLView):
     title = _('Sources')
     table_class = tables.SourceTable
     filter_class = field_filters.SourceFilter
 
+    url = U / 'list'
+    url_name = 'list'
 
-class SeedExport(TemplateView):
+
+class SeedExport(TemplateView, URLView):
     template_name = 'api.html'
     title = _('Export seeds')
     view_name = 'api'
+
+    url = U / 'export_seeds'
+    url_name = 'export_seeds'
 
     def get_context_data(self, **kwargs):
         context = super(SeedExport, self).get_context_data(**kwargs)
