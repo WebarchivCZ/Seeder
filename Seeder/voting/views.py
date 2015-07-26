@@ -12,11 +12,13 @@ from django.views.generic.detail import SingleObjectMixin
 from django.utils.translation import ugettext_lazy as _
 from django.utils import timezone
 
+from urljects import U, URLView, pk
+
 from core.generic_views import LoginMixin, ActionView, ObjectMixinFixed
 from comments.views import CommentViewGeneric
 
 
-class VotingView(LoginMixin):
+class VotingView(LoginMixin, URLView):
     view_name = 'sources'
     model = models.VotingRound
 
@@ -25,6 +27,9 @@ class VotingDetail(VotingView, DetailView, CommentViewGeneric):
     template_name = 'voting_round.html'
     context_object_name = 'voting_round'
 
+    url = U / pk / 'detail'
+    url_name = 'detail'
+
 
 class CastVote(LoginMixin, SingleObjectMixin, ActionView):
     """
@@ -32,6 +37,9 @@ class CastVote(LoginMixin, SingleObjectMixin, ActionView):
     """
     model = models.VotingRound
     allowed_actions = constants.VOTE_DICT.keys()
+
+    url = U / pk / 'vote'
+    url_name = 'cast'
 
     def process_action(self, action):
         vote, created = models.Vote.objects.get_or_create(
@@ -58,6 +66,9 @@ class Postpone(VotingView, ObjectMixinFixed, FormView):
     title = _('Postpone voting')
     view_name = 'voting'
 
+    url = U / pk / 'postpone'
+    url_name = 'postpone'
+
     def form_valid(self, form):
         voting_round = self.get_object()
         postpone_months = form.cleaned_data['postpone_months']
@@ -74,6 +85,9 @@ class Resolve(LoginMixin, SingleObjectMixin, ActionView):
     model = models.VotingRound
     allowed_actions = constants.VOTE_DICT.keys()
     permission = 'sources.manage_sources'
+
+    url = U / pk / 'resolve'
+    url_name = 'resolve'
 
     def check_permissions(self, user):
         manager = super(Resolve, self).check_permissions(user)
