@@ -38,5 +38,5 @@ urlpatterns = patterns(
 
 
     # beware: wild card regexp!
-    url(U, view_include(core_views, namespace='core'))
+    url('^', view_include(core_views, namespace='core'))
 ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
