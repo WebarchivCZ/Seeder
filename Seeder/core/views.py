@@ -8,14 +8,19 @@ from django.views.generic.edit import UpdateView
 from django.utils.http import is_safe_url
 from django.utils import translation
 
+from urljects import U, URLView
+
 from generic_views import LoginMixin, MessageView
 from dashboard_data import get_cards, cards_registry
 
 
-class DashboardView(LoginMixin, TemplateView):
+class DashboardView(LoginMixin, TemplateView, URLView):
     template_name = 'dashboard.html'
     title = _('Dashboard')
     view_name = 'dashboard'
+
+    url = U
+    url_name = 'dashboard'
 
     def get_context_data(self, **kwargs):
         context = super(DashboardView, self).get_context_data()
@@ -23,10 +28,13 @@ class DashboardView(LoginMixin, TemplateView):
         return context
 
 
-class DashboardCard(LoginMixin, TemplateView):
+class DashboardCard(LoginMixin, TemplateView, URLView):
     card = None
     template_name = 'card_detail.html'
     view_name = 'dashboard'
+
+    url = U / 'card' / r'(?P<card>\w+)'
+    url_name = 'card'
 
     def get(self, request, *args, **kwargs):
         card = cards_registry[self.kwargs['card']]
@@ -43,7 +51,10 @@ class DashboardCard(LoginMixin, TemplateView):
         return self.card.get_queryset()
 
 
-class ChangeLanguage(View):
+class ChangeLanguage(View, URLView):
+    url = U / 'lang' / r'(?P<code>\w+)'
+    url_name = 'change_language'
+
     def get(self, request, code):
         print translation.get_language()
 
