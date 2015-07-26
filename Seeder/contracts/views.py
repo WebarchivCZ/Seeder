@@ -13,19 +13,24 @@ from django.forms.models import modelformset_factory
 from django.http.response import HttpResponseRedirect
 from django.contrib import messages
 
+from urljects import U, URLView, pk
+
 from comments.views import CommentViewGeneric
 from source.models import Source
 from core.generic_views import (ObjectMixinFixed, LoginMixin, EditView,
                                 HistoryView, FilteredListView)
 
 
-class ContractView(LoginMixin):
+class ContractView(LoginMixin, URLView):
     view_name = 'contracts'
     model = models.Contract
 
 
 class Detail(ContractView, DetailView, CommentViewGeneric):
     template_name = 'contract.html'
+
+    url = U / pk / 'detail'
+    url_name = 'detail'
 
 
 class Create(LoginMixin, FormView, ObjectMixinFixed):
@@ -34,6 +39,9 @@ class Create(LoginMixin, FormView, ObjectMixinFixed):
     title = _('Add contract')
     view_name = 'contracts'
     model = Source
+
+    url = U / pk / 'create'
+    url_name = 'create'
 
     def form_valid(self, form):
         contract = form.save(commit=False)
@@ -44,6 +52,9 @@ class Create(LoginMixin, FormView, ObjectMixinFixed):
 
 class Edit(ContractView, EditView):
     form_class = forms.EditForm
+
+    url = U / pk / 'edit'
+    url_name = 'edit'
 
     def form_valid(self, form):
         if (self.get_object().state == constants.CONTRACT_STATE_NEGOTIATION and
@@ -63,16 +74,25 @@ class History(ContractView, HistoryView):
         History of changes to contracts
     """
 
+    url = U / pk / 'history'
+    url_name = 'history'
+
 
 class ListView(ContractView, FilteredListView):
     title = _('Contracts')
     table_class = tables.ContractTable
     filter_class = field_filters.ContractFilter
 
+    url = U
+    url_name = 'list'
+
 
 class Schedule(ContractView, FormView, ObjectMixinFixed):
     template_name = 'schedule.html'
     title = _('Schedule emails')
+
+    url = U / pk / 'schedule'
+    url_name = 'schedule'
 
     def get_context_data(self, **kwargs):
         context = super(Schedule, self).get_context_data(**kwargs)
