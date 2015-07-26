@@ -66,12 +66,15 @@ class ChangeLanguage(View, URLView):
         return HttpResponseRedirect(redirect)
 
 
-class UserProfileEdit(UpdateView, MessageView):
+class UserProfileEdit(UpdateView, MessageView, URLView):
     form_class = forms.UserForm
     view_name = 'user_edit'
     template_name = 'user_edit.html'
     title = _('Change user information')
     success_url = '/'
+
+    url = U / 'profile'
+    url_name = 'user_edit'
 
     def get_object(self, queryset=None):
         return self.request.user
