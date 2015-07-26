@@ -1,9 +1,13 @@
-from django.conf.urls import patterns, include, url
+from django.conf.urls import patterns, include
 from django.contrib import admin
 from django.conf import settings
 from django.conf.urls.static import static
 
+from urljects import U, url, view_include
+
 from core.views import PasswordChangeDone
+from source import views as source_views
+
 
 auth_patterns = patterns(
     'django.contrib.auth.views',
@@ -19,16 +23,17 @@ auth_patterns = patterns(
 
 urlpatterns = patterns(
     '',
-    url(r'^ckeditor/', include('ckeditor.urls')),
-    url(r'^admin/', include(admin.site.urls)),
-    url(r'^auth/', include(auth_patterns)),
-    url(r'^source/', include('source.urls', namespace='source')),
-    url(r'^publisher/', include('publishers.urls', namespace='publishers')),
-    url(r'^voting/', include('voting.urls', namespace='voting')),
-    url(r'^contracts/', include('contracts.urls', namespace='contracts')),
-    url(r'^autocomplete/', include('autocomplete_light.urls')),
+    url(U / 'ckeditor', include('ckeditor.urls')),
+    url(U / 'admin', include(admin.site.urls)),
+    url(U / 'auth', include(auth_patterns)),
+
+    url(U / 'source', view_include(source_views, namespace='source')),
+    url(U / 'publisher', include('publishers.urls', namespace='publishers')),
+    url(U / 'voting', include('voting.urls', namespace='voting')),
+    url(U / 'contracts', include('contracts.urls', namespace='contracts')),
+    url(U / 'autocomplete', include('autocomplete_light.urls')),
 
 
     # beware: wild card regexp!
-    url(r'^', include('core.urls', namespace='core'))
+    url(U, include('core.urls', namespace='core'))
 ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
