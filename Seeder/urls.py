@@ -5,8 +5,11 @@ from django.conf.urls.static import static
 
 from urljects import U, url, view_include
 
-from core.views import PasswordChangeDone
+from core import views as core_views
 from source import views as source_views
+from publishers import views as publisher_views
+from voting import views as voting_views
+from contracts import views as contracts_views
 
 
 auth_patterns = patterns(
@@ -17,8 +20,8 @@ auth_patterns = patterns(
     url(r'^reset/$', 'password_reset', name='password_reset'),
     url(r'^reset/done/$', 'password_reset_done', name='password_reset_done'),
     url(r'^reset/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$', 'password_reset_confirm', name='password_reset_confirm'),  # noqa
-    url(r'^reset/complete/$', PasswordChangeDone.as_view(), name='password_reset_complete'),  # noqa
-    url(r'^passwd/done/$', PasswordChangeDone.as_view(), name='password_change_done'),  # noqa
+    url(r'^reset/complete/$', core_views.PasswordChangeDone.as_view(), name='password_reset_complete'),  # noqa
+    url(r'^passwd/done/$', core_views.PasswordChangeDone.as_view(), name='password_change_done'),  # noqa
 )
 
 urlpatterns = patterns(
@@ -26,14 +29,14 @@ urlpatterns = patterns(
     url(U / 'ckeditor', include('ckeditor.urls')),
     url(U / 'admin', include(admin.site.urls)),
     url(U / 'auth', include(auth_patterns)),
+    url(U / 'autocomplete', include('autocomplete_light.urls')),
 
     url(U / 'source', view_include(source_views, namespace='source')),
-    url(U / 'publisher', include('publishers.urls', namespace='publishers')),
-    url(U / 'voting', include('voting.urls', namespace='voting')),
-    url(U / 'contracts', include('contracts.urls', namespace='contracts')),
-    url(U / 'autocomplete', include('autocomplete_light.urls')),
+    url(U / 'publisher', view_include(publisher_views, namespace='publishers')),  # noqa
+    url(U / 'voting', view_include(voting_views, namespace='voting')),
+    url(U / 'contracts', view_include(contracts_views, namespace='contracts')),
 
 
     # beware: wild card regexp!
-    url(U, include('core.urls', namespace='core'))
+    url(U, view_include(core_views, namespace='core'))
 ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
