@@ -16,7 +16,8 @@
     <ul>
         {% for source in view.get_duplicities %}
             <li>
-                <a href="{{ source.get_absolute_url }}" target="_blank">{{ source }}</a>
+                <a href="{{ source.get_absolute_url }}" target="_blank">{{ source }}</a>, 
+                {% trans 'Publisher' %} <a href="{{ source.publisher.get_absolute_url }}" target="_blank">{{ source.publisher }}</a>
                 <ul>
                 {% for seed in source.seed_set.all %}
                     <li>{{ seed.url }}</li>
