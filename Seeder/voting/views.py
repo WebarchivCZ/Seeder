@@ -73,6 +73,10 @@ class Postpone(VotingView, ObjectMixinFixed, FormView):
         voting_round = self.get_object()
         postpone_months = form.cleaned_data['postpone_months']
         delta = timedelta(days=postpone_months * 30)  # yeah I know.
+
+        voting_round.state = constants.VOTE_WAIT
+        voting_round.resolved_by = self.request.user
+        voting_round.date_resolved = timezone.now()
         voting_round.postponed_until = datetime.today() + delta
         voting_round.save()
         return HttpResponseRedirect(voting_round.get_absolute_url())
@@ -94,11 +98,12 @@ class Resolve(LoginMixin, SingleObjectMixin, ActionView):
         return manager or self.get_object().source.owner == user
 
     def process_action(self, action):
-        voting_round = self.get_object()
-        voting_round.state = action
-        voting_round.resolved_by = self.request.user
-        voting_round.date_resolved = timezone.now()
-        voting_round.save()
+        if not self.action == constants.VOTE_WAIT:
+            voting_round = self.get_object()
+            voting_round.state = action
+            voting_round.resolved_by = self.request.user
+            voting_round.date_resolved = timezone.now()
+            voting_round.save()
 
     def get_success_url(self):
         if self.action == constants.VOTE_WAIT:
