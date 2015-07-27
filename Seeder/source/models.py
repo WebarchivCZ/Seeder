@@ -90,6 +90,7 @@ class Source(BaseModel):
         _('Suggested by'),
         max_length=10,
         null=True, blank=True,
+        default=constants.SUGGESTED_CURATOR,
         choices=constants.SUGGESTED_CHOICES)
 
     aleph_id = models.CharField(max_length=100, blank=True, null=True)
