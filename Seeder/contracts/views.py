@@ -33,7 +33,7 @@ class Detail(ContractView, DetailView, CommentViewGeneric):
     url_name = 'detail'
 
 
-class Create(LoginMixin, FormView, ObjectMixinFixed):
+class Create(LoginMixin, FormView, ObjectMixinFixed, URLView):
     form_class = forms.CreateForm
     template_name = 'add_form.html'
     title = _('Add contract')
