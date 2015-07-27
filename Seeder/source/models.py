@@ -43,7 +43,7 @@ class Category(models.Model):
     name = models.CharField(unique=True, max_length=150)
 
     def __unicode__(self):
-        return self.name
+        return u'{0} - {1}'.format(self.id, self.name)
 
 
 class SubCategory(models.Model):
@@ -52,7 +52,7 @@ class SubCategory(models.Model):
     subcategory_id = models.CharField(max_length=40, blank=True, null=True)
 
     def __unicode__(self):
-        return self.name
+        return u'{0} - {1}'.format(self.subcategory_id, self.name)
 
 
 @reversion.register(exclude=('last_changed',))
