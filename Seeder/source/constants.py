@@ -57,8 +57,11 @@ SOURCE_FREQUENCY_PER_YEAR = (
     (0, _('Once only')),
     (1, _('Once a year')),
     (2, _('Twice a year')),
+    (4, _('Quarterly')),
     (6, _('Six times per year')),
     (12, _('Every month')),
+    (52, _('Weekly')),
+    (365, _('Daily')),
 )
 
 
