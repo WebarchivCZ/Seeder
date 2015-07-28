@@ -9,7 +9,7 @@ from django.db.models.query_utils import Q
 from django.utils.translation import ugettext_lazy as _
 from django.core.urlresolvers import reverse
 
-from core.models import BaseModel
+from core.models import BaseModel, DatePickerField
 from source.models import Source
 from ckeditor.fields import RichTextField
 
@@ -42,8 +42,8 @@ class Contract(BaseModel):
                              default=constants.CONTRACT_STATE_NEGOTIATION,
                              max_length=15)
 
-    valid_from = models.DateField(_('Valid from'), null=True, blank=True)
-    valid_to = models.DateField(_('Valid to'), null=True, blank=True)
+    valid_from = DatePickerField(_('Valid from'), null=True, blank=True)
+    valid_to = DatePickerField(_('Valid to'), null=True, blank=True)
     year = models.PositiveIntegerField(_('Year'), default=this_year())
 
     contract_file = models.FileField(_('Contract file'), null=True, blank=True,
