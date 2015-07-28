@@ -10,6 +10,7 @@ class SourceFilter(EmptyFilter):
     seed__url = django_filters.CharFilter(lookup_type='icontains')
 
     created = DateRangeFilter()
+    last_changed = DateRangeFilter()
 
     class Meta:
         model = models.Source
