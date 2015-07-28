@@ -1,7 +1,7 @@
 import models
 import django_filters
 
-from core.utils import EmptyFilter, DateRangeFilter
+from core.custom_filters import EmptyFilter, DateRangeFilter
 from core.widgets import DateRangeWidget
 
 

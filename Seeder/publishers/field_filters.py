@@ -1,5 +1,6 @@
 import models
-from core.utils import EmptyFilter
+
+from core.custom_filters import EmptyFilter
 
 
 class PublisherFilter(EmptyFilter):
