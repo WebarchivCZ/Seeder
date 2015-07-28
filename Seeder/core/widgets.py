@@ -1,4 +1,4 @@
-from django.forms import widgets,MultiValueField, DateField
+from django.forms import widgets, MultiValueField, DateField
 
 
 class DatePickerWidget(widgets.DateInput):
@@ -14,20 +14,22 @@ class DatePickerWidget(widgets.DateInput):
             'datetime_picker.js'
         )
 
+
 class DateRangeWidget(widgets.MultiWidget):
     def __init__(self, **kwargs):
         super(DateRangeWidget, self).__init__(
             widgets=[DatePickerWidget, DatePickerWidget],
-            attrs = {'class': 'date_picker'},
+            attrs={'class': 'date_picker'},
         )
 
     def decompress(self, value):
         return value
 
+
 class RangeField(MultiValueField):
     def __init__(self, field_class=DateField, widget=None, **kwargs):
-        if 'initial'  not in kwargs:
-            kwargs['initial'] = ['','']
+        if 'initial' not in kwargs:
+            kwargs['initial'] = ['', '']
         fields = (field_class(), field_class())
 
         super(RangeField, self).__init__(
