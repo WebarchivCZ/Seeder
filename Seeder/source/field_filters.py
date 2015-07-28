@@ -1,12 +1,15 @@
 import models
 import django_filters
 
-from core.utils import EmptyFilter
+from core.utils import EmptyFilter, DateRangeFilter
+from core.widgets import DateRangeWidget
 
 
 class SourceFilter(EmptyFilter):
     publisher = django_filters.CharFilter(lookup_type='name__icontains')
     seed__url = django_filters.CharFilter(lookup_type='icontains')
+
+    created = DateRangeFilter()
 
     class Meta:
         model = models.Source

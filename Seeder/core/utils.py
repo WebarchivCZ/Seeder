@@ -6,6 +6,7 @@ from django.db import models
 from django.contrib.humanize.templatetags.humanize import naturaltime
 from django_tables2.columns.linkcolumn import BaseLinkColumn
 from django_tables2.columns.base import Column
+from core.widgets import RangeField
 
 
 def merge_dicts(x, y):
@@ -102,6 +103,22 @@ class EmptyFilter(django_filters.FilterSet):
             extended_choices = ((self.empty_choice,) +
                                 self.filters[field_name].extra['choices'])
             self.filters[field_name].extra['choices'] = extended_choices
+
+
+class DateRangeFilter(django_filters.Filter):
+    field_class = RangeField
+
+    def filter(self, qs, value):
+        date_from, date_to = value
+        filter_queries = {}
+        if date_from:
+            filter_queries['{0}__gte'.format(self.name)] = date_from
+        if date_to:
+            filter_queries['{0}__lte'.format(self.name)] = date_to
+
+        if filter_queries:
+            return qs.filter(**filter_queries)
+        return qs
 
 
 def show_toolbar(request):

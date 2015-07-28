@@ -3,6 +3,10 @@
 {% load render_table from django_tables2 %}
 {% load bootstrap3 %}
 
+{% block extrahead %}
+{{ filter.form.media }}
+{% endblock %}
+
 {% block content_raw %}
     <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
         <h1 class="page-header">{% block page_header %}{{ view.title }}, {{ table.rows | length }} {% trans 'records' %}{% endblock %}
