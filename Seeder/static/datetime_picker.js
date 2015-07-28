@@ -8,6 +8,8 @@ $(document).ready(function () {
     $('.date_picker').datetimepicker({
         allowInputToggle: true,
         format: date_format,
-        locale: lang
+        locale: lang,
+        inline: true,
+        useCurrent: false
     });
 });
