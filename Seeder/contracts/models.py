@@ -73,6 +73,11 @@ class Contract(BaseModel):
             return _('Contract in negotiation with {0}').format(self.publisher)
         return _('{}/{}').format(self.contract_number or ' - ', self.year)
 
+    def get_type(self):
+        if self.open_source:
+            return self.get_open_source_type_display()
+        return _('Contract with {0}'.format(self.publisher))
+
     def publisher_responds(self):
         return (self.in_communication or
                 self.state != constants.CONTRACT_STATE_NEGOTIATION)
