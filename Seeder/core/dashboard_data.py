@@ -72,7 +72,7 @@ class ContractsCard(DashboardCard):
 
     def get_queryset(self):
         return contract_models.Contract.objects.filter(
-            source__owner=self.user,
+            sources__owner=self.user,
             state=contract_models.constants.CONTRACT_STATE_NEGOTIATION)
 
     def get_color(self, element):
@@ -90,7 +90,7 @@ class ContractsWithoutCommunication(ContractsCard):
     def get_queryset(self):
         basic_qs = contract_models.Contract.objects.filter(
             in_communication=False,
-            source__owner=self.user,
+            sources__owner=self.user,
             state=contract_models.constants.CONTRACT_STATE_NEGOTIATION)
         return basic_qs.annotate(Count('emailnegotiation')).filter(
             emailnegotiation__count=0)
