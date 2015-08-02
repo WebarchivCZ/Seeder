@@ -9,9 +9,11 @@ from django.db.models.query_utils import Q
 from django.utils.translation import ugettext_lazy as _
 from django.core.urlresolvers import reverse
 
+from ckeditor.fields import RichTextField
+
 from core.models import BaseModel, DatePickerField
 from source.models import Source
-from ckeditor.fields import RichTextField
+from publishers.models import Publisher
 
 
 def get_str_uuid():
@@ -36,6 +38,7 @@ class ContractManager(models.Manager):
 
 @reversion.register(exclude=('last_changed',))
 class Contract(BaseModel):
+    publisher = models.ForeignKey(Publisher)
     sources = models.ManyToManyField(Source)
     state = models.CharField(_('State'),
                              choices=constants.CONTRACT_STATES,
@@ -66,10 +69,9 @@ class Contract(BaseModel):
     objects = ContractManager()
 
     def __unicode__(self):
-        return _('{number}/{year}: {type}').format(
-            number=self.contract_number or ' - ',
-            year=self.year,
-            type=self.get_contract_type_display())
+        if self.state == constants.CONTRACT_STATE_NEGOTIATION:
+            return _('Contract in negotiation with {0}').format(self.publisher)
+        return _('{}/{}').format(self.contract_number or ' - ', self.year)
 
     def publisher_responds(self):
         return (self.in_communication or
