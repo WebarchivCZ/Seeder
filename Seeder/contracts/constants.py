@@ -30,13 +30,14 @@ NEGOTIATION_TEMPLATES = [
     'negotiations/third.html', 'negotiations/last.html'
 ]
 
-
-CONTRACT_CREATIVE_COMMONS = 'CCOMMONS'
-CONTRACT_PROPRIETARY = 'PROPRIETARY'
-
-CONTRACT_TYPE_CHOICES = (
-    (CONTRACT_CREATIVE_COMMONS, _('Creative commons')),
-    (CONTRACT_PROPRIETARY, _('Proprietary')),
+OPEN_SOURCES_TYPES = (
+    'creative', _('CreativeCommons'),
+    'apache', _('Apache'),
+    'gpl', _('GPL'),
+    'MIT', _('MIT'),
+    'LGPL 2', _('LGPL 2'),
+    'LGPL 3', _('LGPL 3'),
+    'mozilla', _('mozilla'),
 )
 
 EMAILS_TITLE = _('Narodni knihovna CR - archivace Vasich webovych stranek')

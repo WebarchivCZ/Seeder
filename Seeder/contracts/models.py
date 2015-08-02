@@ -36,11 +36,14 @@ class ContractManager(models.Manager):
 
 @reversion.register(exclude=('last_changed',))
 class Contract(BaseModel):
-    source = models.ForeignKey(Source)
+    sources = models.ManyToManyField(Source)
     state = models.CharField(_('State'),
                              choices=constants.CONTRACT_STATES,
                              default=constants.CONTRACT_STATE_NEGOTIATION,
                              max_length=15)
+
+    open_source = models.BooleanField(default=False)
+    open_source_type = models.CharField(choices=constants.OPEN_SOURCES_TYPES)
 
     valid_from = DatePickerField(_('Valid from'), null=True, blank=True)
     valid_to = DatePickerField(_('Valid to'), null=True, blank=True)
@@ -48,9 +51,6 @@ class Contract(BaseModel):
 
     contract_file = models.FileField(_('Contract file'), null=True, blank=True,
                                      upload_to='contracts')
-    contract_type = models.CharField(_('Contract type'),
-                                     choices=constants.CONTRACT_TYPE_CHOICES,
-                                     max_length=12)
     contract_number = models.IntegerField(_('Contract number'),
                                           null=True, blank=True,
                                           unique_for_year='created')
