@@ -3,8 +3,8 @@
 {% load humanize %}
 
 
-{% block title %}{% trans 'Contract for' %} {{ object.source }}{% endblock %}
-{% block page_header %}{% trans 'Contract for' %} {{ object.source }}{% endblock %}
+{% block title %}{% trans 'Contract for' %} {{ object.publisher }}{% endblock %}
+{% block page_header %}{% trans 'Contract for' %} {{ object.publisher }}{% endblock %}
 
 {% block content %}
     <div class="col-md-4 col-sm-4">
@@ -25,12 +25,12 @@
                     <td>{{ object.contract_number }} / {{ object.year }}</td>
                 </tr>
                 <tr>
-                    <td>{% trans 'Type' %}</td>
-                    <td>{{ object.get_contract_type_display }}</td>
-                </tr>
-                <tr>
-                    <td>{% trans 'Source' %}</td>
-                    <td><a href="{{ object.source.get_absolute_url }}">{{ object.source }}</a></td>
+                    <td>{% trans 'Open source' %}</td>
+                    {% if object.open_source %}
+                        <td>{{ object.get_open_source_display}}</td>
+                    {% else %}
+                        <td>{% trans 'No' %}</td>
+                    {% endif %}
                 </tr>
                 <tr>
                     <td>{% trans 'Publisher' %}</td>
