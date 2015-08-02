@@ -13,7 +13,7 @@ source_fields = ('name', 'publisher', 'category', 'sub_category', 'frequency',
 
 
 class SourceForm(autocomplete_light.ModelForm):
-    open_license = forms.CharField(
+    open_license = forms.ChoiceField(
         choices=OPEN_SOURCES_TYPES,
         required=False,
         help_text=_('Choose license or leave blank if this is not open source')

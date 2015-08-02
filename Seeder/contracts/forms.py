@@ -6,14 +6,15 @@ from django import forms
 class CreateForm(forms.ModelForm):
     class Meta:
         model = models.Contract
-        fields = ('contract_type', )
+        fields = ('state', 'year', 'contract_number', 'valid_from', 'valid_to',
+                  'contract_file', 'open_source', 'in_communication')
 
 
 class EditForm(forms.ModelForm):
     class Meta:
         model = models.Contract
         fields = ('state', 'year', 'contract_number', 'valid_from', 'valid_to',
-                  'contract_file', 'contract_type', 'in_communication')
+                  'contract_file', 'open_source', 'in_communication')
 
 
 class EmailForm(forms.ModelForm):

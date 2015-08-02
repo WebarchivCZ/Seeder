@@ -157,7 +157,7 @@ class AddSource(generic_views.LoginMixin, SessionWizardView, URLView):
             contract = Contract(
                 publisher=source.publisher,
                 valid_from=datetime.now(),
-                open_source_type=source_form.cleaned_data['open_license'],
+                open_source=source_form.cleaned_data['open_license'],
                 state=contract_constants.CONTRACT_STATE_VALID
             )
             contract.save()

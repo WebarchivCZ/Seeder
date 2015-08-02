@@ -15,35 +15,39 @@ class Migration(migrations.Migration):
     operations = [
         migrations.RemoveField(
             model_name='contract',
-            name='contract_type',
-        ),
+            name='contract_type', ),
         migrations.RemoveField(
             model_name='contract',
-            name='source',
-        ),
+            name='source', ),
         migrations.AddField(
             model_name='contract',
             name='open_source',
-            field=models.BooleanField(default=False),
-        ),
+            field=models.BooleanField(default=False), ),
         migrations.AddField(
             model_name='contract',
             name='open_source_type',
-            field=models.CharField(blank=True, max_length=12, null=True, choices=[(b'creative', 'CreativeCommons'), (b'apache', 'Apache'), (b'gpl', 'GPL'), (b'MIT', 'MIT'), (b'LGPL 2', 'LGPL 2'), (b'LGPL 3', 'LGPL 3'), (b'mozilla', 'mozilla')]),
-        ),
+            field=models.CharField(
+                blank=True,
+                max_length=12,
+                null=True,
+                choices=[(b'creative', 'CreativeCommons'),
+                         (b'apache', 'Apache'), (b'gpl', 'GPL'), (
+                             b'MIT', 'MIT'), (b'LGPL 2', 'LGPL 2'),
+                         (b'LGPL 3', 'LGPL 3'), (b'mozilla', 'mozilla')]), ),
         migrations.AddField(
             model_name='contract',
             name='sources',
-            field=models.ManyToManyField(to='source.Source'),
-        ),
+            field=models.ManyToManyField(to='source.Source'), ),
         migrations.AlterField(
             model_name='contract',
             name='valid_from',
-            field=core.models.DatePickerField(null=True, verbose_name='Valid from', blank=True),
-        ),
+            field=core.models.DatePickerField(null=True,
+                                              verbose_name='Valid from',
+                                              blank=True), ),
         migrations.AlterField(
             model_name='contract',
             name='valid_to',
-            field=core.models.DatePickerField(null=True, verbose_name='Valid to', blank=True),
-        ),
+            field=core.models.DatePickerField(null=True,
+                                              verbose_name='Valid to',
+                                              blank=True), ),
     ]

@@ -15,7 +15,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='contract',
             name='publisher',
-            field=models.ForeignKey(default=1, to='publishers.Publisher'),
-            preserve_default=False,
-        ),
+            field=models.ForeignKey(default=1,
+                                    to='publishers.Publisher'),
+            preserve_default=False, ),
     ]

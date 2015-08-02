@@ -34,6 +34,9 @@ class Detail(ContractView, DetailView, CommentViewGeneric):
 
 
 class Create(LoginMixin, FormView, ObjectMixinFixed, URLView):
+    """
+    Create contract based on existing source
+    """
     form_class = forms.CreateForm
     template_name = 'add_form.html'
     title = _('Add contract')
@@ -44,7 +47,9 @@ class Create(LoginMixin, FormView, ObjectMixinFixed, URLView):
     url_name = 'create'
 
     def form_valid(self, form):
-        contract = form.save()
+        contract = form.save(commit=False)
+        contract.publisher = self.object.publisher
+        contract.save()
         contract.sources.add(self.object)
         return HttpResponseRedirect(contract.get_absolute_url())
 

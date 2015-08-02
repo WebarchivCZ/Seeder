@@ -45,10 +45,8 @@ class Contract(BaseModel):
                              default=constants.CONTRACT_STATE_NEGOTIATION,
                              max_length=15)
 
-    open_source = models.BooleanField(default=False)
-    open_source_type = models.CharField(choices=constants.OPEN_SOURCES_TYPES,
-                                        null=True, blank=True,
-                                        max_length=12)
+    open_source = models.CharField(choices=constants.OPEN_SOURCES_TYPES,
+                                   null=True, blank=True, max_length=12)
 
     valid_from = DatePickerField(_('Valid from'), null=True, blank=True)
     valid_to = DatePickerField(_('Valid to'), null=True, blank=True)
