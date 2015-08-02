@@ -6,7 +6,7 @@ from core.utils import AbsoluteURLColumn, NaturalDatetimeColumn
 
 class ContractTable(tables.Table):
     link = AbsoluteURLColumn(accessor='__unicode__')
-    publisher = AbsoluteURLColumn(accessor='source.publisher')
+    publisher = AbsoluteURLColumn(accessor='publisher')
     created = NaturalDatetimeColumn()
     last_changed = NaturalDatetimeColumn()
 
