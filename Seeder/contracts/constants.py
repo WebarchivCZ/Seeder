@@ -31,13 +31,13 @@ NEGOTIATION_TEMPLATES = [
 ]
 
 OPEN_SOURCES_TYPES = (
-    'creative', _('CreativeCommons'),
-    'apache', _('Apache'),
-    'gpl', _('GPL'),
-    'MIT', _('MIT'),
-    'LGPL 2', _('LGPL 2'),
-    'LGPL 3', _('LGPL 3'),
-    'mozilla', _('mozilla'),
+    ('creative', _('CreativeCommons')),
+    ('apache', _('Apache')),
+    ('gpl', _('GPL')),
+    ('MIT', _('MIT')),
+    ('LGPL 2', _('LGPL 2')),
+    ('LGPL 3', _('LGPL 3')),
+    ('mozilla', _('mozilla')),
 )
 
 EMAILS_TITLE = _('Narodni knihovna CR - archivace Vasich webovych stranek')

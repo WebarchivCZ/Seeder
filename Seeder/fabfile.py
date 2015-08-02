@@ -47,12 +47,6 @@ def syncdb():
     map(local, commands['syncdb'])
 
 
-@task(alias='sm')
-def schemamigration():
-    local('./manage.py makemigrations core')
-    local('git add core/migrations/')
-    local('./manage.py migrate')
-
 
 @task(alias='cs')
 def collect_static():
