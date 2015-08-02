@@ -44,9 +44,8 @@ class Create(LoginMixin, FormView, ObjectMixinFixed, URLView):
     url_name = 'create'
 
     def form_valid(self, form):
-        contract = form.save(commit=False)
-        contract.source = self.object
-        contract.save()
+        contract = form.save()
+        contract.sources.add(self.object)
         return HttpResponseRedirect(contract.get_absolute_url())
 
 
