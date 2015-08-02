@@ -5,6 +5,7 @@ from django import forms
 from django.forms.formsets import BaseFormSet
 from django.forms.models import modelformset_factory
 from django.utils.translation import ugettext_lazy as _
+from contracts.constants import OPEN_SOURCES_TYPES
 
 
 source_fields = ('name', 'publisher', 'category', 'sub_category', 'frequency',
@@ -12,9 +13,10 @@ source_fields = ('name', 'publisher', 'category', 'sub_category', 'frequency',
 
 
 class SourceForm(autocomplete_light.ModelForm):
-    open_license = forms.BooleanField(
+    open_license = forms.CharField(
+        choices=OPEN_SOURCES_TYPES,
         required=False,
-        help_text=_('Is text distributed under open license?')
+        help_text=_('Choose license or leave blank if this is not open source')
     )
 
     comment = forms.CharField(widget=forms.Textarea(attrs={'rows': 2}),

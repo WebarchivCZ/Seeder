@@ -155,12 +155,13 @@ class AddSource(generic_views.LoginMixin, SessionWizardView, URLView):
 
         if source_form.cleaned_data['open_license']:
             contract = Contract(
-                source=source,
+                publisher=source.publisher,
                 valid_from=datetime.now(),
-                contract_type=contract_constants.CONTRACT_CREATIVE_COMMONS,
+                open_source_type=source_form.cleaned_data['open_license'],
                 state=contract_constants.CONTRACT_STATE_VALID
             )
             contract.save()
+            contract.sources.add(source)
 
         for form in seed_formset.forms:
             seed = form.save(commit=False)
