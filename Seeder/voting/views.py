@@ -31,7 +31,7 @@ class VotingDetail(VotingView, DetailView, CommentViewGeneric):
     url_name = 'detail'
 
 
-class CastVote(LoginMixin, SingleObjectMixin, ActionView):
+class CastVote(LoginMixin, SingleObjectMixin, ActionView, URLView):
     """
     View for casting votes
     """
@@ -60,7 +60,7 @@ class CastVote(LoginMixin, SingleObjectMixin, ActionView):
         return self.get_object().get_absolute_url()
 
 
-class Postpone(VotingView, ObjectMixinFixed, FormView):
+class Postpone(VotingView, ObjectMixinFixed, FormView, URLView):
     form_class = forms.PostponeForm
     template_name = 'edit_form.html'
     title = _('Postpone voting')
@@ -82,7 +82,7 @@ class Postpone(VotingView, ObjectMixinFixed, FormView):
         return HttpResponseRedirect(voting_round.get_absolute_url())
 
 
-class Resolve(LoginMixin, SingleObjectMixin, ActionView):
+class Resolve(LoginMixin, SingleObjectMixin, ActionView, URLView):
     """
     View for resolving the round
     """

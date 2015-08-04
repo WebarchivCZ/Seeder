@@ -28,20 +28,29 @@ VOTES = odict[
         'value': 'wait',
         'css': 'warning'
     },
+    'technical': {
+        'label': _('Technically impossible'),
+        'value': 'technical',
+        'css': ''
+    },
 ]
 
-# dict describing what does each vote state represent in source state:
-VOTE_TO_SOURCE = {
-    'initial': source_constants.STATE_VOTE,
-    'approve': source_constants.STATE_ACCEPTED_BY_STAFF,
-    'decline': source_constants.STATE_DECLINED_BY_STAFF,
-    'wait': source_constants.STATE_REEVALUTATION
-}
 
 VOTE_INITIAL = VOTES['initial']['value']
 VOTE_APPROVE = VOTES['approve']['value']
 VOTE_DECLINE = VOTES['decline']['value']
 VOTE_WAIT = VOTES['wait']['value']
+VOTE_TECHNICAL = VOTES['technical']['value']
+
+
+# dict describing what does each vote state represent in source state:
+VOTE_TO_SOURCE = {
+    VOTE_INITIAL: source_constants.STATE_VOTE,
+    VOTE_APPROVE: source_constants.STATE_ACCEPTED_BY_STAFF,
+    VOTE_DECLINE: source_constants.STATE_DECLINED_BY_STAFF,
+    VOTE_WAIT: source_constants.STATE_REEVALUTATION,
+    VOTE_TECHNICAL: source_constants.STATE_TECHNICAL_REVIEW,
+}
 
 VOTE_STATES = tuple(
     (info['value'], info['label']) for info in VOTES.values()

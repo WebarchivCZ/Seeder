@@ -16,7 +16,6 @@ class VotingRound(BaseModel):
     """
         Voting round about source.
     """
-
     source = models.ForeignKey(Source)
     resolved_by = models.ForeignKey(User, blank=True, null=True)
     date_resolved = models.DateTimeField(blank=True, null=True)
