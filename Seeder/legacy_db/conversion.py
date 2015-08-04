@@ -353,10 +353,8 @@ class ContractConversion(Conversion):
         'contract_no': 'contract_number',
         'active': 'active',
         'date_signed': 'valid_from',
-        'type': 'contract_type',
         'comments': 'description',
         'state': 'state',
-        'source': 'source',
         'year': 'year'
     }
 
@@ -374,12 +372,32 @@ class ContractConversion(Conversion):
         source_dict['source'] = record.target_object
 
         if source_dict['cc']:
-            source_dict['type'] = contract_constants.CONTRACT_CREATIVE_COMMONS
-        else:
-            source_dict['type'] = contract_constants.CONTRACT_PROPRIETARY
+            source_dict['open_source'] = 'creative'
         source_dict['state'] = contract_constants.CONTRACT_STATE_VALID
 
         return source_dict
+
+    def create_new(self):
+        try:
+            data = self.get_field_data()
+        except ObjectDoesNotExist:  # this means that the fk is invalid
+            raise BrokenRecord
+
+        linking_resources = models.Resources.objects.using(DATABASE).filter(
+            contract_id=self.source_dict['id']).values_list('id', flat=True)
+        linking_tranfers = models.TransferRecord.objects.filter(
+            original_type=get_ct(models.Resources),
+            original_id__in=list(linking_resources))
+
+        sources = [transfer.target_object for transfer in linking_tranfers]
+        new_object = self.target_model(**data)
+        new_object.publisher = sources[0].publisher
+        new_object.save()
+
+        for source in sources:
+            new_object.sources.add(source)
+
+        return new_object
 
 
 CONVERSIONS = [
