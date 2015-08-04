@@ -165,12 +165,24 @@ class SourceOwned(SourceCard):
         )
 
 
+class TechnicalReview(SourceCard):
+    """
+    Displays sources that you own and are
+    """
+    title = _('Sources that need technical review')
+
+    def get_queryset(self):
+        return source_models.Source.objects.filter(
+            state=source_models.constants.STATE_TECHNICAL_REVIEW
+        )
+
+
 class WithoutAleph(SourceCard):
     title = _('Source without Aleph ID')
 
     def get_queryset(self):
         return source_models.Source.objects.filter(
-            state=source_models.constants.STATE_RUNNING,
+            state__in=source_models.constants.ARCHIVING_STATES,
             aleph_id=None
         )
 
@@ -180,7 +192,8 @@ cards_registry = {
     'open_votes': OpenToVoteRounds,
     'sources_owned': SourceOwned,
     'without_aleph': WithoutAleph,
-    'no_communication': ContractsWithoutCommunication
+    'no_communication': ContractsWithoutCommunication,
+    'technical': TechnicalReview,
 }
 
 
