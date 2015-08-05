@@ -8,13 +8,11 @@ from django.utils.translation import ugettext_lazy as _
 from contracts.constants import OPEN_SOURCES_TYPES
 
 
-source_fields = ('name', 'publisher', 'category', 'sub_category', 'frequency',
-                 'suggested_by', 'open_license', 'annotation',  'comment')
-
+LICENSE_TYPES = (('', '---'),) + OPEN_SOURCES_TYPES
 
 class SourceForm(autocomplete_light.ModelForm):
     open_license = forms.ChoiceField(
-        choices=OPEN_SOURCES_TYPES,
+        choices=LICENSE_TYPES,
         required=False,
         help_text=_('Choose license or leave blank if this is not open source')
     )
@@ -26,7 +24,8 @@ class SourceForm(autocomplete_light.ModelForm):
 
     class Meta:
         model = models.Source
-        fields = source_fields
+        fields = ('name', 'publisher', 'category', 'sub_category', 'frequency',
+                  'suggested_by', 'open_license', 'annotation',  'comment')
 
 
 class ManagementSourceForm(SourceForm):
@@ -37,7 +36,9 @@ class ManagementSourceForm(SourceForm):
 
     class Meta:
         model = models.Source
-        fields = ('owner',) + source_fields
+        fields = ('owner', 'name', 'publisher', 'category', 'sub_category',
+                  'frequency', 'suggested_by', 'open_license', 'annotation',
+                  'comment')
 
 
 class DuplicityForm(forms.Form):
