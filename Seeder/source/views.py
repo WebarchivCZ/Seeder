@@ -115,16 +115,18 @@ class AddSource(generic_views.LoginMixin, SessionWizardView, URLView):
         """
         Returns queryset with similar records
         """
+
         source_data = self.get_cleaned_data_for_step('source')
         publisher_data = self.get_cleaned_data_for_step('create_publisher')
         seeds_data = self.get_cleaned_data_for_step('seeds')
         seeds_url = [s.get('url', '') for s in seeds_data]
 
-        return models.Source.objects.filter(
-            Q(name__icontains=source_data['name']) |
-            Q(seed__url__in=seeds_url) |
-            Q(publisher__name__icontains=publisher_data['name'])
-        ).distinct()
+        filters = (Q(name__icontains=source_data['name']) |
+                   Q(seed__url__in=seeds_url))
+        if publisher_data:
+            filters |= Q(publisher__name__icontains=publisher_data['name'])
+
+        return models.Source.objects.filter(filters).distinct()
 
     def done(self, form_list, **kwargs):
         form_dict = kwargs['form_dict']
