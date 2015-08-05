@@ -7,7 +7,6 @@ from source.models import Source
 from voting.models import VotingRound
 from source import constants as source_constants
 from contracts.models import Contract
-from contracts import constants as contract_constants
 
 
 @receiver(signal=post_save, sender=Source)
