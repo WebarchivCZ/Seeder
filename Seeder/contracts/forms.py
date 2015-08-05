@@ -10,6 +10,10 @@ class CreateForm(forms.ModelForm):
                   'contract_file', 'open_source', 'in_communication')
 
 
+class AssignForm(forms.Form):
+    contract = forms.ModelChoiceField(models.Contract.objects.none())
+
+
 class EditForm(forms.ModelForm):
     class Meta:
         model = models.Contract

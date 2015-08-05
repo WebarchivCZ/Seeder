@@ -54,6 +54,33 @@ class Create(LoginMixin, FormView, ObjectMixinFixed, URLView):
         return HttpResponseRedirect(contract.get_absolute_url())
 
 
+class Assign(LoginMixin, FormView, ObjectMixinFixed, URLView):
+    """
+    Assign existing contract to source
+    """
+    form_class = forms.AssignForm
+    template_name = 'add_form.html'
+    title = _('Assign contract')
+    view_name = 'contracts'
+    model = Source
+
+    url = U / pk / 'assign'
+    url_name = 'assign'
+
+    def get_form(self, form_class=None):
+        form = super(Assign, self).get_form(form_class)
+        contract = form.fields['contract']
+        contracts = models.Contract.objects.filter(
+            publisher=self.get_object().publisher)
+        contract.queryset = contracts
+        return form
+
+    def form_valid(self, form):
+        contract = form.cleaned_data['contract']
+        contract.sources.add(self.object)
+        return HttpResponseRedirect(contract.get_absolute_url())
+
+
 class Edit(ContractView, EditView):
     form_class = forms.EditForm
 

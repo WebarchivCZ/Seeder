@@ -127,6 +127,7 @@
             <p>Sorry no contracts yet.</p>
         {% endfor %}
         <a href="{% url 'contracts:create' pk=source.pk %}" class="btn btn-primary btn-block">{% trans 'Create' %}</a>
+        <a href="{% url 'contracts:assign' pk=source.pk %}" class="btn btn-primary btn-block">{% trans 'Assign' %}</a>
     </div>
 
     <div class="col-xs-12 col-md-12">
