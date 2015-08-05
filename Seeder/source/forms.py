@@ -7,8 +7,8 @@ from django.forms.models import modelformset_factory
 from django.utils.translation import ugettext_lazy as _
 from contracts.constants import OPEN_SOURCES_TYPES
 
-
 LICENSE_TYPES = (('', '---'),) + OPEN_SOURCES_TYPES
+
 
 class SourceForm(autocomplete_light.ModelForm):
     open_license = forms.ChoiceField(
