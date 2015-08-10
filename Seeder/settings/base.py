@@ -104,7 +104,7 @@ WSGI_APPLICATION = 'wsgi.application'
 STATICFILES_FINDERS = (
     "django.contrib.staticfiles.finders.FileSystemFinder",
     "django.contrib.staticfiles.finders.AppDirectoriesFinder",
-    'djangobower.finders.BowerFinder',
+    # 'djangobower.finders.BowerFinder',
 )
 
 STATICFILES_DIRS = (
