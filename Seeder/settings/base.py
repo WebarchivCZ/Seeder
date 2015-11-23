@@ -73,6 +73,7 @@ INSTALLED_APPS = (
     'formtools',
     'reversion',
     'ckeditor',
+    'ckeditor_uploader',
     # 'debug_toolbar',
     'django_cron',
     'sorl.thumbnail',

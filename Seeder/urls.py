@@ -26,7 +26,7 @@ auth_patterns = patterns(
 
 urlpatterns = patterns(
     '',
-    url(U / 'ckeditor', include('ckeditor.urls')),
+    url(U / 'ckeditor', include('ckeditor_uploader.urls')),
     url(U / 'admin', include(admin.site.urls)),
     url(U / 'auth', include(auth_patterns)),
     url(U / 'autocomplete', include('autocomplete_light.urls')),
