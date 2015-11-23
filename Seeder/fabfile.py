@@ -1,11 +1,11 @@
 import os
 
-from fabric.api import local, task, run
+from fabric.api import local, task
 from settings.base import INSTALLED_APPS
 
 
 commands = {
-    'runserver': ['./manage.py runserver'],
+    'runserver': ['./manage.py runserver 0.0.0.0:8000'],
     'syncdb': [
         './manage.py migrate auth',
         './manage.py syncdb --noinput',
@@ -14,8 +14,8 @@ commands = {
     'pull': ['git pull --rebase'],
     'touch_reload': ['touch ../../reload_seeder.touch'],
     'reqs': [
-        'pip install -r ../requirements.txt',
-        'pip install -r ../requirements_dev.txt'],
+        'pip install -r ../requirements.txt --upgrade',
+        'pip install -r ../requirements_dev.txt --upgrade'],
     'push_messages': [
         './manage.py makemessages -a',
         'tx push -t -s'],
@@ -47,7 +47,6 @@ def syncdb():
     map(local, commands['syncdb'])
 
 
-
 @task(alias='cs')
 def collect_static():
     map(local, commands['static'])
@@ -68,13 +67,21 @@ def push_messages():
 def shell():
     local('./manage.py shell')
 
-#
-# @task(alias='dl')
-# def deploy_locally():
-#     map(local, commands['syncdb'] + commands['static'])
-
 
 @task(alias='dl')
 def deploy():
-    map(local, commands['reqs'] + commands['pull_messages'] +
-        commands['syncdb'] + commands['static'] + commands['touch_reload'])
+    map(local,
+        commands['reqs'] +
+        commands['pull_messages'] +
+        commands['syncdb'] +
+        commands['static']
+        )
+
+@task
+def run_local():
+    map(local,
+        commands['reqs'] +
+        commands['syncdb'] +
+        commands['static'] +
+        commands['runserver']
+        )

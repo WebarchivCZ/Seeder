@@ -28,6 +28,22 @@ TEMPLATE_DEBUG = True
 ALLOWED_HOSTS = []
 
 
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'postgres',
+        'USER': 'postgres',
+        'PASSWORD': 'postgres',
+        'HOST': 'postgres',
+    },
+    'legacy_seeder': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'legacy_seeder',
+        'USER': 'root',
+        'PASSWORD': 'legacy'
+    }
+}
+
 ADMINS = (
     ('Visgean Skeloru', 'visgean@gmail.com')
 )

@@ -1,0 +1,26 @@
+web:
+  restart: always
+  build: .
+  ports:
+   - "8000:8000"
+  links:
+    - postgres
+  volumes:
+   - .:/code
+  command: fab run_local
+  working_dir: /code/Seeder
+
+postgres:
+  restart: always
+  image: postgres:latest
+#  volumes_from:
+#    - data
+  ports:
+    - "5432:5432"
+
+#data:
+#  restart: always
+#  image: postgres:latest
+#  volumes:
+#    - /var/lib/postgresql
+#  command: "true"
