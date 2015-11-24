@@ -1,8 +1,6 @@
 import os
 
 from fabric.api import local, task
-from settings.base import INSTALLED_APPS
-
 
 commands = {
     'runserver': ['./manage.py runserver 0.0.0.0:8000'],
@@ -31,6 +29,7 @@ def yapf_migrations():
     """
     Refines migrations files so they would comply to pep8
     """
+    from settings.base import INSTALLED_APPS
     for app in INSTALLED_APPS:
         migration_dir = os.path.join(app, 'migrations')
         if os.path.isdir(app) and os.path.isdir(migration_dir):
