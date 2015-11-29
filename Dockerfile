@@ -15,3 +15,5 @@ ADD . /code
 WORKDIR /code
 
 RUN pip install fabric
+RUN pip install -r requirements.txt --upgrade
+RUN pip install -r requirements_dev.txt --upgrade
