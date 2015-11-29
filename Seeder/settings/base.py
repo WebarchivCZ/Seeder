@@ -77,6 +77,7 @@ INSTALLED_APPS = (
     # 'debug_toolbar',
     'django_cron',
     'sorl.thumbnail',
+    'rest_framework',
 
     'core',
     'publishers',
@@ -192,6 +193,12 @@ CRON_CLASSES = [
     'source.cron.ExportSeeds',
 ]
 
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    )
+}
 
 SEEDS_EXPORT_DIR = 'seeds'
 MANET_URL = '127.0.0.1:8891'
