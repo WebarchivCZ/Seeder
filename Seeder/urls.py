@@ -10,7 +10,7 @@ from source import views as source_views
 from publishers import views as publisher_views
 from voting import views as voting_views
 from contracts import views as contracts_views
-
+from api import api_router
 
 auth_patterns = patterns(
     'django.contrib.auth.views',
@@ -29,8 +29,11 @@ urlpatterns = patterns(
     url(U / 'ckeditor', include('ckeditor_uploader.urls')),
     url(U / 'admin', include(admin.site.urls)),
     url(U / 'auth', include(auth_patterns)),
+    url(U / 'api/auth', include(
+        'rest_framework.urls', namespace='rest_framework')),
     url(U / 'autocomplete', include('autocomplete_light.urls')),
 
+    url(U / 'api', include(api_router.urls)),
     url(U / 'source', view_include(source_views, namespace='source')),
     url(U / 'publisher', view_include(publisher_views, namespace='publishers')),  # noqa
     url(U / 'voting', view_include(voting_views, namespace='voting')),
