@@ -81,4 +81,4 @@ static_root/
 media/
 
 Seeder/locale/*
-legacy_dump/*
+legacy_dumps/*
