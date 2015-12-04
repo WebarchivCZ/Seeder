@@ -14,10 +14,15 @@ web:
 postgres:
   restart: always
   image: postgres:latest
-  volumes:
-    - "~/postgres_data:/var/lib/postgresql"
   ports:
     - "5432:5432"
+  volumes_from:
+    - data
+
+data:
+  image: busybox
+  volumes:
+    - "~/postgres_data:/var/lib/postgresql"
 
 mysql:
   image: mysql:latest
