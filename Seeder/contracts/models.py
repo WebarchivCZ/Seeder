@@ -1,5 +1,4 @@
 import constants
-import reversion
 import uuid
 
 from datetime import datetime
@@ -10,6 +9,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.core.urlresolvers import reverse
 
 from ckeditor.fields import RichTextField
+from reversion import revisions as reversion
 
 from core.models import BaseModel, DatePickerField
 from source.models import Source

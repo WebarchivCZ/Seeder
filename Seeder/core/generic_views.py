@@ -2,8 +2,6 @@
     Shared generic views used across the modules
 """
 
-import reversion
-
 from django.contrib import messages
 from django.http.response import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
@@ -15,6 +13,8 @@ from django.views.generic.edit import UpdateView
 from django.views.generic.detail import SingleObjectMixin
 
 from django_tables2 import SingleTableView
+from reversion import revisions as reversion
+
 from utils import dict_diff
 
 

@@ -1,10 +1,11 @@
 import constants
-import reversion
 
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
+
+from reversion import revisions as reversion
 
 from core.models import BaseModel, DatePickerField
 from core.utils import percentage
