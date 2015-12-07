@@ -19,7 +19,7 @@ class BlackList(BaseListModel):
     pass
 
 
-class ThemeList(BaseListModel):
+class HarvestList(BaseListModel):
     """
     This will represent list of sources in Themed harvests
     """
