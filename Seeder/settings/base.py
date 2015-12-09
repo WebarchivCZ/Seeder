@@ -87,6 +87,7 @@ INSTALLED_APPS = (
     'contracts',
     'legacy_db',
     'source_lists',
+    'harvests',
 )
 
 
