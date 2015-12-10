@@ -22,7 +22,7 @@ postgres:
 data:
   image: busybox
   volumes:
-    - "~/postgres_data:/var/lib/postgresql"
+    - "/var/lib/postgresql"
 
 mysql:
   image: mysql:latest
