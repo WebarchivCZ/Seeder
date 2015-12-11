@@ -10,7 +10,11 @@ from source import views as source_views
 from publishers import views as publisher_views
 from voting import views as voting_views
 from contracts import views as contracts_views
+from harvests import views as harvests_views
+
 from api import api_router
+
+
 
 auth_patterns = patterns(
     'django.contrib.auth.views',
@@ -38,7 +42,7 @@ urlpatterns = patterns(
     url(U / 'publisher', view_include(publisher_views, namespace='publishers')),  # noqa
     url(U / 'voting', view_include(voting_views, namespace='voting')),
     url(U / 'contracts', view_include(contracts_views, namespace='contracts')),
-
+    url(U / 'harvests', view_include(harvests_views, namespace='harvests')),
 
     # beware: wild card regexp!
     url('^', view_include(core_views, namespace='core'))
