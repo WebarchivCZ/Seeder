@@ -1,4 +1,6 @@
 from datetime import date, timedelta
+from .models import Harvest
+from source.constants import HARVESTED_FREQUENCIES
 
 
 def get_dates_for_timedelta(interval_delta, start=None, stop=None):
@@ -25,3 +27,26 @@ def get_dates_for_timedelta(interval_delta, start=None, stop=None):
         dates.append(dates[-1] + interval_delta)
 
     return dates
+
+
+def get_initial_scheduled_data(start):
+    """
+    Returns initial data for given date
+    :param start: starting date for all harvests
+    :return: list of initial data for formset
+    """
+    initial = []
+    for seed_type, info in HARVESTED_FREQUENCIES.items():
+        scheduled_delta = info['delta']
+        if scheduled_delta:
+            scheduled_dates = get_dates_for_timedelta(
+                scheduled_delta, start
+            )
+
+            for scheduled_date in scheduled_dates:
+                initial.append({
+                    'scheduled_on': scheduled_date,
+                    'harvest_type': Harvest.TYPE_REGULAR,
+                    'target_frequency': seed_type,
+                })
+    return initial
