@@ -5,6 +5,7 @@ from source.constants import HARVESTED_FREQUENCIES
 
 INITIAL_OFFSET = timedelta(days=5)
 
+
 def get_dates_for_timedelta(interval_delta, start=None, stop=None):
     """
     For given interval_delta it will return list of dates starting from
