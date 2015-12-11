@@ -53,16 +53,45 @@ STATE_COLORS = {
 }
 
 
-SOURCE_FREQUENCY_PER_YEAR = (
-    (0, _('Once only')),
-    (1, _('Once a year')),
-    (2, _('Twice a year')),
-    (4, _('Quarterly')),
-    (6, _('Six times per year')),
-    (12, _('Every month')),
-    (52, _('Weekly')),
-    (365, _('Daily')),
-)
+HARVESTED_FREQUENCIES = {
+    0: {
+        'title': _('Once only'),
+        'delta': None
+    },
+    1: {
+        'title': _('Once a year'),
+        'delta': timedelta(days=360)
+    },
+    2: {
+        'title': _('Twice a year'),
+        'delta': timedelta(days=150)
+    },
+    4: {
+        'title': _('Quarterly'),
+        'delta': timedelta(days=90)
+    },
+    6: {
+        'title': _('Six times per year'),
+        'delta': timedelta(days=60)
+    },
+    12: {
+        'title': _('Every month'),
+        'delta': timedelta(days=30)
+    },
+    52: {
+        'title': _('Weekly'),
+        'delta': timedelta(days=7)
+    },
+    365: {
+        'title': _('Daily'),
+        'delta': None
+    },
+}
+
+
+SOURCE_FREQUENCY_PER_YEAR = [
+    (key, info['title']) for key, info in HARVESTED_FREQUENCIES.items()
+]
 
 
 SEED_STATE_INCLUDE = 'inc'
