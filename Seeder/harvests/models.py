@@ -19,7 +19,7 @@ class Harvest(BaseModel):
         (TYPE_THEMED, _('Seasonal harvest')),
     )
 
-    responsible_curator = models.ForeignKey(User)
+    scheduled_on = models.DateField()
     harvest_type = models.SmallIntegerField(
         verbose_name=('Harvest type'),
         choices=HARVEST_TYPES
