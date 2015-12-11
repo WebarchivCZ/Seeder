@@ -14,8 +14,6 @@ from harvests import views as harvests_views
 
 from api import api_router
 
-
-
 auth_patterns = patterns(
     'django.contrib.auth.views',
     url(r'^login/$', 'login', name='login'),
