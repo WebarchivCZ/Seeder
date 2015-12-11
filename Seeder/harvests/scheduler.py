@@ -21,7 +21,13 @@ def get_dates_for_timedelta(interval_delta, start=None, stop=None):
 
     dates = [start]
 
-    while dates[-1] <= stop:
+    while dates[-1] + interval_delta < stop:
         dates.append(dates[-1] + interval_delta)
 
     return dates
+
+print get_dates_for_timedelta(
+    timedelta(days=10),
+    date(2012, 1, 1),
+    date(2012, 1, 22)
+)
