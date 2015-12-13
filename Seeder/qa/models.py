@@ -17,10 +17,10 @@ class QualityAssuranceCheck(BaseModel):
         to=User)
 
     comment = models.TextField(
-        verbose_name=_(''),
+        verbose_name=_('Comment'),
         blank=True)
 
     source_action = models.CharField(
-        verbose_name=_('State'),
+        verbose_name=_('Resulting action'),
         max_length=15,
         choices=source_constants.SOURCE_STATES)

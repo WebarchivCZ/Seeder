@@ -20,7 +20,9 @@ class Harvest(BaseModel):
         (TYPE_THEMED, _('Seasonal harvest')),
     )
 
-    scheduled_on = models.DateField()
+    scheduled_on = models.DateField(
+        verbose_name=_('Date of harvest')
+    )
     harvest_type = models.SmallIntegerField(
         verbose_name=_('Harvest type'),
         choices=HARVEST_TYPES
@@ -35,6 +37,7 @@ class Harvest(BaseModel):
 
     custom_sources = models.ManyToManyField(
         Source,
+        verbose_name=_('Included sources'),
         blank=True,
         null=True
     )
