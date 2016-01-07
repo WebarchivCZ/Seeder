@@ -39,7 +39,6 @@ class Harvest(BaseModel):
         Source,
         verbose_name=_('Included sources'),
         blank=True,
-        null=True
     )
 
     custom_seeds = models.TextField(
