@@ -13,6 +13,11 @@
         <button class="btn btn-primary btn-{{ filter_active|yesno:'danger,success' }} pull-right" type="button" data-toggle="collapse" data-target="#filter-collapse" aria-controls="filter-collapse">
           {% trans 'Toggle filters' %}
         </button>
+        {% if add_link %}
+            <a class="btn btn-primary btn-success "  aria-controls="filter-collapse" href="{% url add_link %}">
+                {{ add_link_title }}
+            </a>
+        {% endif %}
         </h1>
         <div class="collapse" id="filter-collapse">
           <div class="well">

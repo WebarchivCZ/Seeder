@@ -47,5 +47,8 @@ class ListView(HarvestView, URLView, generic_views.FilteredListView):
     url = U
     url_name = 'list'
 
+    add_link = 'harvests:schedule'
+    add_link_title = _('Schedule')
+
     table_class = tables.HarvestTable
     filter_class = field_filters.HarvestFilter

@@ -138,6 +138,9 @@ class FilteredListView(SingleTableView):
     table_class = NotImplemented
     filter_class = NotImplemented
 
+    add_link = None
+    add_link_title = None
+
     def get_table_data(self):
         queryset = super(FilteredListView, self).get_table_data()
         return self.filter_class(self.request.GET, queryset=queryset)
@@ -146,4 +149,6 @@ class FilteredListView(SingleTableView):
         context = super(FilteredListView, self).get_context_data(**kwargs)
         context['filter'] = self.filter_class(data=self.request.GET)
         context['filter_active'] = bool(self.request.GET)
+        context['add_link'] = self.add_link
+        context['add_link_title'] = self.add_link_title
         return context
