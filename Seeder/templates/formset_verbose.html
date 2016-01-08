@@ -10,7 +10,7 @@
 {% block content %}
     <form class="" method="post" enctype="multipart/form-data">
         {% csrf_token %}
-        {% bootstrap_formset form %}
+        {% bootstrap_formset form layout='horizontal' %}
         <input type="submit" class="btn btn-primary btn-block" value="{% trans 'Send' %}" />
     </form>
 {% endblock %}

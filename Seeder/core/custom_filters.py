@@ -28,8 +28,8 @@ class EmptyFilter(django_filters.FilterSet):
         choices = filter(is_choice, self.filters)
 
         for field_name in choices:
-            extended_choices = ((self.empty_choice,) +
-                                self.filters[field_name].extra['choices'])
+            field_choices = self.filters[field_name].extra['choices']
+            extended_choices = ((self.empty_choice,) + tuple(field_choices))
             self.filters[field_name].extra['choices'] = extended_choices
 
 
