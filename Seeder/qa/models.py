@@ -24,3 +24,9 @@ class QualityAssuranceCheck(BaseModel):
         verbose_name=_('Resulting action'),
         max_length=15,
         choices=source_constants.SOURCE_STATES)
+
+    technician_required = models.BooleanField(default=False)
+    check_after_days = models.PositiveIntegerField(
+        verbose_name=_('Check after days'),
+        null=True
+    )
