@@ -1,3 +1,4 @@
+[![Stories in Ready](https://badge.waffle.io/WebArchivCZ/Seeder.png?label=ready&title=Ready)](https://waffle.io/WebArchivCZ/Seeder)
 Seeder
 ======
 
