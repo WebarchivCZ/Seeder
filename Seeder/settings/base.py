@@ -78,6 +78,7 @@ INSTALLED_APPS = (
     'django_cron',
     'sorl.thumbnail',
     'rest_framework',
+    'rest_framework.authtoken',
 
     'core',
     'publishers',
@@ -186,6 +187,7 @@ CKEDITOR_CONFIGS = {
 DEBUG_TOOLBAR_CONFIG = {
     'SHOW_TOOLBAR_CALLBACK': 'core.utils.show_toolbar',
 }
+
 CRON_CLASSES = [
     'source.cron.CreateScreenshots',
     'voting.cron.RevivePostponedRounds',
@@ -195,11 +197,21 @@ CRON_CLASSES = [
 ]
 
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework.authentication.BasicAuthentication',
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        # 'rest_framework.authentication.BasicAuthentication',
         'rest_framework.authentication.SessionAuthentication',
-    )
+        'rest_framework.authentication.TokenAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ]
 }
+
+if DEBUG:
+    REST_FRAMEWORK['DEFAULT_PERMISSION_CLASSES'] = [
+       'rest_framework.permissions.AllowAny'
+    ]
+
 
 SEEDS_EXPORT_DIR = 'seeds'
 MANET_URL = '127.0.0.1:8891'

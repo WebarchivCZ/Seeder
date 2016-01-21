@@ -3,6 +3,7 @@ from django.contrib import admin
 from django.conf import settings
 from django.conf.urls.static import static
 
+from rest_framework.authtoken import views as token_views
 from urljects import U, url, view_include
 
 from core import views as core_views
@@ -31,9 +32,10 @@ urlpatterns = patterns(
     url(U / 'ckeditor', include('ckeditor_uploader.urls')),
     url(U / 'admin', include(admin.site.urls)),
     url(U / 'auth', include(auth_patterns)),
-    url(U / 'api/auth', include(
+    url(U / 'api' / 'auth', include(
         'rest_framework.urls', namespace='rest_framework')),
     url(U / 'autocomplete', include('autocomplete_light.urls')),
+    url(U / 'api' / 'token', token_views.obtain_auth_token),
 
     url(U / 'api', include(api_router.urls)),
     url(U / 'source', view_include(source_views, namespace='source')),
