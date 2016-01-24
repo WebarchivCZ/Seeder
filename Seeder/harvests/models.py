@@ -15,14 +15,31 @@ class Harvest(BaseModel):
     TYPE_REGULAR = 1
     TYPE_THEMED = 2
 
+    STATE_SUCCESS = 1
+    STATE_CANCELLED = 2
+    STATE_FAILED = 3
+
+
     HARVEST_TYPES = (
         (TYPE_REGULAR, _('Regular harvest')),
         (TYPE_THEMED, _('Seasonal harvest')),
     )
 
+    STATES = (
+        (STATE_SUCCESS, _('Harvest succeeded')),
+        (STATE_CANCELLED, _('Cancelled')),
+        (STATE_FAILED, _('Harvest failed')),
+    )
+
+    status = models.IntegerField(
+        choices=STATES,
+        verbose_name=_('State')
+    )
+
     scheduled_on = models.DateField(
         verbose_name=_('Date of harvest')
     )
+
     harvest_type = models.SmallIntegerField(
         verbose_name=_('Harvest type'),
         choices=HARVEST_TYPES
