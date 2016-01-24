@@ -1,5 +1,5 @@
 odictliteral
-django==1.8.3
+django==1.9.1
 pillow
 sorl-thumbnail
 psycopg2
@@ -19,7 +19,7 @@ django-ckeditor
 transifex-client
 django-debug-toolbar
 tld
-django-autocomplete-light>=2.0.0a1
+django-autocomplete-ligh==2.3.1
 django_cron
 sh
 urljects
