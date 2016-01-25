@@ -21,7 +21,7 @@ from core.generic_views import (ObjectMixinFixed, LoginMixin, EditView,
                                 HistoryView, FilteredListView)
 
 
-class ContractView(LoginMixin, URLView):
+class ContractView(LoginMixin):
     view_name = 'contracts'
     model = models.Contract
 
@@ -81,7 +81,7 @@ class Assign(LoginMixin, FormView, ObjectMixinFixed, URLView):
         return HttpResponseRedirect(contract.get_absolute_url())
 
 
-class Edit(ContractView, EditView):
+class Edit(ContractView, EditView, URLView):
     form_class = forms.EditForm
 
     url = U / pk / 'edit'
@@ -100,7 +100,7 @@ class Edit(ContractView, EditView):
             return super(Edit, self).form_valid(form)
 
 
-class History(ContractView, HistoryView):
+class History(ContractView, HistoryView, URLView):
     """
         History of changes to contracts
     """
@@ -109,7 +109,7 @@ class History(ContractView, HistoryView):
     url_name = 'history'
 
 
-class ListView(ContractView, FilteredListView):
+class ListView(ContractView, FilteredListView, URLView):
     title = _('Contracts')
     table_class = tables.ContractTable
     filter_class = field_filters.ContractFilter
@@ -118,7 +118,7 @@ class ListView(ContractView, FilteredListView):
     url_name = 'list'
 
 
-class Schedule(ContractView, FormView, ObjectMixinFixed):
+class Schedule(ContractView, FormView, ObjectMixinFixed, URLView):
     template_name = 'schedule.html'
     title = _('Schedule emails')
 

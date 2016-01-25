@@ -1,10 +1,11 @@
-import autocomplete_light
+import autocomplete_light.shortcuts as autocomplete
 
 from django.utils.translation import ugettext_lazy as _
+
 from models import Publisher, ContactPerson
 
 
-class AutocompletePublisher(autocomplete_light.AutocompleteModelBase):
+class AutocompletePublisher(autocomplete.AutocompleteModelBase):
     search_fields = ['^name']
     attrs = {
         'placeholder': _('Publisher'),
@@ -12,7 +13,7 @@ class AutocompletePublisher(autocomplete_light.AutocompleteModelBase):
     }
 
 
-class AutocompletePublisherContact(autocomplete_light.AutocompleteModelBase):
+class AutocompletePublisherContact(autocomplete.AutocompleteModelBase):
     search_fields = ['^name', 'email']
     attrs = {
         'placeholder': _('Publisher'),
@@ -30,6 +31,5 @@ class AutocompletePublisherContact(autocomplete_light.AutocompleteModelBase):
         return self.order_choices(qs)[0:self.limit_choices]
 
 
-
-autocomplete_light.register(Publisher, AutocompletePublisher)
-autocomplete_light.register(ContactPerson, AutocompletePublisherContact)
+autocomplete.register(Publisher, AutocompletePublisher)
+autocomplete.register(ContactPerson, AutocompletePublisherContact)

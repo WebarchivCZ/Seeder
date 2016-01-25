@@ -13,12 +13,12 @@ from core import generic_views
 from comments.views import CommentViewGeneric
 
 
-class PublisherView(generic_views.LoginMixin, URLView):
+class PublisherView(generic_views.LoginMixin):
     view_name = 'publishers'
     model = models.Publisher
 
 
-class AddPublisher(PublisherView, FormView):
+class AddPublisher(PublisherView, FormView, URLView):
     form_class = forms.PublisherForm
     view_name = 'publisher_add'
     template_name = 'add_form.html'
@@ -32,21 +32,21 @@ class AddPublisher(PublisherView, FormView):
         return HttpResponseRedirect(publisher.get_absolute_url())
 
 
-class Detail(PublisherView, DetailView, CommentViewGeneric):
+class Detail(PublisherView, DetailView, CommentViewGeneric, URLView):
     template_name = 'publisher.html'
 
     url = U / pk / 'detail'
     url_name = 'detail'
 
 
-class Edit(PublisherView, generic_views.EditView):
+class Edit(PublisherView, generic_views.EditView, URLView):
     form_class = forms.PublisherEditForm
 
     url = U / pk / 'edit'
     url_name = 'edit'
 
 
-class History(PublisherView, generic_views.HistoryView):
+class History(PublisherView, generic_views.HistoryView, URLView):
     """
         History of changes to publishers
     """
@@ -55,7 +55,7 @@ class History(PublisherView, generic_views.HistoryView):
     url_name = 'history'
 
 
-class ListView(PublisherView, generic_views.FilteredListView):
+class ListView(PublisherView, generic_views.FilteredListView, URLView):
     title = _('Publishers')
     table_class = tables.PublisherTable
     filter_class = field_filters.PublisherFilter
@@ -64,7 +64,7 @@ class ListView(PublisherView, generic_views.FilteredListView):
     url_name = 'list'
 
 
-class EditContacts(PublisherView, FormView, generic_views.ObjectMixinFixed):
+class EditContacts(PublisherView, FormView, generic_views.ObjectMixinFixed, URLView):
     form_class = forms.ContactFormset
     template_name = 'formset_verbose.html'
     title = _('Edit contacts')

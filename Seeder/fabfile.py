@@ -79,7 +79,7 @@ def deploy():
 @task
 def run_local():
     map(local,
-        # commands['reqs'] +
+        commands['reqs'] +
         commands['syncdb'] +
         commands['static'] +
         commands['runserver']

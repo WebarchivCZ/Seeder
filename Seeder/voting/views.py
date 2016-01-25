@@ -18,12 +18,12 @@ from core.generic_views import LoginMixin, ActionView, ObjectMixinFixed
 from comments.views import CommentViewGeneric
 
 
-class VotingView(LoginMixin, URLView):
+class VotingView(LoginMixin):
     view_name = 'sources'
     model = models.VotingRound
 
 
-class VotingDetail(VotingView, DetailView, CommentViewGeneric):
+class VotingDetail(VotingView, DetailView, CommentViewGeneric, URLView):
     template_name = 'voting_round.html'
     context_object_name = 'voting_round'
 

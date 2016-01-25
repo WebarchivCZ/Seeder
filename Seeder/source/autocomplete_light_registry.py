@@ -1,11 +1,12 @@
-import autocomplete_light
+import autocomplete_light.shortcuts as autocomplete
 
 from django.utils.translation import ugettext_lazy as _
-from models import SubCategory, Category
 from django.contrib.auth.models import User
 
+from models import SubCategory, Category
 
-class AutocompleteCategory(autocomplete_light.AutocompleteModelBase):
+
+class AutocompleteCategory(autocomplete.AutocompleteModelBase):
     search_fields = ['^name']
     attrs = {
         'placeholder': _('Category'),
@@ -13,7 +14,7 @@ class AutocompleteCategory(autocomplete_light.AutocompleteModelBase):
     }
 
 
-class AutocompleteSubCategory(autocomplete_light.AutocompleteModelBase):
+class AutocompleteSubCategory(autocomplete.AutocompleteModelBase):
     search_fields = ['^name']
     attrs = {
         'placeholder': _('Sub category'),
@@ -33,7 +34,7 @@ class AutocompleteSubCategory(autocomplete_light.AutocompleteModelBase):
         return self.order_choices(choices)[0:self.limit_choices]
 
 
-class AutocompleteUser(autocomplete_light.AutocompleteModelBase):
+class AutocompleteUser(autocomplete.AutocompleteModelBase):
     choices = User.objects.filter(is_active=True)
     search_fields = ['^username', 'first_name', 'last_name', 'email']
     attrs = {
@@ -42,6 +43,6 @@ class AutocompleteUser(autocomplete_light.AutocompleteModelBase):
     }
 
 
-autocomplete_light.register(Category, AutocompleteCategory)
-autocomplete_light.register(SubCategory, AutocompleteSubCategory)
-autocomplete_light.register(User, AutocompleteUser)
+autocomplete.register(Category, AutocompleteCategory)
+autocomplete.register(SubCategory, AutocompleteSubCategory)
+autocomplete.register(User, AutocompleteUser)
