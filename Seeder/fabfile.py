@@ -4,10 +4,7 @@ from fabric.api import local, task
 
 commands = {
     'runserver': ['./manage.py runserver 0.0.0.0:8000'],
-    'syncdb': [
-        './manage.py migrate auth',
-        './manage.py syncdb --noinput',
-        './manage.py migrate'],
+    'syncdb': ['./manage.py migrate'],
     'static': ['./manage.py collectstatic --noinput'],
     'pull': ['git pull --rebase'],
     'touch_reload': ['touch ../../reload_seeder.touch'],
