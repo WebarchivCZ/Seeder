@@ -1,10 +1,8 @@
-{% spaceless %}
 {% load django_tables2 %}
 {% load i18n %}
 
 {% block table %}
 <table{% if table.attrs %} {{ table.attrs.as_html }}{% endif %}>
-    {% nospaceless %}
     {% block table.thead %}
     <thead>
         <tr>
@@ -40,7 +38,6 @@
     {% block table.tfoot %}
     <tfoot></tfoot>
     {% endblock table.tfoot %}
-    {% endnospaceless %}
 </table>
 {% endblock table %}
 
@@ -57,5 +54,3 @@
           </ul>
     </nav>
 {% endif %}
-
-{% endspaceless %}
