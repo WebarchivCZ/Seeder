@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block extrahead %}
+{{ block.super }}
+<script type='text/javascript' src="https://cdn.jsdelivr.net/bootstrap.calendar/0.2.4/js/calendar.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
+<link href="https://cdn.jsdelivr.net/bootstrap.calendar/0.2.4/css/calendar.min.css" rel="stylesheet">
+<link href="{{ STATIC_URL }}main.css" rel="stylesheet">
+{% endblock %}
+
+
+{% block content %}
+<div id="calendar"></div>
+
+<script type="text/javascript">
+    var calendar = $("#calendar").calendar(
+        {
+            tmpl_path: "{{ STATIC_URL }}/calendar_templates/",
+            events_source: function () { return []; }
+        });
+</script>
+
+{% endblock %}

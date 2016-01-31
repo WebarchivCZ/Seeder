@@ -7,6 +7,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.forms import formset_factory
 from django.shortcuts import redirect
 from django.views.generic import FormView
+from django.views.generic.base import TemplateView
 
 from datetime import date
 from urljects import URLView, U
@@ -19,6 +20,12 @@ class HarvestView(generic_views.LoginMixin):
     view_name = 'harvests'
     model = models.Harvest
     title = _('Harvests')
+
+
+class CalendarView(HarvestView, URLView, TemplateView):
+    template_name = 'calendar.html'
+    url = U / 'calendar'
+    url_name = 'calendar'
 
 
 class ScheduleView(HarvestView, URLView, FormView):
