@@ -35,6 +35,7 @@ class PublisherSerializer(ModelSerializer):
 
 class SourceSerializer(ModelSerializer):
     publisher = PublisherSerializer()
+
     class Meta:
         model = source.models.Source
         exclude = ['created_by', 'owner']

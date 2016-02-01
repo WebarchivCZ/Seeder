@@ -39,7 +39,11 @@
     var calendar = $("#calendar").calendar(
         {
             tmpl_path: "{{ STATIC_URL }}/calendar_templates/",
-            events_source: function () { return []; },
+            events_source: function (from, to) {
+                console.log(from);
+                console.log(to);
+                return [];
+            },
             onAfterViewLoad: function(view) {
                 if(view == "month") {
                     $("#calendar").find(".cal-month-day").click(function(e) {

@@ -3,10 +3,10 @@
 """
 
 from django.contrib import messages
-from django.http.response import HttpResponseRedirect
+from django.http.response import HttpResponseRedirect, JsonResponse
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
-from django.views.generic.base import View
+from django.views.generic.base import View, ContextMixin
 from django.utils.translation import ugettext_lazy as _
 from django.views.generic import DetailView
 from django.views.generic.edit import UpdateView
@@ -152,3 +152,18 @@ class FilteredListView(SingleTableView):
         context['add_link'] = self.add_link
         context['add_link_title'] = self.add_link_title
         return context
+
+
+class JSONView(View, ContextMixin):
+    def get(self, request, *args, **kwargs):
+        context = self.get_context_data(**kwargs)
+        return self.render_to_response(context)
+
+    def render_to_response(self, context, **response_kwargs):
+        return JsonResponse(
+            self.get_data(context),
+            **response_kwargs
+        )
+
+    def get_data(self, context):
+        raise NotImplementedError
