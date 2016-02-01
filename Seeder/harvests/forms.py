@@ -2,12 +2,11 @@ from django import forms
 from .models import Harvest
 
 
-class HarvestForm(forms.ModelForm):
+class HarvestCreateForm(forms.ModelForm):
     class Meta:
         model = Harvest
-        exclude = [
-            'custom_sources',
-            'custom_seeds',
-            'harvest_type',
-            'active'
+        fields = [
+            'scheduled_on',
+            'target_frequency',
+            'custom_seeds'
         ]
