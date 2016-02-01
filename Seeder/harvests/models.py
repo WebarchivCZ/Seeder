@@ -15,10 +15,10 @@ class Harvest(BaseModel):
     TYPE_REGULAR = 1
     TYPE_THEMED = 2
 
+    STATE_INITIAL = 0
     STATE_SUCCESS = 1
     STATE_CANCELLED = 2
     STATE_FAILED = 3
-
 
     HARVEST_TYPES = (
         (TYPE_REGULAR, _('Regular harvest')),
@@ -26,9 +26,10 @@ class Harvest(BaseModel):
     )
 
     STATES = (
-        (STATE_SUCCESS, _('Harvest succeeded')),
+        (STATE_INITIAL, _('Created')),
+        (STATE_SUCCESS, _('Succeeded')),
         (STATE_CANCELLED, _('Cancelled')),
-        (STATE_FAILED, _('Harvest failed')),
+        (STATE_FAILED, _('Failed')),
     )
 
     status = models.IntegerField(
