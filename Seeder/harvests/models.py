@@ -12,18 +12,10 @@ class Harvest(BaseModel):
     """
         Represents the event of harvesting the sources
     """
-    TYPE_REGULAR = 1
-    TYPE_THEMED = 2
-
     STATE_INITIAL = 0
     STATE_SUCCESS = 1
     STATE_CANCELLED = 2
     STATE_FAILED = 3
-
-    HARVEST_TYPES = (
-        (TYPE_REGULAR, _('Regular harvest')),
-        (TYPE_THEMED, _('Seasonal harvest')),
-    )
 
     STATES = (
         (STATE_INITIAL, _('Created')),
@@ -39,11 +31,6 @@ class Harvest(BaseModel):
 
     scheduled_on = models.DateField(
         verbose_name=_('Date of harvest')
-    )
-
-    harvest_type = models.SmallIntegerField(
-        verbose_name=_('Harvest type'),
-        choices=HARVEST_TYPES
     )
 
     target_frequency = models.IntegerField(

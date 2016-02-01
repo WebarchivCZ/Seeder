@@ -9,5 +9,4 @@ class HarvestCreateForm(forms.ModelForm):
             'scheduled_on',
             'target_frequency',
             'custom_seeds',
-            'harvest_type'
         ]
