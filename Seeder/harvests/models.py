@@ -47,7 +47,7 @@ class Harvest(BaseModel):
     )
 
     target_frequency = models.IntegerField(
-        verbose_name=_('Frequency'),
+        verbose_name=_('Seeds by frequency'),
         choices=SOURCE_FREQUENCY_PER_YEAR,
         blank=True,
         null=True
