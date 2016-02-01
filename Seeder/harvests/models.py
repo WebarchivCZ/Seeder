@@ -79,7 +79,7 @@ class Harvest(BaseModel):
         return self.custom_seeds.splitlines()
 
     def get_custom_sources_seeds(self):
-        seeds = Seed.archiving.filter(source__harvests=self)
+        seeds = Seed.archiving.filter(source__in=self.custom_sources.all())
         return list(seeds.values_list('url', flat=True))
 
     def get_seeds(self):
