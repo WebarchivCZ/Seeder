@@ -75,7 +75,7 @@ class CalendarJsonView(generic_views.JSONView, URLView):
                     "id": harvest.id,
                     "title": harvest.repr(),
                     "url": harvest.get_absolute_url(),
-                    "class": "event-important",
+                    "class": harvest.get_calendar_style(),
                     "start": timestamp(harvest.scheduled_on),
                     "end": timestamp(harvest.scheduled_on) + 3600 * 1000
                 } for harvest in harvests]

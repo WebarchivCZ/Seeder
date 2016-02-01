@@ -82,6 +82,12 @@ class Harvest(BaseModel):
         seeds = Seed.archiving.filter(source__in=self.custom_sources.all())
         return list(seeds.values_list('url', flat=True))
 
+    def get_calendar_style(self):
+        return 'calendar_freq_{0}'.format(
+            self.target_frequency if self.target_frequency else 'custom'
+        )
+
+
     def get_seeds(self):
         """
         :return: list of urls
