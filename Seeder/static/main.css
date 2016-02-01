@@ -116,3 +116,33 @@ table td {
 .grid-item {
   width: 300px;
 }
+
+
+.calendar_freq_0 {
+    background-color: #ad4192;
+}
+.calendar_freq_1 {
+    background-color: #ad1078;
+}
+.calendar_freq_2 {
+    background-color: #57ad38;
+}
+.calendar_freq_4 {
+    background-color: #4050ad;
+}
+.calendar_freq_6 {
+    background-color: #ad9a1d;
+}
+.calendar_freq_12 {
+    background-color: #1a2cad;
+}
+.calendar_freq_52 {
+    background-color: #34ad9f;
+}
+.calendar_freq_365 {
+    background-color: #92ad00;
+}
+
+.calendar_freq_custom {
+    background-color: #ad001e;
+}
