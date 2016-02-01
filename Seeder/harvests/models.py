@@ -29,6 +29,8 @@ class Harvest(BaseModel):
         verbose_name=_('State')
     )
 
+    title = models.CharField(blank=True, max_length=255)
+
     scheduled_on = models.DateField(
         verbose_name=_('Date of harvest')
     )
