@@ -8,5 +8,6 @@ class HarvestCreateForm(forms.ModelForm):
         fields = [
             'scheduled_on',
             'target_frequency',
-            'custom_seeds'
+            'custom_seeds',
+            'harvest_type'
         ]

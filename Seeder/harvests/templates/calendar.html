@@ -20,7 +20,8 @@
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title" id="myModalLabel">{% trans 'Add harvest' %}</h4>
       </div>
-        <form action="">
+        <form action="{% url 'harvests:add' %}" method="post">
+            {% csrf_token %}
           <div class="modal-body">
               {% bootstrap_form harvest_form %}
           </div>
@@ -42,7 +43,7 @@
             events_source: '{% url 'harvests:json_calendar' %}',
             onAfterViewLoad: function(view) {
                 if(view == "month") {
-                    $("#calendar").find(".cal-month-day").click(function(e) {
+                    $("#calendar").find(".cal-month-day").dblclick(function(e) {
                         var clicked_date = $(this).find('span').attr('data-cal-date');
                         $('#{{ harvest_form.scheduled_on.auto_id }}').val(clicked_date);
                         $('#form-modal').modal('toggle');
