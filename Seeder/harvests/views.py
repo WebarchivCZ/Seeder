@@ -1,9 +1,12 @@
 import time
+
+from django.views.generic.edit import FormView
+
 import models
 import forms
 import datetime
 
-from django.http.response import Http404
+from django.http.response import Http404, HttpResponseRedirect
 from django.utils.translation import ugettext_lazy as _
 from django.views.generic.base import TemplateView
 
@@ -71,9 +74,23 @@ class CalendarJsonView(generic_views.JSONView, URLView):
                 {
                     "id": harvest.id,
                     "title": 'title',
-                    "url": harvest.get_full_url(),
+                    "url": harvest.get_absolute_url(),
                     "class": "event-important",
                     "start": timestamp(harvest.scheduled_on),
                     "end": timestamp(harvest.scheduled_on) + 3600 * 1000
                 } for harvest in harvests]
         }
+
+
+class AddView(HarvestView, FormView, URLView):
+    url = U / 'add'
+    url_name = 'add'
+    form_class = forms.HarvestCreateForm
+    template_name = 'add_form.html'
+
+    def form_valid(self, form):
+        harvest = form.save(commit=False)
+        harvest.harvest_type = models.Harvest.TYPE_REGULAR
+        harvest.status = models.Harvest.STATE_INITIAL
+        harvest.save()
+        return HttpResponseRedirect(harvest.get_absolute_url())
