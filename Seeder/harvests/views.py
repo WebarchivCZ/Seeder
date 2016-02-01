@@ -27,7 +27,7 @@ def timestamp_to_datetime(ms_string):
 def timestamp(dtm_object):
     """
     :param dtm_object: datetime
-    :return: int with epoch timestamp in mileseconds
+    :return: int with epoch timestamp in milliseconds
     """
     return time.mktime(dtm_object.timetuple()) * 1000
 
