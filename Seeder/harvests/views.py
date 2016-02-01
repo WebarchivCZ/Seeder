@@ -90,7 +90,6 @@ class AddView(HarvestView, FormView, URLView):
 
     def form_valid(self, form):
         harvest = form.save(commit=False)
-        harvest.harvest_type = models.Harvest.TYPE_REGULAR
         harvest.status = models.Harvest.STATE_INITIAL
         harvest.save()
         return HttpResponseRedirect(harvest.get_absolute_url())
