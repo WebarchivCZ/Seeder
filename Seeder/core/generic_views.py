@@ -162,6 +162,7 @@ class JSONView(View, ContextMixin):
     def render_to_response(self, context, **response_kwargs):
         return JsonResponse(
             self.get_data(context),
+            safe=False,
             **response_kwargs
         )
 

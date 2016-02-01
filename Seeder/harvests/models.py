@@ -66,6 +66,9 @@ class Harvest(BaseModel):
         null=True
     )
 
+    def get_absolute_url(self):
+        return '/'
+
     def get_seeds_by_frequency(self):
         seeds = Seed.archiving.filter(source__frequency=self.target_frequency)
         return list(seeds.values_list('url', flat=True))

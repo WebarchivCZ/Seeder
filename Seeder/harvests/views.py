@@ -1,23 +1,25 @@
 import time
 import models
 import forms
+import datetime
 
 from django.http.response import Http404
 from django.utils.translation import ugettext_lazy as _
 from django.views.generic.base import TemplateView
 
-from dateutil import parser
 from urljects import URLView, U
 from core import generic_views
 
 
-def utc_or_none(utc_string):
+def timestamp_to_datetime(ms_string):
     """
-    :param utc_string: string with valid utc formatted date
+    :param ms_string: string representing milliseconds since the famous day
     :return: datetime or None
     """
     try:
-        return parser.parse(utc_string)
+        return datetime.datetime.fromtimestamp(
+            float(ms_string) / 1000
+        )
     except ValueError:
         return None
 
@@ -48,12 +50,12 @@ class CalendarView(HarvestView, URLView, TemplateView):
 
 
 class CalendarJsonView(generic_views.JSONView, URLView):
-    url = U / 'json' / r'(?P<from>.*)' / r'(?P<to>.*)'
+    url = U / 'json'
     url_name = 'json_calendar'
 
     def get_data(self, context):
-        date_from = utc_or_none(self.kwargs.get('from', ''))
-        date_to = utc_or_none(self.kwargs.get('to', ''))
+        date_from = timestamp_to_datetime(self.request.GET.get('from', ''))
+        date_to = timestamp_to_datetime(self.request.GET.get('to', ''))
 
         if not (date_from and date_to):
             raise Http404('Invalid format')
@@ -63,12 +65,15 @@ class CalendarJsonView(generic_views.JSONView, URLView):
             scheduled_on__lte=date_to
         )
 
-        return [
-            {
-               "id": harvest.id,
-               "title": 'title',
-               "url": harvest.get_full_url(),
-               "class": "event-important",
-               "start": timestamp(harvest.scheduled_on),
-               "end": timestamp(harvest.scheduled_on) + 3600 * 1000
-            } for harvest in harvests]
+        return {
+            "success": 1,
+            "result": [
+                {
+                    "id": harvest.id,
+                    "title": 'title',
+                    "url": harvest.get_full_url(),
+                    "class": "event-important",
+                    "start": timestamp(harvest.scheduled_on),
+                    "end": timestamp(harvest.scheduled_on) + 3600 * 1000
+                } for harvest in harvests]
+        }
