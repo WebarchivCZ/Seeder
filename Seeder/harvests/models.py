@@ -55,6 +55,19 @@ class Harvest(BaseModel):
         null=True
     )
 
+    def repr(self):
+        if self.title:
+            return self.title
+
+        return 'FRQ: {0}, custom seeds: {1}, custom sources: {2}'.format(
+            self.get_target_frequency_display(),
+            len(self.custom_seeds.splitlines()),
+            self.custom_sources.count()
+        )
+
+    def __unicode__(self):
+        return self.repr()
+
     def get_absolute_url(self):
         return '/'
 
