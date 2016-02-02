@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load humanize %}
+{% load bootstrap3 %}
+
+{% block title %}{{ object.scheduled_on }} - {{ object }} {% endblock %}
+{% block page_header %}{{ object.scheduled_on }} - {{ object }} {% endblock %}
+{% block content %}
+    <div class="col-xs-12 col-md-12">
+        <ul class="list-group">
+          <li class="list-group-item">{% trans 'Title' %}: <span class="pull-right">{{ object.title }}</span></li>
+          <li class="list-group-item">{% trans 'Status' %}: <span class="pull-right">{{ object.get_status_display }}</span></li>
+          <li class="list-group-item">{% trans 'Scheduled on' %}: <span class="pull-right">{{ object.scheduled_on }}</span></li>
+          <li class="list-group-item">{% trans 'Sources by frequency' %}: <span class="pull-right">{{ object.get_target_frequency_display }}</span></li>
+          <li class="list-group-item">{% trans 'Created' %}: <span class="pull-right">{{ object.created }}</span></li>
+          <li class="list-group-item">{% trans 'Last changed' %}: <span class="pull-right">{{ object.last_changed }}</span></li>
+        </ul>
+
+        {% if object.custom_seeds %}
+            <h3>{% trans 'Custom seeds' %}:</h3>
+            <textarea class="form-control" rows="3">{{ object.custom_seeds }}</textarea>
+        {% endif %}
+
+        {% if object.custom_sources.exists %}
+            <h3>{% trans 'Custom sources' %}</h3>
+            <ul class="list-group">
+                {% for source in object.custom_sources.all %}
+                    <li class="list-group-item">{{ source }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </div>
+    <div class="col-xs-12 col-md-12">
+        <h2>{% trans 'Comments' %}</h2>
+        {% include 'bootstrap_comments.html' with comments=comments form=comment_form %}
+    </div>
+{% endblock %}

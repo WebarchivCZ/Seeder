@@ -60,7 +60,7 @@ class Harvest(BaseModel):
         if self.title:
             return self.title
 
-        return 'FRQ: {0}, custom seeds: {1}, custom sources: {2}'.format(
+        return u'FRQ: {0}, custom seeds: {1}, custom sources: {2}'.format(
             self.get_target_frequency_display(),
             len(self.custom_seeds.splitlines()),
             self.custom_sources.count()
