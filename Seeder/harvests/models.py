@@ -2,6 +2,7 @@ from itertools import chain
 
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
+from django.core.urlresolvers import reverse
 
 from core.models import BaseModel
 from source.constants import SOURCE_FREQUENCY_PER_YEAR
@@ -69,7 +70,7 @@ class Harvest(BaseModel):
         return self.repr()
 
     def get_absolute_url(self):
-        return '/'
+        return reverse('harvests:detail', args=[str(self.id)])
 
     def get_seeds_by_frequency(self):
         seeds = Seed.archiving.filter(source__frequency=self.target_frequency)
@@ -86,7 +87,6 @@ class Harvest(BaseModel):
         return 'calendar_freq_{0}'.format(
             self.target_frequency if self.target_frequency else 'custom'
         )
-
 
     def get_seeds(self):
         """

@@ -1,7 +1,5 @@
 import time
 
-from django.views.generic.edit import FormView
-
 import models
 import forms
 import datetime
@@ -9,9 +7,11 @@ import datetime
 from django.http.response import Http404, HttpResponseRedirect
 from django.utils.translation import ugettext_lazy as _
 from django.views.generic.base import TemplateView
+from django.views.generic import DetailView, FormView
 
-from urljects import URLView, U
+from urljects import U, URLView, pk
 from core import generic_views
+from comments.views import CommentViewGeneric
 
 
 def timestamp_to_datetime(ms_string):
@@ -78,7 +78,8 @@ class CalendarJsonView(generic_views.JSONView, URLView):
                     "class": harvest.get_calendar_style(),
                     "start": timestamp(harvest.scheduled_on),
                     "end": timestamp(harvest.scheduled_on) + 3600 * 1000
-                } for harvest in harvests]
+                } for harvest in harvests
+            ]
         }
 
 
@@ -93,3 +94,9 @@ class AddView(HarvestView, FormView, URLView):
         harvest.status = models.Harvest.STATE_INITIAL
         harvest.save()
         return HttpResponseRedirect(harvest.get_absolute_url())
+
+
+class Detail(HarvestView, DetailView, CommentViewGeneric, URLView):
+    template_name = 'harvest.html'
+    url = U / pk / 'detail'
+    url_name = 'detail'
