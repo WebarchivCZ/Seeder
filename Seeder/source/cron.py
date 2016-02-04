@@ -1,13 +1,5 @@
 from django_cron import CronJobBase, Schedule
-from source import export, screenshots
-
-
-class ExportSeeds(CronJobBase):
-    schedule = Schedule(run_every_mins=60)
-    code = 'source.ExportSeeds'
-
-    def do(self):
-        export.export_seeds()
+from source import screenshots
 
 
 class CreateScreenshots(CronJobBase):

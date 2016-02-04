@@ -14,6 +14,7 @@ class HarvestCreateForm(forms.ModelForm):
             'custom_seeds',
         ]
 
+
 class HarvestEditForm(autocomplete_light.ModelForm):
 
     class Meta:
