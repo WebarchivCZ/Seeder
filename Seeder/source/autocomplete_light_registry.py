@@ -3,7 +3,7 @@ import autocomplete_light.shortcuts as autocomplete
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import User
 
-from models import SubCategory, Category
+from models import SubCategory, Category, Source
 
 
 class AutocompleteCategory(autocomplete.AutocompleteModelBase):
@@ -42,7 +42,15 @@ class AutocompleteUser(autocomplete.AutocompleteModelBase):
         'data-autocomplete-minimum-characters': 0,
     }
 
+class AutocompleteSource(autocomplete.AutocompleteModelBase):
+    choices = Source.objects.filter(active=True)
+    search_fields = ['^name']
+    attrs = {
+        'placeholder': _('Source'),
+        'data-autocomplete-minimum-characters': 1,
+    }
 
 autocomplete.register(Category, AutocompleteCategory)
 autocomplete.register(SubCategory, AutocompleteSubCategory)
 autocomplete.register(User, AutocompleteUser)
+autocomplete.register(Source, AutocompleteSource)
