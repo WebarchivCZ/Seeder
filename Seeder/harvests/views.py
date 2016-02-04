@@ -1,6 +1,7 @@
 import time
 
 import models
+import source
 import forms
 import datetime
 
@@ -12,6 +13,7 @@ from django.views.generic import DetailView, FormView
 from urljects import U, URLView, pk
 from core import generic_views
 from comments.views import CommentViewGeneric
+from core.generic_views import EditView
 
 
 def timestamp_to_datetime(ms_string):
@@ -93,6 +95,7 @@ class AddView(HarvestView, FormView, URLView):
         harvest = form.save(commit=False)
         harvest.status = models.Harvest.STATE_INITIAL
         harvest.save()
+        harvest.pair_custom_seeds()
         return HttpResponseRedirect(harvest.get_absolute_url())
 
 
@@ -100,3 +103,9 @@ class Detail(HarvestView, DetailView, CommentViewGeneric, URLView):
     template_name = 'harvest.html'
     url = U / pk / 'detail'
     url_name = 'detail'
+
+
+class Edit(HarvestView, EditView, URLView):
+    url = U / pk / 'edit'
+    url_name = 'edit'
+    form_class = forms.HarvestEditForm
