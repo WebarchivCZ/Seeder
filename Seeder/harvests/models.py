@@ -69,6 +69,20 @@ class Harvest(BaseModel):
     def __unicode__(self):
         return self.repr()
 
+    def pair_custom_seeds(self):
+        """
+        Tries to pair the urls from ``custom_seeds`` with existing sources
+        """
+        cleaned_urls = []
+        for seed_url in self.custom_seeds.splitlines():
+            seed = Seed.objects.filter(url__icontains=seed_url).first()
+            if seed:
+                self.custom_sources.add(seed.source)
+            else:
+                cleaned_urls.append(seed_url)
+        self.custom_seeds = u'\n'.join(cleaned_urls)
+        self.save()
+
     def get_absolute_url(self):
         return reverse('harvests:detail', args=[str(self.id)])
 
