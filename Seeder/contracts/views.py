@@ -26,7 +26,7 @@ class ContractView(LoginMixin):
     model = models.Contract
 
 
-class Detail(ContractView, DetailView, CommentViewGeneric):
+class Detail(ContractView, DetailView, CommentViewGeneric, URLView):
     template_name = 'contract.html'
 
     url = U / pk / 'detail'
