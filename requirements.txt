@@ -1,5 +1,5 @@
 odictliteral
-django==1.9.1
+django==1.9.2
 pillow
 sorl-thumbnail
 psycopg2
@@ -23,3 +23,4 @@ django-autocomplete-light==2.3.1
 django_cron
 sh
 urljects
+dateutils
