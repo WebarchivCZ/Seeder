@@ -43,7 +43,7 @@ class ContactPerson(BaseModel):
         Bigger publishers with a lot of source might have different people
         handling different sources.
     """
-    publisher = models.ForeignKey(Publisher)
+    publisher = models.ForeignKey(Publisher, on_delete=models.SET_NULL,)
 
     name = models.CharField(_('Name'), max_length=256)
     email = models.EmailField(_('E-mail'), blank=True, null=True)

@@ -10,11 +10,15 @@ from source import constants as source_constants
 class QualityAssuranceCheck(BaseModel):
     source = models.ForeignKey(
         verbose_name=_('Source'),
-        to=Source)
+        to=Source,
+        on_delete=models.SET_NULL,
+    )
 
     checked_by = models.ForeignKey(
         verbose_name=_('Checked by'),
-        to=User)
+        to=User,
+        on_delete=models.SET_NULL,
+    )
 
     comment = models.TextField(
         verbose_name=_('Comment'),

@@ -21,6 +21,7 @@ class Comment(MPTTModel):
     # Content-object field
     content_type = models.ForeignKey(
         ContentType,
+        on_delete=models.SET_NULL,
         verbose_name=_('content type'),
         related_name="content_type_set_for_%(class)s")
 
@@ -33,6 +34,7 @@ class Comment(MPTTModel):
         verbose_name=_('user'),
         blank=True,
         null=True,
+        on_delete=models.SET_NULL,
         related_name="%(class)s_comments")
     user_name = models.CharField(_("user's name"), max_length=50, blank=True)
     user_email = models.EmailField(_("user's email address"), blank=True)

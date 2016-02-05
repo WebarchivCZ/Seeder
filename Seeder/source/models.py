@@ -48,7 +48,7 @@ class Category(models.Model):
 
 
 class SubCategory(models.Model):
-    category = models.ForeignKey(Category)
+    category = models.ForeignKey(Category, on_delete=models.SET_NULL)
     name = models.CharField(max_length=255)
     subcategory_id = models.CharField(max_length=40, blank=True, null=True)
 

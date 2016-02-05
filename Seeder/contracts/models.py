@@ -38,7 +38,10 @@ class ContractManager(models.Manager):
 
 @reversion.register(exclude=('last_changed',))
 class Contract(BaseModel):
-    publisher = models.ForeignKey(Publisher)
+    publisher = models.ForeignKey(
+        Publisher,
+        on_delete=models.SET_NULL,
+    )
     sources = models.ManyToManyField(Source)
     state = models.CharField(_('State'),
                              choices=constants.CONTRACT_STATES,
@@ -117,7 +120,7 @@ class EmailNegotiation(models.Model):
         This model represents an email that is going to be sent to the
         publisher, its content will be pre-filled with html template.
     """
-    contract = models.ForeignKey(Contract)
+    contract = models.ForeignKey(Contract, on_delete=models.SET_NULL,)
     sent = models.BooleanField(default=False)
 
     title = models.CharField(max_length=64)
