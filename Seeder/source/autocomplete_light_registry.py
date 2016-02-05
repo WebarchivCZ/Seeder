@@ -1,4 +1,4 @@
-import autocomplete_light.shortcuts as autocomplete
+from dal import autocomplete
 
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import User

@@ -1,26 +1,31 @@
 import models
-import autocomplete_light
 
 from django import forms
 from django.forms.formsets import BaseFormSet
 from django.forms.models import modelformset_factory
 from django.utils.translation import ugettext_lazy as _
+
+from dal import autocomplete
 from contracts.constants import OPEN_SOURCES_TYPES
 
 LICENSE_TYPES = (('', '---'),) + OPEN_SOURCES_TYPES
 
 
-class SourceForm(autocomplete_light.ModelForm):
+class SourceForm(forms.ModelForm):
     open_license = forms.ChoiceField(
         choices=LICENSE_TYPES,
         required=False,
         help_text=_('Choose license or leave blank if this is not open source')
     )
 
-    comment = forms.CharField(widget=forms.Textarea(attrs={'rows': 2}),
-                              required=False)
-    annotation = forms.CharField(widget=forms.Textarea(attrs={'rows': 2}),
-                                 required=False)
+    comment = forms.CharField(
+        widget=forms.Textarea(attrs={'rows': 2}),
+        required=False
+    )
+    annotation = forms.CharField(
+        widget=forms.Textarea(attrs={'rows': 2}),
+        required=False
+    )
 
     class Meta:
         model = models.Source
@@ -73,9 +78,13 @@ EditFormset = modelformset_factory(
     can_delete=True)
 
 
-class SourceEditForm(autocomplete_light.ModelForm):
+class SourceEditForm(forms.ModelForm):
     class Meta:
         model = models.Source
         fields = ('owner', 'name', 'publisher', 'publisher_contact', 'state',
                   'frequency', 'category', 'sub_category', 'annotation',
                   'comment', 'aleph_id', 'issn')
+
+        widgets = {
+            'publisher': autocomplete.ModelSelect2(url='publishers:autocomplete')
+        }

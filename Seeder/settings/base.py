@@ -56,7 +56,8 @@ IGNORABLE_404_URLS = (
 
 # Application definition
 INSTALLED_APPS = (
-    'autocomplete_light',
+    'dal',
+    'dal_select2',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

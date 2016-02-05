@@ -34,7 +34,6 @@ urlpatterns = [
     url(U / 'auth', include(auth_urlpatterns)),
     url(U / 'api' / 'auth', include(
         'rest_framework.urls', namespace='rest_framework')),
-    url(U / 'autocomplete', include('autocomplete_light.urls')),
     url(U / 'api' / 'token', token_views.obtain_auth_token),
 
     url(U / 'api', include(api_router.urls)),

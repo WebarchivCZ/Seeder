@@ -8,6 +8,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.http.response import HttpResponseRedirect
 
 from urljects import U, URLView, pk
+from dal import autocomplete
 
 from core import generic_views
 from comments.views import CommentViewGeneric
@@ -64,7 +65,7 @@ class ListView(PublisherView, generic_views.FilteredListView, URLView):
     url_name = 'list'
 
 
-class EditContacts(PublisherView, FormView, generic_views.ObjectMixinFixed, URLView):
+class EditContacts(PublisherView, FormView, generic_views.ObjectMixinFixed, URLView):  # noqa
     form_class = forms.ContactFormset
     template_name = 'formset_verbose.html'
     title = _('Edit contacts')
@@ -86,3 +87,19 @@ class EditContacts(PublisherView, FormView, generic_views.ObjectMixinFixed, URLV
             obj.delete()
 
         return HttpResponseRedirect(self.object.get_absolute_url())
+
+
+class PublisherAutocomplete(autocomplete.Select2QuerySetView, URLView):
+    url_name = 'autocomplete'
+    url = U / 'autocomplete'
+
+    def get_queryset(self):
+        if not self.request.user.is_authenticated():
+            return models.Publisher.objects.none()
+
+        qs = models.Publisher.objects.all()
+
+        if self.q:
+            qs = qs.filter(name__istartswith=self.q)
+
+        return qs

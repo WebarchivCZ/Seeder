@@ -19,7 +19,7 @@ django-ckeditor
 transifex-client
 django-debug-toolbar
 tld
-django-autocomplete-light==2.3.1
+django-autocomplete-light==3.0.2
 django_cron
 sh
 urljects
