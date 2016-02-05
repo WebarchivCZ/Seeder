@@ -3,6 +3,12 @@ from datetime import date, timedelta
 
 INITIAL_OFFSET = timedelta(days=5)
 
+class IntervalException(Exception):
+    """
+    Exception to be raises when interval is behaving
+    weirdly - as not an interval
+    """
+
 
 def get_dates_for_timedelta(interval_delta, start=None, stop=None):
     """
@@ -24,7 +30,10 @@ def get_dates_for_timedelta(interval_delta, start=None, stop=None):
 
     dates = [start]
 
-    while dates[-1] + interval_delta < stop:
-        dates.append(dates[-1] + interval_delta)
+    while dates[-1] + interval_delta <= stop:
+        increased_date = dates[-1] + interval_delta
+        if increased_date == dates[-1]:
+            raise IntervalException(interval_delta)
+        dates.append(increased_date)
 
     return dates
