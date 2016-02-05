@@ -48,7 +48,7 @@ class Category(models.Model):
 
 
 class SubCategory(models.Model):
-    category = models.ForeignKey(Category, on_delete=models.SET_NULL)
+    category = models.ForeignKey(Category, on_delete=models.DO_NOTHING)
     name = models.CharField(max_length=255)
     subcategory_id = models.CharField(max_length=40, blank=True, null=True)
 
@@ -76,12 +76,12 @@ class Source(BaseModel):
         verbose_name=_('Publisher'),
         to=Publisher,
         null=True, blank=True,
-        on_delete=models.SET_NULL)
+        on_delete=models.DO_NOTHING)
 
     publisher_contact = models.ForeignKey(
         ContactPerson,
         null=True, blank=True,
-        on_delete=models.SET_NULL)
+        on_delete=models.DO_NOTHING)
 
     name = models.CharField(_('Name'), max_length=256)
     comment = models.TextField(_('Comment'), null=True, blank=True)
@@ -116,7 +116,7 @@ class Source(BaseModel):
         SubCategory,
         verbose_name=_('Sub category'),
         null=True, blank=True,
-        on_delete=models.SET_NULL)
+        on_delete=models.DO_NOTHING)
 
     class Meta:
         verbose_name = _('Source')

@@ -17,7 +17,7 @@ class VotingRound(BaseModel):
     """
         Voting round about source.
     """
-    source = models.ForeignKey(Source, on_delete=models.SET_NULL)
+    source = models.ForeignKey(Source, on_delete=models.DO_NOTHING)
     resolved_by = models.ForeignKey(User, blank=True, null=True)
     date_resolved = models.DateTimeField(blank=True, null=True)
     postponed_until = DatePickerField(blank=True, null=True)
@@ -85,11 +85,11 @@ class Vote(BaseModel):
     """
         Individual vote in voting round
     """
-    author = models.ForeignKey(User, on_delete=models.SET_NULL)
+    author = models.ForeignKey(User, on_delete=models.DO_NOTHING)
     voting_round = models.ForeignKey(
         verbose_name=_('Round'),
         to=VotingRound,
-        on_delete=models.SET_NULL)
+        on_delete=models.DO_NOTHING)
     vote = models.CharField(
         _('Vote'),
         max_length=10,

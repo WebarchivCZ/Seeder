@@ -40,7 +40,7 @@ class ContractManager(models.Manager):
 class Contract(BaseModel):
     publisher = models.ForeignKey(
         Publisher,
-        on_delete=models.SET_NULL,
+        on_delete=models.DO_NOTHING,
     )
     sources = models.ManyToManyField(Source)
     state = models.CharField(_('State'),
@@ -120,7 +120,7 @@ class EmailNegotiation(models.Model):
         This model represents an email that is going to be sent to the
         publisher, its content will be pre-filled with html template.
     """
-    contract = models.ForeignKey(Contract, on_delete=models.SET_NULL,)
+    contract = models.ForeignKey(Contract, on_delete=models.DO_NOTHING)
     sent = models.BooleanField(default=False)
 
     title = models.CharField(max_length=64)

@@ -4,11 +4,12 @@ from django.contrib.contenttypes.models import ContentType
 
 
 class TransferRecord(models.Model):
-    original_type = models.ForeignKey(ContentType, related_name='transfer')
+    original_type = models.ForeignKey(
+            ContentType, related_name='transfer', on_delete=models.DO_NOTHING)
     original_id = models.PositiveIntegerField()
     original_object = GenericForeignKey('original_type', 'original_id')
 
-    target_type = models.ForeignKey(ContentType)
+    target_type = models.ForeignKey(ContentType, on_delete=models.DO_NOTHING)
     target_id = models.PositiveIntegerField()
     target_object = GenericForeignKey('target_type', 'target_id')
 

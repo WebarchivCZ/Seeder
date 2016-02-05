@@ -11,13 +11,13 @@ class QualityAssuranceCheck(BaseModel):
     source = models.ForeignKey(
         verbose_name=_('Source'),
         to=Source,
-        on_delete=models.SET_NULL,
+        on_delete=models.DO_NOTHING
     )
 
     checked_by = models.ForeignKey(
         verbose_name=_('Checked by'),
         to=User,
-        on_delete=models.SET_NULL,
+        on_delete=models.DO_NOTHING
     )
 
     comment = models.TextField(

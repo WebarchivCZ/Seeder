@@ -22,6 +22,7 @@ class Comment(MPTTModel):
     content_type = models.ForeignKey(
         ContentType,
         on_delete=models.SET_NULL,
+        null=True,
         verbose_name=_('content type'),
         related_name="content_type_set_for_%(class)s")
 
