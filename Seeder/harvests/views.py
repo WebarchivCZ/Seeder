@@ -92,9 +92,7 @@ class AddView(HarvestView, FormView, URLView):
     template_name = 'add_form.html'
 
     def form_valid(self, form):
-        harvest = form.save(commit=False)
-        harvest.status = models.Harvest.STATE_INITIAL
-        harvest.save()
+        harvest = form.save()
         harvest.pair_custom_seeds()
         return HttpResponseRedirect(harvest.get_absolute_url())
 

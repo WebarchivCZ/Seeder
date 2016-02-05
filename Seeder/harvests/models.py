@@ -5,7 +5,8 @@ from django.utils.translation import ugettext_lazy as _
 from django.core.urlresolvers import reverse
 
 from core.models import BaseModel
-from source.constants import SOURCE_FREQUENCY_PER_YEAR
+from harvests.scheduler import get_dates_for_timedelta
+from source.constants import SOURCE_FREQUENCY_PER_YEAR, HARVESTED_FREQUENCIES
 from source.models import Source, Seed
 
 
@@ -25,9 +26,11 @@ class Harvest(BaseModel):
         (STATE_FAILED, _('Failed')),
     )
 
+    auto_created = models.BooleanField(default=False)
     status = models.IntegerField(
         choices=STATES,
-        verbose_name=_('State')
+        verbose_name=_('State'),
+        default=STATE_INITIAL
     )
 
     title = models.CharField(blank=True, max_length=255)
@@ -111,3 +114,41 @@ class Harvest(BaseModel):
             self.get_custom_seeds(),
             self.get_custom_sources_seeds()
         )
+
+    @classmethod
+    def schedule(cls, from_time, to_time, ignore_existing=False):
+        """
+        Schedules Harvests according to scheduling rules
+        :param from_time: from which time to start
+        :param to_time: when to stop
+        :param ignore_existing: should the algorithm skip if there is already
+                                scheduled stuff?
+        """
+        for freq, info in HARVESTED_FREQUENCIES.items():
+            delta = info['delta']
+
+            if not delta:
+                continue
+
+            previously_scheduled = cls.objects.filter(
+                auto_created=True,
+                target_frequency=freq
+            )
+
+            if not ignore_existing and previously_scheduled.exists():
+                continue
+
+            scheduled_dates = get_dates_for_timedelta(
+                delta, from_time, to_time
+            )
+
+            for i, scheduled_date in enumerate(scheduled_dates, start=1):
+                title = 'AUTO CREATED HARVEST TARGETING FRQ {0}, #{1}'.format(
+                    info['title'], i
+                )
+                cls(
+                    title=title,
+                    scheduled_on=scheduled_date,
+                    auto_created=True,
+                    target_frequency=freq,
+                ).save()
