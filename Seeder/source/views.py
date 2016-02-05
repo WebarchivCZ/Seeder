@@ -1,3 +1,4 @@
+
 import forms
 import models
 import tables
@@ -8,6 +9,7 @@ from django.http.response import HttpResponseRedirect
 from django.utils.translation import ugettext_lazy as _
 from django.db.models import Q
 
+from dal import autocomplete
 from formtools.wizard.views import SessionWizardView
 from datetime import datetime
 from urljects import U, URLView, pk
@@ -233,3 +235,35 @@ class SourceList(SourceView, generic_views.FilteredListView, URLView):
 
     url = U / 'list'
     url_name = 'list'
+
+
+class CategoryAutocomplete(autocomplete.Select2QuerySetView, URLView):
+    url_name = 'category_autocomplete'
+    url = U / 'category_autocomplete'
+
+    def get_queryset(self):
+        if not self.request.user.is_authenticated():
+            return models.Category.objects.none()
+
+        qs = models.Category.objects.all()
+        if self.q:
+            qs = qs.filter(name__istartswith=self.q)
+        return qs
+
+
+class SubcategoryAutocomplete(autocomplete.Select2QuerySetView, URLView):
+    url_name = 'subcategory_autocomplete'
+    url = U / 'subcategory_autocomplete'
+
+    def get_queryset(self):
+        if not self.request.user.is_authenticated():
+            return models.SubCategory.objects.none()
+        qs = models.SubCategory.objects.all()
+
+        category = self.forwarded.get('category', None)
+        if category:
+            qs = qs.filter(category=category)
+
+        if self.q:
+            qs = qs.filter(name__istartswith=self.q)
+        return qs

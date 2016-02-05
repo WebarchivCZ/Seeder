@@ -86,5 +86,18 @@ class SourceEditForm(forms.ModelForm):
                   'comment', 'aleph_id', 'issn')
 
         widgets = {
-            'publisher': autocomplete.ModelSelect2(url='publishers:autocomplete')
+            'publisher': autocomplete.ModelSelect2(
+                    url='publishers:autocomplete'
+            ),
+            'publisher_contact': autocomplete.ModelSelect2(
+                url='publishers:contact_autocomplete',
+                forward=['publisher']
+            ),
+            'category': autocomplete.ModelSelect2(
+                url='source:category_autocomplete'
+            ),
+            'sub_category': autocomplete.ModelSelect2(
+                url='source:subcategory_autocomplete',
+                forward=['category']
+            )
         }
