@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
-from datetime import timedelta
+from dateutil.relativedelta import relativedelta
 from django.utils.translation import ugettext_lazy as _
-
 
 STATE_VOTE = 'voting'
 STATE_DUPLICITY = 'duplicity'
@@ -60,27 +59,27 @@ HARVESTED_FREQUENCIES = {
     },
     1: {
         'title': _('Once a year'),
-        'delta': timedelta(days=360)
+        'delta': relativedelta(years=1)
     },
     2: {
         'title': _('Twice a year'),
-        'delta': timedelta(days=150)
+        'delta': relativedelta(months=6)
     },
     4: {
         'title': _('Quarterly'),
-        'delta': timedelta(days=90)
+        'delta': relativedelta(months=3)
     },
     6: {
-        'title': _('Six times per year'),
-        'delta': timedelta(days=60)
+        'title': _('Every two months'),
+        'delta': relativedelta(months=2)
     },
     12: {
         'title': _('Every month'),
-        'delta': timedelta(days=30)
+        'delta': relativedelta(months=1)
     },
     52: {
         'title': _('Weekly'),
-        'delta': timedelta(days=7)
+        'delta': relativedelta(weeks=1)
     },
     365: {
         'title': _('Daily'),
@@ -129,5 +128,5 @@ SCREENSHOT_RESOLUTION_Y = '768'
 SCREENSHOT_RECTANGLE = '0,0,1366,768'
 
 
-SCREENSHOT_MAX_AGE = timedelta(days=365)
+SCREENSHOT_MAX_AGE = relativedelta(days=365)
 SCREENSHOT_DIR = 'screenshots'  # relative to media root
