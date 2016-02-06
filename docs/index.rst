@@ -14,3 +14,5 @@ This project is a web management tool for Czech web archive.
    legacy_integration
    crons
    translation
+   terminology
+   harvests

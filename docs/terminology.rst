@@ -36,7 +36,7 @@ QA check
 
 Quality assurance check that happens after source has been accepted to
 archive. This is a check mainly for the content changes and technical side
-of the harvesting. 
+of the harvesting.
 
 
 Publishers
