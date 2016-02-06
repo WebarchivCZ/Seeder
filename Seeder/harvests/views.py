@@ -107,3 +107,15 @@ class Edit(HarvestView, EditView, URLView):
     url = U / pk / 'edit'
     url_name = 'edit'
     form_class = forms.HarvestEditForm
+
+
+class ListUrls(HarvestView, DetailView, TemplateView, URLView):
+    url = U / pk / 'urls'
+    url_name = 'urls'
+    template_name = 'urls.html'
+
+    def get_context_data(self, **kwargs):
+        self.object = self.get_object()
+        context = super(ListUrls, self).get_context_data(**kwargs)
+        context['urls'] = self.object.get_seeds()
+        return context

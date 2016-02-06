@@ -94,7 +94,7 @@ class Harvest(BaseModel):
         return list(seeds.values_list('url', flat=True))
 
     def get_custom_seeds(self):
-        return self.custom_seeds.splitlines()
+        return self.custom_seeds.splitlines() if self.custom_seeds else []
 
     def get_custom_sources_seeds(self):
         seeds = Seed.archiving.filter(source__in=self.custom_sources.all())
