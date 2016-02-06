@@ -33,8 +33,15 @@ class PublisherSerializer(ModelSerializer):
         model = publishers.models.Publisher
 
 
+class SeedSerializer(ModelSerializer):
+    class Meta:
+        model = source.models.Seed
+        exclude = ['source']
+
+
 class SourceSerializer(ModelSerializer):
     publisher = PublisherSerializer()
+    seeds = SeedSerializer(source='seed_set', many=True)
 
     class Meta:
         model = source.models.Source
