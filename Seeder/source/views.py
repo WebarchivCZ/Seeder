@@ -247,7 +247,7 @@ class CategoryAutocomplete(autocomplete.Select2QuerySetView, URLView):
 
         qs = models.Category.objects.all()
         if self.q:
-            qs = qs.filter(name__istartswith=self.q)
+            qs = qs.filter(name__icontains=self.q)
         return qs
 
 
@@ -265,5 +265,19 @@ class SubcategoryAutocomplete(autocomplete.Select2QuerySetView, URLView):
             qs = qs.filter(category=category)
 
         if self.q:
-            qs = qs.filter(name__istartswith=self.q)
+            qs = qs.filter(name__icontains=self.q)
+        return qs
+
+
+class SourceAutocomplete(autocomplete.Select2QuerySetView, URLView):
+    url_name = 'source_autocomplete'
+    url = U / 'source_autocomplete'
+
+    def get_queryset(self):
+        if not self.request.user.is_authenticated():
+            return models.Source.objects.none()
+
+        qs = models.Source.objects.all()
+        if self.q:
+            qs = qs.filter(name__icontains=self.q)
         return qs

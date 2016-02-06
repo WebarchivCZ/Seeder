@@ -11,10 +11,7 @@
 {% endblock %}
 
 {% block extrahead %}
-    <script>
-        {% include 'category_completion.js' %}
-        category_completion('#id_source-category', '#id_source-sub_category');
-    </script>
+    {{ form.media }}
 {% endblock %}
 
 

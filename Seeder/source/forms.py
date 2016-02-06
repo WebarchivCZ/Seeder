@@ -32,6 +32,20 @@ class SourceForm(forms.ModelForm):
         fields = ('name', 'publisher', 'category', 'sub_category', 'frequency',
                   'suggested_by', 'open_license', 'annotation',  'comment')
 
+        widgets = {
+            'publisher': autocomplete.ModelSelect2(
+                    url='publishers:autocomplete'
+            ),
+            'category': autocomplete.ModelSelect2(
+                url='source:category_autocomplete'
+            ),
+            'sub_category': autocomplete.ModelSelect2(
+                url='source:subcategory_autocomplete',
+                forward=['category']
+            )
+        }
+
+
 
 class ManagementSourceForm(SourceForm):
     """
@@ -44,6 +58,20 @@ class ManagementSourceForm(SourceForm):
         fields = ('owner', 'name', 'publisher', 'category', 'sub_category',
                   'frequency', 'suggested_by', 'open_license', 'annotation',
                   'comment')
+
+        widgets = {
+            'publisher': autocomplete.ModelSelect2(
+                    url='publishers:autocomplete'
+            ),
+            'category': autocomplete.ModelSelect2(
+                url='source:category_autocomplete'
+            ),
+            'sub_category': autocomplete.ModelSelect2(
+                url='source:subcategory_autocomplete',
+                forward=['category']
+            )
+        }
+
 
 
 class DuplicityForm(forms.Form):
