@@ -24,3 +24,4 @@ django_cron
 sh
 urljects
 dateutils
+raven

@@ -28,6 +28,6 @@ DATABASES = {
     }
 }
 
-
-
-
+RAVEN_CONFIG = {
+    'dsn': 'https://<key>:<secret>@app.getsentry.com/<project>',
+}
