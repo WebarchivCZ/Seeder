@@ -64,7 +64,7 @@ Cron
 You need to run ``python manage.py runcrons`` periodically, this commands runs periodical tasks that takes care of various thins - screenshots,
 postponed voting rounds, expiring contracts...
 
-So put something like ::
+So use something like this ::
 
     0 * * * * source <virtualenv>/bin/activate && python <seeder>Seeder/manage.py runcrons > <log_path>/django_cron.log
 
