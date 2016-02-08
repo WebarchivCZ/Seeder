@@ -28,7 +28,7 @@ class HarvestEditForm(forms.ModelForm):
     class Meta:
         model = Harvest
         fields = [
-            'active',
+            'status',
             'scheduled_on',
             'title',
             'target_frequency',

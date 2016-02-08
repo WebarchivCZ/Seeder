@@ -14,14 +14,18 @@ class Harvest(BaseModel):
     """
         Represents the event of harvesting the sources
     """
-    STATE_INITIAL = 0
-    STATE_SUCCESS = 1
-    STATE_CANCELLED = 2
-    STATE_FAILED = 3
+    STATE_PLANNED = 0
+    STATE_RUNNING = 1
+    STATE_SUCCESS = 2
+    STATE_SUCCESS_WITH_FAILURES = 3
+    STATE_CANCELLED = 4
+    STATE_FAILED = 5
 
     STATES = (
-        (STATE_INITIAL, _('Created')),
-        (STATE_SUCCESS, _('Succeeded')),
+        (STATE_PLANNED, _('Planned')),
+        (STATE_RUNNING, _('Running')),
+        (STATE_SUCCESS, _('Success')),
+        (STATE_SUCCESS_WITH_FAILURES, _('Success with failures')),
         (STATE_CANCELLED, _('Cancelled')),
         (STATE_FAILED, _('Failed')),
     )
@@ -30,7 +34,7 @@ class Harvest(BaseModel):
     status = models.IntegerField(
         choices=STATES,
         verbose_name=_('State'),
-        default=STATE_INITIAL
+        default=STATE_PLANNED
     )
 
     title = models.CharField(blank=True, max_length=255)
