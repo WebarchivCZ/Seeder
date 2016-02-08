@@ -1,7 +1,6 @@
 import time
 
 import models
-import source
 import forms
 import datetime
 
@@ -9,6 +8,7 @@ from django.http.response import Http404, HttpResponseRedirect
 from django.utils.translation import ugettext_lazy as _
 from django.views.generic.base import TemplateView
 from django.views.generic import DetailView, FormView
+from django.conf import settings
 
 from urljects import U, URLView, pk
 from core import generic_views
@@ -50,7 +50,12 @@ class CalendarView(HarvestView, URLView, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(CalendarView, self).get_context_data(**kwargs)
-        context['harvest_form'] = forms.HarvestCreateForm()
+        cal_lang = settings.CALENDAR_LANGUAGES[self.request.LANGUAGE_CODE]
+
+        context.update({
+            'harvest_form': forms.HarvestCreateForm(),
+            'calendar_language': cal_lang
+        })
         return context
 
 

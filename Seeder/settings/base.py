@@ -155,6 +155,11 @@ LANGUAGES = (
     ('en', _('English')),
 )
 
+CALENDAR_LANGUAGES = {
+    'cs': 'cz-CZ',
+    'en': 'en-US'
+}
+
 
 LOCALE_PATHS = (
     os.path.join(BASE_DIR, 'locale'),
