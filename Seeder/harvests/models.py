@@ -143,7 +143,7 @@ class Harvest(BaseModel):
                 continue
 
             scheduled_dates = get_dates_for_timedelta(
-                delta, from_time, to_time
+                delta, from_time, to_time, skip_weekend=True
             )
 
             for i, scheduled_date in enumerate(scheduled_dates, start=1):

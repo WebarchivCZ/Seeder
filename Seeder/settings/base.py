@@ -149,7 +149,6 @@ TEMPLATE_DIRS = (
 # }
 
 
-
 LANGUAGES = (
     ('cs', _('Czech')),
     ('en', _('English')),

@@ -10,7 +10,8 @@ class IntervalException(Exception):
     """
 
 
-def get_dates_for_timedelta(interval_delta, start=None, stop=None):
+def get_dates_for_timedelta(interval_delta, start=None, stop=None,
+                            skip_weekend=False):
     """
     For given interval_delta it will return list of dates starting from
     ``starting date``
@@ -20,6 +21,7 @@ def get_dates_for_timedelta(interval_delta, start=None, stop=None):
     :param start: starting point of the interval
     :type start: date
     :param stop: when to stop
+    :param skip_weekend: don't place dates at weekends
     :return: [datetime objects]
     """
     if start is None:
@@ -32,6 +34,9 @@ def get_dates_for_timedelta(interval_delta, start=None, stop=None):
 
     while dates[-1] + interval_delta <= stop:
         increased_date = dates[-1] + interval_delta
+        if skip_weekend and increased_date.isoweekday() > 5:
+            increased_date += timedelta(days=2)
+
         if increased_date == dates[-1]:
             raise IntervalException(interval_delta)
         dates.append(increased_date)
