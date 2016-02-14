@@ -1,9 +1,12 @@
+from django.core.urlresolvers import reverse
+from django.http.response import HttpResponseRedirect
 from django.utils.translation import ugettext_lazy as _
 from django.views.generic.base import TemplateView
+from django.views.generic.edit import FormView
 
 from urljects import U, URLView, pk
 from core import generic_views
-from . import models
+from . import models, forms
 
 
 class BlacklistView(generic_views.LoginMixin):
@@ -22,3 +25,13 @@ class ListView(BlacklistView, TemplateView, URLView):
         context['blacklists'] = models.Blacklist.objects.all()
         return context
 
+
+class AddView(BlacklistView, FormView, URLView):
+    url = U / 'add'
+    url_name = 'add'
+    form_class = forms.AddForm
+    template_name = 'add_form.html'
+
+    def form_valid(self, form):
+        form.save()
+        return HttpResponseRedirect(reverse('blacklists:list'))
