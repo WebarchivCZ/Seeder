@@ -1,6 +1,10 @@
 {% extends 'base.html' %}
 {% load i18n %}
 
+{% block extra_header %}
+<a href="{% url 'blacklists:add' %}" class="pull-right btn btn-primary btn-success">{% trans 'Add' %}</a>
+{% endblock %}
+
 {% block content %}
     {% for blacklist in blacklists %}
         <div class="panel panel-default">

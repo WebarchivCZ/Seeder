@@ -5,7 +5,6 @@ from django.test import TestCase
 from .scheduler import get_dates_for_timedelta
 
 
-
 class ScheduleTest(TestCase):
     """
     Tests scheduling functionality
