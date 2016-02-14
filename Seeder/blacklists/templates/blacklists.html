@@ -1,1 +1,13 @@
 {% extends 'base.html' %}
+{% load i18n %}
+
+{% block content %}
+    {% for blacklist in blacklists %}
+        <div class="panel panel-default">
+          <div class="panel-heading">{{ blacklist.title }} | <a href="{% url 'blacklists:edit' %}">{% trans 'Edit' %}</a></div>
+          <div class="panel-body">
+              {{ blacklist.url_list }}
+          </div>
+        </div>
+    {% endfor %}
+{% endblock %}
