@@ -1,0 +1,19 @@
+language: python
+
+python:
+  - "2.7"
+
+env:
+  - DJANGO_VERSION=1.9.1
+  - DJANGO_VERSION=1.9.2
+
+install:
+ - pip install coveralls
+ - pip install -r requirements.txt
+ - pip install -q Django==$DJANGO_VERSION
+
+script:
+ - coverage run --source=Seeder Seeder/manage.py test --settings=settings.tests
+ - coverage report -m
+after_script:
+  coveralls
