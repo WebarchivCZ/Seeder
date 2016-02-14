@@ -70,7 +70,8 @@ def deploy():
         commands['reqs'] +
         commands['pull_messages'] +
         commands['syncdb'] +
-        commands['static']
+        commands['static'] +
+        commands['touch_reload']
         )
 
 @task
