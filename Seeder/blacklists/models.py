@@ -18,6 +18,8 @@ class Blacklist(models.Model):
         (TYPE_VISIBILITY, _('Visibility blacklist')),
     )
 
+    title = models.CharField(verbose_name=_('Title'), max_length=256)
+
     blacklist_type = models.IntegerField(
         choices=TYPE_CHOICES
     )
