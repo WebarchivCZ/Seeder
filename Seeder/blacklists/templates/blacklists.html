@@ -10,7 +10,8 @@
         <div class="panel panel-default">
           <div class="panel-heading">{{ blacklist.title }} | <a href="{% url 'blacklists:edit' blacklist.pk %}">{% trans 'Edit' %}</a></div>
           <div class="panel-body">
-              {{ blacklist.url_list }}
+              <pre>{{ blacklist.url_list }}</pre>
+
           </div>
         </div>
     {% endfor %}
