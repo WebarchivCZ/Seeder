@@ -35,3 +35,14 @@ class AddView(BlacklistView, FormView, URLView):
     def form_valid(self, form):
         form.save()
         return HttpResponseRedirect(reverse('blacklists:list'))
+
+
+class EditView(BlacklistView, generic_views.EditView, URLView):
+    url = U / pk / 'edit'
+    url_name = 'edit'
+    form_class = forms.EditForm
+    template_name = 'edit_form.html'
+
+    def form_valid(self, form):
+        form.save()
+        return HttpResponseRedirect(reverse('blacklists:list'))
