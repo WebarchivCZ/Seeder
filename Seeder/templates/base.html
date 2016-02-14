@@ -1,4 +1,4 @@
-{% load bootstrap3 i18n %}
+{% load bootstrap3 i18n raven %}
 <!DOCTYPE html>
 <html lang="{{ LANGUAGE_CODE }}" data-date-format="{{ js_format }}">
 <head>
@@ -107,6 +107,8 @@
 {% block extrajs %}
 {% endblock %}
 
+<script src="https://cdn.ravenjs.com/2.1.0/raven.min.js"></script>
+<script>Raven.config('{% sentry_public_dsn %}').install()</script>
 
 <script>
     // dynamically activate menu link, yes this seem like a barbaric think to do, but think of all the if conditions in django that does not need to exist!
