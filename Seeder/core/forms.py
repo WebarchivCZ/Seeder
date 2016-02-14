@@ -15,6 +15,7 @@ class DeletableModelForm(forms.ModelForm):
     """
     delete = forms.BooleanField(
         initial=False,
+        required=False,
         help_text=_('Check this to delete this object')
     )
 
