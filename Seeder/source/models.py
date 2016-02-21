@@ -2,6 +2,7 @@ import tld
 import constants
 
 from django.db import models
+from django.conf import settings
 from django.db.models import Q
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import User
@@ -153,7 +154,13 @@ class Source(BaseModel):
     def get_absolute_url(self):
         return reverse('source:detail', args=[str(self.id)])
 
+    def wakat_url(self):
+        """
+        :return: link to https://github.com/WebArchivCZ/wa-kat
+        """
+        return settings.WAKAT_URL.format(id=self.id)
 
+        
 @reversion.register(exclude=('last_changed',))
 class Seed(BaseModel):
     """

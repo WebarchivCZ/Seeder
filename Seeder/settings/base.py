@@ -232,5 +232,7 @@ if DEBUG:
     ]
 
 
+WAKAT_URL = 'http://forpsi.kitakitsune.org:8080/?url_id={id}'
+
 SEEDS_EXPORT_DIR = 'seeds'
 MANET_URL = '127.0.0.1:8891'

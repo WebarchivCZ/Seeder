@@ -112,6 +112,7 @@
 
     <div class="col-md-3 col-sm-5">
         <h4>{% trans 'Links' %}:</h4>
+            <a href="{{ source.wakat_url }}" class="btn btn-primary btn-info btn-block">{% trans 'WA-KAT' %}</a>
             <a href="{% url 'source:history' pk=source.pk %}" class="btn btn-primary btn-info btn-block">{% trans 'History' %}</a>
             <a href="{% url 'source:edit' pk=source.pk %}" class="btn btn-primary btn-warning btn-block">{% trans 'Edit' %}</a>
 
