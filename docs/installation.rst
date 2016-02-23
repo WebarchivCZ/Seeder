@@ -5,14 +5,19 @@ Prerequisites:
 --------------
 
  - python 2.7
- - PostgreSQL
+ - python psycopg2 driver
+ - postgresql-devel
+ - mysql-devel
+ - libjpeg-devel
+ - zlib-devel
+ - python-devel
+ - gcc
  - `PIP <https://pip.pypa.io/en/latest/installing.html>`_
- - nginx
  - virtualenv
+ - PostgreSQL
+ - nginx
  - supervisor
  - uwsgi
- - python psycopg2 driver
-
 
 Virtualenv
 ----------
