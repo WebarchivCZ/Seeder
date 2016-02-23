@@ -12,10 +12,9 @@ LICENSE_TYPES = (('', '---'),) + OPEN_SOURCES_TYPES
 
 
 class SourceForm(forms.ModelForm):
-    open_license = forms.ChoiceField(
-        choices=LICENSE_TYPES,
+    open_license = forms.BooleanField(
         required=False,
-        help_text=_('Choose license or leave blank if this is not open source')
+        help_text=_('Creative commons content')
     )
 
     comment = forms.CharField(

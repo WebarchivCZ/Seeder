@@ -37,7 +37,7 @@ class Create(LoginMixin, FormView, ObjectMixinFixed, URLView):
     """
     Create contract based on existing source
     """
-    form_class = forms.CreateForm
+    form_class = forms.ContractForm
     template_name = 'add_form.html'
     title = _('Add contract')
     view_name = 'contracts'
@@ -82,7 +82,7 @@ class Assign(LoginMixin, FormView, ObjectMixinFixed, URLView):
 
 
 class Edit(ContractView, EditView, URLView):
-    form_class = forms.EditForm
+    form_class = forms.ContractForm
 
     url = U / pk / 'edit'
     url_name = 'edit'

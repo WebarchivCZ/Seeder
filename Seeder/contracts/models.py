@@ -48,8 +48,17 @@ class Contract(BaseModel):
                              default=constants.CONTRACT_STATE_NEGOTIATION,
                              max_length=15)
 
-    open_source = models.CharField(choices=constants.OPEN_SOURCES_TYPES,
-                                   null=True, blank=True, max_length=12)
+    creative_commons = models.BooleanField(
+        _('Creative commons or other OS licence'),
+        default=False
+    )
+
+    creative_commons_type = models.CharField(
+        _('Creative commons type'),
+        null=True,
+        blank=True,
+        max_length=128
+    )
 
     valid_from = DatePickerField(_('Valid from'), null=True, blank=True)
     valid_to = DatePickerField(_('Valid to'), null=True, blank=True)
@@ -75,8 +84,8 @@ class Contract(BaseModel):
         return _('{}/{}').format(self.contract_number or ' - ', self.year)
 
     def get_type(self):
-        if self.open_source:
-            return self.get_open_source_type_display()
+        if self.creative_commons:
+            return self.creative_commons_type
         return _('Contract with {0}'.format(self.publisher))
 
     def publisher_responds(self):
