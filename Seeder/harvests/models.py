@@ -6,12 +6,15 @@ from django.core.urlresolvers import reverse
 from django.dispatch import receiver
 from django.db.models.signals import pre_save
 
+from reversion import revisions
+
 from core.models import BaseModel
 from harvests.scheduler import get_dates_for_timedelta
 from source.constants import SOURCE_FREQUENCY_PER_YEAR, HARVESTED_FREQUENCIES
 from source.models import Source, Seed
 
 
+@revisions.register(exclude=('last_changed',))
 class Harvest(BaseModel):
     """
         Represents the event of harvesting the sources
