@@ -3,6 +3,8 @@ from itertools import chain
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.core.urlresolvers import reverse
+from django.dispatch import receiver
+from django.db.models.signals import pre_save
 
 from core.models import BaseModel
 from harvests.scheduler import get_dates_for_timedelta
@@ -63,6 +65,11 @@ class Harvest(BaseModel):
         null=True
     )
 
+    seeds_frozen = models.TextField(
+        blank=True,
+        null=True
+    )
+
     def repr(self):
         if self.title:
             return self.title
@@ -113,11 +120,20 @@ class Harvest(BaseModel):
         """
         :return: list of urls
         """
+        if self.seeds_frozen:
+            return self.seeds_frozen.splitlines()
+
         return chain(
             self.get_seeds_by_frequency(),
             self.get_custom_seeds(),
             self.get_custom_sources_seeds()
         )
+
+    def freeze_seeds(self):
+        """
+        Freezes the seeds to preserve them for later use
+        """
+        self.seeds_frozen = '\n'.join(self.get_seeds())
 
     @classmethod
     def schedule(cls, from_time, to_time, ignore_existing=False):
@@ -156,3 +172,14 @@ class Harvest(BaseModel):
                     auto_created=True,
                     target_frequency=freq,
                 ).save()
+
+
+@receiver(pre_save, sender=Harvest)
+def freeze_urls(sender, instance, **kwargs):
+    """
+    Signal that freezes seeds when Harvest is marked as running
+    :param instance: Harvest instance
+    :type instance: Harvest
+    """
+    if instance.status == Harvest.STATE_RUNNING and not instance.seeds_frozen:
+        instance.freeze_seeds()
