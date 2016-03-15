@@ -2,6 +2,7 @@ import source
 import publishers
 
 from rest_framework.serializers import ModelSerializer
+from rest_framework.fields import CharField
 
 
 class SubCategorySerializer(ModelSerializer):
@@ -42,6 +43,8 @@ class SeedSerializer(ModelSerializer):
 class SourceSerializer(ModelSerializer):
     publisher = PublisherSerializer()
     seeds = SeedSerializer(source='seed_set', many=True)
+
+    mdt = CharField(read_only=True, source='sub_category.subcategory_id')
 
     class Meta:
         model = source.models.Source
