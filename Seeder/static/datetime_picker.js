@@ -9,7 +9,6 @@ $(document).ready(function () {
         allowInputToggle: true,
         format: date_format,
         locale: lang,
-        inline: true,
         useCurrent: false
     });
 });

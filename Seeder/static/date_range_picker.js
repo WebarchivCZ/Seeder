@@ -5,7 +5,7 @@ $(document).ready(function () {
     var lang = html.attr('lang');
     var date_format = html.attr('data-date-format');
 
-    $('.date_picker').datetimepicker({
+    $('.date_pick').datetimepicker({
         allowInputToggle: true,
         format: date_format,
         locale: lang

@@ -5,7 +5,7 @@ from core import widgets
 class DatePickerField(models.DateField):
     def formfield(self, **kwargs):
         defaults = {
-            'widget': widgets.DatePickerWidget(attrs={'class': 'date_picker'})
+            'widget': widgets.DatePickerWidget(attrs={'class': 'date_pick'})
         }
 
         defaults.update(kwargs)
