@@ -98,7 +98,7 @@ class PublisherAutocomplete(autocomplete.Select2QuerySetView, URLView):
             return models.Publisher.objects.none()
         qs = models.Publisher.objects.all()
         if self.q:
-            qs = qs.filter(name__istartswith=self.q)
+            qs = qs.filter(name__icontains=self.q)
         return qs
 
 
@@ -115,5 +115,5 @@ class PublisherContactAutocomplete(autocomplete.Select2QuerySetView, URLView):
             qs = qs.filter(publisher=publisher)
 
         if self.q:
-            qs = qs.filter(name__istartswith=self.q)
+            qs = qs.filter(name__icontains=self.q)
         return qs
