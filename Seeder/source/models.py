@@ -166,6 +166,18 @@ class Seed(BaseModel):
     """
         Seeds are individual urls in Source.
     """
+    GENTLE_FETCH_CHOICES = (
+        ('default', _('default')),
+        ('low', _('low')),
+        ('very_low', _('very_low')),
+    )
+
+    BUDGET_CHOICES = (
+        (15000, 15000),
+        (60000, 60000),
+        (5600, 5600),
+    )
+
     source = models.ForeignKey(Source, on_delete=models.PROTECT)
 
     url = models.URLField(_('Seed url'), validators=[validate_tld])
@@ -173,13 +185,30 @@ class Seed(BaseModel):
                              default=constants.SEED_STATE_INCLUDE,
                              max_length=15)
 
+    comment = models.TextField(_('Comment'), null=True, blank=True)
+    from_time = DatePickerField(verbose_name=_('From'), null=True, blank=True)
+    to_time = DatePickerField(verbose_name=_('To'), null=True, blank=True)
+
+    # Seed state fields:
+    javascript = models.BooleanField(_('Javascript'), default=False)
+    global_reject = models.BooleanField(_('Global reject'), default=False)
+    youtube = models.BooleanField(_('Youtube'), default=False)
+    calendars = models.BooleanField(_('Calendars'), default=False)
+    local_traps = models.BooleanField(_('Local traps'), default=False)
     redirect = models.BooleanField(_('Redirect on seed'), default=False)
     robots = models.BooleanField(_('Robots.txt active'), default=False)
-    comment = models.TextField(_('Comment'), null=True, blank=True)
 
-    from_time = DatePickerField(verbose_name=_('From'), null=True,
-                                blank=True)
-    to_time = DatePickerField(verbose_name=_('To'), null=True, blank=True)
+    gentle_fetch = models.CharField(
+        max_length=10,
+        choices=GENTLE_FETCH_CHOICES,
+        blank=True,
+    )
+
+    budget = models.IntegerField(
+        choices=BUDGET_CHOICES,
+        blank=True,
+        null=True,
+    )
 
     objects = models.Manager()
     archiving = SeedManager()
