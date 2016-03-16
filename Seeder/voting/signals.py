@@ -34,7 +34,7 @@ def process_voting_round(instance, created, **kwargs):
                 source.save()
                 return
             else:
-                contract = Contract(source=source)
+                contract = Contract()
                 contract.publisher = source.publisher
                 contract.save()
                 contract.sources.add(source)
