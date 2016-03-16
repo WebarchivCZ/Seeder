@@ -182,6 +182,14 @@ class SourceEdit(SourceView, generic_views.EditView, URLView):
     url_name = 'edit'
 
 
+class SeedEdit(SourceView, generic_views.EditView, URLView):
+    form_class = forms.SeedEdit
+    model = models.Seed
+
+    url = U / 'seed' / pk
+    url_name = 'seed_edit'
+
+
 class History(SourceView, generic_views.HistoryView, URLView):
     """
         History log

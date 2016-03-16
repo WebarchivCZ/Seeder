@@ -74,3 +74,9 @@ class SourceEditForm(forms.ModelForm):
                 forward=['category']
             )
         }
+
+
+class SeedEdit(forms.ModelForm):
+    class Meta:
+        model = models.Seed
+        exclude = ['source', 'active']

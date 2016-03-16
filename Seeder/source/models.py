@@ -233,6 +233,12 @@ class Seed(BaseModel):
             return 'success'
         return constants.SEED_COLORS[self.state]
 
+    def get_absolute_url(self):
+        return self.source.get_absolute_url()
+
+    def get_edit_url(self):
+        return reverse('source:seed_edit', args=[str(self.id)])
+
     def __unicode__(self):
         return self.url
 

@@ -94,14 +94,7 @@
         <ul class="list-group">
             {% for seed in source.seed_set.all %}
                 <li class="list-group-item list-group-item-{{ seed.css_class }}">
-                <a href="{{ seed.url }}">{{ seed }}</a>
-                {% if seed.screenshot %}
-                    {% thumbnail seed.screenshot '40x40' as im %}
-                        <a href="{{ seed.screenshot.url }}" data-gallery>
-                            <img src="{{ im.url }}" class='pull-right'>
-                        </a>
-                    {% endthumbnail %}
-                {% endif %}
+                    <a href="{{ seed.get_edit_url }}">{{ seed }}</a>
                 </li>
             {% endfor %}
         </ul>
