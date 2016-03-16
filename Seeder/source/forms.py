@@ -18,7 +18,7 @@ class SourceForm(forms.ModelForm):
         help_text=_('Creative commons content')
     )
 
-    main_url = forms.URLField(_('Main url'))
+    main_url = forms.URLField()
 
     class Meta:
         model = models.Source
