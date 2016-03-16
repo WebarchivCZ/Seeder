@@ -119,6 +119,14 @@ class Source(BaseModel):
         null=True, blank=True,
         on_delete=models.DO_NOTHING)
 
+    screenshot = models.ImageField(
+        verbose_name=_('Screenshot'),
+        upload_to='screenshots',
+        null=True, blank=True
+    )
+    
+    screenshot_date = models.DateTimeField(null=True, blank=True)
+
     class Meta:
         verbose_name = _('Source')
         verbose_name_plural = _('Sources')
