@@ -124,7 +124,7 @@ class Source(BaseModel):
         upload_to='screenshots',
         null=True, blank=True
     )
-    
+
     screenshot_date = models.DateTimeField(null=True, blank=True)
 
     class Meta:
@@ -137,6 +137,12 @@ class Source(BaseModel):
             ('manage_sources', 'Manage others sources'),
         )
 
+    def __unicode__(self):
+        return self.name
+
+    def main_seed(self):
+        return self.seed_set.first()
+
     def get_legacy_url(self):
         """
         Returns url to legacy system with this source
@@ -146,9 +152,6 @@ class Source(BaseModel):
             target_id=self.id).first()
         if record:
             return constants.LEGACY_URL.format(pk=record.original_id)
-
-    def __unicode__(self):
-        return self.name
 
     def css_class(self):
         """

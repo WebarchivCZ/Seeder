@@ -25,3 +25,4 @@ sh
 urljects
 dateutils
 raven
+requests
