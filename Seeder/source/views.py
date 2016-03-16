@@ -51,14 +51,12 @@ class AddSource(generic_views.LoginMixin, SessionWizardView, URLView):
 
     form_list = (
         ('source', forms.SourceForm),
+        ('duplicity', forms.DuplicityForm),
         ('choose_publisher', publisher_forms.ContactChoiceForm),
         ('create_publisher', publisher_forms.PublisherForm),
-        ('seeds', forms.SeedFormset),
-        ('duplicity', forms.DuplicityForm),
     )
 
     template_names = {
-        'seeds': 'add_seeds_static.html',
         'duplicity': 'duplicity_check.html',
     }
 
@@ -66,7 +64,6 @@ class AddSource(generic_views.LoginMixin, SessionWizardView, URLView):
         'source': _('Add source'),
         'create_publisher': _('Add publisher'),
         'choose_publisher': _('Choose contact person'),
-        'seeds': _('Add seeds'),
         'duplicity': _('Check for duplicities'),
     }
 
