@@ -48,26 +48,9 @@ class ManagementSourceForm(SourceForm):
     This is pretty much the same as SourceForm with the difference that it
     allows to select owner=curator of the source.
     """
-
-    class Meta:
-        model = models.Source
-        fields = ('owner', 'name', 'publisher', 'category', 'sub_category',
-                  'frequency', 'suggested_by', 'open_license', 'annotation',
-                  'comment')
-
-        widgets = {
-            'publisher': autocomplete.ModelSelect2(
-                    url='publishers:autocomplete'
-            ),
-            'category': autocomplete.ModelSelect2(
-                url='source:category_autocomplete'
-            ),
-            'sub_category': autocomplete.ModelSelect2(
-                url='source:subcategory_autocomplete',
-                forward=['category']
-            )
-        }
-
+    class Meta(SourceForm.Meta):
+        fields = ('owner',) + SourceForm.Meta.fields
+        
 
 class DuplicityForm(forms.Form):
     """
