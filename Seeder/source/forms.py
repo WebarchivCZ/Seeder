@@ -10,14 +10,19 @@ LICENSE_TYPES = (('', '---'),) + OPEN_SOURCES_TYPES
 
 
 class SourceForm(forms.ModelForm):
+    """
+    Adds new source
+    """
     open_license = forms.BooleanField(
         required=False,
         help_text=_('Creative commons content')
     )
 
+    main_url = forms.URLField(_('Main url'))
+
     class Meta:
         model = models.Source
-        fields = ('name', 'publisher', 'category',
+        fields = ('name', 'main_url', 'publisher', 'category',
                   'suggested_by', 'open_license')
 
         widgets = {

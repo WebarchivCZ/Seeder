@@ -115,11 +115,8 @@ class AddSource(generic_views.LoginMixin, SessionWizardView, URLView):
 
         source_data = self.get_cleaned_data_for_step('source')
         publisher_data = self.get_cleaned_data_for_step('create_publisher')
-        seeds_data = self.get_cleaned_data_for_step('seeds')
-        seeds_url = [s.get('url', '') for s in seeds_data]
-
         filters = (Q(name__icontains=source_data['name']) |
-                   Q(seed__url__in=seeds_url))
+                   Q(seed__url=source_data['main_url']))
         if publisher_data:
             filters |= Q(publisher__name__icontains=publisher_data['name'])
 
@@ -131,7 +128,6 @@ class AddSource(generic_views.LoginMixin, SessionWizardView, URLView):
         source_form = form_dict['source']
         publisher_new = form_dict.get('create_publisher', None)
         publisher_choice = form_dict.get('choose_publisher', None)
-        seed_formset = form_dict['seeds']
         is_manager = user.has_perm('core.manage_sources')
 
         source = source_form.save(commit=False)
@@ -162,11 +158,10 @@ class AddSource(generic_views.LoginMixin, SessionWizardView, URLView):
             contract.save()
             contract.sources.add(source)
 
-        for form in seed_formset.forms:
-            seed = form.save(commit=False)
-            if seed.url:  # prevent saving empty fields
-                seed.source = source
-                seed.save()
+        models.Seed(
+            url=source_form.cleaned_data['main_url'],
+            source=source
+        ).save()
 
         return HttpResponseRedirect(source.get_absolute_url())
 
