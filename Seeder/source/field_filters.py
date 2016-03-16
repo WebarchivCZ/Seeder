@@ -1,13 +1,31 @@
 import models
 import django_filters
 
+from dal import autocomplete
 from core.custom_filters import EmptyFilter, DateRangeFilter
-from core.widgets import DateRangeWidget
+from publishers.models import Publisher
 
 
 class SourceFilter(EmptyFilter):
-    publisher = django_filters.CharFilter(lookup_type='name__icontains')
     seed__url = django_filters.CharFilter(lookup_type='icontains')
+
+    publisher = django_filters.ModelChoiceFilter(
+        queryset=Publisher.objects.all(),
+        widget=autocomplete.ModelSelect2(url='publishers:autocomplete')
+    )
+
+    category = django_filters.ModelChoiceFilter(
+        queryset=models.Category.objects.all(),
+        widget=autocomplete.ModelSelect2(url='source:category_autocomplete')
+    )
+
+    sub_category = django_filters.ModelChoiceFilter(
+        queryset=models.Category.objects.all(),
+        widget=autocomplete.ModelSelect2(
+            url='source:subcategory_autocomplete',
+            forward=['category']
+        )
+    )
 
     created = DateRangeFilter()
     last_changed = DateRangeFilter()
