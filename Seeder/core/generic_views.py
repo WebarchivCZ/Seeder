@@ -13,7 +13,7 @@ from django.views.generic.edit import UpdateView
 from django.views.generic.detail import SingleObjectMixin
 
 from django_tables2 import SingleTableView
-from reversion import revisions as reversion
+from reversion import revisions
 
 from utils import dict_diff
 
@@ -108,9 +108,9 @@ class HistoryView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(HistoryView, self).get_context_data(**kwargs)
-        versions = reversion.get_unique_for_object(self.get_object())
+        versions = revisions.get_unique_for_object(self.get_object())
         diffs = []
-        if len(versions) > 1:
+        if len(versions) >= 1:
             for i in range(len(versions) - 1):
                 new = versions[i]
                 old = versions[i+1]

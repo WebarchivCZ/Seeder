@@ -12,7 +12,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.utils import timezone
 
 from tld.exceptions import TldDomainNotFound
-from reversion import revisions as reversion
+from reversion import revisions
 
 from core.models import BaseModel, DatePickerField
 from publishers.models import Publisher, ContactPerson
@@ -57,7 +57,7 @@ class SubCategory(models.Model):
         return u'{0} - {1}'.format(self.subcategory_id, self.name)
 
 
-@reversion.register(exclude=('last_changed',))
+@revisions.register(exclude=('last_changed',))
 class Source(BaseModel):
     """
         Source in the context of this project means an information source that
@@ -161,7 +161,7 @@ class Source(BaseModel):
         return settings.WAKAT_URL.format(id=self.id)
 
         
-@reversion.register(exclude=('last_changed',))
+@revisions.register(exclude=('last_changed',))
 class Seed(BaseModel):
     """
         Seeds are individual urls in Source.

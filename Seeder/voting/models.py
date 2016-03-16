@@ -5,14 +5,14 @@ from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 
-from reversion import revisions as reversion
+from reversion import revisions
 
 from core.models import BaseModel, DatePickerField
 from core.utils import percentage
 from source.models import Source
 
 
-@reversion.register(exclude=('last_changed',))
+@revisions.register(exclude=('last_changed',))
 class VotingRound(BaseModel):
     """
         Voting round about source.
@@ -80,7 +80,7 @@ class VotingRound(BaseModel):
         return constants.VOTE_DICT
 
 
-@reversion.register(exclude=('last_changed',))
+@revisions.register(exclude=('last_changed',))
 class Vote(BaseModel):
     """
         Individual vote in voting round

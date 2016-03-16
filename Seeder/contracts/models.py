@@ -9,7 +9,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.core.urlresolvers import reverse
 
 from ckeditor.fields import RichTextField
-from reversion import revisions as reversion
+from reversion import revisions
 
 from core.models import BaseModel, DatePickerField
 from source.models import Source
@@ -36,7 +36,7 @@ class ContractManager(models.Manager):
         )
 
 
-@reversion.register(exclude=('last_changed',))
+@revisions.register(exclude=('last_changed',))
 class Contract(BaseModel):
     publisher = models.ForeignKey(
         Publisher,
@@ -123,7 +123,7 @@ class Contract(BaseModel):
             max_id=models.Max('contract_number')).get('max_id', 0) + 1
 
 
-@reversion.register(exclude=('last_changed',))
+@revisions.register(exclude=('last_changed',))
 class EmailNegotiation(models.Model):
     """
         This model represents an email that is going to be sent to the

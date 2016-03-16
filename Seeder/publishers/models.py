@@ -2,7 +2,7 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.core.urlresolvers import reverse
 
-from reversion import revisions as reversion
+from reversion import revisions
 
 from core.models import BaseModel
 
@@ -16,7 +16,7 @@ class ContractManager(models.Manager):
         return super(ContractManager, self).get_queryset().filter(active=True)
 
 
-@reversion.register(exclude=('last_changed',))
+@revisions.register(exclude=('last_changed',))
 class Publisher(BaseModel):
     """
         Publisher of the Source(s), Publisher can have multiple contacts.
@@ -37,7 +37,7 @@ class Publisher(BaseModel):
         return reverse('publishers:detail', kwargs={'pk': self.id})
 
 
-@reversion.register(exclude=('last_changed',))
+@revisions.register(exclude=('last_changed',))
 class ContactPerson(BaseModel):
     """
         Bigger publishers with a lot of source might have different people
