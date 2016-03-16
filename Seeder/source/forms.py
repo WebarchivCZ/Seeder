@@ -100,7 +100,7 @@ SeedFormset = modelformset_factory(models.Seed, fields=('url',), extra=7,
 
 EditFormset = modelformset_factory(
     models.Seed,
-    fields=('url', 'state', 'redirect', 'from_time', 'to_time', 'screenshot'),
+    fields=('url', 'state', 'redirect', 'from_time', 'to_time'),
     extra=3,
     can_delete=True)
 

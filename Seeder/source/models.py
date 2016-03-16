@@ -172,6 +172,7 @@ class Seed(BaseModel):
     state = models.CharField(choices=constants.SEED_STATES,
                              default=constants.SEED_STATE_INCLUDE,
                              max_length=15)
+
     redirect = models.BooleanField(_('Redirect on seed'), default=False)
     robots = models.BooleanField(_('Robots.txt active'), default=False)
     comment = models.TextField(_('Comment'), null=True, blank=True)
@@ -179,11 +180,6 @@ class Seed(BaseModel):
     from_time = DatePickerField(verbose_name=_('From'), null=True,
                                 blank=True)
     to_time = DatePickerField(verbose_name=_('To'), null=True, blank=True)
-
-    screenshot = models.ImageField(verbose_name=_('Screenshot'),
-                                   upload_to='screenshots',
-                                   null=True, blank=True)
-    screenshot_date = models.DateTimeField(null=True, blank=True)
 
     objects = models.Manager()
     archiving = SeedManager()
