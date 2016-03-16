@@ -15,30 +15,14 @@ class SourceForm(forms.ModelForm):
         help_text=_('Creative commons content')
     )
 
-    comment = forms.CharField(
-        widget=forms.Textarea(attrs={'rows': 2}),
-        required=False
-    )
-    annotation = forms.CharField(
-        widget=forms.Textarea(attrs={'rows': 2}),
-        required=False
-    )
-
     class Meta:
         model = models.Source
-        fields = ('name', 'publisher', 'category', 'sub_category', 'frequency',
-                  'suggested_by', 'open_license', 'annotation',  'comment')
+        fields = ('name', 'publisher', 'category',
+                  'suggested_by', 'open_license')
 
         widgets = {
             'publisher': autocomplete.ModelSelect2(
                     url='publishers:autocomplete'
-            ),
-            'category': autocomplete.ModelSelect2(
-                url='source:category_autocomplete'
-            ),
-            'sub_category': autocomplete.ModelSelect2(
-                url='source:subcategory_autocomplete',
-                forward=['category']
             )
         }
 
@@ -50,7 +34,7 @@ class ManagementSourceForm(SourceForm):
     """
     class Meta(SourceForm.Meta):
         fields = ('owner',) + SourceForm.Meta.fields
-        
+
 
 class DuplicityForm(forms.Form):
     """
