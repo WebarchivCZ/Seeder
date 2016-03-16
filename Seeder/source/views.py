@@ -1,10 +1,9 @@
-
 import forms
 import models
 import tables
 import field_filters
 
-from django.views.generic import DetailView, FormView
+from django.views.generic import DetailView
 from django.http.response import HttpResponseRedirect
 from django.utils.translation import ugettext_lazy as _
 from django.db.models import Q
