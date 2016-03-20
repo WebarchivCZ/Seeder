@@ -17,7 +17,6 @@ class SourceViewSet(rf_mixins.RetrieveModelMixin, rf_mixins.UpdateModelMixin,
     """
     serializer_class = serializers.SourceSerializer
     queryset = source.models.Source.objects.all()
-    http_method_names = ['get', 'put', 'head']
 
 
 class SeedViewSet(viewsets.GenericViewSet, rf_mixins.RetrieveModelMixin,

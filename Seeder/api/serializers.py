@@ -42,7 +42,7 @@ class SeedSerializer(ModelSerializer):
 
 class SourceSerializer(ModelSerializer):
     publisher = PublisherSerializer()
-    seeds = SeedSerializer(source='seed_set', many=True)
+    seed = SeedSerializer(source='main_seed')
 
     mdt = CharField(read_only=True, source='sub_category.subcategory_id')
 

@@ -32,7 +32,7 @@ def take_screenshots():
         absolute_path = os.path.join(settings.MEDIA_ROOT, relative_path)
 
         r = requests.get(settings.MANET_URL, params={
-            'url': source.main_seed().url,
+            'url': source.main_seed.url,
             'width': constants.SCREENSHOT_RESOLUTION_X,
             'height': constants.SCREENSHOT_RESOLUTION_Y,
             'clipRect': constants.SCREENSHOT_RECTANGLE,
