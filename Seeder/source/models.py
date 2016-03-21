@@ -140,7 +140,6 @@ class Source(BaseModel):
     def __unicode__(self):
         return self.name
 
-    @property
     def main_seed(self):
         return self.seed_set.first()
 
