@@ -8,6 +8,7 @@ commands = {
     'static': ['./manage.py collectstatic --noinput'],
     'pull': ['git pull --rebase'],
     'touch_reload': ['touch ../../reload_seeder.touch'],
+    'index': ['./manage.py rebuild_index'],
     'reqs': [
         'pip install -r ../requirements.txt --upgrade',
         'pip install -r ../requirements_dev.txt --upgrade'],
@@ -79,6 +80,7 @@ def run_local():
     map(local,
         commands['reqs'] +
         commands['syncdb'] +
+        commands['index'] + 
         commands['static'] +
         commands['runserver']
         )
