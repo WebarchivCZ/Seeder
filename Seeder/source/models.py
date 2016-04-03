@@ -140,6 +140,17 @@ class Source(BaseModel):
     def __unicode__(self):
         return self.name
 
+    def search_blob(self):
+        """
+        :return: Search blob to be indexed in elastic
+        """
+        return ' '.join([
+            self.name,
+            self.annotation,
+            self.comment,
+        ] + [s.url for s in self.seed_set.all()]
+        )
+
     def main_seed(self):
         return self.seed_set.first()
 
