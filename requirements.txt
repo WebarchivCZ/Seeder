@@ -26,5 +26,5 @@ urljects
 dateutils
 raven
 requests
-django-haystack
+git+https://github.com/django-haystack/django-haystack.git
 elasticsearch
