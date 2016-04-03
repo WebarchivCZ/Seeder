@@ -149,7 +149,7 @@ class Source(BaseModel):
             self.annotation,
             self.comment,
         ]
-        parts.extend([s.url for s in self.seed_set.all() if s.url])
+        parts.extend([s.url for s in self.seed_set.all()])
         return ' '.join(filter(None, parts))
 
     def main_seed(self):

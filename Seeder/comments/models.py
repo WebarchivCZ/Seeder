@@ -134,6 +134,16 @@ class Comment(MPTTModel):
             return _('This comment has been removed')
         return self.comment
 
+    def search_blob(self):
+        """
+        :return: Search blob to be indexed in elastic
+        """
+        parts = [
+            self.title,
+            self.comment,
+        ]
+        return ' '.join(filter(None, parts))
+
     class MPTTMeta:
         order_insertion_by = ('submit_date',)
 

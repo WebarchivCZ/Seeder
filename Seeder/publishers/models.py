@@ -33,6 +33,12 @@ class Publisher(BaseModel):
     def __unicode__(self):
         return self.name
 
+    def search_blob(self):
+        """
+        :return: Search blob to be indexed in elastic
+        """
+        return self.name
+
     def get_absolute_url(self):
         return reverse('publishers:detail', kwargs={'pk': self.id})
 
@@ -58,6 +64,19 @@ class ContactPerson(BaseModel):
 
     def __unicode__(self):
         return self.name or self.email
+
+    def search_blob(self):
+        """
+        :return: Search blob to be indexed in elastic
+        """
+        parts = [
+            self.name,
+            self.email,
+            self.phone,
+            self.address,
+            self.position,
+        ]
+        return ' '.join(filter(None, parts))
 
     def get_absolute_url(self):
         return reverse('publishers:detail', kwargs={'pk': self.publisher.id})
