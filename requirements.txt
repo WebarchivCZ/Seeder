@@ -26,3 +26,4 @@ urljects
 dateutils
 raven
 requests
+django-haystack
