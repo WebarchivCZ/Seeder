@@ -7,6 +7,7 @@ web:
   links:
     - postgres
     - mysql
+    - elastic
   volumes:
    - .:/code
   command: fab run_local
@@ -36,3 +37,6 @@ mysql:
    - MYSQL_USER=legacy
    - MYSQL_PASSWORD=legacy
    - MYSQL_DATABASE=legacy_db
+
+elastic:
+  image: elasticsearch:latest
