@@ -134,6 +134,12 @@ class Comment(MPTTModel):
             return _('This comment has been removed')
         return self.comment
 
+    def __unicode__(self):
+        return self.text
+
+    def get_absolute_url(self):
+        return self.content_object.get_absolute_url()
+
     def search_blob(self):
         """
         :return: Search blob to be indexed in elastic
