@@ -27,3 +27,4 @@ dateutils
 raven
 requests
 django-haystack
+elasticsearch
