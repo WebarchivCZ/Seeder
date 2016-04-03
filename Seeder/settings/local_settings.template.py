@@ -28,6 +28,15 @@ DATABASES = {
     }
 }
 
+HAYSTACK_CONNECTIONS = {
+    'default': {
+        'ENGINE': 'haystack.backends.elasticsearch_backend.ElasticsearchSearchEngine',
+        'URL': 'http://haystack:9200/',
+        'INDEX_NAME': 'haystack',
+    },
+}
+
+
 RAVEN_CONFIG = {
     'dsn': 'https://<key>:<secret>@app.getsentry.com/<project>',
 }
