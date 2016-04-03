@@ -67,6 +67,9 @@
                 <li id="dashboard">
                     <a href="/" >{% trans 'Dashboard' %}</a>
                 </li>
+                <li id="search">
+                    <a href="{% url 'search:haystack_search' %}">{% trans 'Search' %}</a>
+                </li>
                 <li id="add_source">
                     <a href="{% url 'source:add' %}">{% trans 'Add source' %}</a>
                 </li>
