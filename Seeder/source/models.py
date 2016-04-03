@@ -144,12 +144,13 @@ class Source(BaseModel):
         """
         :return: Search blob to be indexed in elastic
         """
-        return ' '.join([
+        parts = [
             self.name,
             self.annotation,
             self.comment,
-        ] + [s.url for s in self.seed_set.all()]
-        )
+        ]
+        parts.extend([s.url for s in self.seed_set.all() if s.url])
+        return ' '.join(filter(None, parts))
 
     def main_seed(self):
         return self.seed_set.first()
