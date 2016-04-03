@@ -1,4 +1,4 @@
-from django.conf.urls import patterns, include
+from django.conf.urls import include
 from django.contrib import admin
 from django.conf import settings
 from django.conf.urls.static import static
@@ -36,6 +36,7 @@ urlpatterns = [
     url(U / 'api' / 'auth', include(
         'rest_framework.urls', namespace='rest_framework')),
     url(U / 'api' / 'token', token_views.obtain_auth_token),
+    url(U / 'search', include('haystack.urls')),
 
     url(U / 'api', include(api_router.urls)),
     url(U / 'source', view_include(source_views, namespace='source')),
