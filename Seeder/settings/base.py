@@ -81,6 +81,7 @@ INSTALLED_APPS = (
     'rest_framework.authtoken',
     'dal',
     'dal_select2',
+    'haystack'
 
     'core',
     'publishers',
