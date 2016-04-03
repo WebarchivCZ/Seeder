@@ -253,17 +253,3 @@ class Seed(BaseModel):
 
     def __unicode__(self):
         return self.url
-
-
-class SeedExport(BaseModel):
-    """
-        Represents seed export file
-    """
-
-    frequency = models.IntegerField(
-        verbose_name=_('Frequency'),
-        choices=constants.SOURCE_FREQUENCY_PER_YEAR)
-    export_file = models.FileField()
-
-    def __unicode__(self):
-        return self.frequency

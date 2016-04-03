@@ -1,3 +1,5 @@
+import operator
+
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
@@ -38,6 +40,6 @@ class Blacklist(models.Model):
         blacklist_urls = cls.objects.filter(
             blacklist_type=blacklist_type
         ).values_list('url_list', flat=True)
-        urls_parsed = map(str.splitlines, blacklist_urls)
-        # following line will likely fuck me up cause it is mutable
-        return reduce(list.extend, urls_parsed)
+        # blacklist urls is now list of contents
+        urls_parsed = map(unicode.splitlines, blacklist_urls)
+        return reduce(operator.add, urls_parsed)

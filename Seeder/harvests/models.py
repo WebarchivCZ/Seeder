@@ -8,6 +8,7 @@ from django.db.models.signals import pre_save
 
 from reversion import revisions
 
+from blacklists.models import Blacklist
 from core.models import BaseModel
 from harvests.scheduler import get_dates_for_timedelta
 from source.constants import SOURCE_FREQUENCY_PER_YEAR, HARVESTED_FREQUENCIES
@@ -126,11 +127,15 @@ class Harvest(BaseModel):
         if self.seeds_frozen:
             return self.seeds_frozen.splitlines()
 
-        return chain(
-            self.get_seeds_by_frequency(),
-            self.get_custom_seeds(),
-            self.get_custom_sources_seeds()
+        seeds = set(
+            chain(
+                self.get_seeds_by_frequency(),
+                self.get_custom_seeds(),
+                self.get_custom_sources_seeds()
+            )
         )
+        blacklisted = Blacklist.collect_urls_by_type(Blacklist.TYPE_HARVEST)
+        return seeds - set(blacklisted)
 
     def freeze_seeds(self):
         """
