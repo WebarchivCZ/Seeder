@@ -8,6 +8,7 @@ web:
     - postgres
     - mysql
     - elastic
+    - memcached
   volumes:
    - .:/code
   command: fab run_local
@@ -40,3 +41,6 @@ mysql:
 
 elastic:
   image: elasticsearch:latest
+
+memcached:
+  image: memcached:latest
