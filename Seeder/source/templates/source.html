@@ -18,7 +18,8 @@
 
 {% block content %}
     <div class="col-md-6 col-sm-5">
-    <h4>{% trans 'Info' %}</h4>
+
+        <h4>{% trans 'Info' %}</h4>
         <table class="table table-striped">
 
             <tbody>
@@ -26,6 +27,19 @@
                     <td>{% trans 'Status' %}</td>
                     <td>{{ source.get_state_display }}</td>
                 </tr>
+                {% if source.screenshot %}
+                    <tr>
+                        <td>{% trans 'Screenshot' %}</td>
+                        <td>
+                            {% thumbnail source.screenshot "100x100" crop="center" as im %}
+                                <a href="{{ source.screenshot.url }}" target="_blank">
+                                    <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}">
+                                </a>
+                            {% endthumbnail %}
+                        </td>
+                    </tr>
+                {% endif %}
+
                 <tr>
                     <td>{% trans 'Owner' %}</td>
                     <td>{{ source.owner.get_full_name }}</td>
@@ -99,8 +113,6 @@
             {% endfor %}
         </ul>
     </div>
-
-
     <div class="col-md-3 col-sm-5">
         <h4>{% trans 'Links' %}:</h4>
             <a href="{{ source.wakat_url }}" class="btn btn-primary btn-info btn-block">{% trans 'WA-KAT' %}</a>
