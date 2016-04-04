@@ -5,6 +5,7 @@ SECRET_KEY = 'sdfvsdfvsdfvsdfv'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 TEMPLATE_DEBUG = True
+THUMBNAIL_DEBUG = True
 
 ALLOWED_HOSTS = ['127.0.0.1']
 
@@ -36,6 +37,13 @@ HAYSTACK_CONNECTIONS = {
         'URL': 'http://elastic:9200/',
         'INDEX_NAME': 'haystack',
     },
+}
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
+        'LOCATION': 'memcached:11211',
+    }
 }
 
 
