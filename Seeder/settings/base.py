@@ -213,7 +213,6 @@ CRON_CLASSES = [
     'voting.cron.RevivePostponedRounds',
     'contracts.cron.ExpireContracts',
     'contracts.cron.SendEmails',
-    'source.cron.ExportSeeds',
 ]
 
 REST_FRAMEWORK = {
