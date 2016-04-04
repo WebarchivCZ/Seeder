@@ -9,6 +9,7 @@ web:
     - mysql
     - elastic
     - memcached
+    - manet
   volumes:
    - .:/code
   command: fab run_local
@@ -44,3 +45,6 @@ elastic:
 
 memcached:
   image: memcached:latest
+
+manet:
+  image: bobey/manet:latest
