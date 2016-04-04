@@ -1,6 +1,7 @@
 import os
 import requests
 
+from logging import getLogger
 from datetime import datetime
 
 from django.db.models import Q
@@ -8,6 +9,9 @@ from django.conf import settings
 
 from source import constants
 from source.models import Source
+
+
+logger = getLogger('screenshots.generator')
 
 
 def take_screenshots():
@@ -22,6 +26,9 @@ def take_screenshots():
     )
 
     for source in sources:
+        msg = 'Generating screenshot for {0}'.format(source.id)
+
+        logger.info(msg)
         screenshot_name = '{pk}_{date}.png'.format(
             pk=source.pk, date=now.strftime('%d%m%Y')
         )
@@ -32,7 +39,7 @@ def take_screenshots():
         absolute_path = os.path.join(settings.MEDIA_ROOT, relative_path)
 
         r = requests.get(settings.MANET_URL, params={
-            'url': source.main_seed.url,
+            'url': source.main_seed().url,
             'width': constants.SCREENSHOT_RESOLUTION_X,
             'height': constants.SCREENSHOT_RESOLUTION_Y,
             'clipRect': constants.SCREENSHOT_RECTANGLE,
