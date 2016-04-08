@@ -92,6 +92,7 @@ INSTALLED_APPS = (
     'legacy_db',
     'harvests',
     'blacklists',
+    'qa',
 )
 
 

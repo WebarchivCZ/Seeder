@@ -20,17 +20,23 @@ class QualityAssuranceCheck(BaseModel):
         on_delete=models.DO_NOTHING
     )
 
+    content_changed = models.BooleanField(
+        verbose_name=_('Content changed too much'),
+        default=False,
+    )
+
+    technical_quality_changed = models.BooleanField(
+        verbose_name=_('Technical side decreased too much'),
+        default=False,
+    )
+
     comment = models.TextField(
         verbose_name=_('Comment'),
-        blank=True)
+        blank=True
+    )
 
     source_action = models.CharField(
         verbose_name=_('Resulting action'),
         max_length=15,
-        choices=source_constants.SOURCE_STATES)
-
-    technician_required = models.BooleanField(default=False)
-    check_after_days = models.PositiveIntegerField(
-        verbose_name=_('Check after days'),
-        null=True
+        choices=source_constants.SOURCE_STATES
     )
