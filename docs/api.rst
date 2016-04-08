@@ -89,7 +89,7 @@ The get request will return document with following structure:
                 "created": "2016-02-06T00:40:06.532276Z",
                 "id": 1,
                 "last_changed": "2016-02-06T00:40:06.532302Z",
-                "name": "Ikaros"
+                "name": "Example publisher"
             },
             "publisher_contact": 1,
             "screenshot": "http://localhost:8000/media/screenshots/1_04042016.png",
