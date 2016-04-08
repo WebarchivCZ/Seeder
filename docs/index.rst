@@ -16,3 +16,4 @@ This project is a web management tool for Czech web archive.
    translation
    terminology
    harvests
+   api
