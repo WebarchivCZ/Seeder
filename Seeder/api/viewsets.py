@@ -21,7 +21,7 @@ class SourceViewSet(rf_mixins.RetrieveModelMixin, rf_mixins.UpdateModelMixin,
 
 
 class SeedViewSet(viewsets.GenericViewSet, rf_mixins.RetrieveModelMixin,
-                rf_mixins.UpdateModelMixin):
+                  rf_mixins.UpdateModelMixin):
     """
     Viewset for updating seeds
     """

@@ -152,8 +152,21 @@ class Source(BaseModel):
         parts.extend([s.url for s in self.seed_set.all()])
         return ' '.join(filter(None, parts))
 
+    @property
     def main_seed(self):
         return self.seed_set.first()
+
+    @main_seed.setter
+    def main_seed(self, value):
+        """
+        Custom setter that enables API to have nested structure
+        :param value: Ordered dict with deserialized fields
+        :type value: dict
+        """
+        seed = self.main_seed
+        for attr_name, attr_value in value.items():
+            setattr(seed, attr_name, attr_value)
+        seed.save()
 
     def get_legacy_url(self):
         """
