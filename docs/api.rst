@@ -57,6 +57,7 @@ The source url is on ``/api/source/<id>``
 The get request will return document with following structure:
 
 .. code-block:: json
+
         {
             "active": true,
             "aleph_id": "2121",
