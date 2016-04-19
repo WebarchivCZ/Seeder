@@ -91,6 +91,14 @@
                     <td>{% trans 'ISSN' %}</td>
                     <td>{{ source.issn }}</td>
                 </tr>
+                <tr>
+                    <td>{% trans 'QA checks' %}</td>
+                    <td>
+                        {% for qa in source.qualityassurancecheck_set.all %}<a href="{{ qa.get_absolute_url }}">{{ qa.created|naturaltime }}</a>{% if not forloop.last%}, {% endif %}{% endfor %}
+                    </td>
+                </tr>
+
+
                 {% with source.get_legacy_url as legacy_url %}
                     {% if legacy_url %}
                         <tr>
@@ -131,7 +139,7 @@
         {% for contract in source.contract_set.all %}
             <a href="{{ contract.get_absolute_url }}" class="btn btn-primary btn-block btn-{{ contract.get_style }}">{{ contract }}</a>
         {% empty %}
-            <p>Sorry no contracts yet.</p>
+            <p>{% trans 'Sorry no contracts yet.' %}</p>
         {% endfor %}
         <a href="{% url 'contracts:create' pk=source.pk %}" class="btn btn-primary btn-block">{% trans 'Create' %}</a>
         <a href="{% url 'contracts:assign' pk=source.pk %}" class="btn btn-primary btn-block">{% trans 'Assign' %}</a>
