@@ -1,3 +1,4 @@
+
 import tld
 
 from django.db import models
@@ -9,6 +10,7 @@ from django.core.urlresolvers import reverse
 from django.core.exceptions import ValidationError
 from django.contrib.contenttypes.models import ContentType
 from django.utils import timezone
+from dateutil.relativedelta import relativedelta
 
 from tld.exceptions import TldDomainNotFound
 from reversion import revisions
@@ -55,6 +57,29 @@ class SubCategory(models.Model):
 
     def __str__(self):
         return u'{0} - {1}'.format(self.subcategory_id, self.name)
+
+
+class SourceManager(models.Manager):
+    """
+    Filters sources that needs quality assurance
+    """
+
+    def archiving(self):
+        return self.get_queryset().filter(
+            state__in=constants.ARCHIVING_STATES
+        )
+
+    def needs_qa(self):
+        """
+        Finds sources that are archived and don't have QA or its QAs are old
+        """
+        today = timezone.now()
+        qa_limit = today - relativedelta(months=settings.QA_EVERY_N_MONTHS)
+
+        return self.archiving().filter(
+            Q(created__lte=qa_limit, qualityassurancecheck=None) |
+            ~Q(qualityassurancecheck__last_changed__gte=qa_limit)
+        )
 
 
 @revisions.register(exclude=('last_changed',))
@@ -126,9 +151,7 @@ class Source(BaseModel):
     )
 
     screenshot_date = models.DateTimeField(null=True, blank=True)
-    objects = models.Manager()
-    needs_qa = SourceQAManager()
-
+    objects = SourceManager()
 
     class Meta:
         verbose_name = _('Source')

@@ -203,10 +203,14 @@ class QAOpened(DashboardCard):
         )
 
 
-class SourceCard(DashboardCard):
+class NewQA(DashboardCard):
     badges = False
     color_classes = True
     custom_titles = True
+    title = _('Sources needing QA')
+
+    def get_queryset(self):
+        return source_models.Source.objects.needs_qa()
 
     def get_color(self, element):
         return element.css_class()
@@ -224,6 +228,7 @@ cards_registry = {
     'no_communication': ContractsWithoutCommunication,
     'technical': TechnicalReview,
     'QAopened': QAOpened,
+    'qa_create': NewQA
 }
 
 
