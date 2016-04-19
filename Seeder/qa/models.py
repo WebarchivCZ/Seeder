@@ -48,6 +48,9 @@ class QualityAssuranceCheck(BaseModel):
         help_text=_('This will close QA and act upon the source'),
     )
 
+    def __unicode__(self):
+        return 'QA: {0}'.format(self.source)
+
     def get_edit_url(self):
         return reverse('qa:edit', args=[str(self.id)])
 

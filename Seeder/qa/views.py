@@ -45,4 +45,3 @@ class QAEdit(QAView, EditView, URLView):
     url = U / pk / 'edit'
     url_name = 'edit'
 
-    
