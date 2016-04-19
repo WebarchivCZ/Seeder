@@ -51,8 +51,7 @@ class QAEdit(QAView, EditView, URLView):
         return redirect
 
 
-class QADetail(QAView, EditView, URLView):
-    form_class = forms.QAEditForm
+class QADetail(QAView, DetailView, CommentViewGeneric, URLView):
     template_name = 'detail.html'
 
     url = U / pk / 'detail'

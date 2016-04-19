@@ -16,4 +16,10 @@
           <li class="list-group-item">{% trans 'Action' %}: <span class="pull-right">{{ object.get_source_action_display }}</span></li>
         </ul>
     </div>
+
+
+    <div class="col-xs-12 col-md-12">
+        <h2>{% trans 'Comments' %}</h2>
+        {% include 'bootstrap_comments.html' with comments=comments form=comment_form %}
+    </div>
 {% endblock %}
