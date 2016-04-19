@@ -30,7 +30,7 @@ class Publisher(BaseModel):
         verbose_name = _('Publisher')
         verbose_name_plural = _('Publishers')
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
     def search_blob(self):
@@ -62,7 +62,7 @@ class ContactPerson(BaseModel):
         verbose_name = _('Publisher contact')
         verbose_name_plural = _('Publisher contacts')
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name or self.email
 
     def search_blob(self):

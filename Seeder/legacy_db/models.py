@@ -33,7 +33,7 @@ class Curators(models.Model):
     logins = models.IntegerField()
     last_login = models.IntegerField(blank=True, null=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.username
 
     class Meta:
@@ -45,7 +45,7 @@ class Publishers(models.Model):
     name = models.CharField(max_length=150)
     comments = models.TextField(blank=True, null=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
     class Meta:
@@ -62,7 +62,7 @@ class Contacts(models.Model):
     position = models.CharField(max_length=45, blank=True, null=True)
     comments = models.TextField(blank=True, null=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
     class Meta:

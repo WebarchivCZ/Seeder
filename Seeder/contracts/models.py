@@ -78,7 +78,7 @@ class Contract(BaseModel):
     description = models.TextField(_('Description'), null=True, blank=True)
     objects = ContractManager()
 
-    def __unicode__(self):
+    def __str__(self):
         if self.state == constants.CONTRACT_STATE_NEGOTIATION:
             return _('Contract in negotiation with {0}').format(self.publisher)
         return _('{}/{}').format(self.contract_number or ' - ', self.year)

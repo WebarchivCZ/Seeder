@@ -134,7 +134,7 @@ class Comment(MPTTModel):
             return _('This comment has been removed')
         return self.comment
 
-    def __unicode__(self):
+    def __str__(self):
         return self.text
 
     def get_absolute_url(self):

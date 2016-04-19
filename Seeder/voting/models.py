@@ -32,7 +32,7 @@ class VotingRound(BaseModel):
         verbose_name = _('Election')
         verbose_name_plural = _('Elections')
 
-    def __unicode__(self):
+    def __str__(self):
         return self.get_state_display()
 
     @property
@@ -95,7 +95,7 @@ class Vote(BaseModel):
         max_length=10,
         choices=constants.VOTE_CHOICES)
 
-    def __unicode__(self):
+    def __str__(self):
         return _('{0} - {1}').format(self.author, self.get_vote_display())
 
     def get_css_class(self):

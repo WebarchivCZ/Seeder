@@ -44,7 +44,7 @@ class SeedManager(models.Manager):
 class Category(models.Model):
     name = models.CharField(unique=True, max_length=150)
 
-    def __unicode__(self):
+    def __str__(self):
         return u'{0} - {1}'.format(self.id, self.name)
 
 
@@ -53,7 +53,7 @@ class SubCategory(models.Model):
     name = models.CharField(max_length=255)
     subcategory_id = models.CharField(max_length=40, blank=True, null=True)
 
-    def __unicode__(self):
+    def __str__(self):
         return u'{0} - {1}'.format(self.subcategory_id, self.name)
 
 
@@ -137,7 +137,7 @@ class Source(BaseModel):
             ('manage_sources', 'Manage others sources'),
         )
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
     def search_blob(self):
@@ -264,5 +264,5 @@ class Seed(BaseModel):
     def get_edit_url(self):
         return reverse('source:seed_edit', args=[str(self.id)])
 
-    def __unicode__(self):
+    def __str__(self):
         return self.url

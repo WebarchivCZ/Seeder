@@ -84,7 +84,7 @@ class Harvest(BaseModel):
             self.custom_sources.count()
         )
 
-    def __unicode__(self):
+    def __str__(self):
         return self.repr()
 
     def pair_custom_seeds(self):
