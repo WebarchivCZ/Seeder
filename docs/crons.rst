@@ -2,6 +2,15 @@ Crons
 =====
 
 
+Installation
+------------
+
+Crontab can be installed via ``manage.py``: ::
+
+    $ python3 manage.py crontab add
+
+
+
 Contract expiry
 ---------------
 
