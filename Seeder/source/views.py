@@ -1,8 +1,3 @@
-import forms
-import models
-import tables
-import field_filters
-
 from django.views.generic import DetailView
 from django.http.response import HttpResponseRedirect
 from django.utils.translation import ugettext_lazy as _
@@ -18,6 +13,8 @@ from publishers import forms as publisher_forms
 from core import generic_views
 from comments.views import CommentViewGeneric
 from contracts import constants as contract_constants
+
+from . import forms, models, tables, field_filters
 
 
 def show_publisher_create_form(wizard):

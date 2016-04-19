@@ -1,8 +1,8 @@
-import serializers
 import source
 
 from rest_framework import viewsets
 from rest_framework import mixins as rf_mixins
+from . import serializers
 
 
 class CategoryViewSet(rf_mixins.RetrieveModelMixin, viewsets.GenericViewSet):

@@ -1,10 +1,10 @@
-import forms
+from . import forms
 
 from django.http.response import HttpResponseRedirect
 from django.views.generic.base import View, TemplateResponseMixin
 from django.views.generic.detail import SingleObjectMixin
 
-from models import Comment
+from .models import Comment
 
 
 class CommentViewGeneric(TemplateResponseMixin, SingleObjectMixin, View):

@@ -1,7 +1,3 @@
-import models
-import forms
-import tables
-import field_filters
 
 from django.views.generic import DetailView, FormView
 from django.utils.translation import ugettext_lazy as _
@@ -12,6 +8,7 @@ from dal import autocomplete
 
 from core import generic_views
 from comments.views import CommentViewGeneric
+from . import models, forms, tables, field_filters
 
 
 class PublisherView(generic_views.LoginMixin):

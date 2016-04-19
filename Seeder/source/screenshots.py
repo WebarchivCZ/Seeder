@@ -27,7 +27,7 @@ def take_screenshots():
 
     for source in sources:
         msg = 'Generating screenshot for {0}'.format(source.id)
-        print msg
+        print(msg)
 
         logger.info(msg)
         screenshot_name = '{pk}_{date}.png'.format(

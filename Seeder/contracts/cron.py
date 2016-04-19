@@ -1,12 +1,12 @@
-import constants
+from . import constants
 
 from datetime import date
-from django_cron import CronJobBase, Schedule
+# from django_cron import CronJobBase, Schedule
 
 from django.core.mail import send_mail
 from django.utils.html import strip_tags
 
-from models import Contract, EmailNegotiation
+from .models import Contract, EmailNegotiation
 from source import constants as source_constants
 
 
@@ -22,7 +22,7 @@ class ExpireContracts(CronJobBase):
             state=constants.CONTRACT_STATE_VALID)
 
         for contract in expired:
-            print 'Expiring', contract
+            print('Expiring', contract)
             contract.state = constants.CONTRACT_STATE_EXPIRED
             contract.source.state = source_constants.STATE_CONTRACT_EXPIRED
             contract.save()

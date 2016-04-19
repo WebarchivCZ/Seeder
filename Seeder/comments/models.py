@@ -1,4 +1,4 @@
-import constants
+from . import constants
 
 from django.conf import settings
 from django.contrib.contenttypes.fields import GenericForeignKey
@@ -7,7 +7,7 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
 from mptt.models import MPTTModel, TreeForeignKey
-from managers import CommentManager
+from .managers import CommentManager
 
 
 class Comment(MPTTModel):

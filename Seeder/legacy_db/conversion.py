@@ -1,6 +1,6 @@
 import sys
-import models
-import constants
+from . import models
+from . import constants
 
 from datetime import date
 from django.db.models import ObjectDoesNotExist
@@ -61,7 +61,7 @@ class Conversion(object):
         sys.stdout.write('{bar}: {name}\r'.format(name=name, bar=status_bar))
 
     def start_conversion(self):
-        print self.__class__.__name__
+        print(self.__class__.__name__)
         if self.update_existing:
             queryset = self.source_model.objects.using(self.db_name).all()
         else:
@@ -126,10 +126,12 @@ class Conversion(object):
                         original_type=get_ct(self.foreign_keys[original_name]),
                         original_id=self.source_dict[original_name + '_id'])
                     value = record.target_object
-                except ObjectDoesNotExist, e:
+                except ObjectDoesNotExist as e:
                     if self.ignore_broken_fks:
-                        value = self.process_broken_record(self.source_dict,
-                                                           original_name)
+                        value = self.process_broken_record(
+                            self.source_dict,
+                            original_name
+                        )
                     else:
                         raise e
             else:

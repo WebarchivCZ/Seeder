@@ -1,7 +1,7 @@
-import models
 import django_tables2 as tables
 
 from core.utils import AbsoluteURLColumn, NaturalDatetimeColumn
+from . import models
 
 
 class SourceTable(tables.Table):

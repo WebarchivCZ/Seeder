@@ -216,4 +216,4 @@ cards_registry = {
 
 
 def get_cards(user):
-    return map(lambda (name, card): card(user, name), cards_registry.items())
+    return [card(user, name) for name, card in cards_registry.items()]

@@ -1,7 +1,6 @@
-from django.http.response import HttpResponseRedirect
-import models
-import constants
-import forms
+from . import models
+from . import constants
+from . import forms
 
 from datetime import datetime, timedelta
 
@@ -11,6 +10,7 @@ from django.views.generic import DetailView, FormView
 from django.views.generic.detail import SingleObjectMixin
 from django.utils.translation import ugettext_lazy as _
 from django.utils import timezone
+from django.http.response import HttpResponseRedirect
 
 from urljects import U, URLView, pk
 

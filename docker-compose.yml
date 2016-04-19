@@ -12,7 +12,7 @@ web:
     - manet
   volumes:
    - .:/code
-  command: fab run_local
+  command: bash run.sh
   working_dir: /code/Seeder
 
 postgres:

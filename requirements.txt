@@ -14,14 +14,13 @@ django-mptt
 fabric
 django-formtools
 django-reversion
-mysql-python
+pymysql
 django-ckeditor
 transifex-client
 django-debug-toolbar
 tld
 django-autocomplete-light==3.1.5
-django_cron
-sh
+django_crontab==0.7.1
 urljects
 dateutils
 raven

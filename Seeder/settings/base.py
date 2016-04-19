@@ -75,7 +75,7 @@ INSTALLED_APPS = (
     'ckeditor',
     'ckeditor_uploader',
     # 'debug_toolbar',
-    'django_cron',
+    'django_crontab',
     'sorl.thumbnail',
     'rest_framework',
     'rest_framework.authtoken',

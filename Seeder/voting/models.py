@@ -1,4 +1,4 @@
-import constants
+from . import constants
 
 from django.db import models
 from django.utils.translation import ugettext_lazy as _

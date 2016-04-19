@@ -15,7 +15,7 @@ from django.views.generic.detail import SingleObjectMixin
 from django_tables2 import SingleTableView
 from reversion import revisions
 
-from utils import dict_diff
+from .utils import dict_diff
 
 
 class LoginMixin(object):

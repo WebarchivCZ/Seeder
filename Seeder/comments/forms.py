@@ -1,6 +1,6 @@
 import time
-import models
-import constants
+from . import models
+from . import constants
 
 from django import forms
 from django.contrib.contenttypes.models import ContentType

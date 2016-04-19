@@ -1,4 +1,4 @@
-import forms
+from . import forms
 
 from django.http.response import HttpResponseRedirect
 from django.views.generic.base import TemplateView, View
@@ -11,8 +11,8 @@ from django.utils import translation
 from haystack.generic_views import SearchView
 from urljects import U, URLView
 
-from generic_views import LoginMixin, MessageView
-from dashboard_data import get_cards, cards_registry
+from .generic_views import LoginMixin, MessageView
+from .dashboard_data import get_cards, cards_registry
 
 
 class DashboardView(LoginMixin, TemplateView, URLView):
@@ -57,7 +57,7 @@ class ChangeLanguage(View, URLView):
     url_name = 'change_language'
 
     def get(self, request, code):
-        print translation.get_language()
+        print(translation.get_language())
 
         redirect = request.META.get('HTTP_REFERER')
         if not is_safe_url(url=redirect, host=request.get_host()):

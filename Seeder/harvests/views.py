@@ -1,7 +1,7 @@
 import time
 
-import models
-import forms
+from . import models
+from . import forms
 import datetime
 
 from django.http.response import Http404, HttpResponseRedirect

@@ -1,6 +1,6 @@
 # pylint: disable=W0613
 
-import constants
+from . import constants
 
 from django.dispatch import receiver
 from django.db.models.signals import post_save

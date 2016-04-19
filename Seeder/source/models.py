@@ -1,5 +1,4 @@
 import tld
-import constants
 
 from django.db import models
 from django.conf import settings
@@ -14,6 +13,7 @@ from django.utils import timezone
 from tld.exceptions import TldDomainNotFound
 from reversion import revisions
 
+from . import constants
 from core.models import BaseModel, DatePickerField
 from publishers.models import Publisher, ContactPerson
 from legacy_db.models import TransferRecord

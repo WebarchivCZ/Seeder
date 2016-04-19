@@ -1,8 +1,8 @@
-import constants
+from . import constants
 
 from datetime import date
-from django_cron import CronJobBase, Schedule
-from models import VotingRound
+# from django_cron import CronJobBase, Schedule
+from .models import VotingRound
 
 
 class RevivePostponedRounds(CronJobBase):

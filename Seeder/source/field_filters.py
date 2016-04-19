@@ -1,9 +1,9 @@
-import models
 import django_filters
 
 from dal import autocomplete
 from core.custom_filters import EmptyFilter, DateRangeFilter
 from publishers.models import Publisher
+from .import models
 
 
 class SourceFilter(EmptyFilter):

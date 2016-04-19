@@ -7,4 +7,4 @@ class VotingConfig(AppConfig):
 
     def ready(self):
         # pylint: disable=W0611,W0612
-        import signals   # noqa
+        from . import signals   # noqa

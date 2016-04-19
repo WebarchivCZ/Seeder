@@ -1,4 +1,3 @@
-import constants
 import uuid
 
 from datetime import datetime
@@ -14,6 +13,7 @@ from reversion import revisions
 from core.models import BaseModel, DatePickerField
 from source.models import Source
 from publishers.models import Publisher
+from . import constants
 
 
 def get_str_uuid():

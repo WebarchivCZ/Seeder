@@ -1,21 +1,15 @@
-import models
-import forms
-import tables
-import field_filters
 
 from django.views.generic import DetailView, FormView
 from django.utils.translation import ugettext_lazy as _
-from django.template.loader import render_to_string
-from django.forms.models import modelformset_factory
 from django.http.response import HttpResponseRedirect
-from django.contrib import messages
 
 from urljects import U, URLView, pk
 
 from comments.views import CommentViewGeneric
 from source.models import Source
-from core.generic_views import (ObjectMixinFixed, LoginMixin, EditView,
-                                HistoryView, FilteredListView)
+from core.generic_views import LoginMixin, EditView, FilteredListView
+
+from . import models, forms, tables, field_filters
 
 
 class QAView(LoginMixin):

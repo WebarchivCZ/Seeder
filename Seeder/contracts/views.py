@@ -1,8 +1,8 @@
-import models
-import forms
-import tables
-import field_filters
-import constants
+from . import models
+from . import forms
+from . import tables
+from . import field_filters
+from . import constants
 
 from datetime import timedelta, date
 
