@@ -93,7 +93,7 @@ class EditView(UpdateView, MessageView):
 
 class ObjectMixinFixed(SingleObjectMixin):
     """
-    This is fixes mixin that can be used with login and form mixin
+    This mixin can be used with login and form mixin
     """
     def dispatch(self, *args, **kwargs):
         self.object = self.get_object()
