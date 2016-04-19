@@ -8,6 +8,9 @@ from source import constants as source_constants
 
 
 class QualityAssuranceCheck(BaseModel):
+    """
+    QA check, is considered valid until source_action is filled.
+    """
     source = models.ForeignKey(
         verbose_name=_('Source'),
         to=Source,
@@ -38,5 +41,7 @@ class QualityAssuranceCheck(BaseModel):
     source_action = models.CharField(
         verbose_name=_('Resulting action'),
         max_length=15,
-        choices=source_constants.SOURCE_STATES
+        choices=source_constants.SOURCE_STATES,
+        null=True,
+        blank=True
     )
