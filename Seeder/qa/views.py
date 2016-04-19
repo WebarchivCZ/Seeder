@@ -49,3 +49,11 @@ class QAEdit(QAView, EditView, URLView):
         redirect = super(QAEdit, self).form_valid(form)
         self.get_object().process_action()
         return redirect
+
+
+class QADetail(QAView, EditView, URLView):
+    form_class = forms.QAEditForm
+    template_name = 'detail.html'
+
+    url = U / pk / 'detail'
+    url_name = 'detail'
