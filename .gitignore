@@ -82,3 +82,5 @@ media/
 
 Seeder/locale/*
 legacy_dumps/*
+
+.transifexrc

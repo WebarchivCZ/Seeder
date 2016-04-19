@@ -10,6 +10,7 @@ RUN apt-get update && apt-get install -y \
     python-psycopg2 \
     git-core \
     python3-pip\
+    gettext \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
