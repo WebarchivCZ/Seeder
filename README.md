@@ -5,7 +5,7 @@ Seeder
 [![Coverage Status](https://coveralls.io/repos/github/WebArchivCZ/Seeder/badge.svg?branch=master)](https://coveralls.io/github/WebArchivCZ/Seeder?branch=master)
 [![Code Health](https://landscape.io/github/WebArchivCZ/Seeder/master/landscape.svg?style=flat)](https://landscape.io/github/WebArchivCZ/Seeder/master)
 [![Documentation Status](https://readthedocs.org/projects/seeder/badge/?version=latest)](https://seeder.readthedocs.org/en/latest/)
-[![Deployment status from dploy.io](https://visgean.dploy.io/badge/45290641984040/34283.svg)](http://dploy.io)
+[![Requirements Status](https://requires.io/github/WebArchivCZ/Seeder/requirements.svg?branch=master)](https://requires.io/github/WebArchivCZ/Seeder/requirements/?branch=master)
 
 
 Web archivists tool for moderating what parts of Czech Internet will be 
