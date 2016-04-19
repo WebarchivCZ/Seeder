@@ -29,8 +29,12 @@ class QACreate(QAView, FormView, DetailView, URLView):
     url = U / pk / 'create'
     url_name = 'create'
 
+    def form_valid(self, form):
+        qa = form.save(commit=False)
+        qa.source = self.get_object()
+        qa.checked_by = self.request.user
+        qa.save()
 
-    def get_initial(self):
-        initial = super(QACreate, self).get_initial()
-        initial['source'] = self.get_object()
+        return HttpResponseRedirect(qa.get_absolute_url())
+
 

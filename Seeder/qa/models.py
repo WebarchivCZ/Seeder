@@ -1,4 +1,5 @@
 from django.contrib.auth.models import User
+from django.core.urlresolvers import reverse
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
@@ -45,3 +46,14 @@ class QualityAssuranceCheck(BaseModel):
         null=True,
         blank=True
     )
+
+    def get_edit_url(self):
+        return reverse('qa:edit', args=[str(self.id)])
+
+    def get_detail_url(self):
+        return reverse('qa:detail', args=[str(self.id)])
+
+    def get_absolute_url(self):
+        if self.source_action:
+            return self.get_detail_url()
+        return self.get_edit_url()
