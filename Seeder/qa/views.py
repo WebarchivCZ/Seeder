@@ -1,5 +1,7 @@
 import models
 import forms
+import tables
+import field_filters
 
 from django.views.generic import DetailView, FormView
 from django.utils.translation import ugettext_lazy as _
@@ -56,3 +58,12 @@ class QADetail(QAView, DetailView, CommentViewGeneric, URLView):
 
     url = U / pk / 'detail'
     url_name = 'detail'
+
+
+class ListView(QAView, FilteredListView, URLView):
+    title = _('Quality assurance reports')
+    table_class = tables.QATable
+    filter_class = field_filters.QAFilter
+
+    url = U
+    url_name = 'list'
