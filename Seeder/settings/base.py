@@ -209,12 +209,24 @@ DEBUG_TOOLBAR_CONFIG = {
     'SHOW_TOOLBAR_CALLBACK': 'core.utils.show_toolbar',
 }
 
-CRON_CLASSES = [
-    'source.cron.CreateScreenshots',
-    'voting.cron.RevivePostponedRounds',
-    'contracts.cron.ExpireContracts',
-    'contracts.cron.SendEmails',
+
+CRONJOBS = [
+    ('1 * * * *', 'source.screenshots.take_screenshots'),
+    ('10 * * * *', 'voting.cron.revive_postponed_rounds'),
+    ('20 * * * *', 'contracts.cron.expire_contracts'),
+    ('30 * * * *', 'contracts.cron.send_emails'),
 ]
+
+# *     *     *   *    *        command to be executed
+# -     -     -   -    -
+# |     |     |   |    |
+# |     |     |   |    +----- day of week (0 - 6) (Sunday=0)
+# |     |     |   +------- month (1 - 12)
+# |     |     +--------- day of        month (1 - 31)
+# |     +----------- hour (0 - 23)
+# +------------- min (0 - 59)
+
+
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
