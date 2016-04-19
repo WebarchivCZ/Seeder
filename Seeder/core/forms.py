@@ -22,4 +22,4 @@ class DeletableModelForm(forms.ModelForm):
     def save(self, commit=True):
         if self.cleaned_data['delete']:
             return self.instance.delete()
-        return super(DeletableModelForm, self).save()
+        return super().save()

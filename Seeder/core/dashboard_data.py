@@ -203,6 +203,18 @@ class QAOpened(DashboardCard):
         )
 
 
+class SourceCard(DashboardCard):
+    badges = False
+    color_classes = True
+    custom_titles = True
+
+    def get_color(self, element):
+        return element.css_class()
+
+    def get_title(self, element):
+        return element.name
+
+
 cards_registry = {
     'contracts': ContractsCard,
     'voting_rounds': ManagedVotingRounds,

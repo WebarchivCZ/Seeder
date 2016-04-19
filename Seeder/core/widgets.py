@@ -17,7 +17,7 @@ class DatePickerWidget(widgets.DateInput):
 
 class DateRangeWidget(widgets.MultiWidget):
     def __init__(self, **kwargs):
-        super(DateRangeWidget, self).__init__(
+        super().__init__(
             widgets=[DatePickerWidget, DatePickerWidget],
             attrs={'class': 'date_picker'},
         )
@@ -32,11 +32,7 @@ class RangeField(MultiValueField):
             kwargs['initial'] = ['', '']
         fields = (field_class(), field_class())
 
-        super(RangeField, self).__init__(
-            fields=fields,
-            widget=DateRangeWidget(),
-            **kwargs
-        )
+        super().__init__(fields=fields, widget=DateRangeWidget(), **kwargs)
 
     def compress(self, data_list):
         if data_list:

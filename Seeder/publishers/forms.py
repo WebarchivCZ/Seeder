@@ -26,7 +26,7 @@ class PublisherForm(forms.ModelForm):
 
         !Returns tuple of new objects!
         """
-        publisher = super(PublisherForm, self).save()
+        publisher = super().save()
         if self.cleaned_data['contact_name']:
             new_contact = models.ContactPerson(
                 name=self.cleaned_data['contact_name'],

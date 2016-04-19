@@ -13,7 +13,7 @@ class ContractManager(models.Manager):
     """
 
     def get_queryset(self):
-        return super(ContractManager, self).get_queryset().filter(active=True)
+        return super().get_queryset().filter(active=True)
 
 
 @revisions.register(exclude=('last_changed',))

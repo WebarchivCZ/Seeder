@@ -71,7 +71,7 @@ class EditContacts(PublisherView, FormView, generic_views.ObjectMixinFixed, URLV
     url_name = 'edit_contacts'
 
     def get_form_kwargs(self):
-        kwargs = super(EditContacts, self).get_form_kwargs()
+        kwargs = super().get_form_kwargs()
         kwargs['queryset'] = self.object.contactperson_set.all()
         return kwargs
 

@@ -32,7 +32,7 @@ class CommentSecurityForm(forms.ModelForm):
         if initial is None:
             initial = {}
         initial.update(self.generate_security_data())
-        super(CommentSecurityForm, self).__init__(initial=initial, **kwargs)
+        super().__init__(initial=initial, **kwargs)
 
     def clean_honeypot(self):
         """
@@ -137,7 +137,7 @@ def create_form_class(anonymous=False, title=False):
             required=False)
 
         def save(self, commit=True):
-            comment = super(CommentForm, self).save(commit=False)
+            comment = super().save(commit=False)
             comment.content_type = self.ct_type
             comment.object_pk = self.target_object.pk
             if commit:

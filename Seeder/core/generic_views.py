@@ -21,7 +21,7 @@ from .utils import dict_diff
 class LoginMixin(object):
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
-        return super(LoginMixin, self).dispatch(request, *args, **kwargs)
+        return super().dispatch(request, *args, **kwargs)
 
 
 class MessageView(object):
@@ -97,7 +97,7 @@ class ObjectMixinFixed(SingleObjectMixin):
     """
     def dispatch(self, *args, **kwargs):
         self.object = self.get_object()
-        return super(ObjectMixinFixed, self).dispatch(*args, **kwargs)
+        return super().dispatch(*args, **kwargs)
 
 
 class HistoryView(DetailView):
@@ -107,7 +107,7 @@ class HistoryView(DetailView):
     template_name = 'history.html'
 
     def get_context_data(self, **kwargs):
-        context = super(HistoryView, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
         versions = revisions.get_unique_for_object(self.get_object())
         diffs = []
         if len(versions) >= 1:
@@ -142,11 +142,11 @@ class FilteredListView(SingleTableView):
     add_link_title = None
 
     def get_table_data(self):
-        queryset = super(FilteredListView, self).get_table_data()
+        queryset = super().get_table_data()
         return self.filter_class(self.request.GET, queryset=queryset)
 
     def get_context_data(self, **kwargs):
-        context = super(FilteredListView, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
         context['filter'] = self.filter_class(data=self.request.GET)
         context['filter_active'] = bool(self.request.GET)
         context['add_link'] = self.add_link

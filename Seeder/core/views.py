@@ -24,7 +24,7 @@ class DashboardView(LoginMixin, TemplateView, URLView):
     url_name = 'dashboard'
 
     def get_context_data(self, **kwargs):
-        context = super(DashboardView, self).get_context_data()
+        context = super().get_context_data()
         context['cards'] = get_cards(self.request.user)
         return context
 
@@ -41,10 +41,10 @@ class DashboardCard(LoginMixin, TemplateView, URLView):
         card = cards_registry[self.kwargs['card']]
         page_number = self.request.GET.get('page', 1)
         self.card = card(request.user, card, page_number)
-        return super(DashboardCard, self).get(request, *args, **kwargs)
+        return super().get(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
-        context = super(DashboardCard, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
         context['card'] = self.card
         return context
 

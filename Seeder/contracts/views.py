@@ -68,7 +68,7 @@ class Assign(LoginMixin, FormView, ObjectMixinFixed, URLView):
     url_name = 'assign'
 
     def get_form(self, form_class=None):
-        form = super(Assign, self).get_form(form_class)
+        form = super().get_form(form_class)
         contract = form.fields['contract']
         contracts = models.Contract.objects.filter(
             publisher=self.get_object().publisher)
@@ -97,7 +97,7 @@ class Edit(ContractView, EditView, URLView):
             self.add_message(_('Changes saved.'), messages.SUCCESS)
             return HttpResponseRedirect(self.get_object().get_absolute_url())
         else:
-            return super(Edit, self).form_valid(form)
+            return super().form_valid(form)
 
 
 class History(ContractView, HistoryView, URLView):
@@ -126,7 +126,7 @@ class Schedule(ContractView, FormView, ObjectMixinFixed, URLView):
     url_name = 'schedule'
 
     def get_context_data(self, **kwargs):
-        context = super(Schedule, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
         context['source'] = self.object.source
         return context
     
@@ -143,7 +143,7 @@ class Schedule(ContractView, FormView, ObjectMixinFixed, URLView):
             extra=extra, can_delete=True)
 
     def get_form_kwargs(self):
-        kwargs = super(Schedule, self).get_form_kwargs()
+        kwargs = super().get_form_kwargs()
         kwargs['queryset'] = self.get_emails()
         return kwargs
 

@@ -94,7 +94,7 @@ class Resolve(LoginMixin, SingleObjectMixin, ActionView, URLView):
     url_name = 'resolve'
 
     def check_permissions(self, user):
-        manager = super(Resolve, self).check_permissions(user)
+        manager = super().check_permissions(user)
         return manager or self.get_object().source.owner == user
 
     def process_action(self, action):

@@ -49,7 +49,7 @@ class CalendarView(HarvestView, URLView, TemplateView):
     url_name = 'calendar'
 
     def get_context_data(self, **kwargs):
-        context = super(CalendarView, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
         cal_lang = settings.CALENDAR_LANGUAGES[self.request.LANGUAGE_CODE]
 
         context.update({
@@ -121,6 +121,6 @@ class ListUrls(HarvestView, DetailView, TemplateView, URLView):
 
     def get_context_data(self, **kwargs):
         self.object = self.get_object()
-        context = super(ListUrls, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
         context['urls'] = self.object.get_seeds()
         return context

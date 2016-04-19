@@ -21,7 +21,7 @@ class ListView(BlacklistView, TemplateView, URLView):
     template_name = 'blacklists.html'
 
     def get_context_data(self, **kwargs):
-        context = super(ListView, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
         context['blacklists'] = models.Blacklist.objects.all()
         return context
 

@@ -9,7 +9,7 @@ class DatePickerField(models.DateField):
         }
 
         defaults.update(kwargs)
-        return super(DatePickerField, self).formfield(**defaults)
+        return super().formfield(**defaults)
 
 
 class BaseModel(models.Model):

@@ -32,7 +32,7 @@ class SeedManager(models.Manager):
     """
     def get_queryset(self):
         today = timezone.now()
-        return super(SeedManager, self).get_queryset().filter(
+        return super().get_queryset().filter(
             Q(source__state__in=constants.ARCHIVING_STATES,
               state=constants.SEED_STATE_INCLUDE) &
             Q(
@@ -126,6 +126,9 @@ class Source(BaseModel):
     )
 
     screenshot_date = models.DateTimeField(null=True, blank=True)
+    objects = models.Manager()
+    needs_qa = SourceQAManager()
+
 
     class Meta:
         verbose_name = _('Source')

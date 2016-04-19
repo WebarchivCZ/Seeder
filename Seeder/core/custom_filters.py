@@ -20,7 +20,7 @@ class EmptyFilter(django_filters.FilterSet):
 
     def __init__(self, *args, **kwargs):
         # pylint: disable=E1002
-        super(EmptyFilter, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
         # add empty choice to all choice fields:
         is_choice = lambda f: isinstance(self.filters[f],

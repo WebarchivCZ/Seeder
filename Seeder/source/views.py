@@ -102,7 +102,7 @@ class AddSource(generic_views.LoginMixin, SessionWizardView, URLView):
     def get_template_names(self):
         if self.steps.current in self.template_names:
             return self.template_names[self.steps.current]
-        return super(AddSource, self).get_template_names()
+        return super().get_template_names()
 
     def get_duplicities(self):
         """
