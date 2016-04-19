@@ -51,6 +51,12 @@ class QualityAssuranceCheck(BaseModel):
     def __str__(self):
         return 'QA: {0}'.format(self.source)
 
+    def search_blob(self):
+        """
+        :return: Search blob to be indexed in elastic
+        """
+        return self.comment
+
     def process_action(self):
         if self.source_action:
             self.source.state = self.source_action
