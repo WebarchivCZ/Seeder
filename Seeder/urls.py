@@ -14,6 +14,7 @@ from voting import views as voting_views
 from contracts import views as contracts_views
 from harvests import views as harvests_views
 from blacklists import views as blacklists_views
+from qa import views as qa_views
 from api import api_router
 
 
@@ -40,11 +41,12 @@ urlpatterns = [
 
     url(U / 'api', include(api_router.urls)),
     url(U / 'source', view_include(source_views, namespace='source')),
-    url(U / 'publisher', view_include(publisher_views, namespace='publishers')),  # noqa
+    url(U / 'publisher', view_include(publisher_views, namespace='publishers')),    # noqa
     url(U / 'voting', view_include(voting_views, namespace='voting')),
     url(U / 'contracts', view_include(contracts_views, namespace='contracts')),
     url(U / 'harvests', view_include(harvests_views, namespace='harvests')),
-    url(U / 'blacklists', view_include(blacklists_views, namespace='blacklists')),
+    url(U / 'blacklists', view_include(blacklists_views, namespace='blacklists')),  # noqa
+    url(U / 'qa', view_include(qa_views, namespace='qa')),
 
     # beware: wild card regexp!
     url(r'^', view_include(core_views, namespace='core'))
