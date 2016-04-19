@@ -6,4 +6,8 @@ from . import models
 class QAForm(forms.ModelForm):
     class Meta:
         model = models.QualityAssuranceCheck
-        exclude = ['active', 'created', 'last_modified']
+        fields = [
+            'content_changed',
+            'technical_quality_changed',
+            'comment'
+        ]
