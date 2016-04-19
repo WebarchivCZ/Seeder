@@ -2,6 +2,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.db.models import Count, Q
 from django.core.paginator import Paginator
 
+from qa.models import QualityAssuranceCheck
 from source import models as source_models
 from contracts import models as contract_models
 from voting import models as voting_models
@@ -186,6 +187,22 @@ class WithoutAleph(SourceCard):
             aleph_id=None
         )
 
+
+class QAOpened(DashboardCard):
+    badges = False
+    color_classes = False
+    title = _('Opened QAs')
+
+    def get_title(self, element):
+        return element.source
+
+    def get_queryset(self):
+        return QualityAssuranceCheck.objects.filter(
+            checked_by=self.user,
+            source_action=None
+        )
+
+
 cards_registry = {
     'contracts': ContractsCard,
     'voting_rounds': ManagedVotingRounds,
@@ -194,6 +211,7 @@ cards_registry = {
     'without_aleph': WithoutAleph,
     'no_communication': ContractsWithoutCommunication,
     'technical': TechnicalReview,
+    'QAopened': QAOpened,
 }
 
 
