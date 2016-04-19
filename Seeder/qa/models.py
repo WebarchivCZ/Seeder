@@ -44,7 +44,8 @@ class QualityAssuranceCheck(BaseModel):
         max_length=15,
         choices=source_constants.SOURCE_STATES,
         null=True,
-        blank=True
+        blank=True,
+        help_text=_('This will close QA and act upon the source'),
     )
 
     def get_edit_url(self):

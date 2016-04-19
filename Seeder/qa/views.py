@@ -23,10 +23,10 @@ class QAView(LoginMixin):
 
 class QACreate(QAView, FormView, DetailView, URLView):
     model = Source
-    form_class = forms.QAForm
+    form_class = forms.QACreateForm
     template_name = 'edit_form.html'
 
-    url = U / pk / 'create'
+    url = U / 'source' / pk / 'create'
     url_name = 'create'
 
     def form_valid(self, form):
@@ -38,3 +38,11 @@ class QACreate(QAView, FormView, DetailView, URLView):
         return HttpResponseRedirect(qa.get_absolute_url())
 
 
+class QAEdit(QAView, EditView, URLView):
+    form_class = forms.QAEditForm
+    template_name = 'edit_form.html'
+
+    url = U / pk / 'edit'
+    url_name = 'edit'
+
+    
