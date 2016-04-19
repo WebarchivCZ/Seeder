@@ -1,3 +1,4 @@
+from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext_lazy as _
 from django.db.models import Count, Q
 from django.core.paginator import Paginator
@@ -12,12 +13,14 @@ class DashboardCard(object):
     """
         Represents dashboard card / list-group
     """
-    badges = True           # enable list group badges
-    color_classes = True    # enable for warning/alerts bootstrap classes
-    elements_per_card = 10  # number of objects per card
     title = NotImplemented  # title of the card
-    custom_titles = False
+    elements_per_card = 10  # number of objects per card
     table = None
+
+    get_badge = NotImplemented
+    get_color = NotImplemented
+    get_title = NotImplemented
+
 
     def __init__(self, user, url_name, page=1):
         """
@@ -32,29 +35,24 @@ class DashboardCard(object):
         if not self.paginator.count:
             self.empty = True
 
+    def get_url(self, element):
+        return element.get_absolute_url()
+
     def get_queryset(self):
         raise NotImplementedError
 
-    def get_badge(self, element):
-        if self.badges:
-            raise NotImplementedError
-
-    def get_title(self, element):
-        if self.custom_titles:
-            raise NotImplementedError
-
-    def get_color(self, element):
-        if self.color_classes:
-            raise NotImplementedError
-
     def elements(self):
         for element in self.page.object_list:
-            context_element = {'instance': element}
-            if self.badges:
+            context_element = {
+                'instance': element,
+                'url': self.get_url(element)
+            }
+
+            if callable(self.get_badge):
                 context_element['badge'] = self.get_badge(element)
-            if self.color_classes:
+            if callable(self.get_color):
                 context_element['color'] = self.get_color(element)
-            if self.custom_titles:
+            if callable(self.get_title):
                 context_element['title'] = self.get_title(element)
             yield context_element
 
@@ -63,10 +61,7 @@ class ContractsCard(DashboardCard):
     """
         Cards that displays contracts in negotiation.
     """
-    badges = False
-    color_classes = True
     title = _('Contracts in negotiation')
-    custom_titles = True
 
     def get_title(self, element):
         return element.source
@@ -101,9 +96,6 @@ class VoteCard(DashboardCard):
     """
     Parent class for all voting rounds cards
     """
-    badges = True
-    color_classes = False
-    custom_titles = True
 
     def get_title(self, element):
         return element.source
@@ -142,10 +134,6 @@ class OpenToVoteRounds(VoteCard):
 
 
 class SourceCard(DashboardCard):
-    badges = False
-    color_classes = True
-    custom_titles = True
-
     def get_color(self, element):
         return element.css_class()
 
@@ -189,8 +177,6 @@ class WithoutAleph(SourceCard):
 
 
 class QAOpened(DashboardCard):
-    badges = False
-    color_classes = False
     title = _('Opened QAs')
 
     def get_title(self, element):
@@ -204,10 +190,10 @@ class QAOpened(DashboardCard):
 
 
 class NewQA(DashboardCard):
-    badges = False
-    color_classes = True
-    custom_titles = True
     title = _('Sources needing QA')
+
+    def get_url(self, element):
+        return reverse('qa:create', args=[str(element.id)])
 
     def get_queryset(self):
         return source_models.Source.objects.needs_qa()
