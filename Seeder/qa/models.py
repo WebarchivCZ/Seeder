@@ -10,7 +10,7 @@ from source import constants as source_constants
 
 class QualityAssuranceCheck(BaseModel):
     """
-    QA check, is considered valid until source_action is filled.
+    QA check, is considered open until source_action is filled.
     """
     source = models.ForeignKey(
         verbose_name=_('Source'),
@@ -50,6 +50,11 @@ class QualityAssuranceCheck(BaseModel):
 
     def __unicode__(self):
         return 'QA: {0}'.format(self.source)
+
+    def process_action(self):
+        if self.source_action:
+            self.source.state = self.source_action
+            self.source.save()
 
     def get_edit_url(self):
         return reverse('qa:edit', args=[str(self.id)])

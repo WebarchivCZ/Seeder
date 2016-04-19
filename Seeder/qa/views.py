@@ -45,3 +45,7 @@ class QAEdit(QAView, EditView, URLView):
     url = U / pk / 'edit'
     url_name = 'edit'
 
+    def form_valid(self, form):
+        redirect = super(QAEdit, self).form_valid(form)
+        self.get_object().process_action()
+        return redirect
