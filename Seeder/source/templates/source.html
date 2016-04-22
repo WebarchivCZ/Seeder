@@ -123,17 +123,20 @@
     </div>
     <div class="col-md-3 col-sm-5">
         <h4>{% trans 'Links' %}:</h4>
+            <a href="{% url 'source:edit' pk=source.pk %}" class="btn btn-primary btn-warning btn-block">{% trans 'Edit' %}</a>
             <a href="{{ source.wakat_url }}" class="btn btn-primary btn-info btn-block">{% trans 'WA-KAT' %}</a>
             <a href="{% url 'source:history' pk=source.pk %}" class="btn btn-primary btn-info btn-block">{% trans 'History' %}</a>
-            <a href="{% url 'source:edit' pk=source.pk %}" class="btn btn-primary btn-warning btn-block">{% trans 'Edit' %}</a>
             <a href="{% url 'qa:create' pk=source.pk %}" class="btn btn-primary btn-warning btn-block">{% trans 'QA check' %}</a>
 
-        {% if source.votinground_set.exist %}
             <h4>{% trans 'Voting rounds' %}</h4>
+            <form action='{% url 'voting:create' pk=source.pk %}' method='post'>
+                {% csrf_token %}
+                <button class="btn btn-primary btn-warning btn-block">{% trans 'Create voting round' %}</button>
+            </form>
+            <br>
             {% for voting_round in source.votinground_set.all %}
                 <a href="{{ voting_round.get_absolute_url }}" class="btn btn-block btn-{{ voting_round.get_css_class }}">{{ voting_round }}</a>
             {% endfor %}
-        {% endif %}
 
         <h4>{% trans 'Contracts' %}:</h4>
         {% for contract in source.contract_set.all %}

@@ -1,3 +1,4 @@
+from source.models import Source
 from . import models
 from . import constants
 from . import forms
@@ -21,6 +22,18 @@ from comments.views import CommentViewGeneric
 class VotingView(LoginMixin):
     view_name = 'sources'
     model = models.VotingRound
+
+
+class Create(VotingView, DetailView, URLView):
+    url = U / pk / 'create'
+    url_name = 'create'
+
+    model = Source
+
+    def post(self, request, *args, **kwargs):
+        voting_round = models.VotingRound(source=self.get_object())
+        voting_round.save()
+        return HttpResponseRedirect(voting_round.get_absolute_url())
 
 
 class VotingDetail(VotingView, DetailView, CommentViewGeneric, URLView):
