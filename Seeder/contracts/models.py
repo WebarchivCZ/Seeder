@@ -76,6 +76,15 @@ class Contract(BaseModel):
         default=False)
 
     description = models.TextField(_('Description'), null=True, blank=True)
+
+    parent_contract = models.ForeignKey(
+        'self',
+        null=True,
+        blank=True,
+        on_delete=models.DO_NOTHING,
+        related_name='sub_contracts',
+    )
+
     objects = ContractManager()
 
     def __str__(self):
