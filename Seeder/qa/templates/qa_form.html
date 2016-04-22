@@ -7,7 +7,7 @@
 {% endblock %}
 
 {% block page_header %}
-    {% trans 'QA' %} {{ source}}
+    {% trans 'QA' %} <a href="{{ source.get_absolute_url }}">{{ source}}</a>
 {% endblock %}
 
 {% block extrahead %}

@@ -1,8 +1,10 @@
 import sys
+
+from qa.models import QualityAssuranceCheck
 from . import models
 from . import constants
 
-from datetime import date
+from datetime import date, datetime
 from django.db.models import ObjectDoesNotExist
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
@@ -299,6 +301,11 @@ class RatingRoundConversion(Conversion):
         'rating_result': constants.VOTE_RESULT
     }
 
+    def clean(self, source_dict):
+        if source_dict['date_created'] is None:
+            source_dict['date_created'] = datetime.now()
+        return source_dict
+
 
 class VoteConversion(Conversion):
     source_model = models.Ratings
@@ -363,7 +370,8 @@ class ContractConversion(Conversion):
     def clean(self, source_dict):
         # we have to find Resource that links to this contract:
         resources = models.Resources.objects.using(DATABASE).filter(
-            contract_id=source_dict['id'])
+            contract_id=source_dict['id']
+        )
 
         if not resources:
             raise BrokenRecord
@@ -402,8 +410,44 @@ class ContractConversion(Conversion):
         return new_object
 
 
+class QAConversion(Conversion):
+    source_model = models.QaChecks
+    target_model = QualityAssuranceCheck
+    ignore_broken_fks = True
+
+
+    def clean(self, source_dict):
+        if source_dict['comments'] is None:
+            source_dict['comments'] = ''
+
+        problems = models.QaChecksQaProblems.objects.using(DATABASE).filter(
+            qa_check__id=source_dict['id']
+        )
+        problems_flat = [p.qa_problem.problem for p in problems]
+        if problems_flat:
+            source_dict['comments'] += '\nProblems: {0}'.format(
+                ' '.join(problems_flat)
+            )
+
+        return source_dict
+
+
+    foreign_keys = {
+        'resource': models.Resources,
+        'curator': models.Curators,
+    }
+
+    field_map = {
+        'resource': 'source',
+        'curator': 'checked_by',
+        'date_checked': 'created',
+        'comments': 'comment',
+    }
+
+
 CONVERSIONS = [
     UserConversion, PublisherConversion, ContactsConversion,
     ConspectusConversion, SubConspectusConversion, ResourceConversion,
-    RatingRoundConversion, VoteConversion, SeedConversion, ContractConversion
+    RatingRoundConversion, VoteConversion, SeedConversion, ContractConversion,
+    QAConversion
 ]

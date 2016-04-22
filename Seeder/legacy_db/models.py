@@ -192,3 +192,44 @@ class Contracts(models.Model):
     class Meta:
         managed = False
         db_table = 'contracts'
+
+
+class QaChecks(models.Model):
+    resource = models.ForeignKey('Resources')
+    curator = models.ForeignKey(Curators)
+    date_checked = models.DateTimeField()
+    date_crawled = models.DateField(blank=True, null=True)
+    result = models.SmallIntegerField(blank=True, null=True)
+    solution = models.SmallIntegerField(blank=True, null=True)
+    solution_date = models.DateField(blank=True, null=True)
+    solution_user = models.IntegerField(blank=True, null=True)
+    proxy_problems = models.TextField(blank=True, null=True)
+    comments = models.TextField(blank=True, null=True)
+    image = models.CharField(max_length=255, blank=True, null=True)
+    ticket_no = models.IntegerField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'qa_checks'
+
+
+class QaChecksQaProblems(models.Model):
+    qa_check = models.ForeignKey(QaChecks)
+    qa_problem = models.ForeignKey('QaProblems')
+    url = models.CharField(max_length=255, blank=True, null=True)
+    comments = models.TextField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'qa_checks_qa_problems'
+
+
+class QaProblems(models.Model):
+    problem = models.CharField(max_length=45)
+    description = models.CharField(max_length=255)
+    question = models.CharField(max_length=255)
+    comments = models.TextField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'qa_problems'

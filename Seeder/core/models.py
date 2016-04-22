@@ -1,5 +1,6 @@
 from django.db import models
 from core import widgets
+from datetime import datetime
 
 
 class DatePickerField(models.DateField):
@@ -14,7 +15,7 @@ class DatePickerField(models.DateField):
 
 class BaseModel(models.Model):
     active = models.BooleanField(default=True)
-    created = models.DateTimeField(auto_now_add=True)
+    created = models.DateTimeField(default=datetime.now, editable=False)
     last_changed = models.DateTimeField(auto_now=True, editable=False)
 
     class Meta:
