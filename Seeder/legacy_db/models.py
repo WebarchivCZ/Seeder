@@ -177,7 +177,7 @@ class Seeds(models.Model):
 
 
 class Contracts(models.Model):
-    parent = models.ForeignKey('self', blank=True, null=True)
+    parent_id = models.IntegerField(blank=True, null=True)
     contract_no = models.IntegerField()
     active = models.IntegerField(blank=True, null=True)
     date_signed = models.DateField(blank=True, null=True)
@@ -233,3 +233,16 @@ class QaProblems(models.Model):
     class Meta:
         managed = False
         db_table = 'qa_problems'
+
+
+class Subcontracts(models.Model):
+    id = models.IntegerField(primary_key=True)
+    parent = models.ForeignKey(Contracts)
+    date_signed = models.DateTimeField()
+    blanco = models.IntegerField(blank=True, null=True)
+    addendum = models.IntegerField(blank=True, null=True)
+    comments = models.TextField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'subcontracts'

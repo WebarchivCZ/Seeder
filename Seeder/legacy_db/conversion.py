@@ -358,7 +358,10 @@ class ContractConversion(Conversion):
     source_model = models.Contracts
     target_model = Contract
 
+    update_existing = True
+
     field_map = {
+        'parent_id': 'parent_contract_id',
         'contract_no': 'contract_number',
         'active': 'active',
         'date_signed': 'valid_from',
@@ -410,11 +413,25 @@ class ContractConversion(Conversion):
         return new_object
 
 
+class SubcontractConversion(Conversion):
+    source_model = models.Subcontracts
+    target_model = Contract
+
+    foreign_keys = {
+        'parent': models.Contracts
+    }
+
+    field_map = {
+        'parent': 'parent_contract',
+        'date_signed': 'created',
+        'comments': 'description',
+    }
+
+
 class QAConversion(Conversion):
     source_model = models.QaChecks
     target_model = QualityAssuranceCheck
     ignore_broken_fks = True
-
 
     def clean(self, source_dict):
         if source_dict['comments'] is None:
@@ -430,7 +447,6 @@ class QAConversion(Conversion):
             )
 
         return source_dict
-
 
     foreign_keys = {
         'resource': models.Resources,
@@ -449,5 +465,5 @@ CONVERSIONS = [
     UserConversion, PublisherConversion, ContactsConversion,
     ConspectusConversion, SubConspectusConversion, ResourceConversion,
     RatingRoundConversion, VoteConversion, SeedConversion, ContractConversion,
-    QAConversion
+    QAConversion, SubcontractConversion
 ]

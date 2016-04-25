@@ -79,17 +79,6 @@
 #         db_table = 'seed_status'
 #
 #
-# class Subcontracts(models.Model):
-#     id = models.IntegerField(primary_key=True)
-#     parent = models.ForeignKey(Contracts)
-#     date_signed = models.DateTimeField()
-#     blanco = models.IntegerField(blank=True, null=True)
-#     addendum = models.IntegerField(blank=True, null=True)
-#     comments = models.TextField(blank=True, null=True)
-#
-#     class Meta:
-#         managed = False
-#         db_table = 'subcontracts'
 #
 #
 # class SuggestedBy(models.Model):
