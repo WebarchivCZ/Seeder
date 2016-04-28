@@ -17,9 +17,10 @@ def expire_contracts():
     for contract in expired:
         print('Expiring', contract)
         contract.state = constants.CONTRACT_STATE_EXPIRED
-        contract.source.state = source_constants.STATE_CONTRACT_EXPIRED
+        contract.sources.update(
+            state=source_constants.STATE_CONTRACT_EXPIRED
+        )
         contract.save()
-        contract.source.save()
 
 
 def send_emails():

@@ -64,7 +64,7 @@ class ContractsCard(DashboardCard):
     title = _('Contracts in negotiation')
 
     def get_title(self, element):
-        return element.source
+        return element.sources.first()
 
     def get_queryset(self):
         return contract_models.Contract.objects.filter(
