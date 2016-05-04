@@ -1,6 +1,7 @@
 from django.views.generic import DetailView
 from django.http.response import HttpResponseRedirect
 from django.utils.translation import ugettext_lazy as _
+from django.views.generic.edit import FormView
 from django.db.models import Q
 
 from dal import autocomplete
@@ -172,12 +173,28 @@ class SourceDetail(SourceView, DetailView, CommentViewGeneric, URLView):
     url_name = 'detail'
 
 
-class SourceEdit(SourceView, generic_views.EditView, URLView):
+class SourceEdit(SourceView, FormView, URLView):
     form_class = forms.SourceEditForm
     template_name = 'edit_source.html'
 
     url = U / 'edit' / pk
     url_name = 'edit'
+
+
+class SeedAdd(SourceView, generic_views.ObjectMixinFixed, FormView, URLView):
+    form_class = forms.SeedEdit
+
+    url = U / 'add_seed' / pk
+    url_name = 'add_seed'
+
+    title = _('Add seed')
+    template_name = 'add_form.html'
+
+    def form_valid(self, form):
+        seed = form.save(commit=False)
+        seed.source = self.get_object()
+        seed.save()
+        return HttpResponseRedirect(self.get_object().get_absolute_url())
 
 
 class SeedEdit(SourceView, generic_views.EditView, URLView):

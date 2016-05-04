@@ -120,6 +120,8 @@
                 </li>
             {% endfor %}
         </ul>
+        <a href="{% url 'source:add_seed' pk=source.pk %}" class="btn btn-primary btn-warning btn-block">{% trans 'Add seeds' %}</a>
+
     </div>
     <div class="col-md-3 col-sm-5">
         <h4>{% trans 'Links' %}:</h4>
