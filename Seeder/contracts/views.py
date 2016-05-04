@@ -130,7 +130,7 @@ class Schedule(ContractView, FormView, ObjectMixinFixed, URLView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['source'] = self.object.source
+        context['source'] = self.object.sources.first()
         return context
     
     def get_emails(self):
@@ -156,8 +156,8 @@ class Schedule(ContractView, FormView, ObjectMixinFixed, URLView):
         today = date.today()
         for template in constants.NEGOTIATION_TEMPLATES:
             rendered = render_to_string(template, context={
-                'source': self.object.source,
-                'seeds': self.object.source.seed_set.all(),
+                'source': self.object.sources.first(),
+                'seeds': self.object.sources.first().seed_set.all(),
                 'user': self.request.user,
                 'today': today,
             })
