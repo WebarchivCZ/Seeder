@@ -22,12 +22,12 @@
                 </tr>
                 <tr>
                     <td>{% trans 'Number' %}</td>
-                    <td>{{ object.contract_number }} / {{ object.year }}</td>
+                    <td>{{ object.get_contract_number }}</td>
                 </tr>
                 <tr>
-                    <td>{% trans 'Open source' %}</td>
-                    {% if object.open_source %}
-                        <td>{{ object.get_open_source_display}}</td>
+                    <td>{% trans 'Creative commons' %}</td>
+                    {% if object.creative_commons %}
+                        <td>{{ object.get_creative_commons_type_display}}</td>
                     {% else %}
                         <td>{% trans 'No' %}</td>
                     {% endif %}
@@ -46,11 +46,15 @@
                 </tr>
                 <tr>
                     <td>{% trans 'Description' %}</td>
-                    <td>{{ contract.description }}</td>
+                    <td>{% if contract.description %}{{ contract.description }}{% endif %}</td>
                 </tr>
                 <tr>
                     <td>{% trans 'Parent' %}</td>
-                    <td>{{ publisher.parent_contract }}</td>
+                    <td>
+                        {% if contract.parent_contract %}
+                            <a href="{{ contract.parent_contract.get_absolute_url }}">{{ contract.parent_contract }}</a>
+                        {% endif %}
+                    </td>
                 </tr>
                 <tr>
                     <td>{% trans 'Sub contracts' %}</td>

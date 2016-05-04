@@ -108,9 +108,12 @@ class Conversion(object):
         except BrokenRecord:
             self.skipped.append(source_dict)
 
+    def get_skipped_ids(self):
+        return [s['id'] for s in self.skipped]
+
     def print_skipped(self):
         if self.skipped:
-            skipped_ids = ', '.join([str(s['id']) for s in self.skipped])
+            skipped_ids = ', '.join(map(str, self.get_skipped_ids()))
             print('\nSkipped objects: {0}'.format(skipped_ids))
 
     def create_new(self):
@@ -386,23 +389,26 @@ class ContractConversion(Conversion):
         )
 
         skipped_children = []
+        skipped_contracts = self.get_skipped_ids()
 
         for child in children:
-            try:
-                converted_contract = models.TransferRecord.objects.get(
-                    original_id=child.id,
-                    original_type=get_ct(models.Contracts)
-                ).target_object
+            converted_contract = models.TransferRecord.objects.get(
+                original_id=child.id,
+                original_type=get_ct(models.Contracts)
+            ).target_object
 
-                converted_parent = models.TransferRecord.objects.get(
-                    original_id=child.parent_id,
-                    original_type=get_ct(models.Contracts)
-                ).target_object
-
-                converted_contract.parent = converted_parent
-                converted_contract.save()
-            except models.TransferRecord.DoesNotExist:
+            if child.parent_id in skipped_contracts:
                 skipped_children.append(child.id)
+                continue
+
+            converted_parent = models.TransferRecord.objects.get(
+                original_id=child.parent_id,
+                original_type=get_ct(models.Contracts)
+            ).target_object
+
+            converted_contract.parent_contract = converted_parent
+            converted_contract.save()
+            print(converted_parent.parent_contract)
 
         print('Broken parent relationships: ', skipped_children)
 
