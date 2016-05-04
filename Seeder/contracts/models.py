@@ -90,7 +90,11 @@ class Contract(BaseModel):
     def __str__(self):
         if self.state == constants.CONTRACT_STATE_NEGOTIATION:
             return _('Contract in negotiation with {0}').format(self.publisher)
-        return _('{}/{}').format(self.contract_number or ' - ', self.year)
+        return self.get_contract_number()
+
+    def get_contract_number(self):
+        return '{} / {}'.format(self.contract_number or ' - ', self.year)
+
 
     def get_type(self):
         if self.creative_commons:
