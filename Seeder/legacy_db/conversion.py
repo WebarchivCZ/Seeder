@@ -4,7 +4,7 @@ from qa.models import QualityAssuranceCheck
 from . import models
 from . import constants
 
-from datetime import date, datetime
+from datetime import date
 from django.db.models import ObjectDoesNotExist
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
@@ -19,9 +19,12 @@ from contracts import constants as contract_constants
 from voting.signals import create_voting_round
 
 
-DATABASE = 'legacy_seeder'
-get_ct = lambda m: ContentType.objects.get_for_model(m)
+LEGACY_DATABASE = 'legacy_seeder'
 post_save.disconnect(sender=source_models.Source, receiver=create_voting_round)
+
+
+def get_ct(model):
+    return ContentType.objects.get_for_model(model)
 
 
 class BrokenRecord(Exception):
@@ -34,7 +37,7 @@ class Conversion(object):
     """
     source_model = NotImplemented
     target_model = NotImplemented
-    db_name = DATABASE
+    db_name = LEGACY_DATABASE
     update_existing = False  # set to false if you want to omit synced records
     field_map = {}
     initial_data = {}
@@ -372,7 +375,7 @@ class ContractConversion(Conversion):
 
     def clean(self, source_dict):
         # we have to find Resource that links to this contract:
-        resources = models.Resources.objects.using(DATABASE).filter(
+        resources = models.Resources.objects.using(LEGACY_DATABASE).filter(
             contract_id=source_dict['id']
         )
 
@@ -396,8 +399,11 @@ class ContractConversion(Conversion):
         except ObjectDoesNotExist:  # this means that the fk is invalid
             raise BrokenRecord
 
-        linking_resources = models.Resources.objects.using(DATABASE).filter(
-            contract_id=self.source_dict['id']).values_list('id', flat=True)
+        linking_resources = models.Resources.objects.using(
+            LEGACY_DATABASE).filter(
+            contract_id=self.source_dict['id']
+        ).values_list('id', flat=True)
+
         linking_tranfers = models.TransferRecord.objects.filter(
             original_type=get_ct(models.Resources),
             original_id__in=list(linking_resources))
@@ -437,8 +443,8 @@ class QAConversion(Conversion):
         if source_dict['comments'] is None:
             source_dict['comments'] = ''
 
-        problems = models.QaChecksQaProblems.objects.using(DATABASE).filter(
-            qa_check__id=source_dict['id']
+        problems = models.QaChecksQaProblems.objects.using(
+            LEGACY_DATABASE).filter(qa_check__id=source_dict['id']
         )
         problems_flat = [p.qa_problem.problem for p in problems]
         if problems_flat:
