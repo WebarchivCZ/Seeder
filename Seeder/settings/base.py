@@ -254,23 +254,41 @@ QA_EVERY_N_MONTHS = 24
 
 ELASTICSEARCH_INDEX_SETTINGS = {
     'settings': {
+        "mappings": {
+            "document": {
+                "properties": {
+                    "content": {
+                        "type": "string",
+                        "analyzer": "lowercase_with_stopwords"
+                    }
+                }
+            }
+        },
+
         "analysis": {
             "analyzer": {
                 "ngram_analyzer": {
                     "type": "custom",
                     "tokenizer": "lowercase",
-                    "filter": ["haystack_ngram"]
+                    "filter": ["haystack_ngram", "word_delimiter"]
                 },
                 "edgengram_analyzer": {
                     "type": "custom",
                     "tokenizer": "lowercase",
-                    "filter": ["haystack_edgengram"]
+                    "filter": ["haystack_edgengram", "word_delimiter"]
                 },
                 "icu_folding": {
-                  "type": "custom",
-                  "tokenizer": "whitespace",
-                  "filter": ["icu_folding"]
+                    "type": "custom",
+                    "tokenizer": "whitespace",
+                    "filter": ["icu_folding", "word_delimiter"]
                 },
+                "lowercase_with_stopwords": {
+                    "type": "custom",
+                    "tokenizer": "lowercase",
+                    "filter": [
+                        "stopwords_filter", "word_delimiter"
+                    ]
+                }
             },
             "tokenizer": {
                 "haystack_ngram_tokenizer": {
@@ -286,6 +304,15 @@ ELASTICSEARCH_INDEX_SETTINGS = {
                 }
             },
             "filter": {
+                "stopwords_filter": {
+                    "type": "stop",
+                    "stopwords": [
+                        "http",
+                        "https",
+                        "ftp",
+                        "www"
+                    ]
+                },
                 "haystack_ngram": {
                     "type": "nGram",
                     "min_gram": 3,
