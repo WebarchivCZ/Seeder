@@ -22,27 +22,27 @@
                 </tr>
                 <tr>
                     <td>{% trans 'Number' %}</td>
-                    <td>{{ object.get_contract_number }}</td>
+                    <td>{{ contract.get_contract_number }}</td>
                 </tr>
                 <tr>
                     <td>{% trans 'Creative commons' %}</td>
                     {% if object.creative_commons %}
-                        <td>{{ object.get_creative_commons_type_display}}</td>
+                        <td>{{ contract.get_creative_commons_type_display}}</td>
                     {% else %}
                         <td>{% trans 'No' %}</td>
                     {% endif %}
                 </tr>
                 <tr>
                     <td>{% trans 'Publisher' %}</td>
-                    <td><a href="{{ object.source.publisher.get_absolute_url }}">{{ object.source.publisher }}</a></td>
+                    <td><a href="{{ contract.publisher.get_absolute_url }}">{{ contract.publisher }}</a></td>
                 </tr>
                 <tr>
                     <td>{% trans 'Valid from' %}</td>
-                    <td>{{ object.date_start }}</td>
+                    <td>{{ contract.valid_from }}</td>
                 </tr>
                 <tr>
                     <td>{% trans 'Valid to' %}</td>
-                    <td>{{ publisher.date_end }}</td>
+                    <td>{{ contract.valid_to }}</td>
                 </tr>
                 <tr>
                     <td>{% trans 'Description' %}</td>
@@ -67,7 +67,7 @@
                 {% if object.contract_file %}
                     <tr>
                         <td>{% trans 'Contract file' %}</td>
-                        <td><a href="{{ object.contract_file.url }}">{{ object.contract_file }}</a></td>
+                        <td><a href="{{ contract.contract_file.url }}">{{ contract.contract_file }}</a></td>
                     </tr>
                 {% endif %}
                 <tr>
