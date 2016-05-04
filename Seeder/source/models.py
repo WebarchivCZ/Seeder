@@ -228,9 +228,9 @@ class Source(BaseModel):
     def handle_expiring_contracts(self):
         if self.state == constants.STATE_RUNNING:
             valid_contracts = [c.is_valid() for c in self.contract_set.all()]
-            if not valid_contracts:
+            if not any(valid_contracts):
                 self.state = constants.STATE_CONTRACT_EXPIRED
-                self.state.save()
+                self.save()
 
         
 @revisions.register(exclude=('last_changed',))

@@ -134,6 +134,16 @@ class Contract(BaseModel):
     def get_absolute_url(self):
         return reverse('contracts:detail', args=[str(self.id)])
 
+    def expire(self):
+        """
+        Expires contract and its sources
+        """
+        self.state = constants.CONTRACT_STATE_EXPIRED
+        self.save()
+
+        for source in self.sources.all():
+            source.handle_expiring_contracts()
+
     def is_valid(self):
         """
         Checks that contract is valid and that it did not expire.
@@ -142,9 +152,10 @@ class Contract(BaseModel):
         if self.state == constants.CONTRACT_STATE_VALID:
             expired = (self.valid_to < date.today()
                        if self.valid_to else False)
+
             if expired:
-                self.state = constants.CONTRACT_STATE_EXPIRED
-                self.save()
+                self.expire()
+
             return not expired
         return False
 
