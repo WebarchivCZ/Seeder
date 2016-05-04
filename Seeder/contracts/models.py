@@ -1,6 +1,6 @@
 import uuid
 
-from datetime import datetime
+from datetime import date
 
 from django.db import models
 from django.db.models.query_utils import Q
@@ -21,7 +21,7 @@ def get_str_uuid():
 
 
 def this_year():
-    return datetime.now().year
+    return date.today().year
 
 
 class ContractManager(models.Manager):
@@ -32,7 +32,7 @@ class ContractManager(models.Manager):
     def valid(self):
         return self.get_queryset().filter(
             Q(state=constants.CONTRACT_STATE_VALID) &
-            Q(Q(valid_to__gte=datetime.now()) | Q(valid_to=None))
+            Q(Q(valid_to__gte=date.today()) | Q(valid_to=None))
         )
 
 
@@ -60,22 +60,46 @@ class Contract(BaseModel):
         max_length=128
     )
 
-    valid_from = DatePickerField(_('Valid from'), null=True, blank=True)
-    valid_to = DatePickerField(_('Valid to'), null=True, blank=True)
-    year = models.PositiveIntegerField(_('Year'), default=this_year())
+    valid_from = DatePickerField(
+        _('Valid from'),
+        null=True,
+        blank=True
+    )
+    valid_to = DatePickerField(
+        _('Valid to'),
+        null=True,
+        blank=True
+    )
 
-    contract_file = models.FileField(_('Contract file'), null=True, blank=True,
-                                     upload_to='contracts')
-    contract_number = models.IntegerField(_('Contract number'),
-                                          null=True, blank=True,
-                                          unique_for_year='created')
+    year = models.PositiveIntegerField(
+        _('Year'),
+        default=this_year()
+    )
+
+    contract_file = models.FileField(
+        _('Contract file'),
+        null=True,
+        blank=True,
+        upload_to='contracts'
+    )
+
+    contract_number = models.IntegerField(
+        _('Contract number'),
+        null=True,
+        blank=True
+    )
 
     in_communication = models.BooleanField(
         _('In communication'),
         help_text=_('Does the publisher responds to the emails?'),
-        default=False)
+        default=False
+    )
 
-    description = models.TextField(_('Description'), null=True, blank=True)
+    description = models.TextField(
+        _('Description'),
+        null=True,
+        blank=True
+    )
 
     parent_contract = models.ForeignKey(
         'self',
@@ -87,6 +111,9 @@ class Contract(BaseModel):
 
     objects = ContractManager()
 
+    class Meta:
+        unique_together = ('contract_number', 'year')
+
     def __str__(self):
         if self.state == constants.CONTRACT_STATE_NEGOTIATION:
             return _('Contract in negotiation with {0}').format(self.publisher)
@@ -94,7 +121,6 @@ class Contract(BaseModel):
 
     def get_contract_number(self):
         return '{} / {}'.format(self.contract_number or ' - ', self.year)
-
 
     def get_type(self):
         if self.creative_commons:
@@ -114,7 +140,7 @@ class Contract(BaseModel):
         If it is expired self.valid will be set to false.
         """
         if self.state == constants.CONTRACT_STATE_VALID:
-            expired = (self.valid_to < datetime.now()
+            expired = (self.valid_to < date.today()
                        if self.valid_to else False)
             if expired:
                 self.state = constants.CONTRACT_STATE_EXPIRED
@@ -130,10 +156,23 @@ class Contract(BaseModel):
             return 'success'
         return 'danger'
 
+    def assign_number(self):
+        if self.contract_number:
+            return
+
+        self.contract_number = self.__class__.new_contract_number(self.year)
+        self.save()
+
     @classmethod
-    def new_contract_number(cls):
-        return cls.objects.filter(year=this_year()).aggregate(
-            max_id=models.Max('contract_number')).get('max_id', 0) + 1
+    def new_contract_number(cls, year=None):
+        if year is None:
+            year = this_year()
+
+        max_number = cls.objects.filter(year=year).aggregate(
+            max_id=models.Max('contract_number')
+        )['max_id'] or 0
+
+        return max_number + 1
 
 
 @revisions.register(exclude=('last_changed',))

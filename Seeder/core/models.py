@@ -1,7 +1,7 @@
 from django.db import models
-from core import widgets
-from datetime import datetime
+from django.utils import timezone
 
+from core import widgets
 
 class DatePickerField(models.DateField):
     def formfield(self, **kwargs):
@@ -15,7 +15,7 @@ class DatePickerField(models.DateField):
 
 class BaseModel(models.Model):
     active = models.BooleanField(default=True)
-    created = models.DateTimeField(default=datetime.now, editable=False)
+    created = models.DateTimeField(default=timezone.now, editable=False)
     last_changed = models.DateTimeField(auto_now=True, editable=False)
 
     class Meta:

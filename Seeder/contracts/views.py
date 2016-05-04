@@ -88,13 +88,12 @@ class Edit(ContractView, EditView, URLView):
     url_name = 'edit'
 
     def form_valid(self, form):
-        if (self.get_object().state == constants.CONTRACT_STATE_NEGOTIATION and
-                form.cleaned_data['state'] == constants.CONTRACT_STATE_VALID):
-            contract = form.save(commit=False)
-            contract.contract_number = models.Contract.new_contract_number()
-            contract.save()
+        contract = form.save()
+        contract_has_no_number = not contract.contract_number
+
+        if contract_has_no_number and contract.is_valid():
+            contract.assign_number()
             self.add_message(_('Contract number assigned.'), messages.SUCCESS)
-            self.add_message(_('Changes saved.'), messages.SUCCESS)
             return HttpResponseRedirect(self.get_object().get_absolute_url())
         else:
             return super().form_valid(form)

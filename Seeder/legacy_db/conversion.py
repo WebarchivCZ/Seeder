@@ -4,7 +4,7 @@ from qa.models import QualityAssuranceCheck
 from . import models
 from . import constants
 
-from datetime import date
+from datetime import datetime
 from django.db.models import ObjectDoesNotExist
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
@@ -277,7 +277,7 @@ class ResourceConversion(Conversion):
         created = source_dict['date']
         if not created:
             source_dict['date'] = timezone.make_aware(
-                date(year=2009, month=1, day=1)
+                datetime(year=2009, month=1, day=1)
             )
         return source_dict
 
@@ -408,10 +408,8 @@ class ContractConversion(Conversion):
 
             converted_contract.parent_contract = converted_parent
             converted_contract.save()
-            print(converted_parent.parent_contract)
 
         print('Broken parent relationships: ', skipped_children)
-
 
     def clean(self, source_dict):
         # we have to find Resource that links to this contract:
@@ -421,6 +419,19 @@ class ContractConversion(Conversion):
 
         if not resources:
             raise BrokenRecord
+
+        # fix duplicate contract numbers
+        contract_number = source_dict.get('contract_no')
+        year = source_dict.get('year')
+
+        duplicities = Contract.objects.filter(
+            contract_number=contract_number,
+            year=year
+        )
+
+        if contract_number and duplicities.exists():
+            source_dict['contract_no'] *= 1000
+            print('Invalid contract no fixed:', contract_number, year)
 
         record = models.TransferRecord.objects.get(
             original_type=get_ct(models.Resources),
