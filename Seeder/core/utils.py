@@ -58,10 +58,14 @@ class AbsoluteURLColumn(BaseLinkColumn):
         If this was created using accessor, value is the thing we want.
         Otherwise value is the text to display and record is the main model.
         """
-        if isinstance(value, models.Model):
-            return self.render_link(uri=value.get_absolute_url(), text=value)
-        else:
-            return self.render_link(uri=record.get_absolute_url(), text=value)
+
+        url = (
+            value.get_absolute_url() if isinstance(value, models.Model)
+            else record.get_absolute_url()
+        )
+        return self.render_link(
+            uri=url, record=record, value=value
+        )
 
 
 class NaturalDatetimeColumn(Column):
