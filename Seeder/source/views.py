@@ -93,7 +93,8 @@ class AddSource(generic_views.LoginMixin, SessionWizardView, URLView):
                               data=data, files=files)
             contact = form.fields['contact']
             contact.queryset = publisher.contactperson_set.all()
-            contact.initial = contact.queryset[0]
+            if contact.queryset.exists():
+                contact.initial = contact.queryset.first()
             return form
 
         return form_class(prefix=self.get_form_prefix(step, form_class),
