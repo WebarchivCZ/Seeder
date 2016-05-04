@@ -9,6 +9,5 @@ install:
 
 script:
  - coverage run --source=Seeder Seeder/manage.py test --settings=settings.tests
- - coverage report -m
 after_script:
   coveralls
