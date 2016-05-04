@@ -373,6 +373,40 @@ class ContractConversion(Conversion):
         'year': 'year'
     }
 
+    def start_conversion(self):
+        """
+        Custom logic that migrates parents / children contract after the
+        contract conversion finishes, this have to be done separately to ensure
+        that all parent contracts are already migrated
+        """
+        super().start_conversion()
+
+        children = models.Contracts.objects.using(LEGACY_DATABASE).filter(
+            parent__isnull=False
+        )
+
+        skipped_children = []
+
+        for child in children:
+            try:
+                converted_contract = models.TransferRecord.objects.get(
+                    original_id=child.id,
+                    original_type=get_ct(models.Contracts)
+                ).target_object
+
+                converted_parent = models.TransferRecord.objects.get(
+                    original_id=child.parent_id,
+                    original_type=get_ct(models.Contracts)
+                ).target_object
+
+                converted_contract.parent = converted_parent
+                converted_contract.save()
+            except models.TransferRecord.DoesNotExist:
+                skipped_children.append(child.id)
+
+        print('Broken parent relationships: ', skipped_children)
+
+
     def clean(self, source_dict):
         # we have to find Resource that links to this contract:
         resources = models.Resources.objects.using(LEGACY_DATABASE).filter(
@@ -404,11 +438,12 @@ class ContractConversion(Conversion):
             contract_id=self.source_dict['id']
         ).values_list('id', flat=True)
 
-        linking_tranfers = models.TransferRecord.objects.filter(
+        linking_transfers = models.TransferRecord.objects.filter(
             original_type=get_ct(models.Resources),
-            original_id__in=list(linking_resources))
+            original_id__in=list(linking_resources)
+        )
 
-        sources = [transfer.target_object for transfer in linking_tranfers]
+        sources = [transfer.target_object for transfer in linking_transfers]
         new_object = self.target_model(**data)
         new_object.publisher = sources[0].publisher
         new_object.save()
@@ -417,21 +452,6 @@ class ContractConversion(Conversion):
             new_object.sources.add(source)
 
         return new_object
-
-
-class SubcontractConversion(Conversion):
-    source_model = models.Subcontracts
-    target_model = Contract
-
-    foreign_keys = {
-        'parent': models.Contracts
-    }
-
-    field_map = {
-        'parent': 'parent_contract',
-        'date_signed': 'created',
-        'comments': 'description',
-    }
 
 
 class QAConversion(Conversion):
@@ -444,8 +464,9 @@ class QAConversion(Conversion):
             source_dict['comments'] = ''
 
         problems = models.QaChecksQaProblems.objects.using(
-            LEGACY_DATABASE).filter(qa_check__id=source_dict['id']
-        )
+            LEGACY_DATABASE
+        ).filter(qa_check__id=source_dict['id'])
+
         problems_flat = [p.qa_problem.problem for p in problems]
         if problems_flat:
             source_dict['comments'] += '\nProblems: {0}'.format(
@@ -471,5 +492,5 @@ CONVERSIONS = [
     UserConversion, PublisherConversion, ContactsConversion,
     ConspectusConversion, SubConspectusConversion, ResourceConversion,
     RatingRoundConversion, VoteConversion, SeedConversion, ContractConversion,
-    QAConversion, SubcontractConversion
+    QAConversion
 ]
