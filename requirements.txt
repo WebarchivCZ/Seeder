@@ -28,3 +28,4 @@ requests
 git+https://github.com/django-haystack/django-haystack.git
 elasticsearch
 python-memcached
+elasticstack
