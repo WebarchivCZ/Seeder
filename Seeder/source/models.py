@@ -225,6 +225,13 @@ class Source(BaseModel):
         """
         return settings.WAKAT_URL.format(id=self.id)
 
+    def handle_expiring_contracts(self):
+        if self.state == constants.STATE_RUNNING:
+            valid_contracts = [c.is_valid() for c in self.contract_set.all()]
+            if not valid_contracts:
+                self.state = constants.STATE_CONTRACT_EXPIRED
+                self.state.save()
+
         
 @revisions.register(exclude=('last_changed',))
 class Seed(BaseModel):

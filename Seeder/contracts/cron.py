@@ -5,22 +5,22 @@ from django.utils.html import strip_tags
 
 from . import constants
 from .models import Contract, EmailNegotiation
-from source import constants as source_constants
 
 
 def expire_contracts():
     today = date.today()
     expired = Contract.objects.filter(
-        valid_to=today,
-        state=constants.CONTRACT_STATE_VALID)
+        valid_to__lte=today,
+        state=constants.CONTRACT_STATE_VALID
+    )
 
     for contract in expired:
         print('Expiring', contract)
         contract.state = constants.CONTRACT_STATE_EXPIRED
-        contract.sources.update(
-            state=source_constants.STATE_CONTRACT_EXPIRED
-        )
         contract.save()
+
+        for source in contract.sources.all():
+            source.handle_expiring_contracts()
 
 
 def send_emails():
