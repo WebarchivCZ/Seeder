@@ -156,6 +156,9 @@ class Source(BaseModel):
     class Meta:
         verbose_name = _('Source')
         verbose_name_plural = _('Sources')
+        ordering = [
+            'name'
+        ]
 
         # Extra permission for supervisors to enable them manage Sources that
         # they don't own..
