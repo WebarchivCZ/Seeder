@@ -227,8 +227,6 @@ CRONJOBS = [
 # |     +----------- hour (0 - 23)
 # +------------- min (0 - 59)
 
-
-
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         # 'rest_framework.authentication.BasicAuthentication',
@@ -253,3 +251,52 @@ MANET_URL = '127.0.0.1:8891'
 
 
 QA_EVERY_N_MONTHS = 24
+
+ELASTICSEARCH_INDEX_SETTINGS = {
+    'settings': {
+        "analysis": {
+            "analyzer": {
+                "ngram_analyzer": {
+                    "type": "custom",
+                    "tokenizer": "lowercase",
+                    "filter": ["haystack_ngram"]
+                },
+                "edgengram_analyzer": {
+                    "type": "custom",
+                    "tokenizer": "lowercase",
+                    "filter": ["haystack_edgengram"]
+                },
+                "icu_folding": {
+                  "type": "custom",
+                  "tokenizer": "whitespace",
+                  "filter": ["icu_folding"]
+                },
+            },
+            "tokenizer": {
+                "haystack_ngram_tokenizer": {
+                    "type": "nGram",
+                    "min_gram": 3,
+                    "max_gram": 15,
+                },
+                "haystack_edgengram_tokenizer": {
+                    "type": "edgeNGram",
+                    "min_gram": 2,
+                    "max_gram": 15,
+                    "side": "front"
+                }
+            },
+            "filter": {
+                "haystack_ngram": {
+                    "type": "nGram",
+                    "min_gram": 3,
+                    "max_gram": 15
+                },
+                "haystack_edgengram": {
+                    "type": "edgeNGram",
+                    "min_gram": 2,
+                    "max_gram": 15
+                }
+            }
+        }
+    }
+}
