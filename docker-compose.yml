@@ -1,7 +1,6 @@
 web:
-  build: Dockerfile
-  restart: always
   build: .
+  restart: always
   ports:
    - "8000:8000"
   links:
@@ -41,7 +40,8 @@ mysql:
    - MYSQL_DATABASE=legacy_db
 
 elastic:
-  image: elasticsearch:latest
+  dockerfile: Dockerfile_elastic
+  build: .
 
 memcached:
   image: memcached:latest
