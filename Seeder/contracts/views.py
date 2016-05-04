@@ -142,7 +142,7 @@ class Schedule(ContractView, FormView, ObjectMixinFixed, URLView):
 
         return modelformset_factory(
             models.EmailNegotiation,
-            fields=('scheduled_date', 'title', 'content'),
+            fields=('to_email', 'scheduled_date', 'title', 'content', ),
             extra=extra, can_delete=True)
 
     def get_form_kwargs(self):
@@ -154,10 +154,13 @@ class Schedule(ContractView, FormView, ObjectMixinFixed, URLView):
         initial = []
         delay = 0
         today = date.today()
+
+        source = self.object.sources.first()
+
         for template in constants.NEGOTIATION_TEMPLATES:
             rendered = render_to_string(template, context={
-                'source': self.object.sources.first(),
-                'seeds': self.object.sources.first().seed_set.all(),
+                'source': source,
+                'seeds': source.seed_set.all(),
                 'user': self.request.user,
                 'today': today,
             })
@@ -167,6 +170,7 @@ class Schedule(ContractView, FormView, ObjectMixinFixed, URLView):
                 'content': rendered,
                 'title': constants.EMAILS_TITLE,
                 'scheduled_date': scheduled_date,
+                'to_email': source.publisher_contact.email
             })
         return initial
 

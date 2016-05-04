@@ -24,16 +24,17 @@ def send_emails():
     emails_to_send = EmailNegotiation.objects.filter(
         scheduled_date__lte=today,
         sent=False,
-        contract__state=constants.CONTRACT_STATE_NEGOTIATION,
-        contract__in_communication=False,
-        contract__source__publisher_contact__isnull=False)
+        contract__state=constants.CONTRACT_STATE_NEGOTIATION
+    )
 
     for email in emails_to_send:
         send_mail(
             subject=email.title,
             message=strip_tags(email.content),
             html_message=email.content,
-            from_email=email.contract.source.owner.email,
-            recipient_list=[email.contract.source.publisher_contact.email])
+            from_email=email.contract.sources.first().owner.email,
+            recipient_list=[email.to_email]
+        )
+
         email.sent = True
         email.save()
