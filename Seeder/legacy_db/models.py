@@ -177,7 +177,7 @@ class Seeds(models.Model):
 
 
 class Contracts(models.Model):
-    parent_id = models.IntegerField(blank=True, null=True)
+    parent = models.ForeignKey('self', blank=True, null=True)
     contract_no = models.IntegerField()
     active = models.IntegerField(blank=True, null=True)
     date_signed = models.DateField(blank=True, null=True)

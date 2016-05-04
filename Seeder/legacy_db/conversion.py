@@ -9,6 +9,7 @@ from django.db.models import ObjectDoesNotExist
 from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
 from django.db.models.signals import post_save
+from django.utils import timezone
 
 from publishers.models import Publisher, ContactPerson
 from source import models as source_models
@@ -65,7 +66,7 @@ class Conversion(object):
     def start_conversion(self):
         print(self.__class__.__name__)
         if self.update_existing:
-            queryset = self.source_model.objects.using(self.db_name).all()
+            queryset = self.source_model.objects.using(self.db_name).all().order_by('id')
         else:
             synced_ids = models.TransferRecord.objects.filter(
                 original_type=self.source_type).order_by(
@@ -269,7 +270,9 @@ class ResourceConversion(Conversion):
     def clean(self, source_dict):
         created = source_dict['date']
         if not created:
-            source_dict['date'] = date(year=2009, month=1, day=1)
+            source_dict['date'] = timezone.make_aware(
+                date(year=2009, month=1, day=1)
+            )
         return source_dict
 
     def process_broken_record(self, source_dict, field_name):
@@ -303,7 +306,7 @@ class RatingRoundConversion(Conversion):
 
     def clean(self, source_dict):
         if source_dict['date_created'] is None:
-            source_dict['date_created'] = datetime.now()
+            source_dict['date_created'] = timezone.now()
         return source_dict
 
 
@@ -358,10 +361,7 @@ class ContractConversion(Conversion):
     source_model = models.Contracts
     target_model = Contract
 
-    update_existing = True
-
     field_map = {
-        'parent_id': 'parent_contract_id',
         'contract_no': 'contract_number',
         'active': 'active',
         'date_signed': 'valid_from',
