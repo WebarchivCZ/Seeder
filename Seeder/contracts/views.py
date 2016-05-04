@@ -50,6 +50,10 @@ class Create(LoginMixin, FormView, ObjectMixinFixed, URLView):
         contract = form.save(commit=False)
         contract.publisher = self.object.publisher
         contract.save()
+
+        if contract.is_valid():
+            contract.assign_number()
+
         contract.sources.add(self.object)
         return HttpResponseRedirect(contract.get_absolute_url())
 
