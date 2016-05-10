@@ -3,7 +3,7 @@ Seeder
 
 [![Build Status](https://travis-ci.org/WebArchivCZ/Seeder.svg?branch=master)](https://travis-ci.org/WebArchivCZ/Seeder)
 [![Coverage Status](https://coveralls.io/repos/github/WebArchivCZ/Seeder/badge.svg?branch=master)](https://coveralls.io/github/WebArchivCZ/Seeder?branch=master)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/2304c3d9dce54c099c149d3ef7991be1)](https://www.codacy.com/app/visgean/Seeder?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=WebArchivCZ/Seeder&amp;utm_campaign=Badge_Grade)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/2304c3d9dce54c099c149d3ef7991be1)](https://www.codacy.com/app/visgean/Seeder)
 [![Documentation Status](https://readthedocs.org/projects/seeder/badge/?version=latest)](https://seeder.readthedocs.org/en/latest/)
 [![Requirements Status](https://requires.io/github/WebArchivCZ/Seeder/requirements.svg?branch=master)](https://requires.io/github/WebArchivCZ/Seeder/requirements/?branch=master)
 
