@@ -173,7 +173,7 @@ class SourceDetail(SourceView, DetailView, CommentViewGeneric, URLView):
     url_name = 'detail'
 
 
-class SourceEdit(SourceView, FormView, URLView):
+class SourceEdit(SourceView, generic_views.EditView, URLView):
     form_class = forms.SourceEditForm
     template_name = 'edit_source.html'
 
