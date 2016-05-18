@@ -3,6 +3,7 @@ from django.utils import timezone
 
 from core import widgets
 
+
 class DatePickerField(models.DateField):
     def formfield(self, **kwargs):
         defaults = {
