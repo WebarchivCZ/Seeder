@@ -3,8 +3,10 @@ from functools import reduce
 
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
+from reversion import revisions
 
 
+@revisions.register
 class Blacklist(models.Model):
     """
     General model for control lists
