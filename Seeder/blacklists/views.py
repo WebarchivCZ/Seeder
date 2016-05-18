@@ -46,3 +46,11 @@ class EditView(BlacklistView, generic_views.EditView, URLView):
     def form_valid(self, form):
         form.save()
         return HttpResponseRedirect(reverse('blacklists:list'))
+
+
+class History(BlacklistView, generic_views.HistoryView, URLView):
+    """
+        History log
+    """
+    url = U / 'history' / pk
+    url_name = 'history'

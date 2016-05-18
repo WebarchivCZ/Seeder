@@ -8,7 +8,11 @@
 {% block content %}
     {% for blacklist in blacklists %}
         <div class="panel panel-default">
-          <div class="panel-heading">{{ blacklist.title }} | <a href="{% url 'blacklists:edit' blacklist.pk %}">{% trans 'Edit' %}</a></div>
+          <div class="panel-heading">
+              {{ blacklist.title }} |
+              <a href="{% url 'blacklists:edit' blacklist.pk %}">{% trans 'Edit' %}</a> |
+              <a href="{% url 'blacklists:history' blacklist.pk %}">{% trans 'History' %}</a>
+          </div>
           <div class="panel-body">
               <pre>{{ blacklist.url_list }}</pre>
 
