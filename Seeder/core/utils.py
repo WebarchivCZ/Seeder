@@ -32,7 +32,7 @@ def dict_diff(first, second):
     :rtype dict
     """
     diff = {}
-    keys = set(first.keys() + second.keys())
+    keys = set(first) | set(second)
     for key in keys:
         first_value = first.get(key)
         second_value = second.get(key)
