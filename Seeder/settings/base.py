@@ -159,7 +159,7 @@ LANGUAGES = (
 )
 
 CALENDAR_LANGUAGES = {
-    'cs': 'cz-CZ',
+    'cs': 'cs-CZ',
     'en': 'en-US'
 }
 

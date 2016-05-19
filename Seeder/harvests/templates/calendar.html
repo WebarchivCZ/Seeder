@@ -61,7 +61,7 @@
             tmpl_path: "{{ STATIC_URL }}/calendar_templates/",
             events_source: '{% url 'harvests:json_calendar' %}',
             first_day: 1,
-            language: 'cs-CZ',
+            language: '{{ calendar_language }}',
             onAfterViewLoad: function(view) {
                 $('.page-header h3').text(this.getTitle());
 			    $('.btn-group button').removeClass('active');
@@ -90,7 +90,6 @@
 			calendar.view($this.data('calendar-view'));
 		});
 	});
-
 
 </script>
 
