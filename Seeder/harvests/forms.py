@@ -16,6 +16,7 @@ class HarvestCreateForm(forms.ModelForm):
         fields = [
             'scheduled_on',
             'title',
+            'annotation',
             'target_frequency',
             'custom_seeds',
             'custom_sources'
@@ -24,16 +25,15 @@ class HarvestCreateForm(forms.ModelForm):
 
 
 class HarvestEditForm(forms.ModelForm):
-
     class Meta:
         model = Harvest
         fields = [
             'status',
             'scheduled_on',
             'title',
+            'annotation',
             'target_frequency',
             'custom_seeds',
             'custom_sources',
         ]
-
         widgets = autocomplete_widgets

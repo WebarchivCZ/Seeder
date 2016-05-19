@@ -44,7 +44,8 @@ class Harvest(BaseModel):
     )
 
     title = models.CharField(blank=True, max_length=255)
-
+    annotation = models.TextField(_('Annotation'), null=True, blank=True)
+    
     scheduled_on = DatePickerField(
         verbose_name=_('Date of harvest')
     )
