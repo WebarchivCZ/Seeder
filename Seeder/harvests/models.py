@@ -116,9 +116,7 @@ class Harvest(BaseModel):
         return list(seeds.values_list('url', flat=True))
 
     def get_calendar_style(self):
-        return 'calendar_freq_{0}'.format(
-            self.target_frequency if self.target_frequency else 'custom'
-        )
+        return 'calendar_state_{0}'.format(self.status)
 
     def get_seeds(self):
         """

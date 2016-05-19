@@ -118,31 +118,23 @@ table td {
 }
 
 
-.calendar_freq_0 {
-    background-color: #ad4192;
+.calendar_state_0 {
+  background-color: #2c46ad;
 }
-.calendar_freq_1 {
-    background-color: #ad1078;
+.calendar_state_1 {
+  background-color: #ad2f9f;
 }
-.calendar_freq_2 {
-    background-color: #57ad38;
+.calendar_state_2 {
+  background-color: #00ad01;
 }
-.calendar_freq_4 {
-    background-color: #4050ad;
-}
-.calendar_freq_6 {
-    background-color: #ad9a1d;
-}
-.calendar_freq_12 {
-    background-color: #1a2cad;
-}
-.calendar_freq_52 {
-    background-color: #34ad9f;
-}
-.calendar_freq_365 {
-    background-color: #92ad00;
+.calendar_state_3 {
+  background-color: #a7ad1f;
 }
 
-.calendar_freq_custom {
-    background-color: #ad001e;
+.calendar_state_4 {
+  background-color: #ad4e37;
+}
+
+.calendar_state_5 {
+  background-color: #ad000a;
 }
