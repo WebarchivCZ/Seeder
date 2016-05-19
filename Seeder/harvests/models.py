@@ -9,7 +9,7 @@ from django.db.models.signals import pre_save
 from reversion import revisions
 
 from blacklists.models import Blacklist
-from core.models import BaseModel
+from core.models import BaseModel, DatePickerField
 from harvests.scheduler import get_dates_for_timedelta
 from source.constants import SOURCE_FREQUENCY_PER_YEAR, HARVESTED_FREQUENCIES
 from source.models import Source, Seed
@@ -45,7 +45,7 @@ class Harvest(BaseModel):
 
     title = models.CharField(blank=True, max_length=255)
 
-    scheduled_on = models.DateField(
+    scheduled_on = DatePickerField(
         verbose_name=_('Date of harvest')
     )
 

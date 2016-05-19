@@ -198,7 +198,7 @@ class EmailNegotiation(models.Model):
     title = models.CharField(max_length=64)
     to_email = models.EmailField()
 
-    scheduled_date = models.DateField(_('When to send this message'))
+    scheduled_date = DatePickerField(_('When to send this message'))
     content = RichTextField()
     template = models.CharField(max_length=64)
 
