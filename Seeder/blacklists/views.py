@@ -1,10 +1,13 @@
 from django.core.urlresolvers import reverse
+from django.db import transaction
 from django.http.response import HttpResponseRedirect
 from django.utils.translation import ugettext_lazy as _
 from django.views.generic.base import TemplateView
 from django.views.generic.edit import FormView
 
+from reversion import revisions
 from urljects import U, URLView, pk
+
 from core import generic_views
 from . import models, forms
 
@@ -44,7 +47,11 @@ class EditView(BlacklistView, generic_views.EditView, URLView):
     template_name = 'edit_form.html'
 
     def form_valid(self, form):
-        form.save()
+        with transaction.atomic(), revisions.create_revision():
+            form.save()
+            revisions.set_comment(form.cleaned_data['comment'])
+
+
         return HttpResponseRedirect(reverse('blacklists:list'))
 
 

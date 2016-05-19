@@ -11,6 +11,8 @@ class AddForm(forms.ModelForm):
 
 
 class EditForm(DeletableModelForm):
+    comment = forms.CharField(required=False)
+
     class Meta:
         model = models.Blacklist
-        fields = ['title', 'blacklist_type', 'url_list']
+        fields = ['title', 'blacklist_type', 'url_list', 'comment']
