@@ -50,8 +50,6 @@ class EditView(BlacklistView, generic_views.EditView, URLView):
         with transaction.atomic(), revisions.create_revision():
             form.save()
             revisions.set_comment(form.cleaned_data['comment'])
-
-
         return HttpResponseRedirect(reverse('blacklists:list'))
 
 

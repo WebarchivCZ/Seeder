@@ -10,7 +10,11 @@
     {% for diff in diffs %}
         <div class="panel panel-default">
             <div class="panel-heading">
-               Author: {{ diff.user }} {{ diff.user.get_full_name }} <span class="pull-right">{{ diff.date|naturaltime }}</span>
+                {% trans 'Author' %}: {{ diff.user }} {{ diff.user.get_full_name }}
+                {% if diff.comment %}
+                | {% trans 'Comment' %}: {{ diff.comment }}
+                {% endif %}
+                <span class="pull-right">{{ diff.date|naturaltime }}</span>
             </div>
             <div class="panel-body">
                 <table class="table table-condensed table-hover">
