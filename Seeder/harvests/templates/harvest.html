@@ -9,6 +9,7 @@
     <div class="col-xs-12 col-md-12">
         <ul class="list-group">
           <li class="list-group-item">{% trans 'Title' %}: <span class="pull-right">{{ object.title }}</span></li>
+          <li class="list-group-item">{% trans 'Annotation' %}: <span class="pull-right">{{ object.annotation }}</span></li>
           <li class="list-group-item">{% trans 'Status' %}: <span class="pull-right">{{ object.get_status_display }}</span></li>
           <li class="list-group-item">{% trans 'Scheduled on' %}: <span class="pull-right">{{ object.scheduled_on }}</span></li>
           <li class="list-group-item">{% trans 'Sources by frequency' %}: <span class="pull-right">{{ object.get_target_frequency_display }}</span></li>
