@@ -4,7 +4,7 @@ Installation
 Prerequisites:
 --------------
 
- - python 2.7
+ - python 3.5
  - python psycopg2 driver
  - postgresql-devel
  - mysql-devel
