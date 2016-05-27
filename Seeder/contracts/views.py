@@ -75,8 +75,12 @@ class Assign(LoginMixin, FormView, ObjectMixinFixed, URLView):
         form = super().get_form(form_class)
         contract = form.fields['contract']
         contracts = models.Contract.objects.filter(
-            publisher=self.get_object().publisher)
-        contract.queryset = contracts
+            publisher=self.get_object().publisher
+        )
+        if contracts.exists():
+            contract.queryset = contracts
+        else:
+            contract.queryset = models.Contract.objects.all()
         return form
 
     def form_valid(self, form):
