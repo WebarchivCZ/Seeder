@@ -4,8 +4,7 @@ RUN apt-get update && apt-get install -y \
     libjpeg-dev \
     libpq-dev \
     memcachedb \
-    python-dev \
-    python-pip \
+    python3-dev \
     libmysqlclient-dev \
     python-psycopg2 \
     git-core \
