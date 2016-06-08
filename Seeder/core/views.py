@@ -102,3 +102,16 @@ class SimpleSearchView(SearchView, URLView):
     """
     url = U / 'search'
     url_name = 'simple_haystack_search'
+
+
+class CrashTestView(URLView, LoginMixin, View):
+    """
+    This view servers as crash test: it purposefully crashes request handling
+    so that we can see how will the server handle crashes.
+    """
+
+    url = U / 'crash_test'
+    url_name = 'crash_test'
+
+    def get(self, *args, **kwargs):
+        assert False
