@@ -232,7 +232,12 @@ class Source(BaseModel):
                 self.state = constants.STATE_CONTRACT_EXPIRED
                 self.save()
 
-        
+    def get_suggested_by(self):
+        if self.suggested_by:
+            return self.get_suggested_by_display()
+        return self.created_by
+
+
 @revisions.register(exclude=('last_changed',))
 class Seed(BaseModel):
     """
