@@ -1,6 +1,5 @@
 web:
   build: .
-  restart: always
   ports:
    - "8000:8000"
   links:
@@ -15,7 +14,6 @@ web:
   working_dir: /code/Seeder
 
 postgres:
-  restart: always
   image: postgres:latest
   ports:
     - "5432:5432"
