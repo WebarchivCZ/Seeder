@@ -1,4 +1,3 @@
-from source.models import Source
 from . import models
 from . import constants
 from . import forms
@@ -15,8 +14,14 @@ from django.http.response import HttpResponseRedirect
 
 from urljects import U, URLView, pk
 
-from core.generic_views import LoginMixin, ActionView, ObjectMixinFixed
 from comments.views import CommentViewGeneric
+from source.models import Source
+from core.generic_views import (
+    LoginMixin,
+    ActionView,
+    ObjectMixinFixed,
+    MessageView
+)
 
 
 class VotingView(LoginMixin):
@@ -24,15 +29,24 @@ class VotingView(LoginMixin):
     model = models.VotingRound
 
 
-class Create(VotingView, DetailView, URLView):
+class Create(VotingView, DetailView, URLView, MessageView):
     url = U / pk / 'create'
     url_name = 'create'
 
     model = Source
 
     def post(self, request, *args, **kwargs):
-        voting_round = models.VotingRound(source=self.get_object())
-        voting_round.save()
+        open_rounds = models.VotingRound.objects.filter(
+            source=self.get_object(), state=constants.VOTE_INITIAL
+        )
+        if open_rounds.exists():
+            voting_round = open_rounds.first()
+            self.add_message(
+                _('Open round already exists. Round not created.')
+            )
+        else:
+            voting_round = models.VotingRound(source=self.get_object())
+            voting_round.save()
         return HttpResponseRedirect(voting_round.get_absolute_url())
 
 
