@@ -1,5 +1,5 @@
 odictliteral
-django==1.9.6
+django==1.9.7
 pillow
 sorl-thumbnail==12.4a1
 psycopg2
@@ -13,7 +13,7 @@ django-fsm
 django-mptt
 fabric
 django-formtools
-django-reversion
+django-reversion==2.0.3
 pymysql
 django-ckeditor
 transifex-client
