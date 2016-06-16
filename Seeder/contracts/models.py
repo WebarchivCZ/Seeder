@@ -113,7 +113,7 @@ class Contract(BaseModel):
 
     class Meta:
         unique_together = ('contract_number', 'year')
-        ordering = ['created']
+        ordering = ['-created']
 
     def __str__(self):
         if self.state == constants.CONTRACT_STATE_NEGOTIATION:
