@@ -48,6 +48,10 @@ class QualityAssuranceCheck(BaseModel):
         help_text=_('This will close QA and act upon the source'),
     )
 
+    class Meta:
+        verbose_name = _('Quality assurance check')
+        verbose_name_plural = _('Quality assurance checks')
+
     def __str__(self):
         return 'QA: {0}'.format(self.source)
 

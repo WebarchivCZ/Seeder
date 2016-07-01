@@ -10,11 +10,12 @@ class PublisherForm(forms.ModelForm):
         Form that creates new publisher along with new contact person
     """
     contact_name = forms.CharField(
+        label=_('Contact name'),
         required=False,
         max_length=64,
         help_text='Name of the contact person')
-    email = forms.EmailField(required=False)
-    position = forms.CharField(required=False)
+    email = forms.EmailField(required=False, label=_('Email'))
+    position = forms.CharField(required=False, label=_('Position'))
 
     class Meta:
         model = models.Publisher
@@ -50,10 +51,16 @@ class ContactChoiceForm(forms.ModelForm):
     Form that lets users choose or create new contact
     """
     # we have to set required=false to these fields
-    name = forms.CharField(max_length=64, required=False)
-    email = forms.EmailField(required=False)
+    name = forms.CharField(
+        max_length=64,
+        required=False,
+        label=_('Name')
+    )
+    email = forms.EmailField(required=False, label=_('Email'))
     contact = forms.ModelChoiceField(
-        queryset=models.ContactPerson.objects.all(), required=False)
+        queryset=models.ContactPerson.objects.all(), required=False,
+        label=_('Contact')
+    )
 
     def clean(self):
         fields = [self.cleaned_data['contact'], self.cleaned_data['name']]
