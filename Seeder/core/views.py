@@ -67,7 +67,7 @@ class ChangeLanguage(View, URLView):
         return HttpResponseRedirect(redirect)
 
 
-class UserProfileEdit(UpdateView, MessageView, URLView):
+class UserProfileEdit(LoginMixin, UpdateView, MessageView, URLView):
     form_class = forms.UserForm
     view_name = 'user_edit'
     template_name = 'user_edit.html'
@@ -86,7 +86,7 @@ class UserProfileEdit(UpdateView, MessageView, URLView):
         return HttpResponseRedirect('/')
 
 
-class PasswordChangeDone(MessageView, View):
+class PasswordChangeDone(LoginMixin, MessageView, View):
     """
         Redirect page that adds success message
     """
@@ -95,7 +95,7 @@ class PasswordChangeDone(MessageView, View):
         return HttpResponseRedirect('/')
 
 
-class SimpleSearchView(SearchView, URLView):
+class SimpleSearchView(LoginMixin, SearchView, URLView):
     """
     Simpler search view that modified form class so that it has only one query
     field without selecting models
