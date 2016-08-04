@@ -17,5 +17,4 @@ ADD . /code
 WORKDIR /code
 
 RUN pip3 install -r requirements.txt --upgrade
-RUN pip3 install -r requirements_dev.txt --upgrade
 RUN python3 /code/Seeder/manage.py collectstatic --noinput
