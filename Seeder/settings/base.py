@@ -23,7 +23,6 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-TEMPLATE_DEBUG = True
 
 ALLOWED_HOSTS = []
 
@@ -97,19 +96,6 @@ INSTALLED_APPS = (
 )
 
 
-TEMPLATE_CONTEXT_PROCESSORS = (
-    "django.contrib.auth.context_processors.auth",
-    "django.template.context_processors.debug",
-    "django.template.context_processors.i18n",
-    "django.template.context_processors.media",
-    "django.template.context_processors.static",
-    "django.template.context_processors.tz",
-    "django.contrib.messages.context_processors.messages",
-    'django.core.context_processors.request',
-    'core.context_processors.core_processor',
-)
-
-
 MIDDLEWARE_CLASSES = (
     'reversion.middleware.RevisionMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -137,9 +123,27 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
 )
 
-TEMPLATE_DIRS = (
-    os.path.join(BASE_DIR, 'templates'),
-)
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': (
+                "django.contrib.auth.context_processors.auth",
+                "django.template.context_processors.debug",
+                "django.template.context_processors.i18n",
+                "django.template.context_processors.media",
+                "django.template.context_processors.static",
+                "django.template.context_processors.tz",
+                "django.contrib.messages.context_processors.messages",
+                'django.core.context_processors.request',
+                'core.context_processors.core_processor',
+            )
+        },
+    },
+]
+
 
 # APP_DIRS = True
 #
