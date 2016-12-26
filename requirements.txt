@@ -1,5 +1,5 @@
 odictliteral==1.0.0
-django==1.9.7
+django==1.10.4
 Pillow==3.2.0
 sorl-thumbnail==12.4a1
 psycopg2==2.6.1
