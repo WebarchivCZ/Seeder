@@ -10,7 +10,7 @@ django-tables2==1.2.2
 django-filter==0.13.0
 django-bootstrap3==7.0.1
 django-fsm==2.4.0
-django-mptt==0.8.4
+django-mptt==0.8.7
 django-formtools==1.0
 django-reversion==2.0.5
 PyMySQL==0.7.4
