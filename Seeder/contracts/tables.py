@@ -21,7 +21,7 @@ class ContractTable(tables.Table):
     class Meta:
         model = models.Contract
         fields = ('link', 'publisher', 'state', 'valid_to',
-                  'valid_from', 'open_source', 'in_communication', 'created',
+                  'valid_from', 'creative_commons', 'in_communication', 'created',
                   'last_changed')
 
         attrs = {
