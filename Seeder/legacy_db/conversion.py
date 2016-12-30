@@ -439,7 +439,7 @@ class ContractConversion(Conversion):
         source_dict['source'] = record.target_object
 
         if source_dict['cc']:
-            source_dict['open_source'] = 'creative'
+            source_dict['creative_commons'] = True
         source_dict['state'] = contract_constants.CONTRACT_STATE_VALID
 
         return source_dict
