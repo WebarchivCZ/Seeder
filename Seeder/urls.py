@@ -15,6 +15,8 @@ from contracts import views as contracts_views
 from harvests import views as harvests_views
 from blacklists import views as blacklists_views
 from qa import views as qa_views
+from www import views as www_views
+
 from api import api_router
 
 
@@ -47,6 +49,8 @@ urlpatterns = [
     url(U / 'harvests', view_include(harvests_views, namespace='harvests')),
     url(U / 'blacklists', view_include(blacklists_views, namespace='blacklists')),  # noqa
     url(U / 'qa', view_include(qa_views, namespace='qa')),
+
+    url(U / 'www', view_include(www_views, namespace='www')),
 
     # beware: wild card regexp!
     url(r'^', view_include(core_views, namespace='core'))
