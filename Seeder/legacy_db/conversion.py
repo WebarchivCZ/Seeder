@@ -376,11 +376,18 @@ class ContractConversion(Conversion):
         'year': 'year'
     }
 
+    ignore_broken_fks = True
+
     def start_conversion(self):
         """
         Custom logic that migrates parents / children contract after the
         contract conversion finishes, this have to be done separately to ensure
-        that all parent contracts are already migrated
+        that all parent contracts are already migrated.
+
+        1. Migrate all contracts
+        2. Find all children contracts
+        3. Try to find its parent.
+
         """
         super().start_conversion()
 
@@ -409,17 +416,10 @@ class ContractConversion(Conversion):
             converted_contract.parent_contract = converted_parent
             converted_contract.save()
 
+        print('Skipped contracts: ', skipped_contracts)
         print('Broken parent relationships: ', skipped_children)
 
     def clean(self, source_dict):
-        # we have to find Resource that links to this contract:
-        resources = models.Resources.objects.using(LEGACY_DATABASE).filter(
-            contract_id=source_dict['id']
-        )
-
-        if not resources:
-            raise BrokenRecord
-
         # fix duplicate contract numbers
         contract_number = source_dict.get('contract_no')
         year = source_dict.get('year')
@@ -433,13 +433,10 @@ class ContractConversion(Conversion):
             source_dict['contract_no'] *= 1000
             print('Invalid contract no fixed:', contract_number, year)
 
-        record = models.TransferRecord.objects.get(
-            original_type=get_ct(models.Resources),
-            original_id=resources[0].id)
-        source_dict['source'] = record.target_object
-
         if source_dict['cc']:
             source_dict['creative_commons'] = True
+
+        # Is this ok?
         source_dict['state'] = contract_constants.CONTRACT_STATE_VALID
 
         return source_dict
@@ -455,12 +452,26 @@ class ContractConversion(Conversion):
             contract_id=self.source_dict['id']
         ).values_list('id', flat=True)
 
+        if not linking_resources:
+            children_id = models.Contracts.objects.using(
+                LEGACY_DATABASE).filter(
+                parent__id=self.source_dict['id']
+            ).values_list('id', flat=True)
+
+            linking_resources = models.Resources.objects.using(
+                LEGACY_DATABASE).filter(
+                contract_id__in=children_id
+            ).values_list('id', flat=True)
+
         linking_transfers = models.TransferRecord.objects.filter(
             original_type=get_ct(models.Resources),
             original_id__in=list(linking_resources)
         )
 
         sources = [transfer.target_object for transfer in linking_transfers]
+        if not sources:
+            raise BrokenRecord
+
         new_object = self.target_model(**data)
         new_object.publisher = sources[0].publisher
         new_object.save()
