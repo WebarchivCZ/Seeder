@@ -57,6 +57,12 @@ class VotingDetail(VotingView, DetailView, CommentViewGeneric, URLView):
     url = U / pk / 'detail'
     url_name = 'detail'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['can_manage'] = self.get_object().can_manage(self.request.user)
+        return context
+
+
 
 class CastVote(LoginMixin, SingleObjectMixin, ActionView, URLView):
     """
@@ -115,14 +121,12 @@ class Resolve(LoginMixin, SingleObjectMixin, ActionView, URLView):
     """
     model = models.VotingRound
     allowed_actions = constants.VOTE_DICT.keys()
-    permission = 'sources.manage_sources'
 
     url = U / pk / 'resolve'
     url_name = 'resolve'
 
     def check_permissions(self, user):
-        manager = super().check_permissions(user)
-        return manager or self.get_object().source.owner == user
+        return self.get_object().can_manage(user)
 
     def process_action(self, action):
         if not self.action == constants.VOTE_WAIT:

@@ -95,7 +95,7 @@
                 </li>
             {% endfor %}
         </ul>
-        {% if voting_round.round_open and perms.source.manage_sources %}
+        {% if voting_round.round_open and can_manage %}
             <h3>{% trans 'Management powers:' %}</h3>
             <ul class="list-group">
             {% for choice in voting_round.get_choices.values %}

@@ -79,6 +79,11 @@ class VotingRound(BaseModel):
             return {}
         return constants.VOTE_DICT
 
+    def can_manage(self, user):
+        manager = user.has_perm('sources.manage_sources')
+        return manager or self.source.owner == user
+
+
 
 @revisions.register(exclude=('last_changed',))
 class Vote(BaseModel):
