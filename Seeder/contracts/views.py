@@ -80,7 +80,7 @@ class Assign(LoginMixin, FormView, ObjectMixinFixed, URLView):
         if contracts.exists():
             contract.queryset = contracts
         else:
-            contract.queryset = models.Contract.objects.all()
+            contract.queryset = models.Contract.objects.valid()
         return form
 
     def form_valid(self, form):
