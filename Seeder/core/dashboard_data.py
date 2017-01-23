@@ -140,6 +140,9 @@ class SourceCard(DashboardCard):
     def get_title(self, element):
         return element.name
 
+    def get_basic_queryset(self):
+        return source_models.Source.objects.filter(owner=self.user)
+
 
 class SourceOwned(SourceCard):
     """
@@ -148,8 +151,7 @@ class SourceOwned(SourceCard):
     title = _('Sources curating')
 
     def get_queryset(self):
-        return source_models.Source.objects.filter(
-            owner=self.user,
+        return self.get_basic_queryset().filter(
             state__in=source_models.constants.STATES_WITH_POTENTIAL
         )
 
@@ -161,7 +163,7 @@ class TechnicalReview(SourceCard):
     title = _('Sources that need technical review')
 
     def get_queryset(self):
-        return source_models.Source.objects.filter(
+        return self.get_basic_queryset().filter(
             state=source_models.constants.STATE_TECHNICAL_REVIEW
         )
 
@@ -170,7 +172,7 @@ class WithoutAleph(SourceCard):
     title = _('Source without Aleph ID')
 
     def get_queryset(self):
-        return source_models.Source.objects.filter(
+        return self.get_basic_queryset().filter(
             state__in=source_models.constants.ARCHIVING_STATES,
             aleph_id=None
         )
@@ -196,7 +198,7 @@ class NewQA(DashboardCard):
         return reverse('qa:create', args=[str(element.id)])
 
     def get_queryset(self):
-        return source_models.Source.objects.needs_qa()
+        return source_models.Source.objects.needs_qa().filter(owner=self.user)
 
     def get_color(self, element):
         return element.css_class()
