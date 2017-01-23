@@ -1,0 +1,19 @@
+{block title}{if $lang == 'cs'}Pokročilé vyhledávání{else}Advanced search{/if} | {include #parent}{/block}
+
+{block menuItemActive1} class="active"{/block}
+
+{block content}
+
+	<section id="advanced-search">
+		<div class="container">
+
+			<h1>Pokročilé vyhledávání <a href="{plink default}">Webarchiv<span class="false-link-underline-blue"></span></a>u</h1>
+
+			<div>
+				{include ../commonParts/advancedSearch.latte}
+			</div>
+
+		</div>
+	</section>
+
+{/block}

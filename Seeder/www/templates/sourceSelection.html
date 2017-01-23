@@ -1,0 +1,74 @@
+{block title}{if $lang == 'cs'}Výběr zdrojů{else}Selection criteria{/if} | {include #parent}{/block}
+
+{block menuItemActive4} class="active"{/block}
+
+{block content}
+
+	{include ../commonParts/add.latte}
+
+	<section>
+		<div class="container">
+
+			{if $lang == 'cs'}
+
+				<h2>Výběr zdrojů</h2>
+
+				<h3>Kritéria výběru zdrojů pro výběrové sklizně:</h3>
+
+				<p>Nejvýznamnějším kritériem pro výběr zdrojů do výběrových sklizní Webarchivu je <i>bohemikální charakter zdroje</i>. Toto kritérium se řídí pravidlem výběru dokumentů registrovaných v národní bibliografii, které zahrnuje:</p>
+				<ul class="normal">
+					<li><strong>Území</strong> – všechny dokumenty (zdroje) publikované na území České republiky</li>
+					<li><strong>Jazyk</strong> – všechny zdroje v češtině (bez ohledu na místo vydání)</li>
+					<li><strong>Autorství</strong> – všechny zdroje českých autorů (bez ohledu na místo vydání)</li>
+					<li><strong>Předmět/obsah</strong> – všechny zdroje, jejichž obsah se týká České republiky nebo českého národa (bez ohledu na místo vydání)</li>
+				</ul>
+
+				<p>Zdroje jsou do výběrových sklizní zařazovány zejména na základě jejich obsahu. Preferovány jsou zdroje s kulturní, vědeckou či historickou hodnotou, které mají originální a unikátní obsah a dlouhodobou badatelskou hodnotu.</p>
+				<p>K archivaci jsou zařazovány pouze volně přístupné/zveřejněné zdroje. Případně je nutné, aby byla přístupná obsahově podstatná část zdroj (zdroj může obsahovat např. sekci pro registrované uživatele).</p>
+				<p>Z hlediska formátu zdroje jsou archivovány zdroje v běžných formátech, které lze zobrazit pomocí webového prohlížeče.</p>
+				<p>Zdroje jsou také zařazovány s přihlédnutím k jejich technické povaze, jelikož není možné z technického hlediska sklidit všechny zdroje v takové podobě, v jaké se nacházejí na webu. V současnosti je problematické archivovat stránky a jejich prvky vytvořené v Javascriptu, animace vytvořené programem Flash či rozbalovací nabídku (tzv. drop down menu).</p>
+
+				<h3>Doporučení pro výběrové sklizně:</h3>
+				<ul class="normal">
+					<li><strong>Otázka autorských práv</strong> – před zařazením zdroje do archivu by měl být znám držitel autorských práv</li>
+					<li><strong>Integrita zdroje</strong> – preferováno je sklízení zdrojů, které tvoří logický celek (např. celá webová stránka, ne pouze její součást)</li>
+					<li><strong>Frekvence sklízení</strong> – zdroje zvolené na základě výběrových kritérií lze sklízet 1 až 12x ročně, případně jednorázově v případě, že se jedná o statický dokument, u kterého se již nepředpokládá jeho aktualizace (např. elektronická publikace monografické povahy).</li>
+				</ul>
+
+			{else}
+
+				<h2>Selective harvests</h2>
+
+				<h3>Selection criteria</h3>
+
+				<p>The selective approach includes bohemical documents based on (only one is sufficent):</p>
+				<ul class="normal">
+					<li><strong>Territory</strong> – documents published in Czech Republic</li>
+					<li><strong>Language</strong> – documents in Czech (territory doesn’t matter)</li>
+					<li><strong>Autorship</strong>– documents created by Czech author (territory doesn’t matter)</li>
+					<li><strong>Content</strong> – documents relating to Czech republic  (territory doesn’t matter)</li>
+				</ul>
+
+				<p>The documents with a cultural, historical, scientific value with a unique and original content are prefered.</p>
+
+				<p>We harvest:</p>
+
+				<ul class="normal">
+					<li>only freely accessible resources</li>
+					<li>resources in common formats</li>
+					<li>technically accessible documents (javascript, flash, drop-down menu are problematic)</li>
+				</ul>
+
+				<h3>Recommendation for selective harvests:</h3>
+				<ul class="normal">
+					<li><strong>Copyright</strong> – the copyright holder should be known</li>
+					<li><strong>Integrity</strong> – the related resources are harvested</li>
+					<li><strong>Frequency</strong> – resources in selective harvests are crawled from once a year to 12 times a year</li>
+				</ul>
+
+			{/if}
+
+		</div>
+	</section>
+
+{/block}

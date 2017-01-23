@@ -1,0 +1,22 @@
+{block title}{if $lang == 'cs'}Webarchiv podle oborů{else}Browse by subject | {include #parent}{/if}{/block}
+
+{block menuItemActive3} class="active"{/block}
+
+{block content}
+
+	{include ../commonParts/catalogSections.latte}
+
+	<section id="catalog-items">
+		<div class="container">
+
+			<hr>
+			<br>
+
+			{snippet resourceItems}
+				{include ../commonParts/resourceItems.latte}
+			{/snippet}
+
+		</div>
+	</section>
+
+{/block}

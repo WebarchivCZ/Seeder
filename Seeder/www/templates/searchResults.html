@@ -1,0 +1,138 @@
+{block title}{if count($resources) != 1}{if $lang == 'cs'}Výsledky vyhledávání{else}Search results{/if}{else}{$query}{/if} | {include #parent}{/block}
+
+{block menuItemActive1} class="active"{/block}
+
+{block content}
+
+
+	<section id="search">
+		<div class="container">
+
+
+			{if count($resources) > 1}
+
+			{if trim($query)!=""}<h1>{$query}</h1>{/if}
+
+			<a href="{link advancedSearch}">{if $lang == 'cs'}pokročilé vyhledávání{else}advanced search{/if}</a>
+
+			<div id="advanced-search">
+				{include ../commonParts/advancedSearch.latte}
+			</div>
+
+				<p class="results-info">
+					{if $lang == 'cs'}celkem: {$paginator->getItemCount()} výsledků{else}total: {$paginator->getItemCount()} results{/if}
+					{if $paginator->getPageCount() > 1}
+						, {if $lang == 'cs'}zobrazeno{else}showing{/if}: {$paginator->getPage()} / {$paginator->getPageCount()}
+						{if $lang == 'cs'}stran{else}pages{/if}
+					{/if}
+				</p>
+
+				{/if}
+				{if count($resources) > 0}
+				<br><br>
+				<p class="italic">
+					{if $lang == 'cs'}
+						Přístup k archivovaným stránkám je v rámci internetu omezen pouze na zdroje, ke kterým jsme od autorů získali smlouvu. Pro ostatní zdroje jsou dostupné pouze informace o počtu sklizených verzí. Na terminálu v <a href="{plink contact}">Klementinu</a> je pak Webarchiv dostupný bez omezení. Tyto možnosti jsou dány současnou legislativou.</p>
+					{else}
+						Due to copyright restrictions, only a limited number of archived websites for which agreements were signed with the publishers is available online. For other resources you can find out whether a given website was archived and the number of harvested versions. Unlimited access to all resources in Webarchiv is available from public terminals in the <a href="{plink contact}">National Library</a>.
+					{/if}
+				</p>
+			{/if}
+
+		</div>
+	</section>
+
+
+
+	{if count($resources) > 1}
+		<section id="catalog-items">
+				<div class="container">
+
+					<hr>
+					<br>
+
+					{snippet resourceItems}
+						{include ../commonParts/resourceItems.latte}
+						{/snippet}
+
+					</div>
+			</section>
+
+	{elseif count($resources) == 1}
+
+		<section id="catalog-items">
+			<div class="container">
+
+				<hr>
+				<br>
+
+			{foreach $resources as $resource}
+			<div class="row">
+				<div class="col-md-12 item-textual"><a href="http://wayback.webarchiv.cz/wayback/query?type=urlquery&url={$resource['url']|trim}"><h2>{$resource['title']}</h2></div>
+				<div class="col-xs-6 col-sm-4 col-md-3">
+				<div class="item-visual">
+				<div class="img-wrapper thumb">
+					{? $src_jpg = "images/resource/thumb/small_".$resource['id']."_".$resource['screenshot_date'].".jpg"; $src_png = "images/resource/thumb/small_".$resource['id']."_".$resource['screenshot_date'].".png";}
+					{if file_exists(WWW_DIR."/".$src_jpg)}
+						<img src="{$basePath}/{$src_jpg}" class="aspect-ratio" alt="{$resource['title']}">
+					{elseif file_exists(WWW_DIR."/".$src_png)}
+						<img src="{$basePath}/{$src_png}" class="aspect-ratio" alt="{$resource['title']}">
+					{else}
+						<div class="aspect-ratio">
+							<div class="no-image">
+								<span class="small">www</span>
+							</div>
+						</div>
+					{/if}
+				</div>
+				</a>
+				</div>
+				</div>
+
+				<div class="col-md-12 item-textual">
+
+					<p><span class="italic">{$resource['url']|trim|replace:'http://',''|replace:'https://',''}</span> <span class="blue">[</span><a href="{$resource['url']}">{if $lang == 'cs'}aktuální verze{else}current version{/if}</a><span class="blue">]</span></p>
+
+					{if $resource['annotation']}<p>{$resource['annotation']}</p>{/if}
+
+					{if $resource['publisher']}<p>{if $lang == 'cs'}Vydavatel:{else}Publisher:{/if} {$resource['publisher']->name}</p>{/if}
+
+					{if $resource['keywords']->count() > 0}
+						<ul class="inline-list">
+							{foreach $resource['keywords'] as $keyword}
+								<li><a href="{plink keywordResults, 'keyword'=>$keyword->keyword->id}">{$keyword->keyword->keyword}</a>{sep}, {/sep}</li>
+							{/foreach}
+						</ul>
+					{/if}
+
+				</div>
+			</div>
+			{/foreach}
+
+		</div>
+	</section>
+
+	{else}
+
+		<section id="no-results">
+			<div class="container">
+
+				<br><br>
+
+				{if $lang == 'cs'}
+					<p>Bohužel se nám nepodařilo najít zadané slovní spojení.</p>
+					<p>Můžete ho zkusit upravit nebo <a href="{plink advanced-search}">hledat podle adresy</a>.</p>
+
+				{else}
+					<p>Your search did not match any documents.</p>
+					<p>You can try different keywords or <a href="{plink advanced-search}">search by URL</a>.</p>
+				{/if}
+
+			</div>
+		</section>
+
+	{/if}
+
+
+
+{/block}

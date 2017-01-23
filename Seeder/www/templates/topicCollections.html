@@ -1,0 +1,74 @@
+{block title}{if $lang == 'cs'}Tématické sbírky{else}Topic collections{/if} | {include #parent}{/block}
+
+{block menuItemActive2} class="active"{/block}
+
+{block content}
+
+	{include ../commonParts/about.latte}
+
+	<section>
+		<div class="container">
+
+			{if $lang == 'cs'}
+
+				<h2>Tématické sbírky</h2>
+				<p>Tematické sbírky jsou monotematické soubory webových dokumentů. V rámci tematických sklizní sledujeme především takové děje, které doprovází celospolečenská debata a je u nich tedy předpoklad, že zaujmou významnější místo z hlediska dějin České republiky. Cíleně vybíráme události, které mají širší ohlas v prostředí internetu. Monitorujeme očekávané akce (např. volby), ale i nenadálé situace (např. povodně).</p>
+
+				<ul class="normal">
+					{foreach $topicCollections as $topicCollection}
+					{continueIf !$topicCollection->title_cs}
+						<li><a href="#{$topicCollection->title_cs|webalize}">{$topicCollection->title_cs}</a></li>
+					{/foreach}
+				</ul>
+
+			{else}
+
+				<h2>Topic collections</h2>
+
+				<ul class="normal">
+					{foreach $topicCollections as $topicCollection}
+						{continueIf !$topicCollection->title_en}
+						<li><a href="#{$topicCollection->title_en|webalize}">{$topicCollection->title_en}</a></li>
+					{/foreach}
+				</ul>
+
+			{/if}
+
+
+			<div class="padding20"></div>
+			<hr class="no-margin">
+
+			{if $lang == 'cs'}
+
+				{foreach $topicCollections as $topicCollection}
+
+					{continueIf !$topicCollection->title_cs}
+
+					<div id="{$topicCollection->title_cs|webalize}"></div>
+
+					<h2>{$topicCollection->title_cs}</h2>
+					<p>{$topicCollection->text_cs}</p>
+					{if $topicCollection->dates}<p>Datum: {$topicCollection->dates}</p>{/if}
+
+				{/foreach}
+
+			{else}
+
+				{foreach $topicCollections as $topicCollection}
+
+					{continueIf !$topicCollection->title_en}
+
+					<div id="{$topicCollection->title_en|webalize}"></div>
+
+					<h2>{$topicCollection->title_en}</h2>
+					<p>{$topicCollection->text_en}</p>
+					{if $topicCollection->dates}<p>Date: {$topicCollection->dates}</p>{/if}
+
+				{/foreach}
+
+			{/if}
+
+		</div>
+	</section>
+
+{/block}
