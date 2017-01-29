@@ -57,8 +57,6 @@ class ChangeLanguage(View, URLView):
     url_name = 'change_language'
 
     def get(self, request, code):
-        print(translation.get_language())
-
         redirect = request.META.get('HTTP_REFERER')
         if not is_safe_url(url=redirect, host=request.get_host()):
             redirect = '/'

@@ -1,8 +1,25 @@
 from urljects import U, URLView
-from django.views.generic.base import TemplateView
+from django.views.generic.base import TemplateView, View
+from django.http.response import HttpResponseRedirect
+from django.utils.http import is_safe_url
+from django.utils import translation
 
 from contracts.models import Contract
 from source.models import Source
+
+
+class ChangeLanguage(View, URLView):
+    url = U / 'lang' / r'(?P<code>\w+)'
+    url_name = 'change_language'
+
+    def get(self, request, code):
+        redirect = request.META.get('HTTP_REFERER')
+        if not is_safe_url(url=redirect, host=request.get_host()):
+            redirect = '/'
+        if translation.check_for_language(code):
+            request.session[translation.LANGUAGE_SESSION_KEY] = code
+        return HttpResponseRedirect(redirect)
+
 
 class Index(TemplateView, URLView):
     template_name = 'index.html'

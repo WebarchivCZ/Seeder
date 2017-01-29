@@ -61,8 +61,8 @@
 				</a>
 
 				<div class="langs">
-					<a href="{plink Default:default, lang => cs}"{if $lang=='cs'} class="current"{/if}>CZ</a>
-					<a href="{plink Default:default, lang => en}"{if $lang=='en'} class="current"{/if}>EN</a>
+					<a href="{% url "www:change_language" code="cs" %}"{% if lang == "cs" %} class="current"{% endif %}>CZ</a>
+					<a href="{% url "www:change_language" code="en" %}"{% if lang == "en" %} class="current"{% endif %}>EN</a>
 				</div>
 
 				{% if 0 %}
