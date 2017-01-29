@@ -185,6 +185,11 @@ class Source(BaseModel):
     def main_seed(self):
         return self.seed_set.first()
 
+    @property
+    def url(self):
+        return self.main_seed.url
+
+
     @main_seed.setter
     def main_seed(self, value):
         """

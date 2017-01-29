@@ -121,22 +121,21 @@
 						</div>
 
 						{% if lang == "cs" %}
-							{% if webarchive_size %}
-								<p><a href="{plink default}">Webarchiv</a> k {? echo date('j. n. Y');} obsahuje <span class="h1-size">{$webarchiveSize|trim}</span> dat. První dokument byl archivován 3. 9. 2001.</p>
-								<hr><br>
-							{% endif %}
+							<p><a href="{plink default}">Webarchiv</a> k {% now "SHORT_DATE_FORMAT" %} obsahuje <span class="h1-size">{% include "includes/webarchive_size.txt" %}</span> dat. První dokument byl archivován 3. 9. 2001.</p>
+							<hr><br>
 							<p>Celkem jsme s autory uzavřeli <span class="h1-size">{{ contract_count }}</span> smluv. Poslední aktuální smlouvy:</p>
 						{% else %}
-							<p><a href="{plink default}">Webarchiv</a> contains to {? echo date('j. n. Y');} <span class="h1-size">{$webarchiveSize|trim}</span> data. The first website was harvested in 3. 9. 2001.</p>
+							<p><a href="{plink default}">Webarchiv</a> contains to {% now "SHORT_DATE_FORMAT" %} <span class="h1-size">{$webarchiveSize|trim}</span> data. The first website was harvested in 3. 9. 2001.</p>
 							<hr><br>
-							<p>We concluded <span class="h1-size">{$resourceCount}</span> contracts with a publishers at the moment. The last contracts are for these websites:</p>
+							<p>We concluded <span class="h1-size">{{ contract_count }}</span> contracts with a publishers at the moment. The last contracts are for these websites:</p>
 						{% endif %}
 
-						{% for last_resource in last_resources %}
+						{% for source in last_sources %}
 							<ul>
-								<li><a href="http://wayback.webarchiv.cz/wayback/query?type=urlquery&url={$lastResource->url}">{$lastResource->title}</a>{sep}, {/sep}</li>
+								<li><a href="http://wayback.webarchiv.cz/wayback/query?type=urlquery&url={{ source.url }}">{{ source }}</a>{% include "includes/comma.html" %}</li>
 							</ul>
 						{% endfor %}
+
 
 					</div>
 
