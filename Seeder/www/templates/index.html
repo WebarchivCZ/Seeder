@@ -1,0 +1,150 @@
+{% extends "base_www.html" %}
+{% load i18n %}
+{% get_current_language as lang %}
+
+
+
+{% block title %}Webarchiv - {% if lang == "cs" %}památník českého internetu{% else %}the Museum of Czech web{% endif %}{% endblock title %}
+
+
+
+
+{% block content %}
+	<section id="main-search">
+		<div class="container">
+
+			<div class="row">
+				<div class="col-md-8 col-md-offset-2">
+
+					<div class="main-header">
+						<h1><a href="{plink default}">Webarchiv<span class="false-link-underline-blue"></span></a></h1>
+						{% if lang == "cs" %}
+							<p class="italic">památník českého internetu, <a href="{plink moreAbout}">více</a></p>
+						{% else %}
+							<p class="italic">the Museum of Czech web, <a href="{plink moreAbout}">more</a></p>
+						{% endif %}
+					</div>
+
+					<div class="searchbox-wrapper-outer">
+
+						<div class="searchbox-wrapper">
+
+							{form bigSearchBox}
+								{input query class => 'query'}
+								{input submit class => 'submit'}
+							{/form}
+
+						</div>
+
+						{% if lang == "cs" %}
+							<p class="italic">hledejte „webarchiv.cz“ nebo „webarchiv“, <a href="{plink advancedSearch}">pokročilé</a></p>
+						{% else %}
+							<p class="italic">search „webarchiv.cz“ or „webarchiv“, <a href="{plink advancedSearch}">advanced</a></p>
+						{% endif %}
+					</div>
+
+				</div>
+			</div>
+		</div>
+	</section>
+
+
+	<section id="news">
+		<div class="container">
+
+			<div class="row">
+
+			{% if homepageNew %}
+					<div class="col-md-4 col-sm-6">
+
+						<div class="news-column left-news">
+
+							<div class="visible-xs">
+								<hr>
+							</div>
+
+							{% if lang == "cs" %}
+								{!$homepageNew->text_cs}
+							{% else %}
+								{!$homepageNew->text_en}
+							{% endif %}
+
+						</div>
+					</div>
+				{% endif %}
+
+				<div class="col-md-4 col-sm-6">
+
+					<div class="news-column">
+
+						<div class="visible-xs">
+							<hr><br><br>
+						</div>
+
+						{% if lang == "cs" %}
+							<p>Výběr z katalogu stránek, <br class="visible-md visible-lg"><a href="{plink catalog}">více v oborovém třídění</a></p>
+						{% else %}
+							<p>Selection of contracted websites, <br class="visible-md visible-lg"><a href="{plink catalog}">see the full list</a></p>
+						{% endif %}
+
+						{% for resources in selected_resources %}
+							<h2><a href="http://wayback.webarchiv.cz/wayback/query?type=urlquery&url={{ resource.url }}">{{ resource.title }}</a></h2>
+								{% if resource.annotation %}<p>{{resource.annotation}}</p>{% endif %}
+								{% if resource.publisher %} <p>Vydavatel: {{ resource.publisher }}</p>{% endif %}
+								
+								{% if resource.keywords %}
+								<ul class="inline-list">
+									{% for keyword in selectedResource.keywords %}
+										<li><a href="{plink keywordResults, 'keyword'=>$keyword->id}">{{ keyword }}</a>,</li>
+									{% endfor %}
+								</ul>
+								{% endif %}
+							<hr>
+						{% endfor %}
+
+					</div>
+
+					<div class="visible-sm visible-xs">
+						<br>
+					</div>
+
+				</div>
+
+				<div class="clearfix visible-sm"></div>
+
+				<div class="col-md-4 stats">
+
+					<div class="news-column">
+
+						<div class="visible-sm visible-xs clear">
+							<hr><br>
+						</div>
+
+						{% if lang == "cs" %}
+							{% if webarchive_size %}
+								<p><a href="{plink default}">Webarchiv</a> k {? echo date('j. n. Y');} obsahuje <span class="h1-size">{$webarchiveSize|trim}</span> dat. První dokument byl archivován 3. 9. 2001.</p>
+								<hr><br>
+							{% endif %}
+							<p>Celkem jsme s autory uzavřeli <span class="h1-size">{{ contract_count }}</span> smluv. Poslední aktuální smlouvy:</p>
+						{% else %}
+							<p><a href="{plink default}">Webarchiv</a> contains to {? echo date('j. n. Y');} <span class="h1-size">{$webarchiveSize|trim}</span> data. The first website was harvested in 3. 9. 2001.</p>
+							<hr><br>
+							<p>We concluded <span class="h1-size">{$resourceCount}</span> contracts with a publishers at the moment. The last contracts are for these websites:</p>
+						{% endif %}
+
+						{% for last_resource in last_resources %}
+							<ul>
+								<li><a href="http://wayback.webarchiv.cz/wayback/query?type=urlquery&url={$lastResource->url}">{$lastResource->title}</a>{sep}, {/sep}</li>
+							</ul>
+						{% endfor %}
+
+					</div>
+
+				</div>
+
+			</div>
+		</div>
+	</section>
+
+
+{% endblock content %}
