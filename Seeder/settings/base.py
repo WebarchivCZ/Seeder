@@ -93,6 +93,7 @@ INSTALLED_APPS = (
     'harvests',
     'blacklists',
     'qa',
+    'www',
 )
 
 

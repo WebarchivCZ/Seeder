@@ -10,8 +10,16 @@ class NewsObject(BaseModel):
     annotation = models.TextField()
     image = models.ImageField(upload_to='photos')    
 
-    source_1 = models.ForeignKey(Source, on_delete=models.DO_NOTHING, null=True, blank=True)
-    source_2 = models.ForeignKey(Source, on_delete=models.DO_NOTHING, null=True, blank=True)
+    source_1 = models.ForeignKey(
+        Source, 
+        on_delete=models.DO_NOTHING,
+        null=True, blank=True,
+        related_name='news_a')
+    source_2 = models.ForeignKey(
+        Source, 
+        on_delete=models.DO_NOTHING, 
+        null=True, blank=True,
+        related_name='news_b')
 
 
 class SearchLog(models.Model):
@@ -26,4 +34,3 @@ class TopicCollection(BaseModel):
     image = models.ImageField(upload_to='photos')    
 
     sources = models.ManyToManyField(Source)
-    
