@@ -78,7 +78,7 @@
 			<div class="collapse navbar-collapse" id="bs-navbar-collapse">
 
 				<ul class="nav navbar-nav">
-					<li><a href="{plink Default:default}">{% if lang == "cs" %}úvod{% else %}home{% endif %}</a></li>
+					<li><a href="{% url "www:index" %}">{% if lang == "cs" %}úvod{% else %}home{% endif %}</a></li>
 					<li><a href="{plink Default:about}">{% if lang == "cs" %}o Webarchivu{% else %}about Webarchiv{% endif %}</a></li>
 					<li><a href="{plink Default:catalog}">{% if lang == "cs" %}katalog stránek{% else %}browse{% endif %}</a></li>
 					<li><a href="{plink Default:add}">{% if lang == "cs" %}přidat web{% else %}nominate a site{% endif %}</a></li>
@@ -108,7 +108,7 @@
 					<ul>
 						{% if lang == "cs" %}
 							<li>
-								<a href="{plink Default:default}">Webarchiv</a> je pod licencí:<br><a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" class="cc-link"><strong>CC</strong> BY/NC/ND</a>
+								<a href="{% url "www:index" %}">Webarchiv</a> je pod licencí:<br><a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" class="cc-link"><strong>CC</strong> BY/NC/ND</a>
 							</li>
 							<li>
 								<br>Koncept a grafickou podobu připravili<br>
@@ -119,7 +119,7 @@
 
 						{% else %}
 							<li>
-								<a href="{plink Default:default}">Webarchiv</a> is licensed under:<br>
+								<a href="{% url "www:index" %}">Webarchiv</a> is licensed under:<br>
 								<a href="{plink Default:creativeCommons}" class="cc-link"><strong>CC</strong> BY/NC/ND</a>
 							</li>
 							<li>
@@ -133,7 +133,7 @@
 				</div>
 
 				<div class="col-sm-2 col-sm-offset-4 external-links">
-					<h2><a href="{plink Default:default}">WWW</a></h2>
+					<h2><a href="{% url "www:index" %}">WWW</a></h2>
 					<ul>
 						<li><a href="{plink Default:contact}">{% if lang == "cs" %}kontakt{% else %}contact{% endif %}</a></li>
 						<li><a href="https://www.facebook.com/webarchivcz">facebook</a></li>
