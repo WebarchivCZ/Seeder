@@ -18,7 +18,7 @@ django-ckeditor==5.0.3
 transifex-client==0.12.1
 django-debug-toolbar==1.4
 tld==0.7.6
-django-autocomplete-light==3.1.5
+django-autocomplete-light==3.2.1
 django_crontab==0.7.1
 urljects==1.10.4
 dateutils==0.6.6
@@ -28,3 +28,4 @@ django-haystack==2.6.0
 elasticsearch==2.3.0
 python-memcached==1.58
 elasticstack==0.4.1
+django-modeltranslation==0.12

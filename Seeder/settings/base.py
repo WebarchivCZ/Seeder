@@ -56,6 +56,9 @@ IGNORABLE_404_URLS = (
 # Application definition
 INSTALLED_APPS = (
     'raven.contrib.django.raven_compat',
+    'dal',
+    'dal_select2',
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -78,10 +81,9 @@ INSTALLED_APPS = (
     'sorl.thumbnail',
     'rest_framework',
     'rest_framework.authtoken',
-    'dal',
-    'dal_select2',
     'haystack',
     'elasticstack',
+    'modeltranslation',
 
     'core',
     'publishers',
@@ -93,6 +95,7 @@ INSTALLED_APPS = (
     'harvests',
     'blacklists',
     'qa',
+    'www',
 )
 
 
@@ -249,6 +252,9 @@ if DEBUG:
 
 
 WAKAT_URL = 'http://forpsi.kitakitsune.org:8080/?url_id={id}'
+WAYBACK_URL = "http://wayback.webarchiv.cz/wayback/query?type=urlquery&url={url}"
+
+
 
 SEEDS_EXPORT_DIR = 'seeds'
 MANET_URL = '127.0.0.1:8891'
