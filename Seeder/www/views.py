@@ -37,6 +37,7 @@ class About(TemplateView, URLView):
 
 class MoreAbout(TemplateView, URLView):
     template_name = 'about/more_about.html'
+    view_name = 'about'
 
     url = U / _('more_about_url')
     url_name = 'more_about'
