@@ -82,6 +82,7 @@ INSTALLED_APPS = (
     'dal_select2',
     'haystack',
     'elasticstack',
+    'modeltranslation',
 
     'core',
     'publishers',

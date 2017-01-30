@@ -28,3 +28,4 @@ git+https://github.com/django-haystack/django-haystack.git#e7e83ad529d9701c2b262
 elasticsearch==2.3.0
 python-memcached==1.58
 elasticstack==0.4.1
+django-modeltranslation==0.12
