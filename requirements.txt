@@ -22,9 +22,9 @@ django-autocomplete-light==3.2.1
 django_crontab==0.7.1
 urljects==1.10.4
 dateutils==0.6.6
-raven==5.21.0
+raven==5.32.0
 requests==2.10.0
-git+https://github.com/django-haystack/django-haystack.git#e7e83ad529d9701c2b262dbaf4a8360738654fcd
+django-haystack==2.6.0
 elasticsearch==2.3.0
 python-memcached==1.58
 elasticstack==0.4.1
