@@ -92,11 +92,9 @@
 							<p>{% if lang == "cs" %}Vydavatel: {% else %}Publisher: {% endif %} {{ news_article.source_1.publisher }}</p>
 							
 							{% if news_article.source_1.keywords %}
-								TODO: I am 12 years old and what is this???? 
-
 								<ul class="inline-list">
-									{% for keyword in news_article.source_1.keywords %}
-										<li><a href="{plink keywordResults, 'keyword'=>$keyword->id}">{{ keyword }}</a>,</li>
+									{% for keyword in news_article.source_1.keywords.all %}
+										<li><a href="">{{ keyword }}</a>{% include "includes/comma.html" %}</li>
 									{% endfor %}
 								</ul>
 							{% endif %}
@@ -108,6 +106,15 @@
 							<h2><a href="{{ news_article.source_2.wayback_url }}">{{ news_article.source_2 }}</a></h2>
 							<p>{{ news_article.source_2.annotation}}</p>
 							<p>{% if lang == "cs" %}Vydavatel: {% else %}Publisher: {% endif %} {{ news_article.source_2.publisher }}</p>
+
+							{% if news_article.source_2.keywords %}
+								<ul class="inline-list">
+									{% for keyword in news_article.source_2.keywords.all %}
+										<li><a href="">{{ keyword }}</a>{% include "includes/comma.html" %}</li>
+									{% endfor %}
+								</ul>
+							{% endif %}
+
 						{% endif %}
 					</div>
 
