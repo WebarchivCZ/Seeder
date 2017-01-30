@@ -88,7 +88,7 @@
 
 						{% if news_article.source_1 %}
 							<h2><a href="{{ news_article.source_1.wayback_url }}">{{ news_article.source_1 }}</a></h2>
-							<p>{{ news_article.source_1.annotation}}</p>
+							{{ news_article.get_annotation_source_1 | safe}}
 							<p>{% if lang == "cs" %}Vydavatel: {% else %}Publisher: {% endif %} {{ news_article.source_1.publisher }}</p>
 							
 							{% if news_article.source_1.keywords %}
@@ -104,7 +104,7 @@
 							<hr>
 
 							<h2><a href="{{ news_article.source_2.wayback_url }}">{{ news_article.source_2 }}</a></h2>
-							<p>{{ news_article.source_2.annotation}}</p>
+							{{ news_article.get_annotation_source_2 | safe}}
 							<p>{% if lang == "cs" %}Vydavatel: {% else %}Publisher: {% endif %} {{ news_article.source_2.publisher }}</p>
 
 							{% if news_article.source_2.keywords %}
