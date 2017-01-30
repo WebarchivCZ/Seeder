@@ -1,8 +1,8 @@
-{block title}{% if lang == "cs" %}Klíčové slovo{% else %}Keyword{% endif %} | {include #parent}{/block}
+{block title}{% if lang == "cs" %}Klíčové slovo{% else %}Keyword{% endif %} | {include #parent}{% endblock %}
 
-{block menuItemActive1} class="active"{/block}
+{block menuItemActive1} class="active"{% endblock %}
 
-{block content}
+{% block content %}
 
 	<section id="search">
 		<div class="container">
@@ -56,4 +56,4 @@
 
 
 
-{/block}
+{% endblock %}

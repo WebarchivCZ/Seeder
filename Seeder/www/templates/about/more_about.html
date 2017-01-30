@@ -1,11 +1,12 @@
-{? $footerFullBorder = TRUE;}
-{? $footerNoBorder = TRUE;}
+{% extends "base_www.html" %}
 
-{block title}{% if lang == "cs" %}Jsme Webarchiv{% else %}We are Webarchiv{% endif %}{/block}
+{% block title %}{% if lang == "cs" %}Jsme Webarchiv{% else %}We are Webarchiv{% endif %}{% endblock title %}
 
-{block menuItemActive2} class="active"{/block}
 
-{block content}
+
+block
+
+{% block content %}
 
 	{% if lang == "cs" %}
 
@@ -225,4 +226,4 @@
 
 	{% endif %}
 
-{/block}
+{% endblock %}

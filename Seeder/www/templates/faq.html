@@ -1,8 +1,8 @@
-{block title}{% if lang == "cs" %}Často kladené dotazy{% else %}Frequently Asked Questions{% endif %} | {include #parent}{/block}
+{block title}{% if lang == "cs" %}Často kladené dotazy{% else %}Frequently Asked Questions{% endif %} | {include #parent}{% endblock %}
 
-{block menuItemActive2} class="active"{/block}
+{block menuItemActive2} class="active"{% endblock %}
 
-{block content}
+{% block content %}
 
 	{include ../commonParts/faq.latte}
 
@@ -197,4 +197,4 @@
 		</div>
 	</section>
 
-{/block}
+{% endblock %}

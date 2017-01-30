@@ -1,8 +1,8 @@
 {? $footerNoBorder = TRUE;}
 
-{block title}{% if lang == "cs" %}Chyba{% else %}Error{% endif %} 404 | {include #parent}{/block}
+{block title}{% if lang == "cs" %}Chyba{% else %}Error{% endif %} 404 | {include #parent}{% endblock %}
 
-{block content}
+{% block content %}
 
 	<section id="error">
 		<div class="container">
@@ -20,4 +20,4 @@
 
 
 
-{/block}
+{% endblock %}

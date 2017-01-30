@@ -1,8 +1,8 @@
-{block title}Creative Commons | {include #parent}{/block}
+{block title}Creative Commons | {include #parent}{% endblock %}
 
-{block menuItemActive4} class="active"{/block}
+{block menuItemActive4} class="active"{% endblock %}
 
-{block content}
+{% block content %}
 
 	{include ../commonParts/add.latte}
 
@@ -80,4 +80,4 @@
 		</div>
 	</section>
 
-{/block}
+{% endblock %}

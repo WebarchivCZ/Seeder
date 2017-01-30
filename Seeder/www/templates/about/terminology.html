@@ -1,8 +1,8 @@
-{block title}Terminologie | {include #parent}{/block}
+{block title}Terminologie | {include #parent}{% endblock %}
 
-{block menuItemActive2} class="active"{/block}
+{block menuItemActive2} class="active"{% endblock %}
 
-{block content}
+{% block content %}
 
 	{include ../commonParts/about.latte}
 
@@ -28,4 +28,4 @@
 		</div>
 	</section>
 
-{/block}
+{% endblock %}

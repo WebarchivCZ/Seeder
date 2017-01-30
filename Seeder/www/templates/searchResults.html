@@ -1,8 +1,8 @@
-{block title}{if count($resources) != 1}{% if lang == "cs" %}Výsledky vyhledávání{% else %}Search results{% endif %}{% else %}{$query}{% endif %} | {include #parent}{/block}
+{block title}{if count($resources) != 1}{% if lang == "cs" %}Výsledky vyhledávání{% else %}Search results{% endif %}{% else %}{$query}{% endif %} | {include #parent}{% endblock %}
 
-{block menuItemActive1} class="active"{/block}
+{block menuItemActive1} class="active"{% endblock %}
 
-{block content}
+{% block content %}
 
 
 	<section id="search">
@@ -135,4 +135,4 @@
 
 
 
-{/block}
+{% endblock %}

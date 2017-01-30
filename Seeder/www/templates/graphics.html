@@ -1,8 +1,8 @@
-{block title}{% if lang == "cs" %}Grafické materiály{% else %}Banners{% endif %} | {include #parent}{/block}
+{block title}{% if lang == "cs" %}Grafické materiály{% else %}Banners{% endif %} | {include #parent}{% endblock %}
 
-{block menuItemActive2} class="active"{/block}
+{block menuItemActive2} class="active"{% endblock %}
 
-{block content}
+{% block content %}
 
 	{include ../commonParts/about.latte}
 
@@ -150,4 +150,4 @@
 		</div>
 	</section>
 
-{/block}
+{% endblock %}

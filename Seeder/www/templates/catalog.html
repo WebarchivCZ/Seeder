@@ -1,8 +1,8 @@
-{block title}{% if lang == "cs" %}Webarchiv podle oborů{% else %}Browse by subject | {include #parent}{% endif %}{/block}
+{block title}{% if lang == "cs" %}Webarchiv podle oborů{% else %}Browse by subject | {include #parent}{% endif %}{% endblock %}
 
-{block menuItemActive3} class="active"{/block}
+{block menuItemActive3} class="active"{% endblock %}
 
-{block content}
+{% block content %}
 
 	{include ../commonParts/catalogSections.latte}
 
@@ -19,4 +19,4 @@
 		</div>
 	</section>
 
-{/block}
+{% endblock %}

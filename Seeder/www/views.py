@@ -34,3 +34,15 @@ class About(TemplateView, URLView):
     url = U / _('about_url')
     url_name = 'about'
 
+
+class MoreAbout(TemplateView, URLView):
+    template_name = 'about/more_about.html'
+
+    url = U / _('more_about_url')
+    url_name = 'more_about'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data()
+        context['footerFullBorder'] = True
+        return context
+

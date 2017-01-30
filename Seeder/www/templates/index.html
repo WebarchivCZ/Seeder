@@ -19,9 +19,9 @@
 					<div class="main-header">
 						<h1><a href="{% url "www:index" %}">Webarchiv<span class="false-link-underline-blue"></span></a></h1>
 						{% if lang == "cs" %}
-							<p class="italic">památník českého internetu, <a href="{plink moreAbout}">více</a></p>
+							<p class="italic">památník českého internetu, <a href="{% url "www:more_about" %}">více</a></p>
 						{% else %}
-							<p class="italic">the Museum of Czech web, <a href="{plink moreAbout}">more</a></p>
+							<p class="italic">the Museum of Czech web, <a href="{% url "www:more_about" %}">more</a></p>
 						{% endif %}
 					</div>
 
