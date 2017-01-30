@@ -54,7 +54,6 @@
 
 			<div class="row">
 
-			{% if homepageNew %}
 					<div class="col-md-4 col-sm-6">
 
 						<div class="news-column left-news">
@@ -63,15 +62,15 @@
 								<hr>
 							</div>
 
-							{% if lang == "cs" %}
-								{!$homepageNew->text_cs}
-							{% else %}
-								{!$homepageNew->text_en}
+							<h2> {{ news_article.title }}</h2>
+							{% if news_article.image %}
+								<img alt="" src="{{ news_article.image.url }}">
 							{% endif %}
+							<br>
+							{{ news_article.annotation|safe }}
 
 						</div>
 					</div>
-				{% endif %}
 
 				<div class="col-md-4 col-sm-6">
 

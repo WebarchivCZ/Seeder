@@ -7,6 +7,8 @@ from django.utils import translation
 from contracts.models import Contract
 from source.models import Source
 
+from . import models
+
 
 class ChangeLanguage(View, URLView):
     url = U / 'lang' / r'(?P<code>\w+)'
@@ -33,5 +35,6 @@ class Index(TemplateView, URLView):
         
         context['contract_count'] = Contract.objects.valid().count()
         context['last_sources'] = Source.objects.archiving().order_by('-created')[:5]
+        context['news_article'] = models.NewsObject.objects.latest('created') 
 
         return context
