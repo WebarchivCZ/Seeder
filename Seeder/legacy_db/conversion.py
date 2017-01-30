@@ -10,6 +10,7 @@ from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
 from django.db.models.signals import post_save
 from django.utils import timezone
+from django.db.utils import IntegrityError
 
 from publishers.models import Publisher, ContactPerson
 from source import models as source_models
@@ -515,10 +516,59 @@ class QAConversion(Conversion):
         'comments': 'comment',
     }
 
+class KeyWordConversion(Conversion):
+    source_model = models.Keywords
+    target_model = source_models.KeyWord
+
+    field_map = {
+        'keyword': 'word',
+    }
+
+    def create_new(self):
+        """
+        1. find all resources linking to this source
+        2. find their migrations
+        3. link the migrations to the new instance. 
+        """
+        try:
+            data = self.get_field_data()
+        except ObjectDoesNotExist: 
+            raise BrokenRecord
+
+        try:
+            new_object = self.target_model(**data)
+            new_object.save()
+        except IntegrityError: 
+            new_object = source_models.KeyWord.objects.get(
+                word=data['word']
+            )
+
+
+        key_id = self.source_dict['id']
+
+        linking_resources = models.KeywordsResources.objects.using(LEGACY_DATABASE).filter(
+            keyword_id=key_id
+        ).values_list('resource_id', flat=True)
+
+
+        linking_transfers = models.TransferRecord.objects.filter(
+            original_type=get_ct(models.Resources),
+            original_id__in=list(linking_resources)
+        )
+
+        sources = [transfer.target_object for transfer in linking_transfers]
+        for source in sources:
+            source.keywords.add(new_object)
+            # source.save()
+
+        return new_object
+
+
+
 
 CONVERSIONS = [
     UserConversion, PublisherConversion, ContactsConversion,
     ConspectusConversion, SubConspectusConversion, ResourceConversion,
     RatingRoundConversion, VoteConversion, SeedConversion, ContractConversion,
-    QAConversion
+    QAConversion, KeyWordConversion
 ]

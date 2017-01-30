@@ -82,6 +82,20 @@ class SourceManager(models.Manager):
         )
 
 
+class KeyWord(models.Model):
+    """
+    OK, i could have used ArrayField instead. Here is why I did not do it:
+    - Support for auto-completion. 
+    - Widget support
+    - Easier filtering by reverse relation.
+    """
+    word = models.CharField(max_length=255, unique=True)
+
+    def __str__(self):
+        return self.word
+
+
+
 @revisions.register(exclude=('last_changed',))
 class Source(BaseModel):
     """
@@ -151,6 +165,8 @@ class Source(BaseModel):
     )
 
     screenshot_date = models.DateTimeField(null=True, blank=True)
+    keywords = models.ManyToManyField(KeyWord, null=True, blank=True)
+
     objects = SourceManager()
 
     class Meta:

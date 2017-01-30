@@ -246,3 +246,23 @@ class Subcontracts(models.Model):
     class Meta:
         managed = False
         db_table = 'subcontracts'
+
+
+class Keywords(models.Model):
+    id = models.IntegerField(primary_key=True)
+    keyword = models.CharField(max_length=100)
+    comments = models.TextField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'keywords'
+
+
+class KeywordsResources(models.Model):
+    resource_id = models.IntegerField()
+    keyword = models.ForeignKey(Keywords)
+
+    class Meta:
+        managed = False
+        db_table = 'keywords_resources'
+        # unique_together = (('resource_id', 'keyword_id'),)
