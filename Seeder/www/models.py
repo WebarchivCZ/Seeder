@@ -17,12 +17,38 @@ class NewsObject(BaseModel):
         Source, 
         on_delete=models.DO_NOTHING,
         null=True, blank=True,
-        related_name='news_a')
+        related_name='news_a'
+    )
+
     source_2 = models.ForeignKey(
         Source, 
         on_delete=models.DO_NOTHING, 
         null=True, blank=True,
-        related_name='news_b')
+        related_name='news_b'
+    )
+
+    annotation_source_1 = RichTextField(
+        null=True, blank=True, 
+        help_text="Leave empty to use source annotation"
+    )
+
+    annotation_source_2 = RichTextField(
+        null=True, blank=True, 
+        help_text="Leave empty to use source annotation"
+    )
+
+
+    @property
+    def get_annotation_source_1(self):
+        if self.annotation_source_1:
+            return self.annotation_source_1
+        return self.source_1.annotation
+
+    @property
+    def get_annotation_source_2(self):
+        if self.annotation_source_2:
+            return self.annotation_source_2
+        return self.source_2.annotation
 
     def __str__(self):
         return self.title
