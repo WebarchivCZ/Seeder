@@ -86,20 +86,26 @@
 							<p>Selection of contracted websites, <br class="visible-md visible-lg"><a href="{plink catalog}">see the full list</a></p>
 						{% endif %}
 
-						{% for resources in selected_resources %}
-							<h2><a href="http://wayback.webarchiv.cz/wayback/query?type=urlquery&url={{ resource.url }}">{{ resource.title }}</a></h2>
-								{% if resource.annotation %}<p>{{resource.annotation}}</p>{% endif %}
-								{% if resource.publisher %} <p>Vydavatel: {{ resource.publisher }}</p>{% endif %}
-								
-								{% if resource.keywords %}
-								<ul class="inline-list">
-									{% for keyword in selectedResource.keywords %}
-										<li><a href="{plink keywordResults, 'keyword'=>$keyword->id}">{{ keyword }}</a>,</li>
-									{% endfor %}
-								</ul>
-								{% endif %}
-							<hr>
-						{% endfor %}
+						<h2><a href="http://wayback.webarchiv.cz/wayback/query?type=urlquery&url={{ news_article.source_1.url }}">{{ news_article.source_1 }}</a></h2>
+						<p>{{ news_article.source_1.annotation}}</p>
+						<p>{% if lang == "cs" %}Vydavatel: {% else %}Publisher: {% endif %} {{ news_article.source_1.publisher }}</p>
+						
+						{% if news_article.source_1.keywords %}
+							TODO: I am 12 years old and what is this???? 
+
+							<ul class="inline-list">
+								{% for keyword in news_article.source_1.keywords %}
+									<li><a href="{plink keywordResults, 'keyword'=>$keyword->id}">{{ keyword }}</a>,</li>
+								{% endfor %}
+							</ul>
+						{% endif %}
+
+						<hr>
+
+						<h2><a href="http://wayback.webarchiv.cz/wayback/query?type=urlquery&url={{ news_article.source_2.url }}">{{ news_article.source_2 }}</a></h2>
+						<p>{{ news_article.source_2.annotation}}</p>
+						<p>{% if lang == "cs" %}Vydavatel: {% else %}Publisher: {% endif %} {{ news_article.source_2.publisher }}</p>
+
 
 					</div>
 
