@@ -37,6 +37,6 @@ class Index(TemplateView, URLView):
         context['contract_count'] = Contract.objects.valid().count()
         context['last_sources'] = Source.objects.archiving().order_by('-created')[:5]
         context['news_article'] = models.NewsObject.objects.latest('created')
-        context['big_search_form'] = forms.BigSearchForm()
+        context['big_search_form'] = forms.BigSearchForm(data=self.request.GET)
 
         return context
