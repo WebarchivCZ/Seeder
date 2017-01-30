@@ -29,10 +29,10 @@
 
 						<div class="searchbox-wrapper">
 
-							{form bigSearchBox}
-								{input query class => 'query'}
-								{input submit class => 'submit'}
-							{/form}
+							<form action="" method="GET" id="frm-bigSearchBox">								
+								{{ big_search_form.query }}
+								<input type="submit" id="frm-bigSearchBox-submit" value="Enter" class="submit">
+							</form>
 
 						</div>
 
