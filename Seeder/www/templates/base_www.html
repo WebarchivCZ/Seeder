@@ -97,13 +97,13 @@
 	<footer>
 
 
-		{% if not footerFullBorder %}
+		{% if footerFullBorder %}
 			<hr>
 		{% endif %}
 
 		<div class="container">
 
-			{% if footerNoBorder %}
+			{% if not footerFullBorder %}
 				<hr>
 			{% endif %}
 
