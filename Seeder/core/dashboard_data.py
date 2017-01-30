@@ -122,7 +122,7 @@ class OpenToVoteRounds(VoteCard):
     Cards listing all the rounds that are open to vote and where you did
     vote yet...
     """
-    title = _('Opened voting rounds')
+    title = _('Open voting rounds')
 
     def get_queryset(self):
         return voting_models.VotingRound.objects.filter(
@@ -164,6 +164,7 @@ class TechnicalReview(SourceCard):
 
     def get_queryset(self):
         return self.get_basic_queryset().filter(
+            owner=self.user,
             state=source_models.constants.STATE_TECHNICAL_REVIEW
         )
 
