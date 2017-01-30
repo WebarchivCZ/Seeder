@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils import timezone
+from django.utils.translation import ugettext_lazy as _
 
 from core.models import BaseModel, DatePickerField
 from source.models import Source
@@ -20,6 +21,10 @@ class NewsObject(BaseModel):
         on_delete=models.DO_NOTHING, 
         null=True, blank=True,
         related_name='news_b')
+
+    class Meta:
+        verbose_name = _('News article')
+        verbose_name_plural = _('News articles')
 
 
 class SearchLog(models.Model):
