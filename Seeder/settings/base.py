@@ -252,6 +252,9 @@ if DEBUG:
 
 
 WAKAT_URL = 'http://forpsi.kitakitsune.org:8080/?url_id={id}'
+WAYBACK_URL = "http://wayback.webarchiv.cz/wayback/query?type=urlquery&url={url}"
+
+
 
 SEEDS_EXPORT_DIR = 'seeds'
 MANET_URL = '127.0.0.1:8891'

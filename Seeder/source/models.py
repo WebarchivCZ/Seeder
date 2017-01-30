@@ -189,6 +189,10 @@ class Source(BaseModel):
     def url(self):
         return self.main_seed.url
 
+    @property
+    def wayback_url(self):
+        return settings.WAYBACK_URL.format(url=self.url)
+
 
     @main_seed.setter
     def main_seed(self, value):
