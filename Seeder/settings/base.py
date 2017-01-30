@@ -56,6 +56,9 @@ IGNORABLE_404_URLS = (
 # Application definition
 INSTALLED_APPS = (
     'raven.contrib.django.raven_compat',
+    'dal',
+    'dal_select2',
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -78,8 +81,6 @@ INSTALLED_APPS = (
     'sorl.thumbnail',
     'rest_framework',
     'rest_framework.authtoken',
-    'dal',
-    'dal_select2',
     'haystack',
     'elasticstack',
     'modeltranslation',
