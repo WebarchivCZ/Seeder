@@ -86,27 +86,29 @@
 							<p>Selection of contracted websites, <br class="visible-md visible-lg"><a href="{plink catalog}">see the full list</a></p>
 						{% endif %}
 
-						<h2><a href="http://wayback.webarchiv.cz/wayback/query?type=urlquery&url={{ news_article.source_1.url }}">{{ news_article.source_1 }}</a></h2>
-						<p>{{ news_article.source_1.annotation}}</p>
-						<p>{% if lang == "cs" %}Vydavatel: {% else %}Publisher: {% endif %} {{ news_article.source_1.publisher }}</p>
-						
-						{% if news_article.source_1.keywords %}
-							TODO: I am 12 years old and what is this???? 
+						{% if news_article.source_1 %}
+							<h2><a href="{{ news_article.source_1.wayback_url }}">{{ news_article.source_1 }}</a></h2>
+							<p>{{ news_article.source_1.annotation}}</p>
+							<p>{% if lang == "cs" %}Vydavatel: {% else %}Publisher: {% endif %} {{ news_article.source_1.publisher }}</p>
+							
+							{% if news_article.source_1.keywords %}
+								TODO: I am 12 years old and what is this???? 
 
-							<ul class="inline-list">
-								{% for keyword in news_article.source_1.keywords %}
-									<li><a href="{plink keywordResults, 'keyword'=>$keyword->id}">{{ keyword }}</a>,</li>
-								{% endfor %}
-							</ul>
+								<ul class="inline-list">
+									{% for keyword in news_article.source_1.keywords %}
+										<li><a href="{plink keywordResults, 'keyword'=>$keyword->id}">{{ keyword }}</a>,</li>
+									{% endfor %}
+								</ul>
+							{% endif %}
 						{% endif %}
 
-						<hr>
+						{% if news_article.source_2 %}					
+							<hr>
 
-						<h2><a href="http://wayback.webarchiv.cz/wayback/query?type=urlquery&url={{ news_article.source_2.url }}">{{ news_article.source_2 }}</a></h2>
-						<p>{{ news_article.source_2.annotation}}</p>
-						<p>{% if lang == "cs" %}Vydavatel: {% else %}Publisher: {% endif %} {{ news_article.source_2.publisher }}</p>
-
-
+							<h2><a href="{{ news_article.source_2.wayback_url }}">{{ news_article.source_2 }}</a></h2>
+							<p>{{ news_article.source_2.annotation}}</p>
+							<p>{% if lang == "cs" %}Vydavatel: {% else %}Publisher: {% endif %} {{ news_article.source_2.publisher }}</p>
+						{% endif %}
 					</div>
 
 					<div class="visible-sm visible-xs">
@@ -137,7 +139,7 @@
 
 						{% for source in last_sources %}
 							<ul>
-								<li><a href="http://wayback.webarchiv.cz/wayback/query?type=urlquery&url={{ source.url }}">{{ source }}</a>{% include "includes/comma.html" %}</li>
+								<li><a href="{{ source.wayback_url }}">{{ source }}</a>{% include "includes/comma.html" %}</li>
 							</ul>
 						{% endfor %}
 
@@ -149,6 +151,4 @@
 			</div>
 		</div>
 	</section>
-
-
 {% endblock content %}
