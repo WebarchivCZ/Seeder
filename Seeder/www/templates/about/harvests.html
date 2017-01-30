@@ -1,4 +1,4 @@
-{block title}{if $lang == 'cs'}Celoplošné sklizně{else}Comprehensive Harvests{/if} | {include #parent}{/block}
+{block title}{% if lang == "cs" %}Celoplošné sklizně{% else %}Comprehensive Harvests{% endif %} | {include #parent}{/block}
 
 {block menuItemActive2} class="active"{/block}
 
@@ -9,7 +9,7 @@
 	<section>
 		<div class="container">
 
-			{if $lang == 'cs'}
+			{% if lang == "cs" %}
 
 				<h2>Celoplošné sklizně</h2>
 				<p>Cílem tohoto přístupu je archivace co největšího počtu domácích webových zdrojů na základě parametrů definovaných v aplikovaném SW, tedy vyžadující minimum další intelektuální práce.</p>
@@ -108,7 +108,7 @@
 
 				</table>
 
-			{else}
+			{% else %}
 
 				<h2>Comprehensive Harvests</h2>
 				<p>The main focus of comprehensive crawls is to automatically harvest the biggest number of Czech web resources. The requirements of comprehensive crawls are: </p>
@@ -210,7 +210,7 @@
 				</table>
 
 
-			{/if}
+			{% endif %}
 
 		</div>
 	</section>

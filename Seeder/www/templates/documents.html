@@ -1,4 +1,4 @@
-{block title}{if $lang == 'cs'}Dokumenty{else}Documents{/if} | {include #parent}{/block}
+{block title}{% if lang == "cs" %}Dokumenty{% else %}Documents{% endif %} | {include #parent}{/block}
 
 {block menuItemActive2} class="active"{/block}
 
@@ -9,7 +9,7 @@
 	<section>
 		<div class="container">
 
-			{if $lang == 'cs'}
+			{% if lang == "cs" %}
 
 				<h2>Dokumenty</h2>
 
@@ -48,7 +48,7 @@
 
 				<h3>Letáky, postery</h3>*}
 
-			{else}
+			{% else %}
 
 				<h2>Documents</h2>
 
@@ -82,7 +82,7 @@
 
 				<h3>Posters</h3>*}
 
-			{/if}
+			{% endif %}
 
 		</div>
 	</section>

@@ -1,4 +1,4 @@
-{block title}{if $lang == 'cs'}Kontakty{else}Contacts{/if} | {include #parent}{/block}
+{block title}{% if lang == "cs" %}Kontakty{% else %}Contacts{% endif %} | {include #parent}{/block}
 
 {block menuItemActive2} class="active"{/block}
 
@@ -23,7 +23,7 @@
 					Neomezený přístup k webovému archivu je možný pouze z <a href="https://www.nkp.cz/sluzby/dulezite-odkazy/studovny/refc">Referenční centra</a> Národní knihovny ČR.
 				</p>
 
-			{else}
+			{% else %}
 
 				<h2>Contacts</h2>
 				<p>
@@ -35,7 +35,7 @@
 					e-mail: webarchiv[@]nkp.cz
 				</p>
 
-			{/if}
+			{% endif %}
 
 		</div>
 	</section>

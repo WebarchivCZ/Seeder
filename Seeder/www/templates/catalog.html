@@ -1,4 +1,4 @@
-{block title}{if $lang == 'cs'}Webarchiv podle oborů{else}Browse by subject | {include #parent}{/if}{/block}
+{block title}{% if lang == "cs" %}Webarchiv podle oborů{% else %}Browse by subject | {include #parent}{% endif %}{/block}
 
 {block menuItemActive3} class="active"{/block}
 

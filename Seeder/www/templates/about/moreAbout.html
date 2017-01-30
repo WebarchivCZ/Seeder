@@ -1,13 +1,13 @@
 {? $footerFullBorder = TRUE;}
 {? $footerNoBorder = TRUE;}
 
-{block title}{if $lang == 'cs'}Jsme Webarchiv{else}We are Webarchiv{/if}{/block}
+{block title}{% if lang == "cs" %}Jsme Webarchiv{% else %}We are Webarchiv{% endif %}{/block}
 
 {block menuItemActive2} class="active"{/block}
 
 {block content}
 
-	{if $lang == 'cs'}
+	{% if lang == "cs" %}
 
 		<section class="paralax section-blue">
 			<div class="container">
@@ -120,7 +120,7 @@
 
 
 
-	{else}{* english *}
+	{% else %}{* english *}
 
 		<section class="paralax section-blue">
 			<div class="container">
@@ -223,6 +223,6 @@
 
 
 
-	{/if}
+	{% endif %}
 
 {/block}

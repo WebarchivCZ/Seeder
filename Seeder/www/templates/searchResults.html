@@ -1,4 +1,4 @@
-{block title}{if count($resources) != 1}{if $lang == 'cs'}Výsledky vyhledávání{else}Search results{/if}{else}{$query}{/if} | {include #parent}{/block}
+{block title}{if count($resources) != 1}{% if lang == "cs" %}Výsledky vyhledávání{% else %}Search results{% endif %}{% else %}{$query}{% endif %} | {include #parent}{/block}
 
 {block menuItemActive1} class="active"{/block}
 
@@ -11,33 +11,33 @@
 
 			{if count($resources) > 1}
 
-			{if trim($query)!=""}<h1>{$query}</h1>{/if}
+			{if trim($query)!=""}<h1>{$query}</h1>{% endif %}
 
-			<a href="{link advancedSearch}">{if $lang == 'cs'}pokročilé vyhledávání{else}advanced search{/if}</a>
+			<a href="{link advancedSearch}">{% if lang == "cs" %}pokročilé vyhledávání{% else %}advanced search{% endif %}</a>
 
 			<div id="advanced-search">
 				{include ../commonParts/advancedSearch.latte}
 			</div>
 
 				<p class="results-info">
-					{if $lang == 'cs'}celkem: {$paginator->getItemCount()} výsledků{else}total: {$paginator->getItemCount()} results{/if}
+					{% if lang == "cs" %}celkem: {$paginator->getItemCount()} výsledků{% else %}total: {$paginator->getItemCount()} results{% endif %}
 					{if $paginator->getPageCount() > 1}
-						, {if $lang == 'cs'}zobrazeno{else}showing{/if}: {$paginator->getPage()} / {$paginator->getPageCount()}
-						{if $lang == 'cs'}stran{else}pages{/if}
-					{/if}
+						, {% if lang == "cs" %}zobrazeno{% else %}showing{% endif %}: {$paginator->getPage()} / {$paginator->getPageCount()}
+						{% if lang == "cs" %}stran{% else %}pages{% endif %}
+					{% endif %}
 				</p>
 
-				{/if}
+				{% endif %}
 				{if count($resources) > 0}
 				<br><br>
 				<p class="italic">
-					{if $lang == 'cs'}
+					{% if lang == "cs" %}
 						Přístup k archivovaným stránkám je v rámci internetu omezen pouze na zdroje, ke kterým jsme od autorů získali smlouvu. Pro ostatní zdroje jsou dostupné pouze informace o počtu sklizených verzí. Na terminálu v <a href="{plink contact}">Klementinu</a> je pak Webarchiv dostupný bez omezení. Tyto možnosti jsou dány současnou legislativou.</p>
-					{else}
+					{% else %}
 						Due to copyright restrictions, only a limited number of archived websites for which agreements were signed with the publishers is available online. For other resources you can find out whether a given website was archived and the number of harvested versions. Unlimited access to all resources in Webarchiv is available from public terminals in the <a href="{plink contact}">National Library</a>.
-					{/if}
+					{% endif %}
 				</p>
-			{/if}
+			{% endif %}
 
 		</div>
 	</section>
@@ -77,13 +77,13 @@
 						<img src="{$basePath}/{$src_jpg}" class="aspect-ratio" alt="{$resource['title']}">
 					{elseif file_exists(WWW_DIR."/".$src_png)}
 						<img src="{$basePath}/{$src_png}" class="aspect-ratio" alt="{$resource['title']}">
-					{else}
+					{% else %}
 						<div class="aspect-ratio">
 							<div class="no-image">
 								<span class="small">www</span>
 							</div>
 						</div>
-					{/if}
+					{% endif %}
 				</div>
 				</a>
 				</div>
@@ -91,11 +91,11 @@
 
 				<div class="col-md-12 item-textual">
 
-					<p><span class="italic">{$resource['url']|trim|replace:'http://',''|replace:'https://',''}</span> <span class="blue">[</span><a href="{$resource['url']}">{if $lang == 'cs'}aktuální verze{else}current version{/if}</a><span class="blue">]</span></p>
+					<p><span class="italic">{$resource['url']|trim|replace:'http://',''|replace:'https://',''}</span> <span class="blue">[</span><a href="{$resource['url']}">{% if lang == "cs" %}aktuální verze{% else %}current version{% endif %}</a><span class="blue">]</span></p>
 
-					{if $resource['annotation']}<p>{$resource['annotation']}</p>{/if}
+					{if $resource['annotation']}<p>{$resource['annotation']}</p>{% endif %}
 
-					{if $resource['publisher']}<p>{if $lang == 'cs'}Vydavatel:{else}Publisher:{/if} {$resource['publisher']->name}</p>{/if}
+					{if $resource['publisher']}<p>{% if lang == "cs" %}Vydavatel:{% else %}Publisher:{% endif %} {$resource['publisher']->name}</p>{% endif %}
 
 					{if $resource['keywords']->count() > 0}
 						<ul class="inline-list">
@@ -103,7 +103,7 @@
 								<li><a href="{plink keywordResults, 'keyword'=>$keyword->keyword->id}">{$keyword->keyword->keyword}</a>{sep}, {/sep}</li>
 							{/foreach}
 						</ul>
-					{/if}
+					{% endif %}
 
 				</div>
 			</div>
@@ -112,26 +112,26 @@
 		</div>
 	</section>
 
-	{else}
+	{% else %}
 
 		<section id="no-results">
 			<div class="container">
 
 				<br><br>
 
-				{if $lang == 'cs'}
+				{% if lang == "cs" %}
 					<p>Bohužel se nám nepodařilo najít zadané slovní spojení.</p>
 					<p>Můžete ho zkusit upravit nebo <a href="{plink advanced-search}">hledat podle adresy</a>.</p>
 
-				{else}
+				{% else %}
 					<p>Your search did not match any documents.</p>
 					<p>You can try different keywords or <a href="{plink advanced-search}">search by URL</a>.</p>
-				{/if}
+				{% endif %}
 
 			</div>
 		</section>
 
-	{/if}
+	{% endif %}
 
 
 

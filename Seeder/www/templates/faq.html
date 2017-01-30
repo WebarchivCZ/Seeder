@@ -1,4 +1,4 @@
-{block title}{if $lang == 'cs'}Často kladené dotazy{else}Frequently Asked Questions{/if} | {include #parent}{/block}
+{block title}{% if lang == "cs" %}Často kladené dotazy{% else %}Frequently Asked Questions{% endif %} | {include #parent}{/block}
 
 {block menuItemActive2} class="active"{/block}
 
@@ -9,7 +9,7 @@
 	<section>
 		<div class="container">
 
-			{if $lang == 'cs'}
+			{% if lang == "cs" %}
 
 				<h2 id="general">Všeobecné</h2>
 
@@ -122,7 +122,7 @@
 					<h3>Můžu se podívat na svoji stránku v archivu?</h3>
 					<p>Samozřejmě, stačí zadat URL adresu Vašich stránek do vyhledávače na <a href="http://webarchiv.cz">našem webu</a>. Upozorňujeme však, že archivované verze jsou zpřístupněny s určitým zpožděním (zpravidla 3 měsíce). </p>
 				</div>
-			{else}
+			{% else %}
 
 				<h2 id="general">General information</h2>
 
@@ -192,7 +192,7 @@
 				
 				</div>
 
-			{/if}
+			{% endif %}
 
 		</div>
 	</section>

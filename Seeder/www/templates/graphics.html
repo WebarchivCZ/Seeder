@@ -1,4 +1,4 @@
-{block title}{if $lang == 'cs'}Grafické materiály{else}Banners{/if} | {include #parent}{/block}
+{block title}{% if lang == "cs" %}Grafické materiály{% else %}Banners{% endif %} | {include #parent}{/block}
 
 {block menuItemActive2} class="active"{/block}
 
@@ -6,55 +6,55 @@
 
 	{include ../commonParts/about.latte}
 
-	{if $lang == 'cs'}{var img_alt = "Webarchiv certifikát"}{else}{var img_alt = "Webarchiv certificate"}{/if}
+	{% if lang == "cs" %}{var img_alt = "Webarchiv certifikát"}{% else %}{var img_alt = "Webarchiv certificate"}{% endif %}
 
 	<section id="graphics">
 		<div class="container">
 
-			<h2>{if $lang == 'cs'}Grafické materiály{else}Banners{/if}</h2>
+			<h2>{% if lang == "cs" %}Grafické materiály{% else %}Banners{% endif %}</h2>
 
-			{if $lang == 'cs'}
+			{% if lang == "cs" %}
 				<p>Pokud jste pyšní, že se vaše stránky webarchivují, udělejte nám radost a dejte si na svůj web náš certifikát:</p>
-			{else}
+			{% else %}
 				<p>If you are proud your websites are webarchived, make us pleasure and place our certificate on your site:
-			{/if}
+			{% endif %}
 
 			<div class="row">
 				<div class="col-lg-2">
-					<p>{if $lang == 'cs'}certifikát{else}certificate{/if}</p>
+					<p>{% if lang == "cs" %}certifikát{% else %}certificate{% endif %}</p>
 				</div>
 				<div class="col-lg-4">
-					{if $lang == 'cs'}
+					{% if lang == "cs" %}
 						<p>varianta bílý podklad<br>(pro užití na bílém nebo světlém podkladu)</p>
-					{else}
+					{% else %}
 						<p>white style<br>(for usage in white or light background)</p>
-					{/if}
+					{% endif %}
 					<br><img src="{$basePath}/images/graphics/webarchiv-certifikat-01.png" alt="{$img_alt}">
-					{if $lang == 'cs'}
+					{% if lang == "cs" %}
 						<br><a onclick="return !window.open(this, 'kod', 'toolbar=no, menubar=no, directories=no, resizable=yes, status=no, width=600, height=210, top=200, left=50')" href="{$basePath}/download/embed.php?img=http://webarchiv.cz/images/webarchiv-certifikat-01.png">Zdrojový kód obrázku</a>
-					{else}
+					{% else %}
 						<br><a onclick="return !window.open(this, 'kod', 'toolbar=no, menubar=no, directories=no, resizable=yes, status=no, width=600, height=210, top=200, left=50')" href="{$basePath}/download/embed.php?img=http://webarchiv.cz/images/webarchiv-certifikat-01.png">embed code</a>
-					{/if}
+					{% endif %}
 
 				</div>
 				<div class="col-lg-4">
-					{if $lang == 'cs'}
+					{% if lang == "cs" %}
 						<p>varianta modrý podklad<br>(pro užití na barevném nebo tmavém podkladu)</p>
-					{else}
+					{% else %}
 						<p>blue style<br>(for usage in colored or dark background)</p>
-					{/if}
+					{% endif %}
 					<br><img src="{$basePath}/images/graphics/webarchiv-certifikat-02.png" alt="{$img_alt}">
-					{if $lang == 'cs'}
+					{% if lang == "cs" %}
 						<br><a onclick="return !window.open(this, 'kod', 'toolbar=no, menubar=no, directories=no, resizable=yes, status=no, width=600, height=210, top=200, left=50')" href="{$basePath}/download/embed.php?img=http://webarchiv.cz/images/webarchiv-certifikat-02.png">Zdrojový kód obrázku</a>
-					{else}
+					{% else %}
 						<br><a onclick="return !window.open(this, 'kod', 'toolbar=no, menubar=no, directories=no, resizable=yes, status=no, width=600, height=210, top=200, left=50')" href="{$basePath}/download/embed.php?img=http://webarchiv.cz/images/webarchiv-certifikat-02.png">embed code</a>
-					{/if}
+					{% endif %}
 				</div>
 			</div>
 
 			<div class="row">
 				<div class="col-lg-2">
-					<p>{if $lang == 'cs'}naše logo<br>v křivkách{else}our vector<br>logo{/if}</p>
+					<p>{% if lang == "cs" %}naše logo<br>v křivkách{% else %}our vector<br>logo{% endif %}</p>
 				</div>
 				<div class="col-lg-4">
 					<br><br>
@@ -72,7 +72,7 @@
 
 			<div class="row">
 				<div class="col-lg-2">
-					<p>{if $lang == 'cs'}bannery{else}banners{/if}</p>
+					<p>{% if lang == "cs" %}bannery{% else %}banners{% endif %}</p>
 				</div>
 				<div class="col-lg-9">
 					<p>468 x 60 px</p>
@@ -121,27 +121,27 @@
 
 			<div class="row">
 				<div class="col-lg-2">
-					<p>{if $lang == 'cs'}starší verze<br>certifikátu{else}old version of<br>certificate{/if}</p>
+					<p>{% if lang == "cs" %}starší verze<br>certifikátu{% else %}old version of<br>certificate{% endif %}</p>
 				</div>
 				<div class="col-lg-4">
 					<br><br>
 					<img src="{$basePath}/images/webarchiv_certifikat_c.gif" alt="{$img_alt}">
 					<br>
-					{if $lang == 'cs'}
+					{% if lang == "cs" %}
 						<br><a onclick="return !window.open(this, 'kod', 'toolbar=no, menubar=no, directories=no, resizable=yes, status=no, width=600, height=210, top=200, left=50')" href="{$basePath}/download/embed.php?img=http://webarchiv.cz/images/webarchiv_certifikat_c.gif">Zdrojový kód obrázku</a>
-					{else}
+					{% else %}
 						<br><a onclick="return !window.open(this, 'kod', 'toolbar=no, menubar=no, directories=no, resizable=yes, status=no, width=600, height=210, top=200, left=50')" href="{$basePath}/download/embed.php?img=http://webarchiv.cz/images/webarchiv_certifikat_c.gif">embed code</a>
-					{/if}
+					{% endif %}
 				</div>
 				<div class="col-lg-4">
 					<br><br>
 					<img src="{$basePath}/images/webarchiv_certifikat_cb.gif" alt="{$img_alt}">
 					<br>
-					{if $lang == 'cs'}
+					{% if lang == "cs" %}
 						<br><a onclick="return !window.open(this, 'kod', 'toolbar=no, menubar=no, directories=no, resizable=yes, status=no, width=600, height=210, top=200, left=50')" href="{$basePath}/download/embed.php?img=http://webarchiv.cz/images/webarchiv_certifikat_cb.gif">Zdrojový kód obrázku</a>
-					{else}
+					{% else %}
 						<br><a onclick="return !window.open(this, 'kod', 'toolbar=no, menubar=no, directories=no, resizable=yes, status=no, width=600, height=210, top=200, left=50')" href="{$basePath}/download/embed.php?img=http://webarchiv.cz/images/webarchiv_certifikat_cb.gif">embed code</a>
-					{/if}
+					{% endif %}
 				</div>
 			</div>
 

@@ -1,4 +1,4 @@
-{block title}{if $lang == 'cs'}Nechte se Webarchivovat!{else}Let’s get Webarchived!{/if} | {include #parent}{/block}
+{block title}{% if lang == "cs" %}Nechte se Webarchivovat!{% else %}Let’s get Webarchived!{% endif %} | {include #parent}{/block}
 
 {block menuItemActive4} class="active"{/block}
 
@@ -9,7 +9,7 @@
 	<section id="add-web">
 		<div class="container">
 
-			{if $lang == 'cs'} <h2>Přidejte web</h2> {else} <h2>Nominate a website</h2> {/if}
+			{% if lang == "cs" %} <h2>Přidejte web</h2> {% else %} <h2>Nominate a website</h2> {% endif %}
 
 			{form addWebForm}
 
@@ -37,12 +37,12 @@
 							<div class="col-md-6 checkbox-wrapper">
 								<span class="false-checkbox"></span>
 								{input representative}
-								<span class="false-label">{if $lang == 'cs'} Mohu jednat za uvedené zdroje {else} I can act on behalf of mentioned resources {/if} </span>
+								<span class="false-label">{% if lang == "cs" %} Mohu jednat za uvedené zdroje {% else %} I can act on behalf of mentioned resources {% endif %} </span>
 							</div>
 							<div class="col-md-6 checkbox-wrapper no-left-padding">
 								<span class="false-checkbox"></span>
 								{input cc}
-								<span class="false-label">{if $lang == 'cs'}Zdroj s licencí Creative Commons {else} Source under Creative Commons licence {/if}</span>
+								<span class="false-label">{% if lang == "cs" %}Zdroj s licencí Creative Commons {% else %} Source under Creative Commons licence {% endif %}</span>
 							</div>
 						</div>
 					</div>
@@ -81,7 +81,7 @@
 
 			<br><br>
 
-			{if $lang == 'cs'}
+			{% if lang == "cs" %}
 			<p>Vítáme Vaše návrhy nových webových stránek pro archivaci. Zařazení webových stránek do režimu výběrového sklízení má však svá <a href="{plink sourceSelection}">kritéria</a>. Předně dokument musí splňovat jednu z následujících podmínek:</p>
 
 			<ul class="normal">
@@ -100,7 +100,7 @@
 			<p>počítačové hry (aplikace), internetové obchody, firemní weby, nabídkové katalogy, intranety, osobní weblogy (bez vědecké či kulturní hodnoty), portály shromažďující obsah z jiných zdrojů, rozhlasové a televizní vysílání, atd. (tyto zdroje ale mohou být archivovány v rámci celoplošných sklizní)</p>
 			<p>Vyhrazujeme si právo Váš návrh kdykoliv odmítnout. Smlouvu, prosím, nepodepisujte s předstihem, budeme Vás informovat. Pokud používáte licenci <a href="{plink creativeCommons}">Creative Commons</a>, smlouvu uzavírat nemusíme, obdržíte od nás jen informativní zprávu o výsledku hodnocení.      </p>
 
-			{else}
+			{% else %}
 
 			<p>Dear visitors, we welcome your recommendations of new websites for archiving. Nevertheless, we must include only websites that meet specific <a href="{plink sourceSelection}">criteria</a>. The document must meet at least one of the following conditions:</p>
 
@@ -120,7 +120,7 @@
 			<p>Computer games (applications), online stores, corporate sites, offering catalogues, intranets, personal weblogs (without scientific and cultural values), portals that collects content from other sources, Radio and Television Broadcasting, etc. (Never less, these resources can be archive as a part of the nationwide  collection)</p>
 			<p>We reserve the right to reject your suggested website. Please, do not sign contract ahead.  Wait for our respond, we´ll inform you. If you are using a <a href="{plink creativeCommons}">Creative Commons license</a>, you do not have to sign the contract. You will receive only an informative report that will notify you about the result of our evaluation.</p>
 
-			{/if}
+			{% endif %}
 		</div>
 	</section>
 

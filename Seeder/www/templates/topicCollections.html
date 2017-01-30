@@ -1,4 +1,4 @@
-{block title}{if $lang == 'cs'}Tématické sbírky{else}Topic collections{/if} | {include #parent}{/block}
+{block title}{% if lang == "cs" %}Tématické sbírky{% else %}Topic collections{% endif %} | {include #parent}{/block}
 
 {block menuItemActive2} class="active"{/block}
 
@@ -9,7 +9,7 @@
 	<section>
 		<div class="container">
 
-			{if $lang == 'cs'}
+			{% if lang == "cs" %}
 
 				<h2>Tématické sbírky</h2>
 				<p>Tematické sbírky jsou monotematické soubory webových dokumentů. V rámci tematických sklizní sledujeme především takové děje, které doprovází celospolečenská debata a je u nich tedy předpoklad, že zaujmou významnější místo z hlediska dějin České republiky. Cíleně vybíráme události, které mají širší ohlas v prostředí internetu. Monitorujeme očekávané akce (např. volby), ale i nenadálé situace (např. povodně).</p>
@@ -21,7 +21,7 @@
 					{/foreach}
 				</ul>
 
-			{else}
+			{% else %}
 
 				<h2>Topic collections</h2>
 
@@ -32,13 +32,13 @@
 					{/foreach}
 				</ul>
 
-			{/if}
+			{% endif %}
 
 
 			<div class="padding20"></div>
 			<hr class="no-margin">
 
-			{if $lang == 'cs'}
+			{% if lang == "cs" %}
 
 				{foreach $topicCollections as $topicCollection}
 
@@ -48,11 +48,11 @@
 
 					<h2>{$topicCollection->title_cs}</h2>
 					<p>{$topicCollection->text_cs}</p>
-					{if $topicCollection->dates}<p>Datum: {$topicCollection->dates}</p>{/if}
+					{if $topicCollection->dates}<p>Datum: {$topicCollection->dates}</p>{% endif %}
 
 				{/foreach}
 
-			{else}
+			{% else %}
 
 				{foreach $topicCollections as $topicCollection}
 
@@ -62,11 +62,11 @@
 
 					<h2>{$topicCollection->title_en}</h2>
 					<p>{$topicCollection->text_en}</p>
-					{if $topicCollection->dates}<p>Date: {$topicCollection->dates}</p>{/if}
+					{if $topicCollection->dates}<p>Date: {$topicCollection->dates}</p>{% endif %}
 
 				{/foreach}
 
-			{/if}
+			{% endif %}
 
 		</div>
 	</section>

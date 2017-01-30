@@ -3,6 +3,8 @@ from django.contrib import admin
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib.auth import views as auth_views
+from django.conf.urls.i18n import i18n_patterns
+
 
 from rest_framework.authtoken import views as token_views
 from urljects import U, url, view_include
@@ -16,6 +18,7 @@ from harvests import views as harvests_views
 from blacklists import views as blacklists_views
 from qa import views as qa_views
 from www import views as www_views
+from www import views_non_localized
 
 from api import api_router
 
@@ -49,9 +52,15 @@ urlpatterns = [
     url(U / 'harvests', view_include(harvests_views, namespace='harvests')),
     url(U / 'blacklists', view_include(blacklists_views, namespace='blacklists')),  # noqa
     url(U / 'qa', view_include(qa_views, namespace='qa')),
-
-    url(U / 'www', view_include(www_views, namespace='www')),
+    url(U / 'www', view_include(views_non_localized, namespace='www_no_lang')),
 
     # beware: wild card regexp!
-    url(r'^', view_include(core_views, namespace='core'))
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+urlpatterns += i18n_patterns(
+    url(U / 'www', view_include(www_views, namespace='www')),
+)
+
+urlpatterns.append(
+    url(r'^', view_include(core_views, namespace='core'))
+)

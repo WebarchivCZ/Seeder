@@ -1,4 +1,4 @@
-{block title}{if $lang == 'cs'}Pokročilé vyhledávání{else}Advanced search{/if} | {include #parent}{/block}
+{block title}{% if lang == "cs" %}Pokročilé vyhledávání{% else %}Advanced search{% endif %} | {include #parent}{/block}
 
 {block menuItemActive1} class="active"{/block}
 

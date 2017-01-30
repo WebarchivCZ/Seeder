@@ -1,15 +1,16 @@
-{block title}{if $lang == 'cs'}O Webarchivu{else}About Webarchiv{/if} | {include #parent}{/block}
+{% extends "base_www.html" %}
 
-{block menuItemActive2} class="active"{/block}
+{% block title %}{% if lang == "cs" %}O Webarchivu{% else %}About Webarchiv{% endif %}{% endblock title %}
 
-{block content}
+	
 
-	{include ../commonParts/about.latte}
+{% block content %}
+	{% include "about/menu.html" %}
 
 	<section>
 		<div class="container">
 
-			{if $lang == 'cs'}
+			{% if lang == "cs" %}
 
 				<h2>O Webarchivu</h2>
 				<p>V prostředí internetu průběžně narůstá obrovské množství publikovaných dokumentů, které se postupně mění nebo zcela mizí. Pokud nebudou průběžně archivovány, tato významná součást národního kulturního dědictví bude nenávratně ztracena. Odpovědnost za archivaci webových zdrojů a jejich registraci v národní bibliografii nesou národní knihovny, příp. další depozitní knihovny.</p>
@@ -52,7 +53,7 @@
 				<h2>Legislativa</h2>
 				<p>Archivaci webu v České republice, zejména zpřístupnění archivovaných elektronických zdrojů vymezuje Autorský zákon (č. 121/2000 Sb.). Tento zákon umožňuje prostřednictvím tzv. knihovní licence vytvářet rozmnoženiny díla pro své archivní a konzervační účely. Vzhledem ke znění zákona však není možné tyto rozmnoženiny díla volně zpřístupnit veřejnosti. Pro umožnění přístupu k výběrové části archivu je třeba získat souhlas vydavatele stránek.</p>
 
-			{else}
+			{% else %}
 
 				<h2>About Webarchiv</h2>
 				<p>The amount of documents published on the Internet is growing dramatically – many of them are often changing and others are even being lost. If the documents that have a research value are not archived a considerable part of the national cultural heritage would disappear forever. The responsibility for archiving online-born documents and their registration in the national bibliography is usually assumed by national libraries and/or other deposit libraries.</p>
@@ -81,9 +82,9 @@
 				<h2>Legal issues</h2>
 				<p>In general, the current state of legislation in this field is not convenient. Legal Deposit Act doesn‘t cover online-born documents and according to the Copyright Act, it is not possible to make archived data available to public. Fortunately, it is possible to harvest and store online documents to protect them from disappearing forever.</p>
 
-			{/if}
+			{% endif %}
 
 		</div>
 	</section>
 
-{/block}
+{% endblock content %}

@@ -1,4 +1,4 @@
-{block title}{if $lang == 'cs'}Výběr zdrojů{else}Selection criteria{/if} | {include #parent}{/block}
+{block title}{% if lang == "cs" %}Výběr zdrojů{% else %}Selection criteria{% endif %} | {include #parent}{/block}
 
 {block menuItemActive4} class="active"{/block}
 
@@ -9,7 +9,7 @@
 	<section>
 		<div class="container">
 
-			{if $lang == 'cs'}
+			{% if lang == "cs" %}
 
 				<h2>Výběr zdrojů</h2>
 
@@ -35,7 +35,7 @@
 					<li><strong>Frekvence sklízení</strong> – zdroje zvolené na základě výběrových kritérií lze sklízet 1 až 12x ročně, případně jednorázově v případě, že se jedná o statický dokument, u kterého se již nepředpokládá jeho aktualizace (např. elektronická publikace monografické povahy).</li>
 				</ul>
 
-			{else}
+			{% else %}
 
 				<h2>Selective harvests</h2>
 
@@ -66,7 +66,7 @@
 					<li><strong>Frequency</strong> – resources in selective harvests are crawled from once a year to 12 times a year</li>
 				</ul>
 
-			{/if}
+			{% endif %}
 
 		</div>
 	</section>

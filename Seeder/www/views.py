@@ -1,27 +1,12 @@
 from urljects import U, URLView
 from django.views.generic.base import TemplateView, View
-from django.http.response import HttpResponseRedirect
-from django.utils.http import is_safe_url
-from django.utils import translation
+from django.utils.translation import ugettext as _
 
 from contracts.models import Contract
 from source.models import Source
 
 from . import models
 from . import forms
-
-
-class ChangeLanguage(View, URLView):
-    url = U / 'lang' / r'(?P<code>\w+)'
-    url_name = 'change_language'
-
-    def get(self, request, code):
-        redirect = request.META.get('HTTP_REFERER')
-        if not is_safe_url(url=redirect, host=request.get_host()):
-            redirect = '/'
-        if translation.check_for_language(code):
-            request.session[translation.LANGUAGE_SESSION_KEY] = code
-        return HttpResponseRedirect(redirect)
 
 
 class Index(TemplateView, URLView):
@@ -40,3 +25,12 @@ class Index(TemplateView, URLView):
         context['big_search_form'] = forms.BigSearchForm(data=self.request.GET)
 
         return context
+
+
+class About(TemplateView, URLView):
+    template_name = 'about/about.html'
+    view_name = 'about'
+
+    url = U / _('about_url')
+    url_name = 'about'
+
