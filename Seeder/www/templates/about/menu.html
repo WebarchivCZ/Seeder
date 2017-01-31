@@ -11,20 +11,20 @@
 
 		<ul class="inline-list">
 			{% if lang == "cs" %}
-				<li><a class="url_about" href="{% url 'www:about' %}">O Webarchivu</a></li> / 
-				<li><a class="url_terminology" href="url 'www:terminology' ">Terminologie</a></li> / 
-				<li><a class="url_harvests" href="url 'www:harvests' ">Celoplošné sklizně</a></li> / 
-				<li><a class="url_topic_collections" href="url 'www:topicCollections' ">Tématické sbírky</a></li> / 
-				<li><a class="url_documents" href="url 'www:documents' ">Dokumenty</a></li> / 
-				<li><a class="url_graphics" href="url 'www:graphics' ">Grafické materiály</a></li> / 
-				<li><a class="url_contact" href="url 'www:contact' ">Kontakty</a></li>
+				<li><a class="sub_view_about" href="{% url 'www:about' %}">O Webarchivu</a></li> / 
+				<li><a class="sub_view_terminology" href="{% url 'www:about_terminology' %}">Terminologie</a></li> / 
+				<li><a class="sub_view_harvests" href="{% url 'www:about_harvests' %}">Celoplošné sklizně</a></li> / 
+				<li><a class="sub_view_topic_collections" href="url 'www:topicCollections' ">Tématické sbírky</a></li> / 
+				<li><a class="sub_view_documents" href="{% url 'www:about_documents' %}">Dokumenty</a></li> / 
+				<li><a class="sub_view_graphics" href="{% url 'www:about_graphics' %}">Grafické materiály</a></li> / 
+				<li><a class="sub_view_contact" href="{% url 'www:about_contact' %}">Kontakty</a></li>
 			{% else %}
-				<li><a class="url_about" href="{% url 'www:about' %} "></a>About Webarchiv</li> / 
-				<li><a class="url_harvests" href="url 'www:harvests' "></a>Comprehensive Harvests</li> / 
-				<li><a class="url_topic_collections" href="url 'www:topicCollections' "></a>Topic Collections</li> / 
-				<li><a class="url_documents" href="url 'www:documents' "></a>Documents</li> / 
-				<li><a class="url_graphics" href="url 'www:graphics' "></a>Banners</li> / 
-				<li><a class="url_contact" href="url 'www:contact' "></a>Contacts</li>
+				<li><a class="sub_view_about" href="{% url 'www:about' %} ">About Webarchiv</a></li> / 
+				<li><a class="sub_view_harvests" href="{% url 'www:about_harvests' %}">Comprehensive Harvests</a></li> / 
+				<li><a class="sub_view_topic_collections" href="url 'www:topicCollections' ">Topic Collections</a></li> / 
+				<li><a class="sub_view_documents" href="{% url 'www:about_documents' %}">Documents</li></a> / 
+				<li><a class="sub_view_graphics" href="{% url 'www:about_graphics' %}">Banners</li></a> / 
+				<li><a class="sub_view_contact" href="{% url 'www:about_contact' %}">Contacts</li></a>
 			{% endif %}
 		</ul>
 		<hr>
@@ -34,6 +34,6 @@
 
 <script>
     // dynamically activate menu link, yes this seem like a barbaric think to do, but think of all the if conditions in django that does not need to exist!
-    var view_name = ".url_{{ view.view_name }}";
+    var view_name = ".sub_view_{{ view.sub_view_name }}";
     $(view_name).addClass('current');
 </script>

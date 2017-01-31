@@ -1,15 +1,17 @@
-{block title}{% if lang == "cs" %}Kontakty{% else %}Contacts{% endif %} | {include #parent}{% endblock %}
+{% extends "base_www.html" %}
 
-{block menuItemActive2} class="active"{% endblock %}
+{% block title %}{% if lang == "cs" %}Kontakty{% else %}Contacts{% endif %}{% endblock title %}
+
+
 
 {% block content %}
 
-	{include ../commonParts/about.latte}
+	{% include "about/menu.html" %}
 
 	<section>
 		<div class="container">
 
-			{if $lang=='cs'}
+			{% if lang == "cs" %}
 
 				<h2>Kontakty</h2>
 				<p>

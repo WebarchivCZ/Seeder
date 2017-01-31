@@ -1,10 +1,12 @@
-{block title}{% if lang == "cs" %}Dokumenty{% else %}Documents{% endif %} | {include #parent}{% endblock %}
+{% extends "base_www.html" %}
 
-{block menuItemActive2} class="active"{% endblock %}
+{% block title %}{% if lang == "cs" %}Dokumenty{% else %}Documents{% endif %}{% endblock title %}
+
+
 
 {% block content %}
 
-	{include ../commonParts/about.latte}
+	{% include "about/menu.html" %}
 
 	<section>
 		<div class="container">
