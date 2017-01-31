@@ -1,10 +1,10 @@
-{block title}{% if lang == "cs" %}Celoplošné sklizně{% else %}Comprehensive Harvests{% endif %} | {include #parent}{% endblock %}
+{% extends "base_www.html" %}
 
-{block menuItemActive2} class="active"{% endblock %}
+{% block title %}{% if lang == "cs" %}Celoplošné sklizně{% else %}Comprehensive Harvests{% endif %}{% endblock title %}
 
 {% block content %}
 
-	{include ../commonParts/about.latte}
+	{% include "about/menu.html" %}
 
 	<section>
 		<div class="container">
