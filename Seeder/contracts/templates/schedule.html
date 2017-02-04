@@ -15,20 +15,22 @@
             these emails will be sent until you check that publisher responds to communication in contract edit.
         {% endblocktrans %}
     </p>
-    {% if not source.publisher_contact %}
+    {% if not source.publisher_contact or not source.publisher %}
         <div class="alert alert-danger" role="alert">
             {% blocktrans with source=source %}
                 We are sorry, but this won't work, you did not set contact person in {{ source }}
                 so we really have no idea who to sent this to. So you should set the contract person like right now. Thanks.
             {% endblocktrans %}
         </div>
-    {% endif %}
-    <br/>
 
-    <form class="" method="post">
-        {{ form.media }}
-        {% bootstrap_formset form layout='inline' %}
-        {% csrf_token %}
-        <input type="submit" class="btn btn-primary btn-block" value="{% trans 'Send' %}" />
-    </form>
+    {% else %}
+        <br/>
+        <form class="" method="post">
+            {{ form.media }}
+            {% bootstrap_formset form layout='inline' %}
+            {% csrf_token %}
+            <input type="submit" class="btn btn-primary btn-block" value="{% trans 'Send' %}" />
+        </form>
+    {% endif %}
+
 {% endblock %}
