@@ -264,5 +264,20 @@ class SourceAutocomplete(autocomplete.Select2QuerySetView, URLView):
 
         qs = models.Source.objects.all()
         if self.q:
-            qs = qs.filter(name__icontains=self.q)
+            qs = qs.filter(Q(name__icontains=self.q) | Q(seed__url__icontains=self.q))
+        return qs
+
+
+
+class SourcePublicAutocomplete(autocomplete.Select2QuerySetView, URLView):
+    url_name = 'source_public_autocomplete'
+    url = U / 'source_public_autocomplete'
+
+    def get_queryset(self):
+        if not self.request.user.is_authenticated():
+            return models.Source.objects.none()
+
+        qs = models.Source.objects.archiving()
+        if self.q:
+            qs = qs.filter(Q(name__icontains=self.q) | Q(seed__url__icontains=self.q))
         return qs
