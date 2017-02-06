@@ -1,0 +1,41 @@
+	{? if($lang == 'cs')
+			$submenuItems = array(
+				'add' => 'Přidejte web',
+				'creativeCommons' => 'Creative Commons',
+				'sourceSelection' => 'Výběr zdrojů',
+				'cooperation' => 'Pomozte nám uchovat český web',
+				'faq' => 'FAQ',
+			);
+		else
+			$submenuItems = array(
+				'add' => 'Nominate a website',
+				'creativeCommons' => 'Creative Commons',
+				'sourceSelection' => 'Selective harvests',
+				'faq' => 'FAQ',
+			);
+	}
+
+	<section>
+		<div class="container">
+
+			{if $lang == 'cs'}
+				<h1>Nechte se <a href="{plink default}">Webarchiv<span class="false-link-underline-blue"></span></a>ovat!</h1><br>
+				<p>Pokud hledáte certifikát či jiné naše grafické materiály pro umístění na vašem webu pokračujte <a href="{plink graphics}">zde</a></p>
+			{else}
+				<h1>Let’s get <a href="{plink default}">Webarchiv<span class="false-link-underline-blue"></span></a>ed!</h1><br>
+				<p>If you look for our certificate or our banners or logo visit <a href="{plink graphics}">this page</a></p>
+			{/if}
+
+			<ul class="inline-list">
+				{foreach $submenuItems as $id => $item}
+					<li>
+						<a href="{plink $id}"{ifCurrent $id} class="current"{/ifCurrent}>{$item}</a>{sep}&nbsp;<span class="slash">/</span> {/sep}
+					</li>
+				{/foreach}
+			</ul>
+
+			<hr>
+
+		</div>
+
+	</section>

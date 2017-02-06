@@ -23,6 +23,10 @@ from www import views_non_localized
 from api import api_router
 
 
+admin.site.index_title = admin.site.site_header = admin.site.site_title = 'Administrace WWW'
+
+
+
 auth_urlpatterns = [
     url(r'^login/$', auth_views.login, name='login'),
     url(r'^logout/$', auth_views.logout, name='logout'),

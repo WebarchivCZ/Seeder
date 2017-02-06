@@ -1,0 +1,36 @@
+{% extends "base_www.html" %}
+{% load i18n %}
+
+{% block title %}{{collection}}{% endblock title %}
+
+
+{% block content %}
+
+	{% include "about/menu.html" %}
+
+	<section>
+		<div class="container">
+			{% if collection.image %}
+				<img src="{{ collection.image.url }}">
+			{% endif %}
+			<h2>{{ collection }}</h2>
+			{% if collection.date_from %}
+				{% trans "Date" %}: {{ collection.date_from }} {% if collection.date_to %} - {{ collection.date_to }}{% endif %}
+			<br>
+			{% endif %}
+
+			{{ collection.annotation|safe }}
+
+			{% if collection.sources.exists %}
+				{% trans "List of included sites:" %}
+				<ul>
+				{% for source in collection.sources.all %}
+					<li><a href="{{ source.wayback_url }}">{{ source}}</a></li>
+				{% endfor %}
+				</ul>
+			{% endif %}
+
+		</div>
+	</section>
+
+{% endblock %}

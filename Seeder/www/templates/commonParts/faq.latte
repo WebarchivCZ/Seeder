@@ -1,0 +1,43 @@
+	{? if($lang == 'cs')
+			$submenuItems = array(
+				'general' => 'Všeobecné',
+				'search' => 'Vyhledávání',
+				'access' => 'Zpřístupnění',
+				'harvesting' => 'Stahování dat a osobní údaje',
+				'publishers' => 'Pro vydavatele',
+			);
+		else
+			$submenuItems = array(
+				'general' => 'General information',
+				'search' => 'Search the archive',
+				'access' => 'Access to archive',
+				'harvesting' => 'Harvesting and privacy',
+			);
+	}
+
+
+	<section>
+
+		<div class="container">
+
+			{if $lang == 'cs'}
+				<h1><a href="{plink default}">Webarchiv<span class="false-link-underline-blue"></span></a>: FAQ</h1><br>
+				<p>Často kladené dotazy</p>
+			{else}
+				<h1><a href="{plink default}">Webarchiv<span class="false-link-underline-blue"></span></a>: FAQ</h1><br>
+				<p>Frequently Asked Questions</p>
+			{/if}
+
+			<ul class="inline-list">
+				{foreach $submenuItems as $id => $item}
+					<li>
+						<a href="#{$id}"{ifCurrent $id} class="current"{/ifCurrent}>{$item}</a>{sep}&nbsp;<span class="slash">/</span> {/sep}
+					</li>
+				{/foreach}
+			</ul>
+
+			<hr>
+
+		</div>
+
+	</section>

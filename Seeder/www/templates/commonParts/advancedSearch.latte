@@ -1,0 +1,56 @@
+			{form advancedSearchForm}
+
+				{foreach $flashes as $flash}
+					<div class="row">
+						<div class="col-md-6 col-md-offset-3">
+							<div class="flash {$flash->type}">{$flash->message}</div>
+						</div>
+					</div>
+				{/foreach}
+
+				{control $form errors}
+<section id="add-web">
+				<div class="row">
+					<div class="col-sm-2 col-md-3 no-right-padding">
+						<span class="form-label">{label query /}</span>
+					</div>
+					<div class="col-sm-8 col-md-6">
+						{input query class => 'text'}
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-sm-2 col-md-3 no-right-padding">
+						<span class="form-label">{label dateFrom /}</span>
+					</div>
+					<div class="col-sm-8 col-md-6">
+						<div class="row">
+							<div class="col-sm-5 no-right-padding">
+								{input dateFrom}
+							</div>
+							<div class="col-sm-2">
+								<span class="form-label">{label dateTill /}</span>
+							</div>
+							<div class="col-sm-5 no-left-padding">
+								{input dateTill}
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-6 col-sm-offset-2 col-md-offset-3">
+						<div class="row">
+							<div class="col-md-6 checkbox-wrapper">
+								<span class="false-checkbox"></span>
+								{input star}
+								<span class="false-label">{if $lang == 'cs'} Zobrazit jako seznam objektů {else} Show as a list objects {/if} </span>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-sm-8 col-md-6 col-sm-offset-2 col-md-offset-3">
+						{input submit class => 'submit'}
+					</div>
+				</div>
+</section>
+			{/form}

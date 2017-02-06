@@ -1,6 +1,10 @@
+from uuid import uuid4
+
 from django.db import models
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
+from django.utils.text import slugify
+from django.core.urlresolvers import reverse
 
 from ckeditor.fields import RichTextField
 
@@ -63,14 +67,27 @@ class SearchLog(models.Model):
     log_time = models.DateTimeField(default=timezone.now, editable=False)
     ip_address = models.GenericIPAddressField()
 
+    def __str__(self):
+        return self.search_term
+
 
 class TopicCollection(BaseModel):
     title = models.CharField(max_length=150)
+    slug = models.SlugField(unique=True)
+
     annotation = RichTextField()
-    image = models.ImageField(upload_to='photos')    
+    image = models.ImageField(
+        upload_to='photos',
+        null=True, blank=True, 
+    )
 
-    sources = models.ManyToManyField(Source)
+    date_from = models.DateField(null=True, blank=True)
+    date_to = models.DateField(null=True, blank=True)
 
+    sources = models.ManyToManyField(Source, null=True, blank=True)
+
+    def get_absolute_url(self):
+        return reverse('www:collection_detail', kwargs={"slug": self.slug})
 
     def __str__(self):
         return self.title

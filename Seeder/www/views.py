@@ -1,9 +1,10 @@
-from urljects import U, URLView
+from urljects import U, URLView, slug
 from django.views.generic.base import TemplateView, View
+from django.views.generic.detail import DetailView
 from django.utils.translation import ugettext as _
 
 from contracts.models import Contract
-from source.models import Source
+from source.models import Source, Category, SubCategory
 
 from . import models
 from . import forms
@@ -21,9 +22,40 @@ class Index(TemplateView, URLView):
         
         context['contract_count'] = Contract.objects.valid().count()
         context['last_sources'] = Source.objects.archiving().order_by('-created')[:5]
-        context['news_article'] = models.NewsObject.objects.latest('created')
+        context['news_article'] = models.NewsObject.objects.order_by('created').first()
         context['big_search_form'] = forms.BigSearchForm(data=self.request.GET)
 
+        return context
+
+
+class TopicCollections(TemplateView, URLView):
+    template_name = 'about/topic_collections.html'
+    view_name = 'about'
+    sub_view_name = 'topic_collections'
+
+    url = U / _('topic_collections_url')
+    url_name = 'topic_collections'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data()
+        context['collections'] = models.TopicCollection.objects.filter(active=True)
+        return context
+
+
+class CollectionDetail(DetailView, URLView):
+    template_name = 'about/collection_detail.html'
+    view_name = 'about'
+    sub_view_name = 'topic_collections'
+
+    model = models.TopicCollection
+    context_object_name = 'collection'
+
+    url = U / _('topic_collection_detail_url') / slug
+    url_name = 'collection_detail'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data()
+        context['collections'] = models.TopicCollection.objects.filter(active=True)
         return context
 
 
@@ -92,3 +124,16 @@ class AboutContact(TemplateView, URLView):
 
     url = U / _('about_contact_url')
     url_name = 'about_contact'
+
+
+class Categories(TemplateView, URLView):
+    template_name = 'categories/categories.html'
+    view_name = 'categories'
+
+    url = U / _('categories_url')
+    url_name = 'categories'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data()
+        context['categories'] = Category.objects.all()
+        return context

@@ -1,0 +1,22 @@
+{% extends "base_www.html" %}
+
+{% block title %}{% if lang == "cs" %}Webarchiv podle oborů{% else %}Browse by subject{% endif %}{% endblock title %}
+
+
+{% block content %}
+	{% include "categories/menu.html" %}
+
+	<section id="catalog-items">
+		<div class="container">
+
+			<hr>
+			<br>
+
+			{snippet resourceItems}
+				{include ../commonParts/resourceItems.latte}
+			{/snippet}
+
+		</div>
+	</section>
+
+{% endblock %}

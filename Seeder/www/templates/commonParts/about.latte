@@ -1,0 +1,47 @@
+	{? if($lang == 'cs')
+			$submenuItems = array(
+				'about' => 'O Webarchivu',
+				'terminology' => 'Terminologie',
+				'harvests' => 'Celoplošné sklizně',
+				'topicCollections' => 'Tématické sbírky',
+				'documents' => 'Dokumenty',
+				'graphics' => 'Grafické materiály',
+				'contact' => 'Kontakty',
+			);
+		else
+			$submenuItems = array(
+				'about' => 'About Webarchiv',
+				'harvests' => 'Comprehensive Harvests',
+				'topicCollections' => 'Topic Collections',
+				'documents' => 'Documents',
+				'graphics' => 'Banners',
+				'contact' => 'Contacts',
+			);
+	}
+
+
+	<section>
+
+		<div class="container">
+
+			{if $lang == 'cs'}
+				<h1><a href="{plink default}">Webarchiv<span class="false-link-underline-blue"></span></a> uchovává český web</h1><br>
+				<p>Pro první seznámení s webarchivem pokračujte <a href="{plink moreAbout}">zde</a></p>
+			{else}
+				<h1><a href="{plink default}">Webarchiv<span class="false-link-underline-blue"></span></a> preserves Czech web</h1><br>
+				<p>For basic informations about Webarchiv visit our <a href="{plink moreAbout}">introduction</a></p>
+			{/if}
+
+			<ul class="inline-list">
+				{foreach $submenuItems as $id => $item}
+					<li>
+						<a href="{plink $id}"{ifCurrent $id} class="current"{/ifCurrent}>{$item}</a>{sep}&nbsp;<span class="slash">/</span> {/sep}
+					</li>
+				{/foreach}
+			</ul>
+
+			<hr>
+
+		</div>
+
+	</section>

@@ -11,6 +11,7 @@ from django.core.exceptions import ValidationError
 from django.contrib.contenttypes.models import ContentType
 from django.utils import timezone
 from dateutil.relativedelta import relativedelta
+from django.utils.text import slugify
 
 from tld.exceptions import TldDomainNotFound
 from reversion import revisions
@@ -28,6 +29,58 @@ def validate_tld(value):
         raise ValidationError('Invalid domain name')
 
 
+class SlugOrCreateModel(object):
+    """
+    This is mixin that kind of handles slug prepopulation softly
+    it either retrieves slug or creates it and saves the model.
+    from_field and to_field should both be string names of the 
+    fields... This is quite naive approach but you know who else
+    is naive? Your ma! There you go. In your face. 
+
+    Naaah! Are you still here??? 
+
+    I am sorry!!!
+
+    I am so glad that somebody actually reads this thing! Like its
+    almost thousands commits... Just me... You know... It gets lonely 
+    here... You have no idea what I have been here through... 
+    the squirels are nice though. They bring me nuts. Sometime we sing,
+    about, you know, stuff, life, fire, classes, methods, inheritance. 
+    I mean they are not really like that... I KNOW THEY CAN'T TALK
+    OR ANYTHING!!! I AM NOT CREAZY! I KNOW SQUIRELLS ARE TOO STUPID
+    TO TALK ABOUT CLASSES! I mean they usually can't even handle
+    simple function definitions :(. 
+
+    Come on man. Don't leave me here. If you really did read this 
+    thing please fork/edit this file and leave your name below:
+     - @author
+    """
+
+    from_field = NotImplemented 
+    slug_field = NotImplemented
+
+
+    def get_value_for_slug(self):
+        from_val = getattr(self, self.from_field)
+        slug = slugify(from_val)
+
+        if self.__class__.objects.filter(**{self.slug:slug}).exists():
+            slug = '{0}-{1}'.format(self.pk, slug)
+        return slug
+
+    @property
+    def slug_safe(self):
+        slug_value = getattr(self, self.slug_field)
+        if slug_value:
+            return slug_value
+
+        if not slug_value:
+            slug = self.get_value_for_slug()
+            setattr(self, self.slug_field, slug)
+            self.save()
+            return slug
+
+
 class SeedManager(models.Manager):
     """
     Auto-filters seeds that are ready to be archived
@@ -43,17 +96,27 @@ class SeedManager(models.Manager):
         )
 
 
-class Category(models.Model):
+class Category(models.Model, SlugOrCreateModel):
     name = models.CharField(unique=True, max_length=150)
+    slug = models.SlugField(unique=True, blank=True, null=True)
+
+    from_field = 'name'
+    slug_field = 'slug'
 
     def __str__(self):
         return u'{0} - {1}'.format(self.id, self.name)
 
 
-class SubCategory(models.Model):
-    category = models.ForeignKey(Category, on_delete=models.DO_NOTHING)
+class SubCategory(models.Model, SlugOrCreateModel):
     name = models.CharField(max_length=255)
+    slug = models.SlugField(unique=True, blank=True, null=True)
+
+    category = models.ForeignKey(Category, on_delete=models.DO_NOTHING)
+    
     subcategory_id = models.CharField(max_length=40, blank=True, null=True)
+    
+    from_field = 'name'
+    slug_field = 'slug'
 
     def __str__(self):
         return u'{0} - {1}'.format(self.subcategory_id, self.name)

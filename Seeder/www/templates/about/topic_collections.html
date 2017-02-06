@@ -1,0 +1,33 @@
+{% extends "base_www.html" %}
+{% load i18n %}
+
+{% block title %}{% if lang == "cs" %}Tématické sbírky{% else %}Topic collections{% endif %}{% endblock title %}
+
+
+{% block content %}
+
+	{% include "about/menu.html" %}
+
+	<section>
+		<div class="container">
+			{% if lang == "cs" %}
+				<h2>Tématické sbírky</h2>
+				<p>Tematické sbírky jsou monotematické soubory webových dokumentů. V rámci tematických sklizní sledujeme především takové děje, které doprovází celospolečenská debata a je u nich tedy předpoklad, že zaujmou významnější místo z hlediska dějin České republiky. Cíleně vybíráme události, které mají širší ohlas v prostředí internetu. Monitorujeme očekávané akce (např. volby), ale i nenadálé situace (např. povodně).</p>
+			{% else %}
+				<h2>Topic collections</h2>
+			{% endif %}
+
+			<div class="padding20"></div>
+			<hr class="no-margin">
+
+			{% for collection in collections %}
+				<h2><a href="{{ collection.get_absolute_url }}">{{ collection }}</a></h2>
+				{{ collection.annotation|safe }}
+				{% if collection.date_from %}
+					{% trans "Date" %}: {{ collection.date_from }} {% if collection.date_to %} - {{ collection.date_to }}{% endif %}
+				{% endif %}
+			{% endfor %}	
+		</div>
+	</section>
+
+{% endblock %}
