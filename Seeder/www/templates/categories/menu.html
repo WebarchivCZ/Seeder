@@ -9,35 +9,37 @@
 			{% endif %}
 
 			<ul class="inline-list categories">
-				<li><a href="{plink catalog}" {% if not current %}class="current"{% endif %}>Vše</a>&nbsp;{{ sources_count }}&nbsp;<span class="slash">/</span>&nbsp;</li>
+				<li>
+					<a href="{% url "www:categories" %}" {% if not current_category %}class="current"{% endif %}>Vše</a>&nbsp;{{ sources_total }}&nbsp;<span class="slash">/</span>&nbsp;
+				</li>
 
-				{foreach $categories as $category}
-					{if $category['count'] > 0}
-						<li>
-							<a href="{plink catalog, category => $category['id']}"{if $currentCategory && $category['id']==$currentCategory->id} class="current"{/if}>
-								{$category['category']}</a>&nbsp;{$category['count']}{sep}&nbsp;<span class="slash">/</span>&nbsp;{/sep}
+				{% for category in categories %}
+					<li>
+						<a href="{{ category.www_url }}" {% ifequal current_category category %}class="current"{% endifequal %}>{{ category }}</a>&nbsp; {{ category.num_sources }} 
+						{% include "includes/comma.html" with separator='&nbsp;<span class="slash">/</span>&nbsp;' %}
 						</li>
-					{/if}
-				{/foreach}
+				{% endfor %}
 
 			</ul>
 
-			{if $currentCategory}
 
-				<h2 class="italic">{$currentCategory->category}</h2>
+			{% if current_category %}
+				<h2 class="italic">{{ current_category }} / {{ current_sub_category }}</h2>
 
 				<ul class="inline-list subcategories">
 
-					<li><a href="{plink catalog, category => $currentCategory->id}"{if !$currentSubcategory} class="current"{/if}>Vše</a>&nbsp;{$categoryResourcesCount}&nbsp;<span class="slash">/</span>&nbsp;</li>
-					{foreach $subcategories as $subcategory}
-						{if $subcategory['count'] > 0}
-							<li><a href="{plink catalog, category => $currentCategory->id, subcategory => $subcategory['id']}"{if $currentSubcategory && $subcategory['id']==$currentSubcategory->id} class="current"{/if}>{$subcategory['subcategory']}</a>&nbsp;{$subcategory['count']}{sep}&nbsp;<span class="slash">/</span>&nbsp;{/sep}</li>
-						{/if}
-					{/foreach}
+					<li>
+						<a href="{% url "www:categories" %}" {% if not current_sub_category %}class="current"{% endif %}>Vše</a>&nbsp;{{ cat_sources_total }}&nbsp;<span class="slash">/</span>&nbsp;
+					</li>
+
+					{% for sub_category in sub_categories %}
+						<li>
+							<a href="{{ sub_category.www_url }}" {% ifequal current_sub_category sub_category %}class="current"{% endifequal %}>{{ sub_category }}</a>&nbsp; {{ sub_category.num_sources }} 
+							{% include "includes/comma.html" with separator='&nbsp;<span class="slash">/</span>&nbsp;' %}
+							</li>
+					{% endfor %}
 
 				</ul>
-
-			{/if}
-
+			{% endif %}
 		</div>
 	</section>

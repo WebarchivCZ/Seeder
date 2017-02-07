@@ -2,6 +2,7 @@ from urljects import U, URLView, slug
 from django.views.generic.base import TemplateView, View
 from django.views.generic.detail import DetailView
 from django.utils.translation import ugettext as _
+from django.db.models import Count
 
 from contracts.models import Contract
 from source.models import Source, Category, SubCategory
@@ -126,6 +127,26 @@ class AboutContact(TemplateView, URLView):
     url_name = 'about_contact'
 
 
+def get_categories_context():
+    return {
+        'sources_total': Source.objects.archiving().count(),
+        'categories': Category.objects.all().annotate(
+            num_sources=Count('source')
+        )
+    }
+
+def get_categories_detail_context(category):
+    sub_categories = SubCategory.objects.filter(category=category)\
+        .annotate(num_sources=Count('source'))\
+        .filter(num_sources__gt=0)
+
+    return {
+            'cat_sources_total': category.source_set.count(),
+            'sub_categories': sub_categories
+        }
+
+
+
 class Categories(TemplateView, URLView):
     template_name = 'categories/categories.html'
     view_name = 'categories'
@@ -135,5 +156,45 @@ class Categories(TemplateView, URLView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data()
-        context['categories'] = Category.objects.all()
-        return context
+        return {**context, **get_categories_context()}
+
+
+class CategoryDetail(DetailView, URLView):
+    template_name = 'categories/categories.html'
+    view_name = 'category'
+
+    model = Category
+    context_object_name = 'current_category'
+
+    url = U / _('categories_url') / slug
+    url_name = 'category_detail'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data()
+        return {
+            **context, 
+            **get_categories_context(),
+            **get_categories_detail_context(self.get_object())
+        }
+
+
+class SubCategoryDetail(DetailView, URLView):
+    template_name = 'categories/categories.html'
+    view_name = 'category'
+
+    model = SubCategory
+    context_object_name = 'current_sub_category'
+
+    url = U / _('categories_url') / r'(?P<category_slug>[\w-]+)' / slug
+    url_name = 'sub_category_detail'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data()
+        category = self.get_object().category
+
+        return {
+            'current_category': category,
+            **context, 
+            **get_categories_context(),
+            **get_categories_detail_context(category)
+        }

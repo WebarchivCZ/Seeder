@@ -10,3 +10,5 @@ requirements:
 pylint:
     disable:
         - old-style-class
+        - missing-super-argument
+        

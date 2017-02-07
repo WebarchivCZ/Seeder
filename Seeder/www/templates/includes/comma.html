@@ -1,1 +1,1 @@
-{% if not forloop.last %}, {% endif %}
+{% if not forloop.last %}{% if separator %}{{separator}}{% else %}, {% endif %}{% endif %}

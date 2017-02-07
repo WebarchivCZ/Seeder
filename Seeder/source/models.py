@@ -58,15 +58,16 @@ class SlugOrCreateModel(object):
 
     from_field = NotImplemented 
     slug_field = NotImplemented
+    slug_max_length = 49
 
 
     def get_value_for_slug(self):
         from_val = getattr(self, self.from_field)
         slug = slugify(from_val)
 
-        if self.__class__.objects.filter(**{self.slug:slug}).exists():
+        if self.__class__.objects.filter(**{self.slug_field:slug}).exists():
             slug = '{0}-{1}'.format(self.pk, slug)
-        return slug
+        return slug[:self.slug_max_length]
 
     @property
     def slug_safe(self):
@@ -104,7 +105,13 @@ class Category(models.Model, SlugOrCreateModel):
     slug_field = 'slug'
 
     def __str__(self):
-        return u'{0} - {1}'.format(self.id, self.name)
+        return self.name
+
+    def www_url(self):
+        return reverse('www:category_detail', kwargs={'slug': self.slug_safe})
+
+    class Meta:
+        ordering = ['name']
 
 
 class SubCategory(models.Model, SlugOrCreateModel):
@@ -119,7 +126,16 @@ class SubCategory(models.Model, SlugOrCreateModel):
     slug_field = 'slug'
 
     def __str__(self):
-        return u'{0} - {1}'.format(self.subcategory_id, self.name)
+        return self.name
+
+    def www_url(self):
+        return reverse('www:sub_category_detail', kwargs={
+            'slug': self.slug_safe, 'category_slug': self.category.slug
+        })
+
+    class Meta:
+        ordering = ['name']
+
 
 
 class SourceManager(models.Manager):
