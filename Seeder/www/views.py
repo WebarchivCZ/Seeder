@@ -3,6 +3,7 @@ from django.views.generic.base import TemplateView, View
 from django.views.generic.detail import DetailView
 from django.utils.translation import ugettext as _
 from django.db.models import Count
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from contracts.models import Contract
 from source.models import Source, Category, SubCategory
@@ -127,74 +128,98 @@ class AboutContact(TemplateView, URLView):
     url_name = 'about_contact'
 
 
-def get_categories_context():
-    return {
-        'sources_total': Source.objects.archiving().count(),
-        'categories': Category.objects.all().annotate(
-            num_sources=Count('source')
-        )
-    }
 
-def get_categories_detail_context(category):
-    sub_categories = SubCategory.objects.filter(category=category)\
-        .annotate(num_sources=Count('source'))\
-        .filter(num_sources__gt=0)
+class CategoryBaseView:
+    template_name = 'categories/categories.html'
+    view_name = 'categories'
 
-    return {
+
+    def get_paginator(self):
+        paginator = Paginator(self.get_source_queryset(), 13) 
+        page = self.request.GET.get('page', 1)
+        try:
+            sources = paginator.page(page)
+        except PageNotAnInteger:
+            sources = paginator.page(1)
+        except EmptyPage:
+            sources = paginator.page(1)
+        return sources
+
+
+    def get_source_queryset(self):
+        raise NotImplementedError
+
+
+    def get_categories_context(self):
+        return {
+            'sources_total': Source.objects.archiving().count(),
+            'categories': Category.objects.all().annotate(
+                num_sources=Count('source')
+            )
+        }
+
+    def get_categories_detail_context(self, category):
+        sub_categories = SubCategory.objects.filter(category=category)\
+            .annotate(num_sources=Count('source'))\
+            .filter(num_sources__gt=0)
+
+        return {
             'cat_sources_total': category.source_set.count(),
             'sub_categories': sub_categories
         }
 
 
 
-class Categories(TemplateView, URLView):
-    template_name = 'categories/categories.html'
-    view_name = 'categories'
-
+class Categories(CategoryBaseView, TemplateView, URLView):
     url = U / _('categories_url')
     url_name = 'categories'
 
+    def get_source_queryset(self):
+        return Source.objects.archiving()
+
     def get_context_data(self, **kwargs):
-        context = super().get_context_data()
-        return {**context, **get_categories_context()}
+        return {
+            "sources": self.get_paginator(),
+            **super().get_context_data(), 
+            **self.get_categories_context()
+        }
 
 
-class CategoryDetail(DetailView, URLView):
-    template_name = 'categories/categories.html'
-    view_name = 'category'
-
+class CategoryDetail(CategoryBaseView, DetailView, URLView):
     model = Category
     context_object_name = 'current_category'
 
     url = U / _('categories_url') / slug
     url_name = 'category_detail'
 
+    def get_source_queryset(self):
+        return Source.objects.archiving().filter(category=self.get_object())
+
     def get_context_data(self, **kwargs):
-        context = super().get_context_data()
         return {
-            **context, 
-            **get_categories_context(),
-            **get_categories_detail_context(self.get_object())
+            "sources": self.get_paginator(),
+            **super().get_context_data(), 
+            **self.get_categories_context(),
+            **self.get_categories_detail_context(self.get_object())
         }
 
 
-class SubCategoryDetail(DetailView, URLView):
-    template_name = 'categories/categories.html'
-    view_name = 'category'
-
+class SubCategoryDetail(CategoryBaseView, DetailView, URLView):
     model = SubCategory
     context_object_name = 'current_sub_category'
 
     url = U / _('categories_url') / r'(?P<category_slug>[\w-]+)' / slug
     url_name = 'sub_category_detail'
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data()
-        category = self.get_object().category
+    def get_source_queryset(self):
+        return Source.objects.archiving().filter(sub_category=self.get_object())
 
+    def get_context_data(self, **kwargs):
+        category = self.get_object().category
         return {
+            "sources": self.get_paginator(),
             'current_category': category,
-            **context, 
-            **get_categories_context(),
-            **get_categories_detail_context(category)
+            **super().get_context_data(), 
+            **self.get_categories_context(),
+            **self.get_categories_detail_context(category)
         }

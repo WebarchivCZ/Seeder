@@ -1,0 +1,53 @@
+{% if lang == "cs" %}
+	Zobrazení: <a href="{plink this, 'display'=>'images'}">vizuální</a>, 
+	<a href="" class="current">textové</a>
+{% else %}
+	Display: <a href="{plink this, 'display'=>'images'}">visual</a>, 
+	<a href="" class="current">text</a>
+{% endif %}
+
+	{% for source in sources %}
+		<div class="row">
+			<div class="col-md-12 item-textual">
+				<h2><a href="{{ source.wayback_url }}">{{ source }}</a></h2>
+				<p>
+					<span class="italic">{{ source.stripped_main_url }}</span> 
+					<span class="blue">[</span><a href="{{ source.url }}">{% if lang == "cs" %}aktuální verze{% else %}current{% endif %}</a><span class="blue">]</span>
+				</p>
+
+				{% if source.annotation %}<p>{{ source.annotation }}</p>{% endif %}
+
+				<p>
+					{% if lang == "cs" %}Vydavatel:{% else %}Publisher:{% endif %} 
+					{{ source.publisher }}
+				</p>
+				{% if source.keywords.exists %}
+					<ul class="inline-list">
+						{% for keyword in source.keywords.all %}
+							<li><a href="">{{ keyword }}</a>{% include "includes/comma.html" %}</li>
+						{% endfor %}
+					</ul>
+				{% endif %}
+			</div>
+		</div>
+	{% endfor %}
+
+<div class="row">
+	<div class="col-md-12">
+		<div class="paginator">
+
+
+		        {% if sources.has_previous %}
+		            <a href="?page={{ sources.previous_page_number }}">{{ sources.previous_page_number }}</a>
+		        {% endif %}
+
+		        <span class="current">
+		            {{ sources.number }}
+		        </span>
+
+		        {% if sources.has_next %}
+		            <a href="?page={{ sources.next_page_number }}">{{ sources.next_page_number }}</a>
+		        {% endif %}
+		</div>
+	</div>
+</div>

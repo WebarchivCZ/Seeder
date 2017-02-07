@@ -13,40 +13,40 @@
 									<img src="{$basePath}/{$src_jpg}" class="aspect-ratio" alt="{$resource['title']}">
 								{elseif file_exists(WWW_DIR."/".$src_png)}
 									<img src="{$basePath}/{$src_png}" class="aspect-ratio" alt="{$resource['title']}">
-								{else}
+								{% else %}
 									{? $i++;}
 									<div class="aspect-ratio">
 										<div class="no-image">
 											<span class="small">www</span>
 										</div>
 									</div>
-								{/if}
+								{% endif %}
 							</div>
 
 						</a>
 					</div>
 
 					<div class="col-md-12 item-textual">
-						<p><span class="italic">{$resource['url']|trim|replace:'http://',''|replace:'https://',''}</span> <span class="blue">[</span><a href="{$resource['url']}">{if $lang == 'cs'}aktuální verze{else}current version{/if}</a><span class="blue">]</span></p>
-						{if $resource['annotation']}<p>{$resource['annotation']}</p>{/if}
-						{if $resource['publisher']}<p>{if $lang == 'cs'}Vydavatel:{else}Publisher:{/if} {$resource['publisher']->name}</p>{/if}
+						<p><span class="italic">{$resource['url']|trim|replace:'http://',''|replace:'https://',''}</span> <span class="blue">[</span><a href="{$resource['url']}">{% if lang == "cs" %}aktuální verze{% else %}current version{% endif %}</a><span class="blue">]</span></p>
+						{if $resource['annotation']}<p>{$resource['annotation']}</p>{% endif %}
+						{if $resource['publisher']}<p>{% if lang == "cs" %}Vydavatel:{% else %}Publisher:{% endif %} {$resource['publisher']->name}</p>{% endif %}
 						{if $resource['keywords']->count() > 0}
 							<ul class="inline-list">
 								{foreach $resource['keywords'] as $keyword}
 									<li><a href="{plink keywordResults, 'keyword'=>$keyword->keyword->id}">{$keyword->keyword->keyword}</a>{sep}, {/sep}</li>
 								{/foreach}
 							</ul>
-						{/if}
+						{% endif %}
 					</div>
 
 				</div>
 
 				{if $iterator->counter % 2 == 0 || $iterator->counter % 3 == 0 || $iterator->counter % 4 == 0}
-					<div class="{if $iterator->counter % 2 == 0}clearfix visible-xs-block{/if}
-								{if $iterator->counter % 3 == 0}clearfix visible-sm-block{/if}
-								{if $iterator->counter % 4 == 0}clearfix visible-md-block visible-lg-block{/if}">
+					<div class="{if $iterator->counter % 2 == 0}clearfix visible-xs-block{% endif %}
+								{if $iterator->counter % 3 == 0}clearfix visible-sm-block{% endif %}
+								{if $iterator->counter % 4 == 0}clearfix visible-md-block visible-lg-block{% endif %}">
 					</div>
-				{/if}
+				{% endif %}
 
 			{/foreach}
 

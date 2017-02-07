@@ -301,6 +301,17 @@ class Source(BaseModel):
             setattr(seed, attr_name, attr_value)
         seed.save()
 
+    def stripped_main_url(self):
+        """
+        returns url without https
+        """
+        url = self.url
+        if url.startswith("http://"):
+            return url.lstrip("http://")
+        elif url.startswith("https://"):
+            return url.lstrip("https://")
+        return url
+
     def get_legacy_url(self):
         """
         Returns url to legacy system with this source
