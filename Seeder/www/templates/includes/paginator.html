@@ -1,27 +1,19 @@
-<div class="paginator">
-		<a href="/cs/katalog-stranek?display=text">1</a>
-	<span>…</span>
-		<a href="/cs/katalog-stranek?vp-page=7&amp;display=text">7</a>
-	
-		<a href="/cs/katalog-stranek?vp-page=8&amp;display=text">8</a>
-	
-		<a href="/cs/katalog-stranek?vp-page=9&amp;display=text">9</a>
-	
-		<span class="current blue">10</span>
-	
-		<a href="/cs/katalog-stranek?vp-page=11&amp;display=text">11</a>
-	
-		<a href="/cs/katalog-stranek?vp-page=12&amp;display=text">12</a>
-	
-		<a href="/cs/katalog-stranek?vp-page=13&amp;display=text">13</a>
-	<span>…</span>
-		<a href="/cs/katalog-stranek?vp-page=108&amp;display=text">108</a>
-	<span>…</span>
-		<a href="/cs/katalog-stranek?vp-page=214&amp;display=text">214</a>
-	<span>…</span>
-		<a href="/cs/katalog-stranek?vp-page=321&amp;display=text">321</a>
-	<span>…</span>
-		<a href="/cs/katalog-stranek?vp-page=427&amp;display=text">427</a>
-	
+<div class="row">
+	<div class="col-md-12">
+		<div class="paginator">
 
+
+		        {% if paginator.has_previous %}
+		            <a href="?page={{ paginator.previous_page_number }}">{{ paginator.previous_page_number }}</a>
+		        {% endif %}
+
+		        <span class="current">
+		            {{ paginator.number }}
+		        </span>
+
+		        {% if paginator.has_next %}
+		            <a href="?page={{ paginator.next_page_number }}">{{ paginator.next_page_number }}</a>
+		        {% endif %}
+		</div>
+	</div>
 </div>

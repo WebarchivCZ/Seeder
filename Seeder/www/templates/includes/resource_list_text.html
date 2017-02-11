@@ -1,8 +1,8 @@
 {% if lang == "cs" %}
-	Zobrazení: <a href="{plink this, 'display'=>'images'}">vizuální</a>, 
+	Zobrazení: <a href="?list_type=visual">vizuální</a>, 
 	<a href="" class="current">textové</a>
 {% else %}
-	Display: <a href="{plink this, 'display'=>'images'}">visual</a>, 
+	Display: <a href="?list_type=visual">visual</a>, 
 	<a href="" class="current">text</a>
 {% endif %}
 
@@ -32,22 +32,4 @@
 		</div>
 	{% endfor %}
 
-<div class="row">
-	<div class="col-md-12">
-		<div class="paginator">
-
-
-		        {% if sources.has_previous %}
-		            <a href="?page={{ sources.previous_page_number }}">{{ sources.previous_page_number }}</a>
-		        {% endif %}
-
-		        <span class="current">
-		            {{ sources.number }}
-		        </span>
-
-		        {% if sources.has_next %}
-		            <a href="?page={{ sources.next_page_number }}">{{ sources.next_page_number }}</a>
-		        {% endif %}
-		</div>
-	</div>
-</div>
+{% include "includes/paginator.html" with paginator=sources %}

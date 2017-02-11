@@ -1,0 +1,40 @@
+{% if lang == "cs" %}
+	Zobrazení: <a href="" class="current">vizuální</a>, 
+	<a href="?list_type=visual">textové</a>
+{% else %}
+	Display: <a href="" class="current">visual</a>, 
+	<a href="?list_type=visual">text</a>
+{% endif %}
+
+
+<div class="row">
+	{% for source in sources %}
+		<div class="col-xs-6 col-sm-4 col-md-3">
+			<div class="item-visual">
+				<a href="{{ source.wayback_url }} ">
+					<div class="img-wrapper thumb">
+						{% if source.screenshot %}
+							<img src="{$basePath}/{$src_jpg}" class="aspect-ratio" alt="{$resource['title']}">
+						{% else %}
+							<div class="aspect-ratio">
+								<div class="no-image">
+									<span class="small">www</span>
+								</div>
+							</div>
+						{% endif %}
+					</div>
+					<h2>{{ source }}</h2>
+				</a>
+
+			</div>
+
+		</div>
+
+		<div class="{% cycle "" "" "clearfix visible-sm-block" %} {% cycle "" "" "" "clearfix visible-lg-block visible-md-block" %} clearfix visible-xs-block"></div>
+{% endfor %}
+
+
+
+</div>
+
+{% include "includes/paginator.html" with paginator=sources %}

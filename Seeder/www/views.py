@@ -133,9 +133,11 @@ class CategoryBaseView:
     template_name = 'categories/categories.html'
     view_name = 'categories'
 
+    items_per_page = 12
+
 
     def get_paginator(self):
-        paginator = Paginator(self.get_source_queryset(), 13) 
+        paginator = Paginator(self.get_source_queryset(), self.items_per_page) 
         page = self.request.GET.get('page', 1)
         try:
             sources = paginator.page(page)
@@ -151,7 +153,13 @@ class CategoryBaseView:
 
 
     def get_categories_context(self):
+        get_type_param = self.request.GET.get('list_type', None)
+        if get_type_param in ['text', 'visual']:
+            self.request.session['list_type'] = get_type_param
+        list_type = self.request.session.get('list_type', 'text')
+
         return {
+            'list_type': list_type,
             'sources_total': Source.objects.archiving().count(),
             'categories': Category.objects.all().annotate(
                 num_sources=Count('source')
@@ -216,6 +224,7 @@ class SubCategoryDetail(CategoryBaseView, DetailView, URLView):
 
     def get_context_data(self, **kwargs):
         category = self.get_object().category
+
         return {
             "sources": self.get_paginator(),
             'current_category': category,
