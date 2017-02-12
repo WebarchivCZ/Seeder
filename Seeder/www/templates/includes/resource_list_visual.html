@@ -1,9 +1,10 @@
+{% load thumbnail %}
 {% if lang == "cs" %}
 	Zobrazení: <a href="" class="current">vizuální</a>, 
-	<a href="?list_type=visual">textové</a>
+	<a href="{% url "www:change_list_view" list_type='text' %}">textové</a>
 {% else %}
 	Display: <a href="" class="current">visual</a>, 
-	<a href="?list_type=visual">text</a>
+	<a href="{% url "www:change_list_view" list_type='text' %}">text</a>
 {% endif %}
 
 
@@ -14,7 +15,9 @@
 				<a href="{{ source.wayback_url }} ">
 					<div class="img-wrapper thumb">
 						{% if source.screenshot %}
-							<img src="{$basePath}/{$src_jpg}" class="aspect-ratio" alt="{$resource['title']}">
+                            {% thumbnail source.screenshot "206x156" crop="center" as im %}
+                                <img src="{{ im.url }}" class="aspect-ratio" width="{{ im.width }}" height="{{ im.height }}">
+                            {% endthumbnail %}
 						{% else %}
 							<div class="aspect-ratio">
 								<div class="no-image">

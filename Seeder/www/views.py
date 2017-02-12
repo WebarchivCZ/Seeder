@@ -1,12 +1,14 @@
 from urljects import U, URLView, slug
 from django.views.generic.base import TemplateView, View
 from django.views.generic.detail import DetailView
+from django.http.response import HttpResponseRedirect
 from django.utils.translation import ugettext as _
-from django.db.models import Count
+from django.db.models import Count, Sum, When, Case, IntegerField
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from contracts.models import Contract
 from source.models import Source, Category, SubCategory
+from source.constants import ARCHIVING_STATES
 
 from . import models
 from . import forms
@@ -153,26 +155,35 @@ class CategoryBaseView:
 
 
     def get_categories_context(self):
-        get_type_param = self.request.GET.get('list_type', None)
-        if get_type_param in ['text', 'visual']:
-            self.request.session['list_type'] = get_type_param
         list_type = self.request.session.get('list_type', 'text')
 
         return {
             'list_type': list_type,
             'sources_total': Source.objects.archiving().count(),
             'categories': Category.objects.all().annotate(
-                num_sources=Count('source')
-            )
+                num_sources=Sum(
+                    Case(
+                        When(source__state__in=ARCHIVING_STATES, then=1),
+                        default=0, output_field=IntegerField()
+                    )
+                )
+            ).filter(num_sources__gt=0)
+
         }
 
     def get_categories_detail_context(self, category):
         sub_categories = SubCategory.objects.filter(category=category)\
-            .annotate(num_sources=Count('source'))\
+            .annotate(
+                num_sources=Sum(
+                    Case(
+                        When(source__state__in=ARCHIVING_STATES, then=1),
+                        default=0, output_field=IntegerField()
+                    )
+                ))\
             .filter(num_sources__gt=0)
 
         return {
-            'cat_sources_total': category.source_set.count(),
+            'cat_sources_total': category.source_set.filter(state__in=ARCHIVING_STATES).count(),
             'sub_categories': sub_categories
         }
 
@@ -232,3 +243,12 @@ class SubCategoryDetail(CategoryBaseView, DetailView, URLView):
             **self.get_categories_context(),
             **self.get_categories_detail_context(category)
         }
+
+
+class ChangeListView(View, URLView):
+    url = U / 'change_list_view' / r'(?P<list_type>visual|text)'
+    url_name = 'change_list_view'
+
+    def get(self, request, list_type):
+        self.request.session['list_type'] = list_type
+        return HttpResponseRedirect(request.META['HTTP_REFERER'])
