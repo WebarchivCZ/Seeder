@@ -24,7 +24,7 @@
 				{% if source.keywords.exists %}
 					<ul class="inline-list">
 						{% for keyword in source.keywords.all %}
-							<li><a href="">{{ keyword }}</a>{% include "includes/comma.html" %}</li>
+							<li><a href="{{ keyword.www_url }}">{{ keyword }}</a>{% include "includes/comma.html" %}</li>
 						{% endfor %}
 					</ul>
 				{% endif %}

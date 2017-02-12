@@ -1,27 +1,20 @@
-{block title}{% if lang == "cs" %}Klíčové slovo{% else %}Keyword{% endif %} | {include #parent}{% endblock %}
+{% extends "base_www.html" %}
 
-{block menuItemActive1} class="active"{% endblock %}
+{% block title %}{% if lang == "cs" %}Klíčové slovo{% else %}Keyword{% endif %} {{ keyword }}{% endblock title %}
 
 {% block content %}
 
 	<section id="search">
 		<div class="container">
 
-			<h1>{$keyword->keyword}</h1>
+			<h1>{{ keyword }}</h1>
 
-			<a href="#" class="link-advanced">{% if lang == "cs" %}pokročilé vyhledávání{% else %}advanced search{% endif %}</a>
 
-			<div id="advanced-search">
-				{include ../commonParts/advancedSearch.latte}
-			</div>
-
-			{if count($resources) > 0}
+			{% if sources %}
 				<p class="results-info">
-					{% if lang == "cs" %}celkem: {$paginator->getItemCount()} výsledků{% else %}total: {$paginator->getItemCount()} results{% endif %}
-					{if $paginator->getPageCount() > 1}
-						, {% if lang == "cs" %}zobrazeno{% else %}showing{% endif %}: {$paginator->getPage()} / {$paginator->getPageCount()}
+					{% if lang == "cs" %}celkem: {{ total_count }} výsledků{% else %}total: {{ total_count }} results{% endif %},
+						{% if lang == "cs" %}zobrazeno{% else %}showing{% endif %}: {{ sources.number }} / {{ sources.paginator.num_pages }}
 						{% if lang == "cs" %}stran{% else %}pages{% endif %}
-					{% endif %}
 				</p>
 				<br>
 				<p class="italic">
@@ -38,21 +31,21 @@
 
 
 
-	{if count($resources) > 0}
-
 		<section id="catalog-items">
 			<div class="container">
 
 				<hr>
 				<br>
 
-				{snippet resourceItems}
-					{include ../commonParts/resourceItems.latte}
-				{/snippet}
+				{% ifequal request.session.list_type "visual"  %}
+					{% include "includes/resource_list_visual.html" %}
+				{% else %}
+					{% include "includes/resource_list_text.html" %}
+				{% endifequal %}
+
 
 			</div>
 		</section>
-	{% endif %}
 
 
 

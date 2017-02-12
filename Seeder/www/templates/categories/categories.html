@@ -12,7 +12,7 @@
 			<hr>
 			<br>
 
-			{% ifequal list_type "visual"  %}
+			{% ifequal request.session.list_type "visual"  %}
 				{% include "includes/resource_list_visual.html" %}
 			{% else %}
 				{% include "includes/resource_list_text.html" %}

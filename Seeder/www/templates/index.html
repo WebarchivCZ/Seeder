@@ -94,7 +94,7 @@
 							{% if news_article.source_1.keywords %}
 								<ul class="inline-list">
 									{% for keyword in news_article.source_1.keywords.all %}
-										<li><a href="">{{ keyword }}</a>{% include "includes/comma.html" %}</li>
+										<li><a href="{{ keyword.www_url }}">{{ keyword }}</a>{% include "includes/comma.html" %}</li>
 									{% endfor %}
 								</ul>
 							{% endif %}
@@ -110,7 +110,7 @@
 							{% if news_article.source_2.keywords %}
 								<ul class="inline-list">
 									{% for keyword in news_article.source_2.keywords.all %}
-										<li><a href="">{{ keyword }}</a>{% include "includes/comma.html" %}</li>
+										<li><a href="{{ keyword.www_url }}">{{ keyword }}</a>{% include "includes/comma.html" %}</li>
 									{% endfor %}
 								</ul>
 							{% endif %}

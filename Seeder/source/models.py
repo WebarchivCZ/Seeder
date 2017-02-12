@@ -1,4 +1,3 @@
-
 import tld
 
 from django.db import models
@@ -161,7 +160,7 @@ class SourceManager(models.Manager):
         )
 
 
-class KeyWord(models.Model):
+class KeyWord(SlugOrCreateModel, models.Model):
     """
     OK, i could have used ArrayField instead. Here is why I did not do it:
     - Support for auto-completion. 
@@ -169,10 +168,16 @@ class KeyWord(models.Model):
     - Easier filtering by reverse relation.
     """
     word = models.CharField(max_length=255, unique=True)
+    slug = models.SlugField(unique=True, blank=True, null=True)
+    
+    from_field = 'word'
+    slug_field = 'slug'
 
     def __str__(self):
         return self.word
 
+    def www_url(self):
+        return reverse('www:keyword', kwargs={'slug': self.slug_safe})
 
 
 @revisions.register(exclude=('last_changed',))

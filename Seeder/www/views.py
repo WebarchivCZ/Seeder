@@ -7,11 +7,15 @@ from django.db.models import Count, Sum, When, Case, IntegerField
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 from contracts.models import Contract
-from source.models import Source, Category, SubCategory
+from source.models import Source, Category, SubCategory, KeyWord
 from source.constants import ARCHIVING_STATES
 
 from . import models
 from . import forms
+
+ITEMS_PER_PAGE = 12
+
+
 
 
 class Index(TemplateView, URLView):
@@ -135,11 +139,8 @@ class CategoryBaseView:
     template_name = 'categories/categories.html'
     view_name = 'categories'
 
-    items_per_page = 12
-
-
     def get_paginator(self):
-        paginator = Paginator(self.get_source_queryset(), self.items_per_page) 
+        paginator = Paginator(self.get_source_queryset(), ITEMS_PER_PAGE) 
         page = self.request.GET.get('page', 1)
         try:
             sources = paginator.page(page)
@@ -155,10 +156,7 @@ class CategoryBaseView:
 
 
     def get_categories_context(self):
-        list_type = self.request.session.get('list_type', 'text')
-
         return {
-            'list_type': list_type,
             'sources_total': Source.objects.archiving().count(),
             'categories': Category.objects.all().annotate(
                 num_sources=Sum(
@@ -252,3 +250,34 @@ class ChangeListView(View, URLView):
     def get(self, request, list_type):
         self.request.session['list_type'] = list_type
         return HttpResponseRedirect(request.META['HTTP_REFERER'])
+
+
+class KeywordViews(DetailView, URLView):
+    model = KeyWord
+    context_object_name = 'keyword'
+
+    url = U / _('keyword_url') / slug
+    url_name = 'keyword'
+
+    template_name = 'keyword.html'
+
+    def get_context_data(self, **kwargs):
+        archived_sources = Source.objects.archiving()\
+            .filter(keywords=self.get_object())
+
+
+        paginator = Paginator(archived_sources, ITEMS_PER_PAGE) 
+        page = self.request.GET.get('page', 1)
+        try:
+            sources = paginator.page(page)
+        except PageNotAnInteger:
+            sources = paginator.page(1)
+        except EmptyPage:
+            sources = paginator.page(1)
+
+
+        return {
+            "sources": sources,
+            "total_count": archived_sources.count(),
+            **super().get_context_data(), 
+        }
