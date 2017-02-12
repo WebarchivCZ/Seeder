@@ -17,10 +17,10 @@
 		<div class="container">
 
 			{% if lang == "cs" %}
-				<h1>Nechte se <a href="{plink default}">Webarchiv<span class="false-link-underline-blue"></span></a>ovat!</h1><br>
+				<h1>Nechte se <a href="{% url "www:index" %}">Webarchiv<span class="false-link-underline-blue"></span></a>ovat!</h1><br>
 				<p>Pokud hledáte certifikát či jiné naše grafické materiály pro umístění na vašem webu pokračujte <a href="{plink graphics}">zde</a></p>
 			{% else %}
-				<h1>Let’s get <a href="{plink default}">Webarchiv<span class="false-link-underline-blue"></span></a>ed!</h1><br>
+				<h1>Let’s get <a href="{% url "www:index" %}">Webarchiv<span class="false-link-underline-blue"></span></a>ed!</h1><br>
 				<p>If you look for our certificate or our banners or logo visit <a href="{plink graphics}">this page</a></p>
 			{% endif %}
 

@@ -25,10 +25,10 @@
 		<div class="container">
 
 			{% if lang == "cs" %}
-				<h1><a href="{plink default}">Webarchiv<span class="false-link-underline-blue"></span></a> uchovává český web</h1><br>
+				<h1><a href="{% url "www:index" %}">Webarchiv<span class="false-link-underline-blue"></span></a> uchovává český web</h1><br>
 				<p>Pro první seznámení s webarchivem pokračujte <a href="{plink moreAbout}">zde</a></p>
 			{% else %}
-				<h1><a href="{plink default}">Webarchiv<span class="false-link-underline-blue"></span></a> preserves Czech web</h1><br>
+				<h1><a href="{% url "www:index" %}">Webarchiv<span class="false-link-underline-blue"></span></a> preserves Czech web</h1><br>
 				<p>For basic informations about Webarchiv visit our <a href="{plink moreAbout}">introduction</a></p>
 			{% endif %}
 

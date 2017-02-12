@@ -65,10 +65,14 @@
 					<a href="{% url "www_no_lang:change_language" code="en" %}"{% if lang == "en" %} class="current"{% endif %}>EN</a>
 				</div>
 
-				{% if 0 %}
+				{% if not hide_search_box %}
 					<a href="#" class="search-icon"></a>
 					<div class="small-searchbox-wrapper">
-						searchbox
+						<form action="{% url "www:search_redirect" %}" method="GET" id="frm-smallSearchBox">							
+						<input type="text" name="query" size="32" id="frm-smallSearchBox-query" value="{{ query }}" required value="" class="text">
+						<input type="submit" id="frm-smallSearchBox-submit" value="Enter" class="submit">
+						<div><!--[if IE]><input type=IEbug disabled style="display:none"><![endif]--></div>
+
 					</div>
 
 				{% endif %}
@@ -135,10 +139,10 @@
 				<div class="col-sm-2 col-sm-offset-4 external-links">
 					<h2><a href="{% url "www:index" %}">WWW</a></h2>
 					<ul>
-						<li><a href="{plink Default:contact}">{% if lang == "cs" %}kontakt{% else %}contact{% endif %}</a></li>
+						<li><a href="{% url "www:about_contact" %}">{% if lang == "cs" %}kontakt{% else %}contact{% endif %}</a></li>
 						<li><a href="https://www.facebook.com/webarchivcz">facebook</a></li>
 						<li><a href="http://blog.webarchiv.cz/">blog</a></li>
-						<li><a href="{plink Default:graphics}">logo</a></li>
+						<li><a href="{% url "www:about_graphics" %}">logo</a></li>
 					</ul>
 				</div>
 

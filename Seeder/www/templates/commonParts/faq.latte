@@ -21,10 +21,10 @@
 		<div class="container">
 
 			{% if lang == "cs" %}
-				<h1><a href="{plink default}">Webarchiv<span class="false-link-underline-blue"></span></a>: FAQ</h1><br>
+				<h1><a href="{% url "www:index" %}">Webarchiv<span class="false-link-underline-blue"></span></a>: FAQ</h1><br>
 				<p>Často kladené dotazy</p>
 			{% else %}
-				<h1><a href="{plink default}">Webarchiv<span class="false-link-underline-blue"></span></a>: FAQ</h1><br>
+				<h1><a href="{% url "www:index" %}">Webarchiv<span class="false-link-underline-blue"></span></a>: FAQ</h1><br>
 				<p>Frequently Asked Questions</p>
 			{% endif %}
 

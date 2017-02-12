@@ -29,7 +29,7 @@
 
 						<div class="searchbox-wrapper">
 
-							<form action="" method="GET" id="frm-bigSearchBox">								
+							<form action="{% url "www:search_redirect" %}" method="GET" id="frm-bigSearchBox">								
 								{{ big_search_form.query }}
 								<input type="submit" id="frm-bigSearchBox-submit" value="Enter" class="submit">
 							</form>

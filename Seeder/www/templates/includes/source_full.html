@@ -1,0 +1,40 @@
+{% load thumbnail %}
+
+<div class="col-md-12 item-textual"><a href="{{ source.wayback_url }}">
+<h2>{{source}}</h2></div>
+<div class="col-xs-6 col-sm-4 col-md-3">
+<div class="item-visual">
+<div class="img-wrapper thumb">
+	{% if source.screenshot %}
+	    {% thumbnail source.screenshot "206x156" crop="center" as im %}
+	        <img src="{{ im.url }}" class="aspect-ratio" width="{{ im.width }}" height="{{ im.height }}">
+	    {% endthumbnail %}
+	{% else %}
+		<div class="aspect-ratio">
+			<div class="no-image">
+				<span class="small">www</span>
+			</div>
+		</div>
+	{% endif %}
+</div>
+</a>
+</div>
+</div>
+
+<div class="col-md-12 item-textual">
+
+	<p><span class="italic">{{ source.stripped_main_url }}</span> <span class="blue"><span class="blue">[</span><a href="{{ source.url }}">{% if lang == "cs" %}aktuální verze{% else %}current{% endif %}</a><span class="blue">]</span>
+
+	{% if source.annotation %}<p>{{ source.annotation }}</p>{% endif %}
+
+		<p>
+			{% if lang == "cs" %}Vydavatel:{% else %}Publisher:{% endif %} 
+			{{ source.publisher }}
+		</p>
+		<ul class="inline-list">
+			{% for keyword in source.keywords.all %}
+				<li><a href="{{ keyword.www_url }}">{{ keyword }}</a>{% include "includes/comma.html" %}</li>
+			{% endfor %}
+		</ul>
+
+</div>

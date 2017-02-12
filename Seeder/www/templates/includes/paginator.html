@@ -1,10 +1,12 @@
+{% load urltags %}
+
 <div class="row">
 	<div class="col-md-12">
 		<div class="paginator">
 
 
 		        {% if paginator.has_previous %}
-		            <a href="?page={{ paginator.previous_page_number }}">{{ paginator.previous_page_number }}</a>
+		            <a href="?{% url_replace page=paginator.previous_page_number %}">{{ paginator.previous_page_number }}</a>
 		        {% endif %}
 
 		        <span class="current">
@@ -12,7 +14,7 @@
 		        </span>
 
 		        {% if paginator.has_next %}
-		            <a href="?page={{ paginator.next_page_number }}">{{ paginator.next_page_number }}</a>
+		            <a href="?{% url_replace page=paginator.next_page_number %}">{{ paginator.next_page_number }}</a>
 		        {% endif %}
 		</div>
 	</div>

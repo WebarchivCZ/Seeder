@@ -1,10 +1,10 @@
 	<section id="catalog-header">
 		<div class="container">
 			{% if lang == "cs" %}
-				<h1><a href="{plink default}">Webarchiv<span class="false-link-underline-blue"></span></a> podle oborů</h1><br>
+				<h1><a href="{% url "www:index" %}">Webarchiv<span class="false-link-underline-blue"></span></a> podle oborů</h1><br>
 				<p>Přehled nasmlouvaných webů dle oborového třídění:</p>
 			{% else %}
-				<h1>Browse the <a href="{plink default}">Webarchiv<span class="false-link-underline-blue"></span></a> by subject</h1><br>
+				<h1>Browse the <a href="{% url "www:index" %}">Webarchiv<span class="false-link-underline-blue"></span></a> by subject</h1><br>
 				<p>List of a contracted websites by classification system:</p>
 			{% endif %}
 

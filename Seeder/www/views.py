@@ -5,6 +5,7 @@ from django.http.response import HttpResponseRedirect
 from django.utils.translation import ugettext as _
 from django.db.models import Count, Sum, When, Case, IntegerField
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.core.urlresolvers import reverse
 
 from contracts.models import Contract
 from source.models import Source, Category, SubCategory, KeyWord
@@ -26,14 +27,14 @@ class Index(TemplateView, URLView):
     url_name = 'index'
 
     def get_context_data(self, **kwargs):
-        context = super().get_context_data()
-        
-        context['contract_count'] = Contract.objects.valid().count()
-        context['last_sources'] = Source.objects.archiving().order_by('-created')[:5]
-        context['news_article'] = models.NewsObject.objects.order_by('created').first()
-        context['big_search_form'] = forms.BigSearchForm(data=self.request.GET)
-
-        return context
+        return {
+            'contract_count': Contract.objects.valid().count(),
+            'last_sources': Source.objects.archiving().order_by('-created')[:5],
+            'news_article': models.NewsObject.objects.order_by('created').first(),
+            'big_search_form': forms.BigSearchForm(data=self.request.GET),
+            'hide_search_box': True,
+            **super().get_context_data()
+        }
 
 
 class TopicCollections(TemplateView, URLView):
@@ -134,11 +135,7 @@ class AboutContact(TemplateView, URLView):
     url_name = 'about_contact'
 
 
-
-class CategoryBaseView:
-    template_name = 'categories/categories.html'
-    view_name = 'categories'
-
+class PaginatedSources:
     def get_paginator(self):
         paginator = Paginator(self.get_source_queryset(), ITEMS_PER_PAGE) 
         page = self.request.GET.get('page', 1)
@@ -154,6 +151,10 @@ class CategoryBaseView:
     def get_source_queryset(self):
         raise NotImplementedError
 
+
+class CategoryBaseView(PaginatedSources):
+    template_name = 'categories/categories.html'
+    view_name = 'categories'
 
     def get_categories_context(self):
         return {
@@ -252,32 +253,74 @@ class ChangeListView(View, URLView):
         return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
 
-class KeywordViews(DetailView, URLView):
+class KeywordViews(PaginatedSources, DetailView, URLView):
     model = KeyWord
     context_object_name = 'keyword'
+    view_name = 'index'
 
     url = U / _('keyword_url') / slug
     url_name = 'keyword'
 
     template_name = 'keyword.html'
 
+    def get_source_queryset(self):
+        return Source.objects.archiving().filter(
+            keywords=self.get_object()
+        )
+
     def get_context_data(self, **kwargs):
-        archived_sources = Source.objects.archiving()\
-            .filter(keywords=self.get_object())
+        return {
+            "sources": self.get_paginator(),
+            **super().get_context_data(), 
+        }
 
 
-        paginator = Paginator(archived_sources, ITEMS_PER_PAGE) 
-        page = self.request.GET.get('page', 1)
-        try:
-            sources = paginator.page(page)
-        except PageNotAnInteger:
-            sources = paginator.page(1)
-        except EmptyPage:
-            sources = paginator.page(1)
+class SearchRedirectView(View, URLView):
+    url = U / _('search_url') 
+    url_name = 'search_redirect'
 
+    def get(self, request):
+        query = self.request.GET.get('query', '')
+
+        search_url = reverse('www:search', kwargs={'query':query})
+        return HttpResponseRedirect(search_url)
+
+
+
+class SearchView(PaginatedSources, TemplateView, URLView):
+    template_name = 'search.html'
+    view_name = 'index'
+
+    url = U / _('search_url') / r'(?P<query>.*)'
+    url_name = 'search'
+
+
+    def get_query(self):
+        return self.kwargs['query']
+
+
+    def get_source_queryset(self):
+        query = self.get_query()
+        if not query:
+            return Source.objects.none()
+
+
+        return Source.objects.archiving().filter(
+            name__icontains=query
+        )
+
+
+    def get_context_data(self, **kwargs):
+        sources = self.get_paginator()
+        if len(sources) == 1:
+            single_source = sources[0]
+        else:
+            single_source = None
 
         return {
             "sources": sources,
-            "total_count": archived_sources.count(),
+            "single_source": single_source,
+            "query": self.get_query(),
             **super().get_context_data(), 
         }
+
