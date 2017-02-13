@@ -1,3 +1,5 @@
+import re
+
 from urljects import U, URLView, slug
 from django.views.generic.base import TemplateView, View
 from django.views.generic.detail import DetailView
@@ -6,6 +8,7 @@ from django.utils.translation import ugettext as _
 from django.db.models import Count, Sum, When, Case, IntegerField
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.core.urlresolvers import reverse
+from django.conf import settings
 
 from contracts.models import Contract
 from source.models import Source, Category, SubCategory, KeyWord
@@ -282,8 +285,21 @@ class SearchRedirectView(View, URLView):
     def get(self, request):
         query = self.request.GET.get('query', '')
 
-        search_url = reverse('www:search', kwargs={'query':query})
-        return HttpResponseRedirect(search_url)
+        regex_is_url = (
+            r"((https?|ftp)\:\/\/)?"                                     # SCHEME
+            "([a-z0-9+!*(),;?&=\$_.-]+(\:[a-z0-9+!*(),;?&=\$_.-]+)?@)?"  # User and Pass
+            "([a-z0-9-.]*)\.([a-z]{2,4})"                                # Host or IP
+            "(\:[0-9]{2,5})?"                                            # Port
+            "(\/([a-z0-9+\$_-]\.?)+)*\/?"                                # Path
+            "(\?[a-z+&\$_.-][a-z0-9;:@&%=+\/\$_.-]*)?"                   # GET Query
+            "(#[a-z_.-][a-z0-9+\$_.-]*)?"                                # Anchor
+        )
+
+        if re.match(regex_is_url, query):
+            redirect_url = settings.WAYBACK_URL.format(url=query)
+        else:
+            redirect_url = reverse('www:search', kwargs={'query':query})
+        return HttpResponseRedirect(redirect_url)
 
 
 
