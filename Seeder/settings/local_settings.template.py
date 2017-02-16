@@ -4,7 +4,7 @@ SECRET_KEY = 'sdfvsdfvsdfvsdfv'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-TEMPLATES[0]['debug'] = DEBUG
+TEMPLATES[0]['OPTIONS']['debug'] = DEBUG
 
 THUMBNAIL_DEBUG = True
 
