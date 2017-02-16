@@ -107,6 +107,10 @@
                         </tr>
                     {% endif %}
                 {% endwith %}
+                <tr>
+                    <td>{% trans 'WWW link' %}</td>
+                    <td><a href="{{ source.get_public_url }}" target="_blank">{{ source.get_public_url }}</a></td>
+                </tr>
             </tbody>
         </table>
     </div>

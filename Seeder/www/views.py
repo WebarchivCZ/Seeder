@@ -340,3 +340,14 @@ class SearchView(PaginatedSources, TemplateView, URLView):
             **super().get_context_data(), 
         }
 
+
+class SourceDetail(DetailView, URLView):
+    model = Source
+    context_object_name = 'source'
+    template_name = 'source_public.html'
+
+    url = U / _('www_source_url') / slug
+    url_name = 'source_detail'
+
+    def get_queryset(self):
+        return Source.objects.archiving()

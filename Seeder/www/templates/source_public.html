@@ -1,0 +1,20 @@
+{% extends "base_www.html" %}
+
+{% block title %}{{ source }}{% endblock title %}
+
+
+{% block content %}
+	<section id="search">
+		<div class="container">
+		<section id="catalog-items">
+			<div class="container">
+				<hr>
+				<br>
+					<div class="row">
+						{% include "includes/source_full.html" with source=source %}
+					</div>
+			</div>
+		</section>
+
+
+{% endblock %}

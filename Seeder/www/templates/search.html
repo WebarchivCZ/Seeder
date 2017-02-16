@@ -1,6 +1,6 @@
 {% extends "base_www.html" %}
 
-{% block title %}{% if lang == "cs" %}Výsledky vyhledávání{% else %}Search results{% endif %}{$query}{% endblock title %}
+{% block title %}{% if lang == "cs" %}Výsledky vyhledávání{% else %}Search results{% endif %} {{ query }{% endblock title %}
 
 
 {% block content %}
