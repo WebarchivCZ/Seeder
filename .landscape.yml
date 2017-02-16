@@ -1,4 +1,4 @@
-python-targets: 3
+python-targets: 3.5
 
 test-warnings: no
 max-line-length: 79
