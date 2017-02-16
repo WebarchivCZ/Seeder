@@ -181,7 +181,7 @@ class KeyWord(SlugOrCreateModel, models.Model):
 
 
 @revisions.register(exclude=('last_changed',))
-class Source(BaseModel):
+class Source(SlugOrCreateModel, BaseModel):
     """
         Source in the context of this project means an information source that
         is going to be downloaded. This usually means website. ``seeds`` field
@@ -251,6 +251,11 @@ class Source(BaseModel):
     screenshot_date = models.DateTimeField(null=True, blank=True)
     keywords = models.ManyToManyField(KeyWord, blank=True)
 
+    slug = models.SlugField(unique=True, blank=True, null=True)    
+    from_field = 'stripped_main_url'
+    slug_field = 'slug'
+
+
     objects = SourceManager()
 
     class Meta:
@@ -306,6 +311,7 @@ class Source(BaseModel):
             setattr(seed, attr_name, attr_value)
         seed.save()
 
+    @property
     def stripped_main_url(self):
         """
         returns url without https
@@ -338,6 +344,10 @@ class Source(BaseModel):
 
     def get_absolute_url(self):
         return reverse('source:detail', args=[str(self.id)])
+
+    def get_public_url(self): 
+        return reverse('www:source_detail', args=[str(self.slug_safe)])
+
 
     def wakat_url(self):
         """
