@@ -84,7 +84,7 @@ class TopicCollection(BaseModel):
     date_from = models.DateField(null=True, blank=True)
     date_to = models.DateField(null=True, blank=True)
 
-    sources = models.ManyToManyField(Source, null=True, blank=True)
+    sources = models.ManyToManyField(Source, blank=True)
 
     def get_absolute_url(self):
         return reverse('www:collection_detail', kwargs={"slug": self.slug})

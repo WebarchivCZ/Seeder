@@ -4,7 +4,8 @@ SECRET_KEY = 'sdfvsdfvsdfvsdfv'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-TEMPLATE_DEBUG = True
+TEMPLATES[0]['debug'] = DEBUG
+
 THUMBNAIL_DEBUG = True
 
 ALLOWED_HOSTS = ['127.0.0.1']

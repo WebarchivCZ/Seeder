@@ -249,7 +249,7 @@ class Source(BaseModel):
     )
 
     screenshot_date = models.DateTimeField(null=True, blank=True)
-    keywords = models.ManyToManyField(KeyWord, null=True, blank=True)
+    keywords = models.ManyToManyField(KeyWord, blank=True)
 
     objects = SourceManager()
 
