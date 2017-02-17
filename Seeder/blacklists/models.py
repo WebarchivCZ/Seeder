@@ -45,4 +45,4 @@ class Blacklist(models.Model):
         ).values_list('url_list', flat=True)
         # blacklist urls is now list of contents
         urls_parsed = map(str.splitlines, blacklist_urls)
-        return reduce(operator.add, urls_parsed)
+        return reduce(operator.add, urls_parsed, [])
