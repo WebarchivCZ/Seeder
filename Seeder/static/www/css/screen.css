@@ -1057,3 +1057,75 @@ footer .cc-link img {
 		line-height: 25px;
 	}
 }
+
+
+/* Catalog-visual */
+/******************/
+
+.item-visual {
+	margin: 40px 0 0 0;
+}
+.item-visual h2 {
+	margin: 10px 0 0 0;
+	font-size: 20px;
+	font-style: normal;
+	overflow: hidden;
+}
+.thumb {
+	display: block;
+	border: 3px solid #0000ff;
+}
+.thumb img.aspect-ratio {
+	width: 100%;
+	height: 100%;
+}
+.thumb div.aspect-ratio {
+	position: relative;
+	width: 100%;
+}
+
+.thumb div.aspect-ratio:before{
+	content: "";
+	display: block;
+	padding-top: 75%; 	
+}
+.thumb .no-image {
+	position:  absolute;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+	text-align: center;
+}
+.no-image span {
+	display: block;
+	margin: 50px 0 0 0;
+}
+
+.no-image span.small {
+	position: relative;
+	font-size: 40px;
+}
+.no-image span.big {
+	font-size: 60px;
+	line-height: 100%;
+}
+
+.collection .annotation {
+	padding-left: 40px;
+	padding-right: 40px;
+}
+
+.collection .inline-list {
+	margin-top: 0;
+
+}
+
+.collection .thumb {
+	border: 0;
+	margin-bottom: 30px;
+}
+
+.collection .sources {
+	
+}

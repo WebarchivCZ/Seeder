@@ -1,35 +1,51 @@
 {% extends "base_www.html" %}
-{% load i18n %}
+{% load i18n thumbnail %}
 
 {% block title %}{{collection}}{% endblock title %}
 
 
 {% block content %}
-
-	{% include "about/menu.html" %}
-
-	<section>
+	<section class="collection">
 		<div class="container">
-			{% if collection.image %}
-				<img src="{{ collection.image.url }}">
-			{% endif %}
-			<h2>{{ collection }}</h2>
-			{% if collection.date_from %}
-				{% trans "Date" %}: {{ collection.date_from }} {% if collection.date_to %} - {{ collection.date_to }}{% endif %}
+			<h1>{{ collection }}</h1>
+
 			<br>
-			{% endif %}
-
-			{{ collection.annotation|safe }}
-
-			{% if collection.sources.exists %}
-				{% trans "List of included sites:" %}
-				<ul>
-				{% for source in collection.sources.all %}
-					<li><a href="{{ source.wayback_url }}">{{ source}}</a></li>
+			{% trans "Klíčová slova sklizně" %}:
+			<ul class="inline-list">
+				{% for keyword in keywords %}
+					<li><a href="{{ keyword.www_url }}">{{ keyword }}</a>{% include "includes/comma.html" %}</li>
 				{% endfor %}
-				</ul>
-			{% endif %}
+			</ul>
+			<hr>
 
+			<div class="row">
+				<div class="col-md-4 col-sm-6 col-xs-12 col-lg-4 annotation">
+							{% if collection.image %}
+								<div class="item-visual">
+									<div class="img-wrapper thumb">
+			                            {% thumbnail collection.image "206x156" crop="center" as im %}
+			                                <img src="{{ im.url }}" class="aspect-ratio" width="{{ im.width }}" height="{{ im.height }}">
+			                            {% endthumbnail %}
+									</div>	
+								</div>	
+							{% endif %}
+						<br>
+						{{ collection.annotation|safe }}
+				</div>
+				<div class="col-md-8 col-sm-6 col-lg-8 sources">
+					{% for source in collection.sources.all %}
+						<div class="row">
+							<div class="col-md-12 item-textual">
+								<h2><a href="{{ source.url }}">{{ source }}</a></h2>
+								<p>
+									<span class="italic">{{ source.stripped_main_url }}</span> 
+									<span class="blue">[</span><a href="{{ source.wayback_url }}">{% if lang == "cs" %}archivovaná verze{% else %}current{% endif %}</a><span class="blue">]</span>
+								</p>
+							</div>
+						</div>
+					{% endfor %}	
+				</div>
+			</div>
 		</div>
 	</section>
 
