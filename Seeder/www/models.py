@@ -95,3 +95,4 @@ class TopicCollection(BaseModel):
     class Meta:
         verbose_name = _('Topic collection')
         verbose_name_plural = _('Topic collections')
+        ordering = ['id']
