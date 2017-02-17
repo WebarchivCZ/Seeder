@@ -1,14 +1,13 @@
 {% extends "base_www.html" %}
-{% load i18n %}
+{% load i18n thumbnail %}
 
 {% block title %}{% if lang == "cs" %}Tématické sbírky{% else %}Topic collections{% endif %}{% endblock title %}
 
 
 {% block content %}
-
 	{% include "about/menu.html" %}
 
-	<section>
+	<section id="catalog-items">
 		<div class="container">
 			{% if lang == "cs" %}
 				<h2>Tématické sbírky</h2>
@@ -18,15 +17,37 @@
 			{% endif %}
 
 			<div class="padding20"></div>
-			<hr class="no-margin">
 
-			{% for collection in collections %}
-				<h2><a href="{{ collection.get_absolute_url }}">{{ collection }}</a></h2>
-				{{ collection.annotation|safe }}
-				{% if collection.date_from %}
-					{% trans "Date" %}: {{ collection.date_from }} {% if collection.date_to %} - {{ collection.date_to }}{% endif %}
-				{% endif %}
-			{% endfor %}	
+
+			<div class="row">
+				{% for collection in collections %}
+					<div class="col-xs-12 col-sm-6 col-md-3 col-lg-4">
+						<div class="item-visual">
+							<a href="{{ collection.get_absolute_url }} ">
+								<div class="img-wrapper thumb">
+									{% if collection.image %}
+			                            {% thumbnail collection.image "206x156" crop="center" as im %}
+			                                <img src="{{ im.url }}" class="aspect-ratio" width="{{ im.width }}" height="{{ im.height }}">
+			                            {% endthumbnail %}
+									{% else %}
+										<div class="aspect-ratio">
+											<div class="no-image">
+												<span class="small">www</span>
+											</div>
+										</div>
+									{% endif %}
+								</div>
+								<br>
+								<h2>{{ collection }}</h2>
+								<br>
+							</a>
+							<p>{{ collection.annotation|safe|striptags|truncatewords:30 }}</p>
+						</div>
+					</div>
+				<div class="{% cycle "" "clearfix visible-sm-block" %} {% cycle "" "" "clearfix visible-lg-block visible-md-block" %} clearfix visible-xs-block"></div>
+
+				{% endfor %}
+			</div>
 		</div>
 	</section>
 
