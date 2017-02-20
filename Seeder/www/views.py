@@ -30,14 +30,15 @@ class Index(TemplateView, URLView):
     url_name = 'index'
 
     def get_context_data(self, **kwargs):
-        return {
+        context = super().get_context_data(**kwargs)
+        context.update({
             'contract_count': Contract.objects.valid().count(),
             'last_sources': Source.objects.archiving().order_by('-created')[:5],
             'news_article': models.NewsObject.objects.order_by('created').first(),
             'big_search_form': forms.BigSearchForm(data=self.request.GET),
             'hide_search_box': True,
-            **super().get_context_data()
-        }
+        })
+        return context
 
 
 class TopicCollections(TemplateView, URLView):
@@ -49,7 +50,7 @@ class TopicCollections(TemplateView, URLView):
     url_name = 'topic_collections'
 
     def get_context_data(self, **kwargs):
-        context = super().get_context_data()
+        context = super().get_context_data(**kwargs)
         context['collections'] = models.TopicCollection.objects.filter(active=True)
         return context
 
@@ -66,7 +67,7 @@ class CollectionDetail(DetailView, URLView):
     url_name = 'collection_detail'
 
     def get_context_data(self, **kwargs):
-        context = super().get_context_data()
+        context = super().get_context_data(**kwargs)
 
         keyword_ids = self.get_object().sources.all()\
                    .values_list('keywords', flat=True)
@@ -95,7 +96,7 @@ class MoreAbout(TemplateView, URLView):
     url_name = 'more_about'
 
     def get_context_data(self, **kwargs):
-        context = super().get_context_data()
+        context = super().get_context_data(**kwargs)
         context['footerFullBorder'] = True
         return context
 
@@ -206,11 +207,11 @@ class Categories(CategoryBaseView, TemplateView, URLView):
         return Source.objects.archiving()
 
     def get_context_data(self, **kwargs):
-        return {
-            "sources": self.get_paginator(),
-            **super().get_context_data(), 
-            **self.get_categories_context()
-        }
+        context = super().get_context_data(**kwargs) 
+        context.update(self.get_categories_context())
+        context['sources'] = self.get_paginator()
+
+        return context
 
 
 class CategoryDetail(CategoryBaseView, DetailView, URLView):
@@ -224,12 +225,11 @@ class CategoryDetail(CategoryBaseView, DetailView, URLView):
         return Source.objects.archiving().filter(category=self.get_object())
 
     def get_context_data(self, **kwargs):
-        return {
-            "sources": self.get_paginator(),
-            **super().get_context_data(), 
-            **self.get_categories_context(),
-            **self.get_categories_detail_context(self.get_object())
-        }
+        context = super().get_context_data(**kwargs)
+
+        context.update(self.get_categories_context())
+        context.update(self.get_categories_detail_context(self.get_object()))
+        return context
 
 
 class SubCategoryDetail(CategoryBaseView, DetailView, URLView):
@@ -245,13 +245,12 @@ class SubCategoryDetail(CategoryBaseView, DetailView, URLView):
     def get_context_data(self, **kwargs):
         category = self.get_object().category
 
-        return {
-            "sources": self.get_paginator(),
-            'current_category': category,
-            **super().get_context_data(), 
-            **self.get_categories_context(),
-            **self.get_categories_detail_context(category)
-        }
+        context = super().get_context_data(**kwargs) 
+        context['sources'] = self.get_paginator()
+        context['current_category'] = category
+        context.update(self.get_categories_context())
+        context.update(self.get_categories_detail_context(category))
+        return context
 
 
 class ChangeListView(View, URLView):
@@ -281,7 +280,7 @@ class KeywordViews(PaginatedSources, DetailView, URLView):
     def get_context_data(self, **kwargs):
         return {
             "sources": self.get_paginator(),
-            **super().get_context_data(), 
+            **super().get_context_data() 
         }
 
 
@@ -334,18 +333,18 @@ class SearchView(PaginatedSources, TemplateView, URLView):
 
 
     def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
         sources = self.get_paginator()
         if len(sources) == 1:
             single_source = sources[0]
         else:
             single_source = None
-
-        return {
+        context.update({
             "sources": sources,
             "single_source": single_source,
             "query": self.get_query(),
-            **super().get_context_data(), 
-        }
+        })
+        return context
 
 
 class SourceDetail(DetailView, URLView):
