@@ -12,44 +12,17 @@ from blacklists.models import Blacklist
 from core.models import BaseModel, DatePickerField
 from harvests.scheduler import get_dates_for_timedelta
 from source.constants import SOURCE_FREQUENCY_PER_YEAR, HARVESTED_FREQUENCIES
-from source.models import Source, Seed
+from source.models import Source, Seed, KeyWord
 
 
-@revisions.register(exclude=('last_changed',))
-class Harvest(BaseModel):
-    """
-        Represents the event of harvesting the sources
-    """
-    STATE_PLANNED = 0
-    STATE_RUNNING = 1
-    STATE_SUCCESS = 2
-    STATE_SUCCESS_WITH_FAILURES = 3
-    STATE_CANCELLED = 4
-    STATE_FAILED = 5
 
-    STATES = (
-        (STATE_PLANNED, _('Planned')),
-        (STATE_RUNNING, _('Running')),
-        (STATE_SUCCESS, _('Success')),
-        (STATE_SUCCESS_WITH_FAILURES, _('Success with failures')),
-        (STATE_CANCELLED, _('Cancelled')),
-        (STATE_FAILED, _('Failed')),
-    )
+class HarvestAbstractModel(BaseModel):
+    class Meta:
+        abstract = True
 
-    auto_created = models.BooleanField(default=False)
-    status = models.IntegerField(
-        choices=STATES,
-        verbose_name=_('State'),
-        default=STATE_PLANNED
-    )
-
-    title = models.CharField(blank=True, max_length=255)
-    annotation = models.TextField(_('Annotation'), null=True, blank=True)
+    status = NotImplemented
+    scheduled_on = NotImplemented
     
-    scheduled_on = DatePickerField(
-        verbose_name=_('Date of harvest')
-    )
-
     target_frequency = models.IntegerField(
         verbose_name=_('Seeds by frequency'),
         choices=SOURCE_FREQUENCY_PER_YEAR,
@@ -70,11 +43,6 @@ class Harvest(BaseModel):
         null=True
     )
 
-    seeds_frozen = models.TextField(
-        blank=True,
-        null=True
-    )
-
     def repr(self):
         if self.title:
             return self.title
@@ -84,6 +52,7 @@ class Harvest(BaseModel):
             len(self.custom_seeds.splitlines()),
             self.custom_sources.count()
         )
+
 
     def __str__(self):
         return self.repr()
@@ -101,9 +70,6 @@ class Harvest(BaseModel):
                 cleaned_urls.append(seed_url)
         self.custom_seeds = u'\n'.join(cleaned_urls)
         self.save()
-
-    def get_absolute_url(self):
-        return reverse('harvests:detail', args=[str(self.id)])
 
     def get_seeds_by_frequency(self):
         seeds = Seed.archiving.filter(source__frequency=self.target_frequency)
@@ -133,8 +99,55 @@ class Harvest(BaseModel):
                 self.get_custom_sources_seeds()
             )
         )
+
         blacklisted = Blacklist.collect_urls_by_type(Blacklist.TYPE_HARVEST)
         return seeds - set(blacklisted)
+
+
+@revisions.register(exclude=('last_changed',))
+class Harvest(Harvest):
+    """
+        Represents the event of harvesting the sources
+    """
+    STATE_PLANNED = 0
+    STATE_RUNNING = 1
+    STATE_SUCCESS = 2 
+    STATE_SUCCESS_WITH_FAILURES = 3
+    STATE_CANCELLED = 4
+    STATE_FAILED = 5
+
+    STATES = (
+        (STATE_PLANNED, _('Planned')),
+        (STATE_RUNNING, _('Running')),
+        (STATE_SUCCESS, _('Success')),
+        (STATE_SUCCESS_WITH_FAILURES, _('Success with failures')),
+        (STATE_CANCELLED, _('Cancelled')),
+        (STATE_FAILED, _('Failed')),
+    )
+
+    status = models.IntegerField(
+        choices=STATES,
+        verbose_name=_('State'),
+        default=STATE_PLANNED
+    )
+    
+    title = models.CharField(blank=True, max_length=255)
+    annotation = models.TextField(_('Annotation'), null=True, blank=True)
+
+    seeds_frozen = models.TextField(
+        blank=True,
+        null=True
+    )
+
+    auto_created = models.BooleanField(default=False)
+
+    scheduled_on = DatePickerField(
+        verbose_name=_('Date of harvest')
+    )
+
+
+    def get_absolute_url(self):
+        return reverse('harvests:detail', args=[str(self.id)])
 
     def freeze_seeds(self):
         """
@@ -179,6 +192,65 @@ class Harvest(BaseModel):
                     auto_created=True,
                     target_frequency=freq,
                 ).save()
+
+
+@revisions.register(exclude=('last_changed',))
+class TopicCollection(HarvestAbstractModel):
+    """
+        Represents the event of harvesting the sources
+    """
+    STATE_NEW = 1
+    STATE_RUNNING = 2
+    STATE_FINISHED = 3
+
+    STATES = (
+        (STATE_RUNNING, _('Running')),
+        (STATE_NEW, _('New')),
+        (STATE_FINISHED, _('Finished')),
+    )
+
+    status = models.IntegerField(
+        choices=STATES,
+        verbose_name=_('State'),
+        default=STATE_NEW
+    )
+    
+    title = models.CharField(max_length=255)
+    slug = models.SlugField(unique=True)
+
+    annotation = models.TextField(_('Annotation'))
+    image = models.ImageField(upload_to="images")
+    keywords = models.ManyToManyField(KeyWord)
+
+    seeds_frozen = models.TextField(
+        blank=True,
+        null=True
+    )
+
+    auto_created = models.BooleanField(default=False)
+
+    scheduled_on = DatePickerField(
+        verbose_name=_('Date of harvest')
+    )
+
+
+    annotation = RichTextField()
+    image = models.ImageField(
+        upload_to='photos',
+        null=True, blank=True, 
+    )
+
+    def get_www_url(self):
+        return reverse('www:collection_detail', kwargs={"slug": self.slug})
+
+    def __str__(self):
+        return self.title
+
+    class Meta:
+        verbose_name = _('Topic collection')
+        verbose_name_plural = _('Topic collections')
+        ordering = ['id']
+
 
 
 @receiver(pre_save, sender=Harvest)
