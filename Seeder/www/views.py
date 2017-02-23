@@ -278,10 +278,10 @@ class KeywordViews(PaginatedSources, DetailView, URLView):
         )
 
     def get_context_data(self, **kwargs):
-        return {
-            "sources": self.get_paginator(),
-            **super().get_context_data() 
-        }
+        context = super().get_context_data(**kwargs)
+        context['sources'] = self.get_paginator()
+
+        return context
 
 
 class SearchRedirectView(View, URLView):
