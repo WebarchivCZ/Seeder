@@ -13,6 +13,8 @@ from django.conf import settings
 from contracts.models import Contract
 from source.models import Source, Category, SubCategory, KeyWord
 from source.constants import ARCHIVING_STATES
+from harvests.models import TopicCollection
+
 
 from . import models
 from . import forms
@@ -51,7 +53,7 @@ class TopicCollections(TemplateView, URLView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['collections'] = models.TopicCollection.objects.filter(active=True)
+        context['collections'] = TopicCollection.objects.filter(active=True)
         return context
 
 
@@ -60,7 +62,7 @@ class CollectionDetail(DetailView, URLView):
     view_name = 'about'
     sub_view_name = 'topic_collections'
 
-    model = models.TopicCollection
+    model = TopicCollection
     context_object_name = 'collection'
 
     url = U / _('topic_collection_detail_url') / slug
@@ -74,7 +76,7 @@ class CollectionDetail(DetailView, URLView):
 
         keywords = KeyWord.objects.filter(id__in=keyword_ids)
 
-        context['collections'] = models.TopicCollection.objects.filter(active=True)
+        context['collections'] = TopicCollection.objects.filter(active=True)
         context['keywords'] = keywords
         return context
 

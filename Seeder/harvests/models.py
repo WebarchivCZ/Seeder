@@ -7,6 +7,7 @@ from django.dispatch import receiver
 from django.db.models.signals import pre_save
 
 from reversion import revisions
+from ckeditor.fields import RichTextField
 
 from blacklists.models import Blacklist
 from core.models import BaseModel, DatePickerField
@@ -105,7 +106,7 @@ class HarvestAbstractModel(BaseModel):
 
 
 @revisions.register(exclude=('last_changed',))
-class Harvest(Harvest):
+class Harvest(HarvestAbstractModel):
     """
         Represents the event of harvesting the sources
     """
@@ -230,7 +231,8 @@ class TopicCollection(HarvestAbstractModel):
     auto_created = models.BooleanField(default=False)
 
     scheduled_on = DatePickerField(
-        verbose_name=_('Date of harvest')
+        verbose_name=_('Date of harvest'),
+        null=True, blank=True, 
     )
 
 
