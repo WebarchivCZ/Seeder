@@ -94,7 +94,20 @@
                 <li id="qa">
                     <a href="{% url 'qa:list' %}">{% trans 'Quality assurance' %}</a>
                 </li>
+
             </ul>
+                <hr>
+
+            <ul class="nav nav-sidebar">
+                <li id="topic_collections">
+                    <a href="{% url 'harvests:topic_collection_list' %}">{% trans 'Topic collections' %}</a>
+                </li>
+                <li id="topic_collections">
+                    <a href="{% url 'contracts:list' %}">{% trans 'News' %}</a>
+                </li>
+            </ul>
+
+                <hr>
             <ul class="nav nav-sidebar">
                 <li><a href="https://github.com/WebArchivCZ/Seeder">Github</a></li>
                 <li><a href="https://github.com/WebArchivCZ/Seeder/issues/new">{% trans 'Bug report' %}</a></li>

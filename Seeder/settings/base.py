@@ -58,6 +58,7 @@ INSTALLED_APPS = (
     'raven.contrib.django.raven_compat',
     'dal',
     'dal_select2',
+    'modeltranslation',
 
     'django.contrib.admin',
     'django.contrib.auth',
@@ -83,7 +84,6 @@ INSTALLED_APPS = (
     'rest_framework.authtoken',
     'haystack',
     'elasticstack',
-    'modeltranslation',
 
     'core',
     'publishers',

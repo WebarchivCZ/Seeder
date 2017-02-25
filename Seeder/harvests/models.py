@@ -8,6 +8,7 @@ from django.db.models.signals import pre_save
 
 from reversion import revisions
 from ckeditor.fields import RichTextField
+from autoslug import AutoSlugField
 
 from blacklists.models import Blacklist
 from core.models import BaseModel, DatePickerField
@@ -217,7 +218,7 @@ class TopicCollection(HarvestAbstractModel):
     )
     
     title = models.CharField(max_length=255)
-    slug = models.SlugField(unique=True)
+    slug = AutoSlugField(unique=True, populate_from='title_cs')
 
     annotation = models.TextField(_('Annotation'))
     image = models.ImageField(upload_to="images")
@@ -235,8 +236,7 @@ class TopicCollection(HarvestAbstractModel):
         null=True, blank=True, 
     )
 
-
-    annotation = RichTextField()
+    annotation = models.TextField()
     image = models.ImageField(
         upload_to='photos',
         null=True, blank=True, 
@@ -247,6 +247,9 @@ class TopicCollection(HarvestAbstractModel):
 
     def __str__(self):
         return self.title
+
+    def get_absolute_url(self):
+        return reverse('harvests:topic_collection_detail', args=[str(self.id)])
 
     class Meta:
         verbose_name = _('Topic collection')

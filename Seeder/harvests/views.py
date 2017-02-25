@@ -1,8 +1,10 @@
 import time
+import datetime
 
 from . import models
 from . import forms
-import datetime
+from . import tables
+from . import field_filters
 
 from django.http.response import Http404, HttpResponseRedirect
 from django.utils.translation import ugettext_lazy as _
@@ -124,3 +126,53 @@ class ListUrls(HarvestView, DetailView, TemplateView, URLView):
         context = super().get_context_data(**kwargs)
         context['urls'] = self.object.get_seeds()
         return context
+
+
+class TopicCollectionView(generic_views.LoginMixin):
+    view_name = 'topic_collection'
+    model = models.TopicCollection
+
+
+class AddTopicCollection(TopicCollectionView, FormView, URLView):
+    form_class = forms.TopicCollectionForm
+    view_name = 'topic_collection_add'
+    template_name = 'add_form.html'
+    title = _('Add TopicCollection')
+
+    url = U / 'add'
+    url_name = 'topic_collection_add'
+
+    def form_valid(self, form):
+        return HttpResponseRedirect(form.save().get_absolute_url())
+
+
+class Detail(TopicCollectionView, DetailView, CommentViewGeneric, URLView):
+    template_name = 'topic_collection.html'
+
+    url = U / pk / 'collection_detail'
+    url_name = 'topic_collection_detail'
+
+
+class Edit(TopicCollectionView, generic_views.EditView, URLView):
+    # form_class = forms.TopicCollectionEditForm
+
+    url = U / pk / 'collection_edit'
+    url_name = 'topic_collection_edit'
+
+
+class History(TopicCollectionView, generic_views.HistoryView, URLView):
+    """
+        History of changes to TopicCollections
+    """
+
+    url = U / pk / 'collection_history'
+    url_name = 'topic_collection_history'
+
+
+class ListView(TopicCollectionView, generic_views.FilteredListView, URLView):
+    title = _('TopicCollections')
+    table_class = tables.TopicCollectionTable
+    filter_class = field_filters.TopicCollectionFilter
+
+    url = U / 'collections'
+    url_name = 'topic_collection_list'

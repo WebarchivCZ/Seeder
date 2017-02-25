@@ -281,3 +281,11 @@ class SourcePublicAutocomplete(autocomplete.Select2QuerySetView, URLView):
         if self.q:
             qs = qs.filter(Q(name__icontains=self.q) | Q(seed__url__icontains=self.q))
         return qs
+
+
+class KeywordAutocomplete(autocomplete.Select2QuerySetView, URLView):
+    url_name = 'keyword_autocomplete'
+    url = U / 'keyword_autocomplete'
+
+    def get_queryset(self):
+        return models.KeyWord.objects.all()
