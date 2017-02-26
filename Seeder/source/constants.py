@@ -121,7 +121,6 @@ SUGGESTED_CHOICES = (
     (SUGGESTED_CURATOR, _('Curator')),
 )
 
-LEGACY_URL = 'http://intranet.webarchiv.cz/wadmin/tables/resources/view/{pk}'
 
 SCREENSHOT_RESOLUTION_X = '1366'
 SCREENSHOT_RESOLUTION_Y = '768'

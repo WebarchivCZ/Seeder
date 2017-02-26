@@ -337,3 +337,6 @@ ELASTICSEARCH_INDEX_SETTINGS = {
         }
     }
 }
+
+LEGACY_URL = 'http://intranet.webarchiv.cz/wadmin/tables/resources/view/{pk}'
+LEGACY_SCREENSHOT_URL = 'http://www.webarchiv.cz/images/resource/thumb/small_{id}_{date}.jpg'

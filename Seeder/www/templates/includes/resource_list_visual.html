@@ -18,6 +18,8 @@
                             {% thumbnail source.screenshot "206x156" crop="center" as im %}
                                 <img src="{{ im.url }}" class="aspect-ratio" width="{{ im.width }}" height="{{ im.height }}">
                             {% endthumbnail %}
+						{% elif source.legacy_screenshot %}
+                            <img src="{{ source.legacy_screenshot }}" class="aspect-ratio">
 						{% else %}
 							<div class="aspect-ratio">
 								<div class="no-image">

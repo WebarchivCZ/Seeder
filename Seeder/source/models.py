@@ -324,14 +324,28 @@ class Source(SlugOrCreateModel, BaseModel):
         return url
 
     def get_legacy_url(self):
-        """
-        Returns url to legacy system with this source
-        """
         record = TransferRecord.objects.filter(
             target_type=ContentType.objects.get_for_model(self),
             target_id=self.id).first()
+
         if record:
-            return constants.LEGACY_URL.format(pk=record.original_id)
+            return settings.LEGACY_URL.format(pk=record.original_id)
+    
+    @property
+    def legacy_screenshot(self):
+        """
+        Returns url to legacy system with this source
+        """
+        return 
+
+
+        # record = TransferRecord.objects.filter(
+        #     target_type=ContentType.objects.get_for_model(self),
+        #     target_id=self.id).first()
+        # if record:
+        #     import ipdb; ipdb.set_trace() 
+
+        #     return settings.LEGACY_SCREENSHOT_URL.format(pk=record.original_id)
 
     def css_class(self):
         """
