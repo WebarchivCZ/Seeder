@@ -58,6 +58,7 @@ INSTALLED_APPS = (
     'raven.contrib.django.raven_compat',
     'dal',
     'dal_select2',
+    'modeltranslation',
 
     'django.contrib.admin',
     'django.contrib.auth',
@@ -83,7 +84,6 @@ INSTALLED_APPS = (
     'rest_framework.authtoken',
     'haystack',
     'elasticstack',
-    'modeltranslation',
 
     'core',
     'publishers',
@@ -337,3 +337,6 @@ ELASTICSEARCH_INDEX_SETTINGS = {
         }
     }
 }
+
+LEGACY_URL = 'http://intranet.webarchiv.cz/wadmin/tables/resources/view/{pk}'
+LEGACY_SCREENSHOT_URL = 'http://www.webarchiv.cz/images/resource/thumb/small_{id}_{date}.jpg'

@@ -23,7 +23,7 @@
 				{% for collection in collections %}
 					<div class="col-xs-12 col-sm-6 col-md-3 col-lg-4">
 						<div class="item-visual">
-							<a href="{{ collection.get_absolute_url }} ">
+							<a href="{{ collection.get_www_url }} ">
 								<div class="img-wrapper thumb">
 									{% if collection.image %}
 			                            {% thumbnail collection.image "206x156" crop="center" as im %}

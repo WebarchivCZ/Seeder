@@ -69,30 +69,3 @@ class SearchLog(models.Model):
 
     def __str__(self):
         return self.search_term
-
-
-class TopicCollection(BaseModel):
-    title = models.CharField(max_length=150)
-    slug = models.SlugField(unique=True)
-
-    annotation = RichTextField()
-    image = models.ImageField(
-        upload_to='photos',
-        null=True, blank=True, 
-    )
-
-    date_from = models.DateField(null=True, blank=True)
-    date_to = models.DateField(null=True, blank=True)
-
-    sources = models.ManyToManyField(Source, blank=True)
-
-    def get_absolute_url(self):
-        return reverse('www:collection_detail', kwargs={"slug": self.slug})
-
-    def __str__(self):
-        return self.title
-
-    class Meta:
-        verbose_name = _('Topic collection')
-        verbose_name_plural = _('Topic collections')
-        ordering = ['id']

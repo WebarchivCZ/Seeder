@@ -7,7 +7,7 @@
 {% endblock %}
 
 {% block content %}
-    <form class="" method="post">
+    <form class="" enctype='multipart/form-data' method="post">
         {% csrf_token %}
         {% bootstrap_form form %}
         <input type="submit" class="btn btn-primary btn-block" value="{% trans 'Send' %}" />

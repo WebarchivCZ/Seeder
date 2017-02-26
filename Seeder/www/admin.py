@@ -16,13 +16,13 @@ class NewsForm(forms.ModelForm):
         }
         
 
-class TopicCollectionForm(forms.ModelForm):
-    class Meta:
-        model = models.TopicCollection
-        fields = ('__all__')
-        widgets = {
-            'sources': autocomplete.ModelSelect2Multiple(url='source:source_public_autocomplete')
-        }
+# class TopicCollectionForm(forms.ModelForm):
+#     class Meta:
+#         model = models.TopicCollection
+#         fields = ('__all__')
+#         widgets = {
+#             'sources': autocomplete.ModelSelect2Multiple(url='source:source_public_autocomplete')
+#         }
         
 
 @admin.register(models.NewsObject)
@@ -30,7 +30,7 @@ class NewsAdmin(TranslationAdmin):
     form = NewsForm
 
 
-@admin.register(models.TopicCollection)
-class TopicCollectionAdmin(TranslationAdmin):
-    form = TopicCollectionForm
-    prepopulated_fields = {"slug": ("title_cs",)}
+# @admin.register(models.TopicCollection)
+# class TopicCollectionAdmin(TranslationAdmin):
+#     form = TopicCollectionForm
+#     prepopulated_fields = {"slug": ("title_cs",)}

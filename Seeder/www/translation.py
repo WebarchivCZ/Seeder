@@ -7,7 +7,7 @@ class NewsTranslationOptions(TranslationOptions):
     fields = ('title', 'annotation', 'annotation_source_1', 'annotation_source_2')
 
 
-@register(models.TopicCollection)
-class TopicCollectionTranslationOptions(TranslationOptions):
-    fields = ('title', 'annotation',)
+# @register(models.TopicCollection)
+# class TopicCollectionTranslationOptions(TranslationOptions):
+#     fields = ('title', 'annotation',)
 
