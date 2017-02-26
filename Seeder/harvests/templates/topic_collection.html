@@ -1,0 +1,107 @@
+{% extends 'base.html' %}
+{% load i18n humanize bootstrap3 thumbnail static %}
+
+{% block title %} {{ object }} {% endblock %}
+{% block page_header %} {{ object }}{% endblock %}
+
+{% block content %}
+    <div class="col-md-6 col-sm-5">
+        <h4>{% trans 'Info' %}</h4>
+        <table class="table table-striped">
+            <tbody>
+                <tr>
+                    <td>{% trans 'Status' %}</td>
+                    <td>{{ object.get_status_display }}</td>
+                </tr>
+
+                <tr>
+                    <td>{% trans 'title [cs]' %}</td>
+                    <td>{{ object.title_cs }}</td>
+                </tr>
+
+                <tr>
+                    <td>{% trans 'title [en]' %}</td>
+                    <td>{{ object.title_en }}</td>
+                </tr>
+
+                <tr>
+                    <td>{% trans 'annotation [cs]' %}</td>
+                    <td>{{ object.annotation_cs }}</td>
+                </tr>
+
+                <tr>
+                    <td>{% trans 'annotation [en]' %}</td>
+                    <td>{{ object.annotation_en }}</td>
+                </tr>
+
+                {% if object.image %}
+                    <tr>
+                        <td>{% trans 'Screenshot' %}</td>
+                        <td>
+                            {% thumbnail object.image "100x100" crop="center" as im %}
+                                <a href="{{ object.image.url }}" target="_blank">
+                                    <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}">
+                                </a>
+                            {% endthumbnail %}
+                        </td>
+                    </tr>
+                {% endif %}
+
+                <tr>
+                    <td>{% trans 'Created at' %}</td>
+                    <td>{{ object.created|naturaltime }}</td>
+                </tr>
+                <tr>
+                    <td>{% trans 'Owner' %}</td>
+                    <td>{{ object.owner }}</td>
+                </tr>
+
+                <tr>
+                    <td>{% trans 'Keywords' %}</td>
+                    <td>{% for keyword in object.keywords.all %}{{ keyword }}{% include "includes/comma.html" %}{% endfor %}
+                  </td>
+                </tr>
+                <tr>
+                    <td>{% trans 'Attachments' %}</td>
+                    <td>{% for attachment in object.attachment_set.all %}
+                      <a href="{{ attachment.file.url }}">{{ attachment }}</a>{% include "includes/comma.html" %}
+                    {% endfor %}
+                  </td>
+                </tr>
+
+                <tr>
+                    <td>{% trans 'All sources are open?' %}</td>
+                    <td>{{ object.all_open }}</td>
+                </tr>
+                <tr>
+                    <td>{% trans 'WWW link' %}</td>
+                    <td><a href="{{ object.get_www_url }}" target="_blank">{{ object.get_www_url }}</a></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="col-md-3 col-sm-5">
+    <h4>{% trans 'Seeds' %}</h4>
+        <ul class="list-group">
+            {% for seed in object.get_seeds %}
+                <li class="list-group-item ">
+                    {{ seed }}
+                </li>
+            {% endfor %}
+        </ul>
+
+    </div>
+    <div class="col-md-3 col-sm-5">
+        <h4>{% trans 'Links' %}:</h4>
+            <a href="{% url 'harvests:topic_collection_edit' pk=object.pk %}" class="btn btn-primary btn-warning btn-block">{% trans 'Edit' %}</a>
+            <a href="{% url 'harvests:topic_collection_history' pk=object.pk %}" class="btn btn-primary btn-info btn-block">{% trans 'History' %}</a>
+    </div>
+
+    <div class="col-xs-12 col-md-12">
+        <h2>{% trans 'Comments' %}</h2>
+        {% include 'bootstrap_comments_threaded.html' with comments=comments form=comment_form %}
+    </div>
+
+
+{% endblock %}
