@@ -129,21 +129,55 @@ class ListUrls(HarvestView, DetailView, TemplateView, URLView):
 
 
 class TopicCollectionView(generic_views.LoginMixin):
-    view_name = 'topic_collection'
+    view_name = 'topic_collections'
     model = models.TopicCollection
 
 
 class AddTopicCollection(TopicCollectionView, FormView, URLView):
     form_class = forms.TopicCollectionForm
-    view_name = 'topic_collection_add'
     template_name = 'add_form.html'
     title = _('Add TopicCollection')
 
-    url = U / 'add'
+    url = U / 'add_topic_collection'
     url_name = 'topic_collection_add'
 
     def form_valid(self, form):
-        return HttpResponseRedirect(form.save().get_absolute_url())
+        topic = form.save()
+        
+        for each in form.cleaned_data['attachements']:
+            models.Attachment.objects.create(
+                file=each, 
+                topic_collection=topic
+            )
+        return HttpResponseRedirect(topic.get_absolute_url())
+
+
+class Edit(TopicCollectionView, generic_views.EditView, URLView):
+    form_class = forms.TopicCollectionEditForm
+
+    url = U / pk / 'collection_edit'
+    url_name = 'topic_collection_edit'
+
+    def get_form(self, form_class=None):
+        if not form_class:
+            form_class = self.form_class
+        files = self.get_object().attachment_set.all()
+        return form_class(files, **self.get_form_kwargs())
+
+    def form_valid(self, form):
+        topic = form.save()
+
+        ids_to_delete = form.cleaned_data['files_to_delete']        
+        for att in models.Attachment.objects.filter(id__in=ids_to_delete):
+            att.file.delete()
+            att.delete()
+
+        for each in form.cleaned_data['attachements']:
+            models.Attachment.objects.create(
+                file=each, 
+                topic_collection=topic
+            )
+        return HttpResponseRedirect(topic.get_absolute_url())
 
 
 class Detail(TopicCollectionView, DetailView, CommentViewGeneric, URLView):
@@ -152,12 +186,6 @@ class Detail(TopicCollectionView, DetailView, CommentViewGeneric, URLView):
     url = U / pk / 'collection_detail'
     url_name = 'topic_collection_detail'
 
-
-class Edit(TopicCollectionView, generic_views.EditView, URLView):
-    # form_class = forms.TopicCollectionEditForm
-
-    url = U / pk / 'collection_edit'
-    url_name = 'topic_collection_edit'
 
 
 class History(TopicCollectionView, generic_views.HistoryView, URLView):
@@ -176,3 +204,9 @@ class ListView(TopicCollectionView, generic_views.FilteredListView, URLView):
 
     url = U / 'collections'
     url_name = 'topic_collection_list'
+
+    def get_context_data(self, **kwargs):
+        c = super().get_context_data(**kwargs)
+        c['add_link'] = 'harvests:topic_collection_add'
+        c['add_link_title'] = _('Add')
+        return c
