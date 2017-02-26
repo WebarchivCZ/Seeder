@@ -239,6 +239,8 @@ class ResourceConversion(Conversion):
     source_model = models.Resources
     target_model = source_models.Source
     ignore_broken_fks = True
+    update_existing = True
+
     field_map = {
         'title': 'name',
         'curator': 'owner',
@@ -247,6 +249,7 @@ class ResourceConversion(Conversion):
         'crawl_freq_id': 'frequency',
         'resource_status_id': 'state',
         'date': 'created',
+        'screenshot_date': 'screenshot_date',
         'annotation': 'annotation',
         'comments': 'comment',
         'creator': 'created_by',
@@ -515,6 +518,7 @@ class QAConversion(Conversion):
         'date_checked': 'created',
         'comments': 'comment',
     }
+
 
 class KeyWordConversion(Conversion):
     source_model = models.Keywords

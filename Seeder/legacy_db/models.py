@@ -17,6 +17,7 @@ class TransferRecord(models.Model):
     created = models.DateTimeField(auto_now_add=True)
 
 
+
 class Curators(models.Model):
     username = models.CharField(unique=True, max_length=50)
     password = models.CharField(max_length=50)
@@ -126,7 +127,7 @@ class Resources(models.Model):
     creative_commons = models.IntegerField(blank=True, null=True)
     tech_problems = models.TextField(blank=True, null=True)
     annotation = models.TextField(blank=True, null=True)
-    screenshot_date = models.CharField(max_length=10, blank=True, null=True)
+    screenshot_date = models.DateField(max_length=10, blank=True, null=True)
     comments = models.TextField(blank=True, null=True)
 
     class Meta:
