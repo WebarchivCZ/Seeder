@@ -71,7 +71,7 @@ class CollectionDetail(DetailView, URLView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        keyword_ids = self.get_object().sources.all()\
+        keyword_ids = self.get_object().custom_sources.all()\
                    .values_list('keywords', flat=True)
 
         keywords = KeyWord.objects.filter(id__in=keyword_ids)

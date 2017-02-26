@@ -33,7 +33,7 @@
 						{{ collection.annotation|safe }}
 				</div>
 				<div class="col-md-8 col-sm-6 col-lg-8 sources">
-					{% for source in collection.sources.all %}
+					{% for source in collection.custom_sources.all %}
 						<div class="row">
 							<div class="col-md-12 item-textual">
 								<h2><a href="{{ source.url }}">{{ source }}</a></h2>
