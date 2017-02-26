@@ -1,3 +1,5 @@
+import os
+
 from itertools import chain
 
 from django.db import models
@@ -15,6 +17,7 @@ from core.models import BaseModel, DatePickerField
 from harvests.scheduler import get_dates_for_timedelta
 from source.constants import SOURCE_FREQUENCY_PER_YEAR, HARVESTED_FREQUENCIES
 from source.models import Source, Seed, KeyWord
+from django.contrib.auth.models import User
 
 
 
@@ -220,6 +223,12 @@ class TopicCollection(HarvestAbstractModel):
     title = models.CharField(max_length=255)
     slug = AutoSlugField(unique=True, populate_from='title_cs')
 
+    owner = models.ForeignKey(
+        User, verbose_name=_('Curator'),
+        on_delete=models.PROTECT
+    )
+
+
     annotation = models.TextField(_('Annotation'))
     image = models.ImageField(upload_to="images")
     keywords = models.ManyToManyField(KeyWord)
@@ -242,6 +251,8 @@ class TopicCollection(HarvestAbstractModel):
         null=True, blank=True, 
     )
 
+    all_open = models.BooleanField(_('All sources are under open license or contract'))
+
     def get_www_url(self):
         return reverse('www:collection_detail', kwargs={"slug": self.slug})
 
@@ -256,6 +267,13 @@ class TopicCollection(HarvestAbstractModel):
         verbose_name_plural = _('Topic collections')
         ordering = ['id']
 
+
+class Attachment(models.Model):
+    file = models.FileField(upload_to='attachments')
+    topic_collection = models.ForeignKey(TopicCollection)
+    
+    def __str__(self):
+        return os.path.basename(self.file.name)
 
 
 @receiver(pre_save, sender=Harvest)
