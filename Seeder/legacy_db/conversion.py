@@ -1,4 +1,7 @@
 import sys
+import os
+import shutil
+import requests
 
 from qa.models import QualityAssuranceCheck
 from . import models
@@ -11,6 +14,8 @@ from django.contrib.contenttypes.models import ContentType
 from django.db.models.signals import post_save
 from django.utils import timezone
 from django.db.utils import IntegrityError
+from django.conf import settings
+
 
 from publishers.models import Publisher, ContactPerson
 from source import models as source_models
@@ -22,6 +27,9 @@ from voting.signals import create_voting_round
 
 LEGACY_DATABASE = 'legacy_seeder'
 post_save.disconnect(sender=source_models.Source, receiver=create_voting_round)
+
+
+dates_format = ["%Y%m%d", "%Y-%m-%d"]
 
 
 def get_ct(model):
@@ -278,6 +286,27 @@ class ResourceConversion(Conversion):
     }
 
     def clean(self, source_dict):
+        # lets parse screenshot_date
+        screenshot_date_raw = source_dict['screenshot_date']
+
+        for date_format in dates_format:
+            try:
+                source_dict['screenshot_date'] = datetime.strptime(
+                    screenshot_date_raw, date_format
+                )
+                break
+            except ValueError:
+                pass
+            except TypeError:
+                source_dict['screenshot_date'] = None            
+                break
+            source_dict['screenshot_date'] = None            
+
+        if screenshot_date_raw and source_dict['screenshot_date'] is None:
+            print("Could not parse date", screenshot_date_raw)
+
+
+
         created = source_dict['date']
         if not created:
             source_dict['date'] = timezone.make_aware(
@@ -568,6 +597,53 @@ class KeyWordConversion(Conversion):
         return new_object
 
 
+def download_file(url, base_dir):
+    response = requests.get(url, stream=True)
+    response.raise_for_status()
+    path = os.path.join(base_dir, os.path.basename(url))
+    with open(path, 'wb') as out_file:
+        shutil.copyfileobj(response.raw, out_file)
+    del response
+    return path
+
+
+
+def download_legacy_screenshots():
+    """
+    Downloads all old screenshots.
+
+    1. finds sources that have screenshot dates and have legacy_id
+    2. create a threading pool and add tasks
+    3. execute them.
+    """
+    
+    transfered = models.TransferRecord.objects.filter(
+        target_type=ContentType.objects.get_for_model(source_models.Source),
+    )
+
+    upload_dir = os.path.join(settings.MEDIA_ROOT, 'screenshots')
+
+    for t in transfered:
+        if t.target_object.screenshot_date and not t.target_object.screenshot:
+            r = models.Resources.objects.using(LEGACY_DATABASE).get(pk=t.original_id)
+            screenshot_url_jpg = settings.LEGACY_SCREENSHOT_URL.format(
+                id=r.id,
+                date=r.screenshot_date
+            )
+
+            screenshot_url_png = settings.LEGACY_SCREENSHOT_URL.format(
+                id=r.id,
+                date=r.screenshot_date
+            )
+            try:
+                t.target_object.screenshot = download_file(screenshot_url_jpg, upload_dir)
+            except requests.exceptions.HTTPError:
+                try:
+                    t.target_object.screenshot = download_file(screenshot_url_png, upload_dir) 
+                except requests.exceptions.HTTPError:
+                    print('Screenshot url could not be found', screenshot_url_jpg)
+                    continue
+            t.target_object.save()
 
 
 CONVERSIONS = [
