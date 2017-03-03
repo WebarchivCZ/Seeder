@@ -7,6 +7,9 @@
 
 
 {% block content %}
+    {% if all_empty %}
+        <h1>{% trans "You are done, nothing more to do here." %}</h1>
+    {% endif %}
     <div class="grid">
         {% for card in cards %}
             {% if not card.empty %}
@@ -29,6 +32,7 @@
                         </ul>
                     </div>
                 </div>
+
             {% endif %}
         {% endfor %}
     </div>

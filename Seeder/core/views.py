@@ -25,7 +25,11 @@ class DashboardView(LoginMixin, TemplateView, URLView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data()
-        context['cards'] = get_cards(self.request.user)
+        cards = get_cards(self.request.user)
+        context['cards'] = cards
+        context['all_empty'] =  all([c.empty for c in cards])
+
+
         return context
 
 
