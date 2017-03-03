@@ -70,9 +70,6 @@
                 <li id="search">
                     <a href="{% url 'search:haystack_search' %}">{% trans 'Search' %}</a>
                 </li>
-                <li id="add_source">
-                    <a href="{% url 'source:add' %}">{% trans 'Add source' %}</a>
-                </li>
                 <li id="sources">
                     <a href="{% url 'source:list' %}">{% trans 'Sources' %}</a>
                 </li>
@@ -81,9 +78,6 @@
                 </li>
                 <li id="publishers">
                     <a href="{% url 'publishers:list' %}">{% trans 'Publishers' %}</a>
-                </li>
-                <li id="publisher_add">
-                    <a href="{% url 'publishers:add' %}">{% trans 'Add publisher' %}</a>
                 </li>
                 <li id="contracts">
                     <a href="{% url 'contracts:list' %}">{% trans 'Contracts' %}</a>
@@ -95,7 +89,7 @@
                     <a href="{% url 'qa:list' %}">{% trans 'Quality assurance' %}</a>
                 </li>
 
-                
+                <hr>
 
                 <li id="topic_collections">
                     <a href="{% url 'harvests:topic_collection_list' %}">{% trans 'Topic collections' %}</a>
@@ -103,13 +97,16 @@
                 <li id="news">
                     <a href="{% url 'contracts:list' %}">{% trans 'News' %}</a>
                 </li>
-            </ul>
 
-            <ul class="nav nav-sidebar">
+                <hr>
+
                 <li><a href="https://github.com/WebArchivCZ/Seeder">Github</a></li>
                 <li><a href="https://github.com/WebArchivCZ/Seeder/issues/new">{% trans 'Bug report' %}</a></li>
                 <li><a href="https://seeder.readthedocs.org/en/latest/">{% trans 'Read the docs' %}</a></li>
+
+
             </ul>
+
         </div>
         {% block content_raw %}
             <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">

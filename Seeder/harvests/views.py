@@ -205,8 +205,4 @@ class CollectionListView(TopicCollectionView, generic_views.FilteredListView, UR
     url = U / 'collections'
     url_name = 'topic_collection_list'
 
-    def get_context_data(self, **kwargs):
-        c = super().get_context_data(**kwargs)
-        c['add_link'] = 'harvests:topic_collection_add'
-        c['add_link_title'] = _('Add')
-        return c
+    add_link = 'harvests:topic_collection_add' 

@@ -84,6 +84,10 @@ body {
   margin-top: 0;
 }
 
+.main .page-header .pull-right {
+  margin-left: 10px;
+}
+
 
 /*
  * Placeholder dashboard ideas

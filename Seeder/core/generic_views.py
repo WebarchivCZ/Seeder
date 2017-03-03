@@ -139,7 +139,8 @@ class FilteredListView(SingleTableView):
     filter_class = NotImplemented
 
     add_link = None
-    add_link_title = None
+    add_link_title = _('Add')
+
 
     def get_table_data(self):
         queryset = super().get_table_data()

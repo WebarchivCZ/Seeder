@@ -18,7 +18,6 @@ class PublisherView(generic_views.LoginMixin):
 
 class AddPublisher(PublisherView, FormView, URLView):
     form_class = forms.PublisherForm
-    view_name = 'publisher_add'
     template_name = 'add_form.html'
     title = _('Add publisher')
 
@@ -60,6 +59,7 @@ class ListView(PublisherView, generic_views.FilteredListView, URLView):
 
     url = U
     url_name = 'list'
+    add_link = 'publishers:add'
 
 
 class EditContacts(PublisherView, FormView, generic_views.ObjectMixinFixed, URLView):  # noqa

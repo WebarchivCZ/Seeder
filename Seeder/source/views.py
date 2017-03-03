@@ -41,7 +41,7 @@ class SourceView(generic_views.LoginMixin):
 
 class AddSource(generic_views.LoginMixin, SessionWizardView, URLView):
     template_name = 'add_source.html'
-    view_name = 'add_source'
+    # view_name = 'add_source'
 
     url = U / 'add'
     url_name = 'add'
@@ -220,6 +220,8 @@ class SourceList(SourceView, generic_views.FilteredListView, URLView):
 
     url = U / 'list'
     url_name = 'list'
+
+    add_link = 'source:add'
 
 
 class CategoryAutocomplete(autocomplete.Select2QuerySetView, URLView):
