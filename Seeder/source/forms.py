@@ -21,13 +21,16 @@ class SourceForm(forms.ModelForm):
 
     class Meta:
         model = models.Source
-        fields = ('name', 'main_url', 'publisher', 'category',
-                  'suggested_by', 'open_license')
+        fields = (
+            'name', 'main_url', 'publisher', 'category',
+            'keywords', 'suggested_by', 'open_license'
+        )
 
         widgets = {
             'publisher': autocomplete.ModelSelect2(
                     url='publishers:autocomplete'
-            )
+            ),
+            'keywords': autocomplete.ModelSelect2Multiple(url='source:keyword_autocomplete'),
         }
 
 
