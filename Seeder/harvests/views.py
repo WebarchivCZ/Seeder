@@ -152,7 +152,7 @@ class AddTopicCollection(TopicCollectionView, FormView, URLView):
         return HttpResponseRedirect(topic.get_absolute_url())
 
 
-class Edit(TopicCollectionView, generic_views.EditView, URLView):
+class EditCollection(TopicCollectionView, generic_views.EditView, URLView):
     form_class = forms.TopicCollectionEditForm
 
     url = U / pk / 'collection_edit'
@@ -180,7 +180,7 @@ class Edit(TopicCollectionView, generic_views.EditView, URLView):
         return HttpResponseRedirect(topic.get_absolute_url())
 
 
-class Detail(TopicCollectionView, DetailView, CommentViewGeneric, URLView):
+class CollectoionDetail(TopicCollectionView, DetailView, CommentViewGeneric, URLView):
     template_name = 'topic_collection.html'
 
     url = U / pk / 'collection_detail'
@@ -188,7 +188,7 @@ class Detail(TopicCollectionView, DetailView, CommentViewGeneric, URLView):
 
 
 
-class History(TopicCollectionView, generic_views.HistoryView, URLView):
+class CollectionHistory(TopicCollectionView, generic_views.HistoryView, URLView):
     """
         History of changes to TopicCollections
     """
@@ -197,7 +197,7 @@ class History(TopicCollectionView, generic_views.HistoryView, URLView):
     url_name = 'topic_collection_history'
 
 
-class ListView(TopicCollectionView, generic_views.FilteredListView, URLView):
+class CollectionListView(TopicCollectionView, generic_views.FilteredListView, URLView):
     title = _('TopicCollections')
     table_class = tables.TopicCollectionTable
     filter_class = field_filters.TopicCollectionFilter
