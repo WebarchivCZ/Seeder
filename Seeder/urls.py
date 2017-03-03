@@ -39,10 +39,8 @@ auth_urlpatterns = [
     url(r'^reset/done/$', core_views.PasswordChangeDone.as_view(), name='password_reset_complete'),
 ]
 
-urlpatterns = [
+seeder_urlpatterns = [
     url(U / 'ckeditor', include('ckeditor_uploader.urls')),
-    url(U / 'admin', include(admin.site.urls)),
-    url(U / 'auth', include(auth_urlpatterns)),
     url(U / 'api' / 'auth', include(
         'rest_framework.urls', namespace='rest_framework')),
     url(U / 'api' / 'token', token_views.obtain_auth_token),
@@ -56,15 +54,19 @@ urlpatterns = [
     url(U / 'harvests', view_include(harvests_views, namespace='harvests')),
     url(U / 'blacklists', view_include(blacklists_views, namespace='blacklists')),  # noqa
     url(U / 'qa', view_include(qa_views, namespace='qa')),
-    url(U / 'www', view_include(views_non_localized, namespace='www_no_lang')),
-
     # beware: wild card regexp!
+    url(U, view_include(core_views, namespace='core'))
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
-urlpatterns += i18n_patterns(
-    url(U / 'www', view_include(www_views, namespace='www')),
-)
 
-urlpatterns.append(
-    url(r'^', view_include(core_views, namespace='core'))
+
+urlpatterns = [
+    url(U / 'admin', include(admin.site.urls)),
+    url(U / 'auth', include(auth_urlpatterns)),
+    url(U / 'seeder', include(seeder_urlpatterns)),
+    url(U / 'lang', view_include(views_non_localized, namespace='www_no_lang')),
+]
+
+urlpatterns += i18n_patterns(
+    url(U, view_include(www_views, namespace='www')),
 )
