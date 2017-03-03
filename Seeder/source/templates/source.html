@@ -76,6 +76,13 @@
                     <td>{{ source.annotation }}</td>
                 </tr>
                 <tr>
+                    <td>{% trans 'keywords' %}</td>
+                    <td>{% for keyword in source.keywords.all %}
+                        <a href="{{ keyword.www_url }}">{{ keyword }}</a>{% include "includes/comma.html" %}
+                        {% endfor %}
+                    </td>
+                </tr>
+                <tr>
                     <td>{% trans 'Category' %}</td>
                     <td>{{ source.category }}</td>
                 </tr>

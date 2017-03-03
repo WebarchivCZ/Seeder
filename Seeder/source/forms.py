@@ -57,7 +57,7 @@ class SourceEditForm(forms.ModelForm):
     class Meta:
         model = models.Source
         fields = ('owner', 'name', 'publisher', 'publisher_contact', 'state',
-                  'frequency', 'category', 'sub_category', 'annotation',
+                  'frequency', 'keywords', 'category', 'sub_category', 'annotation',
                   'screenshot', 'comment', 'aleph_id', 'issn')
 
         widgets = {
@@ -74,7 +74,8 @@ class SourceEditForm(forms.ModelForm):
             'sub_category': autocomplete.ModelSelect2(
                 url='source:subcategory_autocomplete',
                 forward=['category']
-            )
+            ),
+            'keywords': autocomplete.ModelSelect2Multiple(url='source:keyword_autocomplete'),
         }
 
 
