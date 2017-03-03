@@ -631,7 +631,7 @@ def download_legacy_screenshots():
                 date=r.screenshot_date
             )
 
-            screenshot_url_png = settings.LEGACY_SCREENSHOT_URL.format(
+            screenshot_url_png = settings.LEGACY_SCREENSHOT_URL_PNG.format(
                 id=r.id,
                 date=r.screenshot_date
             )
@@ -640,8 +640,9 @@ def download_legacy_screenshots():
             except requests.exceptions.HTTPError:
                 try:
                     t.target_object.screenshot = download_file(screenshot_url_png, upload_dir) 
-                except requests.exceptions.HTTPError:
-                    print('Screenshot url could not be found', screenshot_url_jpg)
+                except requests.exceptions.HTTPError as e:
+                    print(e)
+                    print('Screenshot url could not be found', screenshot_url_png)
                     continue
             t.target_object.save()
 
