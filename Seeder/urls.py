@@ -56,7 +56,7 @@ seeder_urlpatterns = [
     url(U / 'qa', view_include(qa_views, namespace='qa')),
     # beware: wild card regexp!
     url(U, view_include(core_views, namespace='core'))
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+]
 
 
 
@@ -65,7 +65,7 @@ urlpatterns = [
     url(U / 'auth', include(auth_urlpatterns)),
     url(U / 'seeder', include(seeder_urlpatterns)),
     url(U / 'lang', view_include(views_non_localized, namespace='www_no_lang')),
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 urlpatterns += i18n_patterns(
     url(U, view_include(www_views, namespace='www')),
