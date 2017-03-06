@@ -209,8 +209,16 @@ CKEDITOR_CONFIGS = {
             ['Bold', 'Italic', 'Underline'],
             ['NumberedList', 'BulletedList'],
         ],
-        # 'width': '100%',
-    }
+    },
+    'mini': {
+        'toolbar': 'Custom',
+        'toolbar_Custom': [
+            ['Bold', 'Italic', 'Underline'],
+            ['NumberedList', 'BulletedList'],
+        ],
+        'width': 800,
+        'height':100,
+    },
 }
 
 DEBUG_TOOLBAR_CONFIG = {

@@ -14,7 +14,7 @@ from source.models import Source
 
 class NewsObject(BaseModel):
     title = models.CharField(max_length=150)
-    annotation = RichTextField()
+    annotation = RichTextField(config_name='mini')
     image = models.ImageField(upload_to='photos', null=True, blank=True)    
 
     source_1 = models.ForeignKey(
@@ -32,15 +32,19 @@ class NewsObject(BaseModel):
     )
 
     annotation_source_1 = RichTextField(
+        config_name='mini',
         null=True, blank=True, 
         help_text="Leave empty to use source annotation"
     )
 
     annotation_source_2 = RichTextField(
+        config_name='mini',
         null=True, blank=True, 
         help_text="Leave empty to use source annotation"
     )
 
+    def get_absolute_url(self):
+        return reverse('news:detail', args=[str(self.id)])
 
     @property
     def get_annotation_source_1(self):

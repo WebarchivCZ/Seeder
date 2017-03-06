@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+{% load i18n humanize bootstrap3 thumbnail static %}
+
+{% block title %} {{ object }} {% endblock %}
+{% block page_header %} {{ object }}{% endblock %}
+
+{% block content %}
+    <div class="col-md-9 col-sm-5">
+        <h4>{% trans 'Info' %}</h4>
+        <table class="table table-striped">
+            <tbody>                <tr>
+                    <td>{% trans 'title [cs]' %}</td>
+                    <td>{{ object.title_cs }}</td>
+                </tr>
+
+                <tr>
+                    <td>{% trans 'title [en]' %}</td>
+                    <td>{{ object.title_en }}</td>
+                </tr>
+
+                <tr>
+                    <td>{% trans 'annotation [cs]' %}</td>
+                    <td>{{ object.annotation_cs|safe }}</td>
+                </tr>
+
+                <tr>
+                    <td>{% trans 'annotation [en]' %}</td>
+                    <td>{{ object.annotation_en|safe }}</td>
+                </tr>
+
+                <tr>
+                    <td>{% trans 'source 1 ' %}</td>
+                    <td>{{ object.source_1 }}</td>
+                </tr>
+
+                <tr>
+                    <td>{% trans 'source 1 annotation [cs]' %}</td>
+                    <td>{{ object.annotation_source_1_cs|safe }}</td>
+                </tr>
+
+                <tr>
+                    <td>{% trans 'source 1 annotation [en]' %}</td>
+                    <td>{{ object.annotation_source_1_en|safe }}</td>
+                </tr>
+
+                <tr>
+                    <td>{% trans 'source 2 ' %}</td>
+                    <td>{{ object.source_2 }}</td>
+                </tr>
+
+                <tr>
+                    <td>{% trans 'source 2 annotation [cs]' %}</td>
+                    <td>{{ object.annotation_source_2_cs|safe }}</td>
+                </tr>
+
+                <tr>
+                    <td>{% trans 'source 2 annotation [en]' %}</td>
+                    <td>{{ object.annotation_source_2_en|safe }}</td>
+                </tr>
+
+
+                {% if object.image %}
+                    <tr>
+                        <td>{% trans 'Image' %}</td>
+                        <td>
+                            {% thumbnail object.image "100x100" crop="center" as im %}
+                                <a href="{{ object.image.url }}" target="_blank">
+                                    <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}">
+                                </a>
+                            {% endthumbnail %}
+                        </td>
+                    </tr>
+                {% endif %}
+
+                <tr>
+                    <td>{% trans 'Created at' %}</td>
+                    <td>{{ object.created|naturaltime }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="col-md-3 col-sm-5">
+        <h4>{% trans 'Links' %}:</h4>
+            <a href="{% url 'news:edit' pk=object.pk %}" class="btn btn-primary btn-warning btn-block">{% trans 'Edit' %}</a>
+            <a href="{% url 'news:history' pk=object.pk %}" class="btn btn-primary btn-info btn-block">{% trans 'History' %}</a>
+    </div>
+
+    <div class="col-xs-12 col-md-12">
+        <h2>{% trans 'Comments' %}</h2>
+        {% include 'bootstrap_comments_threaded.html' with comments=comments form=comment_form %}
+    </div>
+{% endblock %}
