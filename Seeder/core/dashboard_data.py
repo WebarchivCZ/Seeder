@@ -20,6 +20,7 @@ class DashboardCard(object):
     get_badge = NotImplemented
     get_color = NotImplemented
     get_title = NotImplemented
+    empty = False
 
 
     def __init__(self, user, url_name, page=1):
