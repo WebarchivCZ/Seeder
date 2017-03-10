@@ -3,19 +3,15 @@
 <div class="row">
 	<div class="col-md-12">
 		<div class="paginator">
-
-
-		        {% if paginator.has_previous %}
-		            <a href="?{% url_replace page=paginator.previous_page_number %}">{{ paginator.previous_page_number }}</a>
-		        {% endif %}
-
-		        <span class="current">
-		            {{ paginator.number }}
-		        </span>
-
-		        {% if paginator.has_next %}
-		            <a href="?{% url_replace page=paginator.next_page_number %}">{{ paginator.next_page_number }}</a>
-		        {% endif %}
+				{% for page in paginator.get_current_range %}
+					{% ifequal page paginator.number  %} 
+				        <span class="current">
+		            		{{ paginator.number }}
+		        		</span>
+		        	{% else %}
+		            	<a href="?{% url_replace page=page %}">{{ page }}</a>
+					{% endifequal %}
+				{% endfor %}
 		</div>
 	</div>
 </div>

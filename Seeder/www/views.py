@@ -6,7 +6,7 @@ from django.views.generic.detail import DetailView
 from django.http.response import HttpResponseRedirect
 from django.utils.translation import ugettext as _
 from django.db.models import Count, Sum, When, Case, IntegerField
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.core.paginator import EmptyPage, PageNotAnInteger
 from django.core.urlresolvers import reverse
 from django.conf import settings
 
@@ -14,13 +14,12 @@ from contracts.models import Contract
 from source.models import Source, Category, SubCategory, KeyWord
 from source.constants import ARCHIVING_STATES
 from harvests.models import TopicCollection
-
+from paginator.paginator import CustomPaginator
 
 from . import models
 from . import forms
 
 ITEMS_PER_PAGE = 12
-
 
 
 
@@ -150,7 +149,7 @@ class AboutContact(TemplateView, URLView):
 
 class PaginatedSources:
     def get_paginator(self):
-        paginator = Paginator(self.get_source_queryset(), ITEMS_PER_PAGE) 
+        paginator = CustomPaginator(self.get_source_queryset(), ITEMS_PER_PAGE) 
         page = self.request.GET.get('page', 1)
         try:
             sources = paginator.page(page)

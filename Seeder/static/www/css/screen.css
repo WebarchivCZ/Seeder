@@ -756,7 +756,9 @@ input:focus {
 	clear: both;
 	font-size: 30px;
 	margin-top: 50px;
+	text-align: center;
 }
+
 .paginator a,
 .paginator span {
 	padding: 0 7px;
