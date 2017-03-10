@@ -1,0 +1,17 @@
+{% extends "www/base_www.html" %}
+
+{% block title %}{% if lang == "cs" %}404: Stránka nenalezena{% else %}404: Page not found{% endif %}{% endblock title %}
+
+{% block content %}
+	<section id="error">
+		<div class="container">
+			<h1>
+				{% if lang == "cs" %}
+					<a href="http://cs.wikipedia.org/wiki/HTTP_404">Chyba 404<span class="false-link-underline-blue"></span></a> na <a href="{% url "www:index" %}">Webarchiv<span class="false-link-underline-blue"></span></a>u
+				{% else %}
+					<a href="http://en.wikipedia.org/wiki/HTTP_404">Error 404<span class="false-link-underline-blue"></span></a> on <a href="{% url "www:index" %}">Webarchiv<span class="false-link-underline-blue"></span></a>
+				{% endif %}
+			</h1>
+		</div>
+	</section>
+{% endblock %}

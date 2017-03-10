@@ -136,8 +136,13 @@ class Harvest(HarvestAbstractModel):
         default=STATE_PLANNED
     )
     
-    title = models.CharField(blank=True, max_length=255)
-    annotation = models.TextField(_('Annotation'), null=True, blank=True)
+    title = models.CharField(
+        verbose_name=_('title'),
+        blank=True, max_length=255
+    )
+    annotation = models.TextField(
+        _('Annotation'),
+        null=True, blank=True)
 
     seeds_frozen = models.TextField(
         blank=True,
@@ -220,7 +225,7 @@ class TopicCollection(HarvestAbstractModel):
         default=STATE_NEW
     )
     
-    title = models.CharField(max_length=255)
+    title = models.CharField(verbose_name=_('title'), max_length=255)
     slug = AutoSlugField(unique=True, populate_from='title_cs')
 
     owner = models.ForeignKey(
@@ -230,8 +235,8 @@ class TopicCollection(HarvestAbstractModel):
 
 
     annotation = models.TextField(_('Annotation'))
-    image = models.ImageField(upload_to="images")
-    keywords = models.ManyToManyField(KeyWord)
+    image = models.ImageField(upload_to="images", verbose_name=_('image'))
+    keywords = models.ManyToManyField(KeyWord, verbose_name=_('keywords'))
 
     seeds_frozen = models.TextField(
         blank=True,
@@ -245,8 +250,11 @@ class TopicCollection(HarvestAbstractModel):
         null=True, blank=True, 
     )
 
-    annotation = models.TextField()
+    annotation = models.TextField(
+        verbose_name=_('annotation')
+    )
     image = models.ImageField(
+        verbose_name=_('image'),
         upload_to='photos',
         null=True, blank=True, 
     )
@@ -269,7 +277,7 @@ class TopicCollection(HarvestAbstractModel):
 
 
 class Attachment(models.Model):
-    file = models.FileField(upload_to='attachments')
+    file = models.FileField(verbose_name=_('file'), upload_to='attachments')
     topic_collection = models.ForeignKey(TopicCollection)
     
     def __str__(self):

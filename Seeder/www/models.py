@@ -19,6 +19,7 @@ class NewsObject(BaseModel):
 
     source_1 = models.ForeignKey(
         Source, 
+        verbose_name=_('First source'),
         on_delete=models.DO_NOTHING,
         null=True, blank=True,
         related_name='news_a'
@@ -26,18 +27,21 @@ class NewsObject(BaseModel):
 
     source_2 = models.ForeignKey(
         Source, 
+        verbose_name=_('second source'),    
         on_delete=models.DO_NOTHING, 
         null=True, blank=True,
         related_name='news_b'
     )
 
     annotation_source_1 = RichTextField(
+        verbose_name=_('annotation for first source'),
         config_name='mini',
         null=True, blank=True, 
         help_text="Leave empty to use source annotation"
     )
 
     annotation_source_2 = RichTextField(
+        verbose_name=_('annotation for second source'),
         config_name='mini',
         null=True, blank=True, 
         help_text="Leave empty to use source annotation"
