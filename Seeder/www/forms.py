@@ -16,7 +16,7 @@ class NewsForm(forms.ModelForm):
         model = models.NewsObject
         
         # exclude translated fields
-        exclude = ['title', 'annotation', 'annotation_source_1', 'annotation_source_2'] 
+        exclude = ['active', 'title', 'annotation', 'annotation_source_1', 'annotation_source_2'] 
 
         widgets = {
             'source_1': autocomplete.ModelSelect2(url='source:source_public_autocomplete'),
