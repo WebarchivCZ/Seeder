@@ -82,6 +82,7 @@
     <div class="col-md-3 col-sm-5">
         <h4>{% trans 'Links' %}:</h4>
             <a href="{% url 'news:edit' pk=object.pk %}" class="btn btn-primary btn-warning btn-block">{% trans 'Edit' %}</a>
+            <a href="{% url 'news:publish' pk=object.pk %}" class="btn btn-primary btn-info btn-block">{% trans 'Publish on main page' %}</a>
             <a href="{% url 'news:history' pk=object.pk %}" class="btn btn-primary btn-info btn-block">{% trans 'History' %}</a>
     </div>
 

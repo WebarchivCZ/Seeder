@@ -28,6 +28,23 @@ class AddNews(NewsView, FormView, URLView):
         news = form.save()
         return HttpResponseRedirect(reverse('news:list'))
 
+class Publish(NewsView, DetailView, URLView):
+    template_name = 'news_admin_detail.html'
+
+    url = U / pk / 'publish'
+    url_name = 'publish'
+
+    def get(self, request, *args, **kwargs):
+        # models.NewsObject.objects.filter()
+        news = self.get_object()
+        news.active = True
+        news.save()
+
+        models.NewsObject.objects.exclude(pk=news.pk).update(
+            active=False
+        )
+        return HttpResponseRedirect(news.get_absolute_url())
+
 
 class Detail(NewsView, DetailView, CommentViewGeneric, URLView):
     template_name = 'news_admin_detail.html'

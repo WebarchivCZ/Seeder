@@ -63,8 +63,10 @@ class NewsObject(BaseModel):
         return self.source_2.annotation
 
     def __str__(self):
-        return self.title
-
+        sign = '✔' if self.active else '✗'
+        return '{0} {1}'.format(sign, self.title)
+        
+        
     class Meta:
         verbose_name = _('News article')
         verbose_name_plural = _('News articles')

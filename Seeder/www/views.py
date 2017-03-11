@@ -35,7 +35,7 @@ class Index(TemplateView, URLView):
         context.update({
             'contract_count': Contract.objects.valid().count(),
             'last_sources': Source.objects.archiving().order_by('-created')[:5],
-            'news_article': models.NewsObject.objects.order_by('created').first(),
+            'news_article': models.NewsObject.objects.filter(active=True).first(),
             'big_search_form': forms.BigSearchForm(data=self.request.GET),
             'hide_search_box': True,
         })
