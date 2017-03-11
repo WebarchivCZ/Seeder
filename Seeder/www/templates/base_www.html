@@ -11,11 +11,9 @@
 
 	<meta property="fb:app_id" content="768657893222364" />
 	<meta property="og:type" content="website" />
-	<meta property="og:title" content="{include #title}" />
 	<meta property="og:site_name" content="Webarchiv" />
-	<meta property="og:url" content="http://{$_SERVER['HTTP_HOST']}{$_SERVER['REQUEST_URI']}" />
 	<meta property="og:description" content="Úlohou Webarchivu shromažďovat webové zdroje, archivovat je a zajišťovat k nim dlouhodobý přístup." />
-	<meta property="og:image" content="{% block ogImage %}http://{$_SERVER['HTTP_HOST']}/images/design/social/facebook.gif{% endblock %}" />
+	<meta property="og:image" content="{% block ogImage %}{{ STATIC_URL }}www//images/design/social/facebook.gif{% endblock %}" />
 
 	<link href="{{ STATIC_URL }}www/favicon.ico?v=1.1" rel="shortcut icon" type="image/x-icon" />
 
