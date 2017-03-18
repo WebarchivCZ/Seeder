@@ -271,80 +271,55 @@ MANET_URL = '127.0.0.1:8891'
 QA_EVERY_N_MONTHS = 24
 
 ELASTICSEARCH_INDEX_SETTINGS = {
-    'settings': {
-        "mappings": {
-            "document": {
-                "properties": {
-                    "content": {
-                        "type": "string",
-                        "analyzer": "lowercase_with_stopwords"
+    'cs': {
+        "settings": {
+            "analysis": {
+                "analyzer": {
+                    "czech_hunspell": {
+                        "type": "custom",
+                        "tokenizer": "standard",
+                        "filter": ["standard", "mynGram", "stopwords_CZ", "lowercase", "hunspell_CZ", "stopwords_CZ", "remove_duplicities"]
                     }
-                }
-            }
-        },
-
-        "analysis": {
-            "analyzer": {
-                "ngram_analyzer": {
-                    "type": "custom",
-                    "tokenizer": "lowercase",
-                    "filter": ["haystack_ngram", "word_delimiter"]
                 },
-                "edgengram_analyzer": {
-                    "type": "custom",
-                    "tokenizer": "lowercase",
-                    "filter": ["haystack_edgengram", "word_delimiter"]
-                },
-                "icu_folding": {
-                    "type": "custom",
-                    "tokenizer": "whitespace",
-                    "filter": ["icu_folding", "word_delimiter"]
-                },
-                "lowercase_with_stopwords": {
-                    "type": "custom",
-                    "tokenizer": "lowercase",
-                    "filter": [
-                        "stopwords_filter", "word_delimiter"
-                    ]
-                }
-            },
-            "tokenizer": {
-                "haystack_ngram_tokenizer": {
-                    "type": "nGram",
-                    "min_gram": 3,
-                    "max_gram": 15,
-                },
-                "haystack_edgengram_tokenizer": {
-                    "type": "edgeNGram",
-                    "min_gram": 2,
-                    "max_gram": 15,
-                    "side": "front"
-                }
-            },
-            "filter": {
-                "stopwords_filter": {
-                    "type": "stop",
-                    "stopwords": [
-                        "http",
-                        "https",
-                        "ftp",
-                        "www"
-                    ]
-                },
-                "haystack_ngram": {
-                    "type": "nGram",
-                    "min_gram": 3,
-                    "max_gram": 15
-                },
-                "haystack_edgengram": {
-                    "type": "edgeNGram",
-                    "min_gram": 2,
-                    "max_gram": 15
+                "filter": {
+                    "mynGram": {
+                      "type": "nGram",
+                      "min_gram": 2,
+                      "max_gram": 50
+                    },
+                    "stopwords_CZ": {
+                        "type": "stop",
+                        "stopwords": ["právě", "že", "test", "_czech_"],
+                        "ignore_case": True
+                    },
+                    "hunspell_CZ": {
+                        "type": "hunspell",
+                        "locale": "cs_CZ",
+                        "dedup": True,
+                        "recursion_level": 0
+                    },
+                    "remove_duplicities": {
+                        "type": "unique",
+                        "only_on_same_position": True
+                    },
                 }
             }
         }
-    }
+    },
 }
+
+HAYSTACK_CONNECTIONS = {
+    'default': {
+        'ENGINE': 'elasticstack.backends.ConfigurableElasticSearchEngine',
+        'URL': 'http://127.0.0.1:9200/',
+        'INDEX_NAME': 'haystack',
+        'SETTINGS_NAME': 'cs',
+        'DEFAULT_ANALYZER': 'czech_hunspell',
+        'DEFAULT_NGRAM_SEARCH_ANALYZER': 'standard',
+    },
+}
+
+
 
 LEGACY_URL = 'http://intranet.webarchiv.cz/wadmin/tables/resources/view/{pk}'
 LEGACY_SCREENSHOT_URL = 'http://www.webarchiv.cz/images/resource/thumb/small_{id}_{date}.jpg'
