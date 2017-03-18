@@ -2,13 +2,15 @@ from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
+from django.db.models.signals import post_save
 
 from core.models import BaseModel
 from source.models import Source
 from source import constants as source_constants
+from search_blob.models import SearchModel, update_search
 
 
-class QualityAssuranceCheck(BaseModel):
+class QualityAssuranceCheck(SearchModel, BaseModel):
     """
     QA check, is considered open until source_action is filled.
     """
@@ -55,11 +57,17 @@ class QualityAssuranceCheck(BaseModel):
     def __str__(self):
         return 'QA: {0}'.format(self.source)
 
-    def search_blob(self):
+    def get_search_blob(self):
         """
         :return: Search blob to be indexed in elastic
         """
         return self.comment
+
+    def get_search_title(self):
+        return self.__str__()
+
+    def get_search_url(self):
+        return self.get_detail_url()
 
     def process_action(self):
         if self.source_action:
@@ -76,3 +84,5 @@ class QualityAssuranceCheck(BaseModel):
         if self.source_action:
             return self.get_detail_url()
         return self.get_edit_url()
+
+post_save.connect(update_search, sender=QualityAssuranceCheck)
