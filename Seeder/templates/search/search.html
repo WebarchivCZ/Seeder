@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% load i18n %}
 {% load bootstrap3 %}
+{% load urltags %}
 
 {% block title %}
     {% trans 'Search' %}
@@ -22,25 +23,25 @@
 
     {% if query %}
         <h3>{% trans 'Results' %}</h3>
-        {% if page.object_list %}
+        {% if results %}
             <div class="list-group">
-                {% for result in page.object_list %}
-                    <a class="list-group-item" href="{{ result.object.get_absolute_url }}">{{ result.object}}</a>
+                {% for result in results %}
+                    <a class="list-group-item" href="{{ result.url }}">{{ result.title }}</a>
                 {% endfor %}
             </div>
         {% else %}
             <p>{% trans 'Nothing found' %}</p>
         {% endif %}
 
-        {% if page.has_previous or page.has_next %}
+        {% if results.has_previous or results.has_next %}
             <nav>
                 <ul class="pager">
-                    {% if page.has_previous %}
-                        <li class="previous"><a href="?q={{ query }}&amp;page={{ page.previous_page_number }}"><span aria-hidden="true">&larr;</span>{% trans 'Previous' %}</a></li>
+                    {% if results.has_previous %}
+                        <li class="previous"><a href="?{% url_replace page=results.previous_page_number %}"><span aria-hidden="true">&larr;</span>{% trans 'Previous' %}</a></li>
                     {% endif %}
 
-                    {% if page.has_next %}
-                        <li class="next"><a href="?q={{ query }}&amp;page={{ page.next_page_number }}">{% trans 'Next' %} <span aria-hidden="true">&rarr;</span></a></li>
+                    {% if results.has_next %}
+                        <li class="next"><a href="?{% url_replace page=results.next_page_number %}">{% trans 'Next' %} <span aria-hidden="true">&rarr;</span></a></li>
                     {% endif %}
                   </ul>
             </nav>

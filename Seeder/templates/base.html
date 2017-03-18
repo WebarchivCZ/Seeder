@@ -32,7 +32,7 @@
             <a class="navbar-brand" href="{% url 'core:dashboard' %}">{% trans 'Seeder' %}</a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
-            <form class="navbar-form navbar-right" action="{% url 'search:haystack_search' %}" method="get">
+            <form class="navbar-form navbar-right" action="{% url 'search:search' %}" method="get">
                 <input type="text" class="form-control" placeholder="{% trans 'Search' %}" name="q">
             </form>
 
@@ -79,7 +79,7 @@
                     <a href="{% url 'core:dashboard' %}" >{% trans 'Dashboard' %}</a>
                 </li>
                 <li id="search">
-                    <a href="{% url 'search:haystack_search' %}">{% trans 'Search' %}</a>
+                    <a href="{% url 'search:search' %}">{% trans 'Search' %}</a>
                 </li>
                 <li id="sources">
                     <a href="{% url 'source:list' %}">{% trans 'Sources' %}</a>

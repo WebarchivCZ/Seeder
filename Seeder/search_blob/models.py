@@ -1,6 +1,9 @@
 from django.db import models
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
+from django.core.paginator import EmptyPage, PageNotAnInteger
+
+from paginator.paginator import CustomPaginator
 
 
 
@@ -18,3 +21,20 @@ class Blob(models.Model):
     record_id = models.PositiveIntegerField()
     record_object = GenericForeignKey('record_type', 'record_id')
 
+    @classmethod
+    def search(cls, query):
+        if not query:
+            return []
+
+        return cls.objects.filter(blob__icontains=query)
+
+    @classmethod
+    def search_paginator(cls, query, page):
+        paginator = CustomPaginator(cls.search(query), 12) 
+        try:
+            results = paginator.page(page)
+        except PageNotAnInteger:
+            results = paginator.page(1)
+        except EmptyPage:
+            results = paginator.page(1)
+        return results

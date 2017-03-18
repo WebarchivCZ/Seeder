@@ -279,7 +279,6 @@ class Source(SlugOrCreateModel, BaseModel):
     def __str__(self):
         return self.name
 
-
     def update_search_blob(self):
         blob, created = Blob.objects.update_or_create(
             record_type=ContentType.objects.get_for_model(self),
