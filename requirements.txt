@@ -31,3 +31,4 @@ elasticstack==0.5.0
 django-modeltranslation==0.12
 django-autoslug==1.9.3
 django-multiupload==0.5.2
+unidecode

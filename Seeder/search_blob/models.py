@@ -6,6 +6,7 @@ from django.contrib.contenttypes.models import ContentType
 
 from paginator.paginator import CustomPaginator
 
+from unidecode import unidecode
 
 
 class Blob(models.Model):
@@ -51,23 +52,23 @@ class SearchModel:
     def get_search_blob(self):
         raise NotImplementedError
 
-
-
     def update_search_blob(self):
+        # Add version without diacritics: 
+        search_blob = self.get_search_blob()
+        blob_all = search_blob + unidecode(search_blob)
+
         blob, created = Blob.objects.update_or_create(
             record_type=ContentType.objects.get_for_model(self),
             record_id=self.id,
             defaults={
                 "title": self.get_search_title(),
                 "url": self.get_search_url(),
-                "blob": self.get_search_blob()
+                "blob": blob_all
             }
         )
 
 
 def update_search(instance, **kwargs):
     instance.update_search_blob()
-
-
 # post_save.connect(update_search, sender=<SearchModel instance>)
 
