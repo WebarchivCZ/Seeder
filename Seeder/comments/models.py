@@ -5,12 +5,14 @@ from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
+from django.db.models.signals import post_save
 
 from mptt.models import MPTTModel, TreeForeignKey
+from search_blob.models import SearchModel, update_search
 from .managers import CommentManager
 
 
-class Comment(MPTTModel):
+class Comment(SearchModel, MPTTModel):
     """
         User comment model
     """
@@ -139,8 +141,14 @@ class Comment(MPTTModel):
 
     def get_absolute_url(self):
         return self.content_object.get_absolute_url()
+    
+    def get_search_title(self):
+        return self.title or self.text[:10]
 
-    def search_blob(self):
+    def get_search_url(self):
+        return self.get_absolute_url()
+
+    def get_search_blob(self):
         """
         :return: Search blob to be indexed in elastic
         """
@@ -158,3 +166,5 @@ class Comment(MPTTModel):
         permissions = [("can_moderate", "Can moderate comments")]
         verbose_name = _('Comment')
         verbose_name_plural = _('Comments')
+
+post_save.connect(update_search, sender=Comment)
