@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.core.paginator import EmptyPage, PageNotAnInteger
+from django.contrib.contenttypes.models import ContentType
 
 from paginator.paginator import CustomPaginator
 
@@ -38,3 +39,35 @@ class Blob(models.Model):
         except EmptyPage:
             results = paginator.page(1)
         return results
+
+
+class SearchModel:
+    def get_search_title(self):
+        raise NotImplementedError
+
+    def get_search_url(self):
+        raise NotImplementedError
+
+    def get_search_blob(self):
+        raise NotImplementedError
+
+
+
+    def update_search_blob(self):
+        blob, created = Blob.objects.update_or_create(
+            record_type=ContentType.objects.get_for_model(self),
+            record_id=self.id,
+            defaults={
+                "title": self.get_search_title(),
+                "url": self.get_search_url(),
+                "blob": self.get_search_blob()
+            }
+        )
+
+
+def update_search(instance, **kwargs):
+    instance.update_search_blob()
+
+
+# post_save.connect(update_search, sender=<SearchModel instance>)
+

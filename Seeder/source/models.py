@@ -11,6 +11,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.utils import timezone
 from dateutil.relativedelta import relativedelta
 from django.utils.text import slugify
+from django.db.models.signals import post_save, pre_delete
 
 from tld.exceptions import TldDomainNotFound
 from reversion import revisions
@@ -19,7 +20,7 @@ from . import constants
 from core.models import BaseModel, DatePickerField
 from publishers.models import Publisher, ContactPerson
 from legacy_db.models import TransferRecord
-from search_blob.models import Blob
+from search_blob.models import SearchModel, update_search
 
 
 def validate_tld(value):
@@ -186,7 +187,7 @@ class KeyWord(SlugOrCreateModel, models.Model):
 
 
 @revisions.register(exclude=('last_changed',))
-class Source(SlugOrCreateModel, BaseModel):
+class Source(SearchModel, SlugOrCreateModel, BaseModel):
     """
         Source in the context of this project means an information source that
         is going to be downloaded. This usually means website. ``seeds`` field
@@ -279,18 +280,13 @@ class Source(SlugOrCreateModel, BaseModel):
     def __str__(self):
         return self.name
 
-    def update_search_blob(self):
-        blob, created = Blob.objects.update_or_create(
-            record_type=ContentType.objects.get_for_model(self),
-            record_id=self.id,
-            defaults={
-                "title": self.name,
-                "url": self.get_absolute_url(),
-                "blob": self.search_blob()
-            }
-        )
+    def get_search_title(self):
+        return self.name
 
-    def search_blob(self):
+    def get_search_url(self):
+        return self.get_absolute_url()
+
+    def get_search_blob(self):
         """
         :return: Search blob to be indexed in elastic
         """
@@ -298,6 +294,7 @@ class Source(SlugOrCreateModel, BaseModel):
             self.name,
             self.annotation,
             self.comment,
+            self.publisher.get_search_blob()
         ]
         parts.extend([s.url for s in self.seed_set.all()])
         return ' '.join(filter(None, parts))
@@ -458,3 +455,6 @@ class Seed(BaseModel):
 
     def __str__(self):
         return self.url
+
+
+post_save.connect(update_search, sender=Source)

@@ -33,11 +33,14 @@ class Publisher(BaseModel):
     def __str__(self):
         return self.name
 
-    def search_blob(self):
+    def get_search_blob(self):
         """
         :return: Search blob to be indexed in elastic
         """
-        return self.name
+        base_list = [self.name]
+        base_list.extend([c.get_search_blob() for c in self.contactperson_set.all()])
+        return ' '.join(base_list)
+
 
     def get_absolute_url(self):
         return reverse('publishers:detail', kwargs={'pk': self.id})
@@ -65,7 +68,7 @@ class ContactPerson(BaseModel):
     def __str__(self):
         return self.name or self.email
 
-    def search_blob(self):
+    def get_search_blob(self):
         """
         :return: Search blob to be indexed in elastic
         """
