@@ -19,6 +19,7 @@ from . import constants
 from core.models import BaseModel, DatePickerField
 from publishers.models import Publisher, ContactPerson
 from legacy_db.models import TransferRecord
+from search_blob.models import Blob
 
 
 def validate_tld(value):
@@ -53,6 +54,10 @@ class SlugOrCreateModel(object):
     Come on man. Don't leave me here. If you really did read this 
     thing please fork/edit this file and leave your name below:
      - @author
+
+    18.03.2017, still nobody noticed.
+
+
     """
 
     from_field = NotImplemented 
@@ -274,6 +279,18 @@ class Source(SlugOrCreateModel, BaseModel):
     def __str__(self):
         return self.name
 
+
+    def update_search_blob(self):
+        blob, created = Blob.objects.update_or_create(
+            record_type=ContentType.objects.get_for_model(self),
+            record_id=self.id,
+            defaults={
+                "title": self.name,
+                "url": self.get_absolute_url(),
+                "blob": self.search_blob()
+            }
+        )
+
     def search_blob(self):
         """
         :return: Search blob to be indexed in elastic
@@ -337,15 +354,6 @@ class Source(SlugOrCreateModel, BaseModel):
         Returns url to legacy system with this source
         """
         return 
-
-
-        # record = TransferRecord.objects.filter(
-        #     target_type=ContentType.objects.get_for_model(self),
-        #     target_id=self.id).first()
-        # if record:
-        #     import ipdb; ipdb.set_trace() 
-
-        #     return settings.LEGACY_SCREENSHOT_URL.format(pk=record.original_id)
 
     def css_class(self):
         """

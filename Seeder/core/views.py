@@ -8,7 +8,6 @@ from django.views.generic.edit import UpdateView
 from django.utils.http import is_safe_url
 from django.utils import translation
 
-from haystack.generic_views import SearchView
 from urljects import U, URLView
 
 from .generic_views import LoginMixin, MessageView
@@ -96,14 +95,6 @@ class PasswordChangeDone(LoginMixin, MessageView, View):
         self.add_message(_('Password changed successfully.'), messages.SUCCESS)
         return HttpResponseRedirect('/')
 
-
-class SimpleSearchView(LoginMixin, SearchView, URLView):
-    """
-    Simpler search view that modified form class so that it has only one query
-    field without selecting models
-    """
-    url = U / 'search'
-    url_name = 'simple_haystack_search'
 
 
 class CrashTestView(URLView, LoginMixin, View):

@@ -16,6 +16,8 @@ from voting import views as voting_views
 from contracts import views as contracts_views
 from harvests import views as harvests_views
 from blacklists import views as blacklists_views
+from search_blob import views as search_views
+
 from qa import views as qa_views
 from www import views as www_views
 from www import views_non_localized
@@ -45,7 +47,7 @@ seeder_urlpatterns = [
     url(U / 'api' / 'auth', include(
         'rest_framework.urls', namespace='rest_framework')),
     url(U / 'api' / 'token', token_views.obtain_auth_token),
-    url(U / 'search', include('haystack.urls', namespace='search')),
+    url(U / 'search', view_include(search_views, namespace='search')),
 
     url(U / 'api', include(api_router.urls)),
     url(U / 'source', view_include(source_views, namespace='source')),
