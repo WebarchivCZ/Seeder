@@ -1065,18 +1065,22 @@ footer .cc-link img {
 /******************/
 
 .item-visual {
-	margin: 40px 0 0 0;
+	margin: 40px 15px 0 15px;
 }
 .item-visual h2 {
-	margin: 10px 0 0 0;
-	font-size: 20px;
+	margin: 0 0 0 0;
+	font-size: 30px;
 	font-style: normal;
 	overflow: hidden;
 }
+
+
 .thumb {
 	display: block;
 	border: 3px solid #0000ff;
 }
+
+
 .thumb img.aspect-ratio {
 	width: 100%;
 	height: 100%;
@@ -1125,7 +1129,7 @@ footer .cc-link img {
 
 .collection .thumb {
 	border: 0;
-	margin-bottom: 30px;
+	margin-bottom: 0;
 }
 
 .collection .sources {

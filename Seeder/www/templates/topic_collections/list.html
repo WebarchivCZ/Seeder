@@ -5,10 +5,24 @@
 
 
 {% block content %}
-	{% include "about/menu.html" %}
+<section>
+	<div class="container">
 
-	<section id="catalog-items">
-		<div class="container">
+		{% if lang == "cs" %}
+			<h1><a href="{% url "www:index" %}">Webarchiv<span class="false-link-underline-blue"></span></a> uchovává český web</h1><br>
+			<p>Pro první seznámení s webarchivem pokračujte <a href="{% url "www:more_about" %}">zde</a></p>
+		{% else %}
+			<h1><a href="{% url "www:index" %}">Webarchiv<span class="false-link-underline-blue"></span></a> preserves Czech web</h1><br>
+			<p>For basic informations about Webarchiv visit our <a href="{% url "www:more_about" %}">introduction</a></p>
+		{% endif %}
+		<br>
+		<hr>
+	</div>
+
+</section>
+
+	<section id="collection-items">
+		<div class="container collection">
 			{% if lang == "cs" %}
 				<h2>Tématické sbírky</h2>
 				<p>Tematické sbírky jsou monotematické soubory webových dokumentů. V rámci tematických sklizní sledujeme především takové děje, které doprovází celospolečenská debata a je u nich tedy předpoklad, že zaujmou významnější místo z hlediska dějin České republiky. Cíleně vybíráme události, které mají širší ohlas v prostředí internetu. Monitorujeme očekávané akce (např. volby), ale i nenadálé situace (např. povodně).</p>

@@ -43,8 +43,8 @@ class Index(TemplateView, URLView):
 
 
 class TopicCollections(TemplateView, URLView):
-    template_name = 'about/topic_collections.html'
-    view_name = 'about'
+    template_name = 'topic_collections/list.html'
+    view_name = 'topic_collections'
     sub_view_name = 'topic_collections'
 
     url = U / _('topic_collections_url')
@@ -57,9 +57,8 @@ class TopicCollections(TemplateView, URLView):
 
 
 class CollectionDetail(DetailView, URLView):
-    template_name = 'about/collection_detail.html'
-    view_name = 'about'
-    sub_view_name = 'topic_collections'
+    template_name = 'topic_collections/detail.html'
+    view_name = 'topic_collections'
 
     model = TopicCollection
     context_object_name = 'collection'
