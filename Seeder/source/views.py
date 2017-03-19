@@ -290,4 +290,10 @@ class KeywordAutocomplete(autocomplete.Select2QuerySetView, URLView):
     url = U / 'keyword_autocomplete'
 
     def get_queryset(self):
-        return models.KeyWord.objects.all().distinct()
+        if not self.request.user.is_authenticated():
+            return models.KeyWord.objects.none()
+
+        qs = models.KeyWord.objects.all()
+        if self.q:
+            qs = qs.filter(word__icontains=self.q)
+        return qs
