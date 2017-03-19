@@ -296,4 +296,4 @@ class KeywordAutocomplete(autocomplete.Select2QuerySetView, URLView):
         qs = models.KeyWord.objects.all()
         if self.q:
             qs = qs.filter(word__icontains=self.q)
-        return qs
+        return qs.distinct()
