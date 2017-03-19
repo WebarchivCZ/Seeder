@@ -282,7 +282,7 @@ class SourcePublicAutocomplete(autocomplete.Select2QuerySetView, URLView):
         qs = models.Source.objects.archiving()
         if self.q:
             qs = qs.filter(Q(name__icontains=self.q) | Q(seed__url__icontains=self.q))
-        return qs
+        return qs.distinct()
 
 
 class KeywordAutocomplete(autocomplete.Select2QuerySetView, URLView):
