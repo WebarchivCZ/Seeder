@@ -235,7 +235,7 @@ class CategoryAutocomplete(autocomplete.Select2QuerySetView, URLView):
         qs = models.Category.objects.all()
         if self.q:
             qs = qs.filter(name__icontains=self.q)
-        return qs
+        return qs.distinct()
 
 
 class SubcategoryAutocomplete(autocomplete.Select2QuerySetView, URLView):
@@ -253,7 +253,7 @@ class SubcategoryAutocomplete(autocomplete.Select2QuerySetView, URLView):
 
         if self.q:
             qs = qs.filter(name__icontains=self.q)
-        return qs
+        return qs.distinct()
 
 
 class SourceAutocomplete(autocomplete.Select2QuerySetView, URLView):
@@ -267,7 +267,7 @@ class SourceAutocomplete(autocomplete.Select2QuerySetView, URLView):
         qs = models.Source.objects.all()
         if self.q:
             qs = qs.filter(Q(name__icontains=self.q) | Q(seed__url__icontains=self.q))
-        return qs
+        return qs.distinct()
 
 
 
@@ -290,4 +290,4 @@ class KeywordAutocomplete(autocomplete.Select2QuerySetView, URLView):
     url = U / 'keyword_autocomplete'
 
     def get_queryset(self):
-        return models.KeyWord.objects.all()
+        return models.KeyWord.objects.all().distinct()

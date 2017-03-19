@@ -20,7 +20,7 @@ class SourceFilter(EmptyFilter):
     )
 
     sub_category = django_filters.ModelChoiceFilter(
-        queryset=models.Category.objects.all(),
+        queryset=models.SubCategory.objects.all(),
         widget=autocomplete.ModelSelect2(
             url='source:subcategory_autocomplete',
             forward=['category']
