@@ -3,7 +3,8 @@ body {
 	font-size: 20px;
 	line-height: 1.2;
 	color: #000;
-	background: #f8f8f8;
+	/*background: #f8f8f8;*/
+	background: white;
 }
 h1 {
 	margin-top: 90px;
@@ -118,7 +119,7 @@ hr {
 	margin-left: 5px;
 }
 .nav > li > a {
-	padding: 10px 40px 10px 0;
+	padding: 10px 20px 10px 0;
 }
 
 
@@ -404,10 +405,10 @@ input.text {
 .small-searchbox-wrapper {
 	position: absolute;
 	margin: 25px 0 0 0;
-	left: 555px;
+	left: 630px;
 }
 .small-searchbox-wrapper input.text {
-	width: 245px;
+	width: 200px;
 	font-size: 25px;
 	line-height: 40px;
 	height: 48px;
@@ -1069,7 +1070,7 @@ footer .cc-link img {
 }
 .item-visual h2 {
 	margin: 0 0 0 0;
-	font-size: 30px;
+	font-size: 25px;
 	font-style: normal;
 	overflow: hidden;
 }
