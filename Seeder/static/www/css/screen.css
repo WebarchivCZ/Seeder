@@ -1169,3 +1169,22 @@ footer .cc-link img {
 .switch_style {
 	margin-top: 10px;
 }
+
+
+.collection-detail .item-visual {
+	margin-right: 0;
+	margin-left: 0;
+	margin-top: 25px;
+}
+
+.collection-detail hr {
+	margin-bottom: 40px;
+}
+
+.collection-detail .annotation {
+	margin-bottom: 40px;
+}
+
+.collection-detail .item-textual {
+	margin-bottom: 20px;
+}

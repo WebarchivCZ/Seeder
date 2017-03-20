@@ -23,8 +23,10 @@ ITEMS_PER_PAGE = 12
 
 
 class PaginatedView:
+    per_page = ITEMS_PER_PAGE
+
     def get_paginator(self):
-        paginator = CustomPaginator(self.get_paginator_queryset(), ITEMS_PER_PAGE) 
+        paginator = CustomPaginator(self.get_paginator_queryset(), self.per_page) 
         page = self.request.GET.get('page', 1)
         try:
             sources = paginator.page(page)
@@ -71,13 +73,11 @@ class TopicCollections(PaginatedView, TemplateView, URLView):
         context['collections'] = self.get_paginator()
         return context
 
-
-
     def get_paginator_queryset(self):
         return TopicCollection.objects.filter(active=True)
 
 
-class CollectionDetail(DetailView, URLView):
+class CollectionDetail(PaginatedView, DetailView, URLView):
     template_name = 'topic_collections/detail.html'
     view_name = 'topic_collections'
 
@@ -86,16 +86,20 @@ class CollectionDetail(DetailView, URLView):
 
     url = U / _('topic_collection_detail_url') / slug
     url_name = 'collection_detail'
+    per_page = 6
+
+
+    def get_paginator_queryset(self):
+        return self.get_object().custom_sources.all()
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        keyword_ids = self.get_object().custom_sources.all()\
-                   .values_list('keywords', flat=True)
+        keyword_ids = self.get_object().custom_sources.all(
+            ).values_list('keywords', flat=True)
 
         keywords = KeyWord.objects.filter(id__in=keyword_ids)
-
-        context['collections'] = TopicCollection.objects.filter(active=True)
+        context['source_paginator'] = self.get_paginator()
         context['keywords'] = keywords
         return context
 
