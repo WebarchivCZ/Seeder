@@ -11,7 +11,7 @@
         <ul class="list-group">
             {% for contact in publisher.contactperson_set.all %}
                 <li class="list-group-item">
-                    {{ contact }}, <a href="mailto:{{ contact.email }}">{{ contact.email }}</a>
+                    {% if contact.name %}{{ contact.name }},{% endif %} <a href="mailto:{{ contact.email }}">{{ contact.email }}</a>
                     <br/>
                     {% trans 'Position' %}: {{ contact.position }}
                 </li>
