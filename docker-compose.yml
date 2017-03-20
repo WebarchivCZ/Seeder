@@ -18,7 +18,6 @@ services:
     working_dir: /code/Seeder
     depends_on:
        - postgres
-       - elastic
 
   postgres:
     image: postgres
@@ -34,11 +33,6 @@ services:
      - MYSQL_USER=legacy
      - MYSQL_PASSWORD=legacy
      - MYSQL_DATABASE=legacy_db
-
-  elastic:
-    build:
-      context: .
-      dockerfile: Dockerfile_elastic
 
   memcached:
     image: memcached:latest
