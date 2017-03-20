@@ -14,4 +14,4 @@ class CustomPage(Page):
 
     def get_current_range(self):
         lower_bound = max((self.number-5, 1))
-        return range(lower_bound, self.paginator.count)[0:10]
+        return range(lower_bound, self.paginator.num_pages+1)[0:10]
