@@ -1,0 +1,19 @@
+{% ifequal request.session.list_type "visual"  %}
+	{% if lang == "cs" %}
+		Zobrazení: <a href="" class="current">vizuální</a>, 
+		<a href="{% url "www:change_list_view" list_type='text' %}">textové</a>
+	{% else %}
+		Display: <a href="" class="current">visual</a>, 
+		<a href="{% url "www:change_list_view" list_type='text' %}">text</a>
+	{% endif %}
+{% else %}
+	{% if lang == "cs" %}
+		Zobrazení: <a href="{% url "www:change_list_view" list_type="visual" %}">vizuální</a>, 
+		<a href="" class="current">textové</a>
+	{% else %}
+		Display: <a href="{% url "www:change_list_view" list_type="visual" %}">visual</a>, 
+		<a href="" class="current">text</a>
+	{% endif %}
+{% endifequal %}
+
+

@@ -283,6 +283,13 @@ class Attachment(models.Model):
     def __str__(self):
         return os.path.basename(self.file.name)
 
+    def get_extension(self):
+        filename, ext = os.path.splitext(self.file.name)
+        if not ext:
+            return filename
+        return ext.lstrip('.')
+
+
 
 @receiver(pre_save, sender=Harvest)
 def freeze_urls(sender, instance, **kwargs):

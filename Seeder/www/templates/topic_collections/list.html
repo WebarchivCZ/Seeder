@@ -23,45 +23,23 @@
 
 	<section id="collection-items">
 		<div class="container collection">
+			<span class="pull-right switch_style">{% include "includes/switch_item_style.html" %}</span>
 			{% if lang == "cs" %}
 				<h2>Tématické sbírky</h2>
 				<p>Tematické sbírky jsou monotematické soubory webových dokumentů. V rámci tematických sklizní sledujeme především takové děje, které doprovází celospolečenská debata a je u nich tedy předpoklad, že zaujmou významnější místo z hlediska dějin České republiky. Cíleně vybíráme události, které mají širší ohlas v prostředí internetu. Monitorujeme očekávané akce (např. volby), ale i nenadálé situace (např. povodně).</p>
 			{% else %}
 				<h2>Topic collections</h2>
 			{% endif %}
-
 			<div class="padding20"></div>
 
 
-			<div class="row">
-				{% for collection in collections %}
-					<div class="col-xs-12 col-sm-6 col-md-3 col-lg-4">
-						<div class="item-visual">
-							<a href="{{ collection.get_www_url }} ">
-								<div class="img-wrapper thumb">
-									{% if collection.image %}
-			                            {% thumbnail collection.image "206x156" crop="center" as im %}
-			                                <img src="{{ im.url }}" class="aspect-ratio" width="{{ im.width }}" height="{{ im.height }}">
-			                            {% endthumbnail %}
-									{% else %}
-										<div class="aspect-ratio">
-											<div class="no-image">
-												<span class="small">www</span>
-											</div>
-										</div>
-									{% endif %}
-								</div>
-								<br>
-								<h2>{{ collection }}</h2>
-								<br>
-							</a>
-							<p>{{ collection.annotation|safe|striptags|truncatewords:30 }}</p>
-						</div>
-					</div>
-				<div class="{% cycle "" "clearfix visible-sm-block" %} {% cycle "" "" "clearfix visible-lg-block visible-md-block" %} clearfix visible-xs-block"></div>
+			{% ifequal request.session.list_type "visual"  %}
+				{% include "topic_collections/items_visual.html" %}
+			{% else %}
+				{% include "topic_collections/items_textual.html" %}
+			{% endifequal %}
 
-				{% endfor %}
-			</div>
+
 		</div>
 	</section>
 

@@ -1,0 +1,15 @@
+{% load i18n %}
+
+<ul class="collection-list">
+	{% for collection in collections %}
+		<li>
+			<a href="{{ collection.get_www_url }}">{{ collection}}</a> 
+			<span class="links">
+					{% for attachment in collection.attachment_set.all %}
+						<a href="{{ attachment.file.url }}">{{ attachment.get_extension }}</a>{% include "includes/comma.html" with separator=" /" %}
+                    {% endfor %}			
+
+			</span>
+		</li>	
+	{% endfor %}
+</ul>
