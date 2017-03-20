@@ -22,6 +22,22 @@ from . import forms
 ITEMS_PER_PAGE = 12
 
 
+class PaginatedView:
+    def get_paginator(self):
+        paginator = CustomPaginator(self.get_paginator_queryset(), ITEMS_PER_PAGE) 
+        page = self.request.GET.get('page', 1)
+        try:
+            sources = paginator.page(page)
+        except PageNotAnInteger:
+            sources = paginator.page(1)
+        except EmptyPage:
+            sources = paginator.page(1)
+        return sources
+
+
+    def get_paginator_queryset(self):
+        raise NotImplementedError
+
 
 class Index(TemplateView, URLView):
     template_name = 'index.html'
@@ -42,7 +58,7 @@ class Index(TemplateView, URLView):
         return context
 
 
-class TopicCollections(TemplateView, URLView):
+class TopicCollections(PaginatedView, TemplateView, URLView):
     template_name = 'topic_collections/list.html'
     view_name = 'topic_collections'
     sub_view_name = 'topic_collections'
@@ -52,8 +68,13 @@ class TopicCollections(TemplateView, URLView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['collections'] = TopicCollection.objects.filter(active=True)
+        context['collections'] = self.get_paginator()
         return context
+
+
+
+    def get_paginator_queryset(self):
+        return TopicCollection.objects.filter(active=True)
 
 
 class CollectionDetail(DetailView, URLView):
@@ -146,24 +167,8 @@ class AboutContact(TemplateView, URLView):
     url_name = 'about_contact'
 
 
-class PaginatedSources:
-    def get_paginator(self):
-        paginator = CustomPaginator(self.get_source_queryset(), ITEMS_PER_PAGE) 
-        page = self.request.GET.get('page', 1)
-        try:
-            sources = paginator.page(page)
-        except PageNotAnInteger:
-            sources = paginator.page(1)
-        except EmptyPage:
-            sources = paginator.page(1)
-        return sources
 
-
-    def get_source_queryset(self):
-        raise NotImplementedError
-
-
-class CategoryBaseView(PaginatedSources):
+class CategoryBaseView(PaginatedView):
     template_name = 'categories/categories.html'
     view_name = 'categories'
 
@@ -203,7 +208,7 @@ class Categories(CategoryBaseView, TemplateView, URLView):
     url = U / _('categories_url')
     url_name = 'categories'
 
-    def get_source_queryset(self):
+    def get_paginator_queryset(self):
         return Source.objects.archiving()
 
     def get_context_data(self, **kwargs):
@@ -221,7 +226,7 @@ class CategoryDetail(CategoryBaseView, DetailView, URLView):
     url = U / _('categories_url') / slug
     url_name = 'category_detail'
 
-    def get_source_queryset(self):
+    def get_paginator_queryset(self):
         return Source.objects.archiving().filter(category=self.get_object())
 
     def get_context_data(self, **kwargs):
@@ -239,7 +244,7 @@ class SubCategoryDetail(CategoryBaseView, DetailView, URLView):
     url = U / _('categories_url') / r'(?P<category_slug>[\w-]+)' / slug
     url_name = 'sub_category_detail'
 
-    def get_source_queryset(self):
+    def get_paginator_queryset(self):
         return Source.objects.archiving().filter(sub_category=self.get_object())
 
     def get_context_data(self, **kwargs):
@@ -262,7 +267,7 @@ class ChangeListView(View, URLView):
         return HttpResponseRedirect(request.META['HTTP_REFERER'])
 
 
-class KeywordViews(PaginatedSources, DetailView, URLView):
+class KeywordViews(PaginatedView, DetailView, URLView):
     model = KeyWord
     context_object_name = 'keyword'
     view_name = 'index'
@@ -272,7 +277,7 @@ class KeywordViews(PaginatedSources, DetailView, URLView):
 
     template_name = 'keyword.html'
 
-    def get_source_queryset(self):
+    def get_paginator_queryset(self):
         return Source.objects.archiving().filter(
             keywords=self.get_object()
         )
@@ -309,7 +314,7 @@ class SearchRedirectView(View, URLView):
 
 
 
-class SearchView(PaginatedSources, TemplateView, URLView):
+class SearchView(PaginatedView, TemplateView, URLView):
     template_name = 'search.html'
     view_name = 'index'
 
@@ -321,7 +326,7 @@ class SearchView(PaginatedSources, TemplateView, URLView):
         return self.kwargs['query']
 
 
-    def get_source_queryset(self):
+    def get_paginator_queryset(self):
         query = self.get_query()
         if not query:
             return Source.objects.none()
