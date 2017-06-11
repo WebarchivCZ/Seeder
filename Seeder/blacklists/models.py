@@ -20,7 +20,7 @@ class Blacklist(models.Model):
 
     TYPE_CHOICES = (
         (TYPE_HARVEST, _('Haritrex blacklist')),
-        (TYPE_VISIBILITY, _('Visibility blacklist')),
+        (TYPE_VISIBILITY, _('Wayback blacklist')),
     )
 
     title = models.CharField(verbose_name=_('Title'), max_length=256)
