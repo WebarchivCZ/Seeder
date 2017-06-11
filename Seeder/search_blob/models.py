@@ -3,6 +3,7 @@ from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.core.paginator import EmptyPage, PageNotAnInteger
 from django.contrib.contenttypes.models import ContentType
+from django.db.models import Q
 
 from paginator.paginator import CustomPaginator
 
@@ -28,7 +29,9 @@ class Blob(models.Model):
         if not query:
             return []
 
-        return cls.objects.filter(blob__icontains=query)
+        return cls.objects.filter(
+            Q(blob__icontains=query) | Q(blob__icontains=unidecode(query))
+        )
 
     @classmethod
     def search_paginator(cls, query, page):
