@@ -14,7 +14,7 @@ class Blob(models.Model):
     url = models.CharField(max_length=255)
     title = models.CharField(max_length=255)
     blob = models.TextField()
-
+    is_public = models.BooleanField(default=False)
 
     record_type = models.ForeignKey(
         ContentType, 
@@ -25,17 +25,17 @@ class Blob(models.Model):
     record_object = GenericForeignKey('record_type', 'record_id')
 
     @classmethod
-    def search(cls, query):
+    def search(cls, query, is_public=False):
         if not query:
             return []
 
-        return cls.objects.filter(
+        return cls.objects.filter(is_public=is_public).filter(
             Q(blob__icontains=query) | Q(blob__icontains=unidecode(query))
         )
 
     @classmethod
-    def search_paginator(cls, query, page):
-        paginator = CustomPaginator(cls.search(query), 12) 
+    def search_paginator(cls, query, page, is_public=False):
+        paginator = CustomPaginator(cls.search(query, is_public), 12)
         try:
             results = paginator.page(page)
         except PageNotAnInteger:
@@ -55,12 +55,18 @@ class SearchModel:
     def get_search_blob(self):
         raise NotImplementedError
 
+    def get_public_search_blob(self):
+        return None
+
+    def get_search_public_url(self):
+        return self.get_search_url()
+
     def update_search_blob(self):
         # Add version without diacritics: 
         search_blob = self.get_search_blob()
         blob_all = search_blob + unidecode(search_blob)
 
-        blob, created = Blob.objects.update_or_create(
+        Blob.objects.update_or_create(
             record_type=ContentType.objects.get_for_model(self),
             record_id=self.id,
             defaults={
@@ -70,8 +76,21 @@ class SearchModel:
             }
         )
 
+        blob_public = self.get_public_search_blob()
+        if blob_public:
+            blob_all = blob_public + unidecode(blob_public)
+            Blob.objects.update_or_create(
+                record_type=ContentType.objects.get_for_model(self),
+                record_id=self.id,
+                is_public=True,
+                defaults={
+                    "title": self.get_search_title(),
+                    "url": self.get_search_public_url(),
+                    "blob": blob_all
+                }
+            )
+
 
 def update_search(instance, **kwargs):
     instance.update_search_blob()
 # post_save.connect(update_search, sender=<SearchModel instance>)
-

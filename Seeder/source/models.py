@@ -68,10 +68,7 @@ class SlugOrCreateModel(object):
 
     def get_value_for_slug(self):
         from_val = getattr(self, self.from_field)
-        slug = slugify(from_val)
-
-        if self.__class__.objects.filter(**{self.slug_field:slug}).exists():
-            slug = '{0}-{1}'.format(self.pk, slug)
+        slug = '{0}-{1}'.format(self.pk, slugify(from_val))
         return slug[:self.slug_max_length]
 
     @property
@@ -286,6 +283,9 @@ class Source(SearchModel, SlugOrCreateModel, BaseModel):
     def get_search_url(self):
         return self.get_absolute_url()
 
+    def get_search_public_url(self):
+        return self.get_public_url()
+
     def get_search_blob(self):
         """
         :return: Search blob to be indexed in elastic
@@ -297,6 +297,19 @@ class Source(SearchModel, SlugOrCreateModel, BaseModel):
             self.publisher.get_search_blob()
         ]
         parts.extend([s.url for s in self.seed_set.all()])
+        parts.extend([w.word for w in self.keywords.all()])
+        return ' '.join(filter(None, parts))
+
+    def get_public_search_blob(self):
+        if not self.state in constants.ARCHIVING_STATES:
+            return None
+
+        parts = [
+            self.name,
+            self.annotation,
+        ]
+        parts.extend([s.url for s in self.seed_set.all()])
+        parts.extend([w.word for w in self.keywords.all()])
         return ' '.join(filter(None, parts))
 
     @property

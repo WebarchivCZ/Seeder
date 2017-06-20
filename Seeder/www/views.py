@@ -11,6 +11,7 @@ from django.core.urlresolvers import reverse
 from django.conf import settings
 
 from contracts.models import Contract
+from search_blob.models import Blob
 from source.models import Source, Category, SubCategory, KeyWord
 from source.constants import ARCHIVING_STATES
 from harvests.models import TopicCollection
@@ -249,7 +250,9 @@ class SubCategoryDetail(CategoryBaseView, DetailView, URLView):
     url_name = 'sub_category_detail'
 
     def get_paginator_queryset(self):
-        return Source.objects.archiving().filter(sub_category=self.get_object())
+        return Source.objects.archiving().filter(
+            sub_category=self.get_object()
+        )
 
     def get_context_data(self, **kwargs):
         category = self.get_object().category
@@ -317,7 +320,6 @@ class SearchRedirectView(View, URLView):
         return HttpResponseRedirect(redirect_url)
 
 
-
 class SearchView(PaginatedView, TemplateView, URLView):
     template_name = 'search.html'
     view_name = 'index'
@@ -325,30 +327,34 @@ class SearchView(PaginatedView, TemplateView, URLView):
     url = U / _('search_url') / r'(?P<query>.*)'
     url_name = 'search'
 
-
     def get_query(self):
         return self.kwargs['query']
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
 
-    def get_paginator_queryset(self):
         query = self.get_query()
         if not query:
             return Source.objects.none()
 
-
-        return Source.objects.archiving().filter(
-            name__icontains=query
+        results = Blob.search_paginator(
+            query,
+            self.request.GET.get('page', 1),
+            is_public=True
         )
 
+        sources = [
+            s.record_object for s in results.object_list
+            if isinstance(s.record_object, Source)
+        ]
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        sources = self.get_paginator()
         if len(sources) == 1:
             single_source = sources[0]
         else:
             single_source = None
+
         context.update({
+            "results": results,
             "sources": sources,
             "single_source": single_source,
             "query": self.get_query(),

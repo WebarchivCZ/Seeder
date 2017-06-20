@@ -1,6 +1,6 @@
 {% extends "base_www.html" %}
 
-{% block title %}{% if lang == "cs" %}Výsledky vyhledávání{% else %}Search results{% endif %} {{ query }{% endblock title %}
+{% block title %}{% if lang == "cs" %}Výsledky vyhledávání{% else %}Search results{% endif %} {{ query }}{% endblock title %}
 
 
 {% block content %}
@@ -12,15 +12,15 @@
 
 			<h1>{{ query }}</h1>
 
-			<a href="{link advancedSearch}">{% if lang == "cs" %}pokročilé vyhledávání{% else %}advanced search{% endif %}</a>
+{#			<a href="{link advancedSearch}">{% if lang == "cs" %}pokročilé vyhledávání{% else %}advanced search{% endif %}</a>#}
 
 			<div id="advanced-search">
 				{include ../commonParts/advancedSearch.latte}
 			</div>
 
 				<p class="results-info">
-					{% if lang == "cs" %}celkem: {{ sources.paginator.count }} výsledků{% else %}total: {{ sources.paginator.count }} results{% endif %},
-						{% if lang == "cs" %}zobrazeno{% else %}showing{% endif %}: {{ sources.number }} / {{ sources.paginator.num_pages }}
+					{% if lang == "cs" %}celkem: {{ results.paginator.count }} výsledků{% else %}total: {{ results.paginator.count }} results{% endif %},
+						{% if lang == "cs" %}zobrazeno{% else %}showing{% endif %}: {{ results.number }} / {{ results.paginator.num_pages }}
 						{% if lang == "cs" %}stran{% else %}pages{% endif %}
 				</p>
 
@@ -58,9 +58,9 @@
 					<br>
 					
 					{% ifequal request.session.list_type "visual"  %}
-						{% include "includes/resource_list_visual.html" %}
+						{% include "includes/resource_list_visual.html" with paginator=results %}
 					{% else %}
-						{% include "includes/resource_list_text.html" %}
+						{% include "includes/resource_list_text.html" with paginator=results %}
 					{% endifequal %}
 
 					</div>

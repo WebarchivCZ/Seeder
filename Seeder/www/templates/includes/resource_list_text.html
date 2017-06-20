@@ -32,4 +32,8 @@
 		</div>
 	{% endfor %}
 
-{% include "includes/paginator.html" with paginator=sources %}
+{% if paginator %}
+    {% include "includes/paginator.html" with paginator=paginator %}
+{% else %}
+    {% include "includes/paginator.html" with paginator=sources %}
+{% endif %}

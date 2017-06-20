@@ -84,3 +84,4 @@ Seeder/locale/*
 legacy_dumps/*
 
 .transifexrc
+*.db

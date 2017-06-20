@@ -37,9 +37,10 @@
 
 		<div class="{% cycle "" "" "clearfix visible-sm-block" %} {% cycle "" "" "" "clearfix visible-lg-block visible-md-block" %} clearfix visible-xs-block"></div>
 {% endfor %}
-
-
-
 </div>
 
-{% include "includes/paginator.html" with paginator=sources %}
+{% if paginator %}
+    {% include "includes/paginator.html" with paginator=paginator %}
+{% else %}
+    {% include "includes/paginator.html" with paginator=sources %}
+{% endif %}
