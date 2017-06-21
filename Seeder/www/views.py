@@ -1,11 +1,12 @@
 import re
 
+from django.views.generic.edit import FormView
 from urljects import U, URLView, slug
 from django.views.generic.base import TemplateView, View
 from django.views.generic.detail import DetailView
 from django.http.response import HttpResponseRedirect
 from django.utils.translation import ugettext as _
-from django.db.models import Count, Sum, When, Case, IntegerField
+from django.db.models import Sum, When, Case, IntegerField
 from django.core.paginator import EmptyPage, PageNotAnInteger
 from django.core.urlresolvers import reverse
 from django.conf import settings
@@ -16,6 +17,8 @@ from source.models import Source, Category, SubCategory, KeyWord
 from source.constants import ARCHIVING_STATES
 from harvests.models import TopicCollection
 from paginator.paginator import CustomPaginator
+from www.forms import NominationForm
+from www.models import Nomination
 
 from . import models
 from . import forms
@@ -203,8 +206,10 @@ class CategoryBaseView(PaginatedView):
             .filter(num_sources__gt=0)
 
         return {
-            'cat_sources_total': category.source_set.filter(state__in=ARCHIVING_STATES).count(),
-            'sub_categories': sub_categories
+            'sub_categories': sub_categories,
+            'cat_sources_total': category.source_set.filter(
+                state__in=ARCHIVING_STATES
+            ).count(),
         }
 
 
@@ -304,13 +309,20 @@ class SearchRedirectView(View, URLView):
         query = self.request.GET.get('query', '')
 
         regex_is_url = (
-            r"((https?|ftp)\:\/\/)?"                                     # SCHEME
-            "([a-z0-9+!*(),;?&=\$_.-]+(\:[a-z0-9+!*(),;?&=\$_.-]+)?@)?"  # User and Pass
-            "([a-z0-9-.]*)\.([a-z]{2,4})"                                # Host or IP
-            "(\:[0-9]{2,5})?"                                            # Port
-            "(\/([a-z0-9+\$_-]\.?)+)*\/?"                                # Path
-            "(\?[a-z+&\$_.-][a-z0-9;:@&%=+\/\$_.-]*)?"                   # GET Query
-            "(#[a-z_.-][a-z0-9+\$_.-]*)?"                                # Anchor
+            # SCHEME:
+            r"((https?|ftp)\:\/\/)?"                                     
+            # User and Pass: 
+            "([a-z0-9+!*(),;?&=\$_.-]+(\:[a-z0-9+!*(),;?&=\$_.-]+)?@)?"  
+            # Host or IP: 
+            "([a-z0-9-.]*)\.([a-z]{2,4})"                                
+            # Port: 
+            "(\:[0-9]{2,5})?"                                            
+            # Path: 
+            "(\/([a-z0-9+\$_-]\.?)+)*\/?"                                
+            # GET Query: 
+            "(\?[a-z+&\$_.-][a-z0-9;:@&%=+\/\$_.-]*)?"                   
+            # Anchor: 
+            "(#[a-z_.-][a-z0-9+\$_.-]*)?"
         )
 
         if re.match(regex_is_url, query):
@@ -372,3 +384,25 @@ class SourceDetail(DetailView, URLView):
 
     def get_queryset(self):
         return Source.objects.archiving()
+
+
+class Nominate(FormView, URLView):
+    model = Nomination
+    form_class = NominationForm
+
+    template_name = 'nominate.html'
+    url = U / _('www_nominate_url')
+    url_name = 'nominate'
+
+    def form_valid(self, form):
+        form.save()
+        return super(Nominate, self).form_valid(form)
+
+    def get_success_url(self):
+        return reverse('www:nominate_success')
+
+
+class NominateSuccess(TemplateView, URLView):
+    template_name = 'nominate_success.html'
+    url = U / _('www_nominate_success_url')
+    url_name = 'nominate_success'

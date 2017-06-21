@@ -33,7 +33,11 @@ def send_emails():
             message=strip_tags(email.content),
             html_message=email.content,
             from_email=email.contract.sources.first().owner.email,
-            recipient_list=[email.to_email]
+            recipient_list=[
+                email.to_email,
+                email.contract.sources.first().owner.email
+            ]
+
         )
 
         email.sent = True

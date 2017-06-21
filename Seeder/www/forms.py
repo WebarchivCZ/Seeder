@@ -29,3 +29,9 @@ class NewsForm(forms.ModelForm):
                 url='source:source_public_autocomplete'
             )
         }
+
+
+class NominationForm(forms.ModelForm):
+    class Meta:
+        model = models.Nomination
+        exclude = ['resolved', 'active']

@@ -72,6 +72,27 @@ class NewsObject(BaseModel):
         verbose_name_plural = _('News articles')
 
 
+class Nomination(BaseModel):
+    url = models.CharField(_('Site address'), max_length=256)
+    contact_email = models.EmailField(_('Contact email'), blank=False)
+    submitted_by_author = models.BooleanField(default=False)
+    is_cc = models.BooleanField(
+        _('Licensed under creative commons'),
+        default=False
+    )
+
+    note = models.CharField(_('Note'), blank=True, max_length=128)
+    resolved = models.BooleanField(default=False)
+
+    class Meta:
+        verbose_name = _('Nomination')
+        verbose_name_plural = _('Nominations')
+        ordering = ('created', )
+
+    def __unicode__(self):
+        return self.url
+
+
 class SearchLog(models.Model):
     search_term = models.CharField(max_length=256)
     log_time = models.DateTimeField(default=timezone.now, editable=False)
