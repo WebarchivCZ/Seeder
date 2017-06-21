@@ -128,12 +128,12 @@ class ListUrls(HarvestView, DetailView, TemplateView, URLView):
         return context
 
 
-class TopicCollectionView(generic_views.LoginMixin):
+class TCView(generic_views.LoginMixin):
     view_name = 'topic_collections'
     model = models.TopicCollection
 
 
-class AddTopicCollection(TopicCollectionView, FormView, URLView):
+class AddTopicCollection(TCView, FormView, URLView):
     form_class = forms.TopicCollectionForm
     template_name = 'add_form.html'
     title = _('Add TopicCollection')
@@ -144,7 +144,7 @@ class AddTopicCollection(TopicCollectionView, FormView, URLView):
     def form_valid(self, form):
         topic = form.save()
         
-        for each in form.cleaned_data['attachements']:
+        for each in form.cleaned_data["attachments"]:
             models.Attachment.objects.create(
                 file=each, 
                 topic_collection=topic
@@ -152,7 +152,7 @@ class AddTopicCollection(TopicCollectionView, FormView, URLView):
         return HttpResponseRedirect(topic.get_absolute_url())
 
 
-class EditCollection(TopicCollectionView, generic_views.EditView, URLView):
+class EditCollection(TCView, generic_views.EditView, URLView):
     form_class = forms.TopicCollectionEditForm
 
     url = U / pk / 'collection_edit'
@@ -172,7 +172,7 @@ class EditCollection(TopicCollectionView, generic_views.EditView, URLView):
             att.file.delete()
             att.delete()
 
-        for each in form.cleaned_data['attachements']:
+        for each in form.cleaned_data["attachments"]:
             models.Attachment.objects.create(
                 file=each, 
                 topic_collection=topic
@@ -180,15 +180,14 @@ class EditCollection(TopicCollectionView, generic_views.EditView, URLView):
         return HttpResponseRedirect(topic.get_absolute_url())
 
 
-class CollectoionDetail(TopicCollectionView, DetailView, CommentViewGeneric, URLView):
+class CollectionDetail(TCView, DetailView, CommentViewGeneric, URLView):
     template_name = 'topic_collection.html'
 
     url = U / pk / 'collection_detail'
     url_name = 'topic_collection_detail'
 
 
-
-class CollectionHistory(TopicCollectionView, generic_views.HistoryView, URLView):
+class CollectionHistory(TCView, generic_views.HistoryView, URLView):
     """
         History of changes to TopicCollections
     """
@@ -197,7 +196,7 @@ class CollectionHistory(TopicCollectionView, generic_views.HistoryView, URLView)
     url_name = 'topic_collection_history'
 
 
-class CollectionListView(TopicCollectionView, generic_views.FilteredListView, URLView):
+class CollectionListView(TCView, generic_views.FilteredListView, URLView):
     title = _('TopicCollections')
     table_class = tables.TopicCollectionTable
     filter_class = field_filters.TopicCollectionFilter

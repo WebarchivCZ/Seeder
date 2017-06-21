@@ -12,7 +12,7 @@
 			<br>
 			{% trans "Klíčová slova sklizně" %}:
 			<ul class="inline-list">
-				{% for keyword in keywords %}
+				{% for keyword in collection.keywords %}
 					<li><a href="{{ keyword.www_url }}">{{ keyword }}</a>{% include "includes/comma.html" %}</li>
 				{% endfor %}
 			</ul>

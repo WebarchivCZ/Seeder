@@ -17,7 +17,16 @@
           <li class="list-group-item">{% trans 'Last changed' %}: <span class="pull-right">{{ object.last_changed }}</span></li>
           <li class="list-group-item"><a href="{% url 'harvests:urls' object.id %}">{% trans 'List of urls' %}</a></li>
         </ul>
-
+        
+        {% if object.topic_collections.exists %}
+            <h3>{% trans 'Included topic collections' %}</h3>
+            <ul class="list-group">
+            {% for topic_collection in object.topic_collections %}
+                <li class="list-group-item"><a href="{{ topic_collection.get_absolute_url }}">{{ topic_collection }}</a></li>
+            {% endfor %}
+        {% endif %}
+    
+    
         {% if object.custom_seeds %}
             <h3>{% trans 'Custom seeds' %}:</h3>
             <textarea class="form-control" rows="3">{{ object.custom_seeds }}</textarea>

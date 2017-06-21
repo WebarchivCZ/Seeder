@@ -21,7 +21,8 @@ class HarvestCreateForm(forms.ModelForm):
             'annotation',
             'target_frequency',
             'custom_seeds',
-            'custom_sources'
+            'custom_sources',
+            'topic_collections',
         ]
         widgets = autocomplete_widgets
 
@@ -37,12 +38,14 @@ class HarvestEditForm(forms.ModelForm):
             'target_frequency',
             'custom_seeds',
             'custom_sources',
+            'topic_collections',
         ]
         widgets = autocomplete_widgets
 
 
 class TopicCollectionForm(forms.ModelForm):
-    attachements = MultiFileField(min_num=0, required=False)
+    attachments = MultiFileField(min_num=0, required=False)
+
     class Meta:
         model = models.TopicCollection
         fields = (
@@ -51,18 +54,24 @@ class TopicCollectionForm(forms.ModelForm):
             'title_en',
             'annotation_cs',
             'annotation_en',
+            'date_from',
+            'date_to',
             'image',    
             'all_open',
             'custom_seeds',
             'custom_sources',
             # 'slug',
             'keywords',
-            'attachements',
+            "attachments",
         )
 
         widgets = {
-            'custom_sources': autocomplete.ModelSelect2Multiple(url='source:source_public_autocomplete'),
-            'keywords': autocomplete.ModelSelect2Multiple(url='source:keyword_autocomplete'),
+            'custom_sources': autocomplete.ModelSelect2Multiple(
+                url='source:source_public_autocomplete'
+            ),
+            'keywords': autocomplete.ModelSelect2Multiple(
+                url='source:keyword_autocomplete'
+            ),
         }
 
 
@@ -71,7 +80,9 @@ class TopicCollectionEditForm(TopicCollectionForm):
 
     def __init__(self, attachment_list, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['files_to_delete']._set_choices([(file.id, str(file)) for file in attachment_list])
+        self.fields['files_to_delete']._set_choices(
+            [(file.id, str(file)) for file in attachment_list]
+        )
 
     class Meta(TopicCollectionForm.Meta):
         fields = TopicCollectionForm.Meta.fields + ('files_to_delete',)

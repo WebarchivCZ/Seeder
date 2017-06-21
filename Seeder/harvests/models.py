@@ -92,7 +92,7 @@ class HarvestAbstractModel(BaseModel):
 
     def get_seeds(self):
         """
-        :return: list of urls
+        :return: set of urls
         """
         if self.seeds_frozen:
             return self.seeds_frozen.splitlines()
@@ -154,6 +154,17 @@ class Harvest(HarvestAbstractModel):
     scheduled_on = DatePickerField(
         verbose_name=_('Date of harvest')
     )
+
+    topic_collections = models.ManyToManyField(
+        verbose_name=_('Topic collections'),
+        to='TopicCollection'
+    )
+
+    def get_seeds(self):
+        base_set = super(Harvest, self).get_seeds()
+        for collection in self.topic_collections.all():
+            base_set.update(collection.get_seeds())
+        return base_set
 
 
     def get_absolute_url(self):
@@ -233,9 +244,6 @@ class TopicCollection(HarvestAbstractModel):
         on_delete=models.PROTECT
     )
 
-
-    annotation = models.TextField(_('Annotation'))
-    image = models.ImageField(upload_to="images", verbose_name=_('image'))
     keywords = models.ManyToManyField(KeyWord, verbose_name=_('keywords'))
 
     seeds_frozen = models.TextField(
@@ -259,7 +267,12 @@ class TopicCollection(HarvestAbstractModel):
         null=True, blank=True, 
     )
 
-    all_open = models.BooleanField(_('All sources are under open license or contract'))
+    all_open = models.BooleanField(
+        _('All sources are under open license or contract')
+    )
+
+    date_from = DatePickerField(_('Date from'), null=True)
+    date_to = DatePickerField(_('Date to'), null=True)
 
     def get_www_url(self):
         return reverse('www:collection_detail', kwargs={"slug": self.slug})
@@ -288,7 +301,6 @@ class Attachment(models.Model):
         if not ext:
             return filename
         return ext.lstrip('.')
-
 
 
 @receiver(pre_save, sender=Harvest)

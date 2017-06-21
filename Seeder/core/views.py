@@ -26,9 +26,7 @@ class DashboardView(LoginMixin, TemplateView, URLView):
         context = super().get_context_data()
         cards = get_cards(self.request.user)
         context['cards'] = cards
-        context['all_empty'] =  all([c.empty for c in cards])
-
-
+        context['all_empty'] = all([c.empty for c in cards])
         return context
 
 
@@ -96,7 +94,6 @@ class PasswordChangeDone(LoginMixin, MessageView, View):
         return HttpResponseRedirect('/')
 
 
-
 class CrashTestView(URLView, LoginMixin, View):
     """
     This view servers as crash test: it purposefully crashes request handling
@@ -108,3 +105,14 @@ class CrashTestView(URLView, LoginMixin, View):
 
     def get(self, *args, **kwargs):
         assert False
+
+
+class DevNotesView(URLView, LoginMixin, TemplateView):
+    """
+    This view will provide basic information about API 
+    and some other end points. 
+    """
+
+    url = U / 'dev'
+    url_name = 'dev_notes'
+    template_name = 'dev_notes.html'

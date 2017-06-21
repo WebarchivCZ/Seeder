@@ -1,6 +1,7 @@
 from django.views.generic import DetailView
 from django.http.response import HttpResponseRedirect
 from django.utils.translation import ugettext_lazy as _
+from django.views.generic.base import TemplateView
 from django.views.generic.edit import FormView
 from django.db.models import Q
 
@@ -266,9 +267,11 @@ class SourceAutocomplete(autocomplete.Select2QuerySetView, URLView):
 
         qs = models.Source.objects.all()
         if self.q:
-            qs = qs.filter(Q(name__icontains=self.q) | Q(seed__url__icontains=self.q))
+            qs = qs.filter(
+                Q(name__icontains=self.q) |
+                Q(seed__url__icontains=self.q)
+            )
         return qs.distinct()
-
 
 
 class SourcePublicAutocomplete(autocomplete.Select2QuerySetView, URLView):
@@ -281,7 +284,10 @@ class SourcePublicAutocomplete(autocomplete.Select2QuerySetView, URLView):
 
         qs = models.Source.objects.archiving()
         if self.q:
-            qs = qs.filter(Q(name__icontains=self.q) | Q(seed__url__icontains=self.q))
+            qs = qs.filter(
+                Q(name__icontains=self.q) |
+                Q(seed__url__icontains=self.q)
+            )
         return qs.distinct()
 
 
@@ -297,3 +303,17 @@ class KeywordAutocomplete(autocomplete.Select2QuerySetView, URLView):
         if self.q:
             qs = qs.filter(word__icontains=self.q)
         return qs.distinct()
+
+
+class SourceDump(URLView, TemplateView):
+    url_name = 'dump'
+    url = U / 'dump'
+    template_name = 'dump.txt'
+
+    content_type = 'text/text'
+
+    def get_context_data(self, **kwargs):
+        c = super().get_context_data(**kwargs)
+        c['seed_urls'] = models.Seed.archiving.all()\
+            .values_list('url', flat=True)
+        return c
