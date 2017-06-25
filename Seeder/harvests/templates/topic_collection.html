@@ -34,6 +34,16 @@
                     <td>{{ object.annotation_en }}</td>
                 </tr>
 
+                <tr>
+                    <td>{% trans 'Harvested from' %}</td>
+                    <td>{{ object.date_from }}</td>
+                </tr>
+
+                <tr>
+                    <td>{% trans 'Harvested till' %}</td>
+                    <td>{{ object.date_to }}</td>
+                </tr>
+
                 {% if object.image %}
                     <tr>
                         <td>{% trans 'Screenshot' %}</td>
