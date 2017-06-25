@@ -33,12 +33,6 @@
 		<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 	<![endif]-->
 
-	{% if not debug %}
-		{% include "includes/googleAnalytics.html" %}
-	{% endif %}
-
-
-
 </head>
 
 <body>
@@ -159,5 +153,11 @@
 	    var view_name = ".url_{{ view.view_name }}";
 	    $(view_name).addClass('active');
 	</script>
+
+	{% if not debug %}
+		{% include "includes/googleAnalytics.html" %}
+	{% endif %}
+
+
 </body>
 </html>
