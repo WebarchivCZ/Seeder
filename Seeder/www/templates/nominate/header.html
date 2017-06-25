@@ -1,0 +1,37 @@
+<section>
+    <div class="container">
+
+        {% if lang == "cs" %}
+            <h1>Nechte se <a href="{% url "www:index" %}">Webarchiv<span class="false-link-underline-blue"></span></a>ovat!</h1><br>
+            <p>Pokud hledáte certifikát či jiné naše grafické materiály pro umístění na vašem webu pokračujte <a href="{% url 'www:about_graphics' %}">zde</a></p>
+        {% else %}
+            <h1>Let’s get <a href="{% url "www:index" %}">Webarchiv<span class="false-link-underline-blue"></span></a>ed!</h1><br>
+            <p>If you look for our certificate or our banners or logo visit <a href="{% url 'www:about_graphics' %}">this page</a></p>
+        {% endif %}
+
+        <ul class="inline-list">
+            {% if lang == "cs" %}
+                <li><a class='sub_view_nominate' href="{% url 'www:nominate' %}">Přidejte web</a> <span class="slash">/</span></li>
+                <li><a class='sub_view_nominate_creative_commons' href="{% url 'www:nominate_creative_commons' %}">Creative Commons</a> <span class="slash">/</span></li>
+                <li><a class='sub_view_nominate_source_selection' href="{% url 'www:nominate_source_selection' %}">Výběr zdrojů</a> <span class="slash">/</span></li>
+                <li><a class='sub_view_nominate_cooperation' href="{% url 'www:nominate_cooperation' %}">Pomozte nám uchovat český web</a> <span class="slash">/</span></li>
+                <li><a class='' href="{% url 'www:about_faq' %}">FAQ</a></li>
+            {% else %}
+                <li><a class='sub_view_nominate' href="{% url 'www:nominate' %}">Nominate a website</a> <span class="slash">/</span></li>
+                <li><a class='sub_view_nominate_creative_commons' href="{% url 'www:nominate_creative_commons' %}">Creative Commons</a> <span class="slash">/</span></li>
+                <li><a class='sub_view_nominate_source_selection' href="{% url 'www:nominate_source_selection' %}">Selective harvests</a> <span class="slash">/</span></li>
+                <li><a class='' href="{% url 'www:about_faq' %}">FAQ</a></li>
+            {% endif %}
+        </ul>
+
+        <hr>
+
+    </div>
+
+</section>
+
+<script>
+    // dynamically activate menu link, yes this seem like a barbaric think to do, but think of all the if conditions in django that does not need to exist!
+    var view_name = ".sub_view_{{ view.url_name }}";
+    $(view_name).addClass('current');
+</script>

@@ -1,10 +1,11 @@
-{block title}{% if lang == "cs" %}Výběr zdrojů{% else %}Selection criteria{% endif %} | {include #parent}{% endblock %}
+{% extends "base_www.html" %}
+{% load bootstrap3 i18n %}
 
-{block menuItemActive4} class="active"{% endblock %}
+{% block title %}{% if lang == "cs" %}Výběr zdrojů!{% else %}Selection criteria!{% endif %}{% endblock title %}
 
 {% block content %}
 
-	{include ../commonParts/add.latte}
+	{% include "nominate/header.html" %}
 
 	<section>
 		<div class="container">

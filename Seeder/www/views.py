@@ -172,6 +172,16 @@ class AboutContact(TemplateView, URLView):
     url_name = 'about_contact'
 
 
+class AboutFAQ(TemplateView, URLView):
+    template_name = 'about/faq.html'
+    view_name = 'about'
+    sub_view_name = 'faq'
+
+    url = U / _('about_faq_url')
+    url_name = 'about_faq'
+
+
+
 class CategoryBaseView(PaginatedView):
     template_name = 'categories/categories.html'
     view_name = 'categories'
@@ -384,8 +394,9 @@ class SourceDetail(DetailView, URLView):
 class Nominate(FormView, URLView):
     model = Nomination
     form_class = NominationForm
+    view_name = 'nominate'
 
-    template_name = 'nominate.html'
+    template_name = 'nominate/nominate.html'
     url = U / _('www_nominate_url')
     url_name = 'nominate'
 
@@ -400,7 +411,7 @@ class Nominate(FormView, URLView):
 
         content = render_to_string(email_template)
         notification_content = render_to_string(
-            'emails/nomination_notification.html',
+            'nominate/emails/nomination_notification.html',
             {'nomination': nomination}
         )
 
@@ -433,54 +444,56 @@ class Nominate(FormView, URLView):
 
 
 class NominateSuccess(TemplateView, URLView):
-    template_name = 'nominate_success.html'
+    template_name = 'nominate/nominate_success.html'
     url = U / _('www_nominate_success_url')
     url_name = 'nominate_success'
+    view_name = 'nominate'
 
 
-class FAQContractView(TemplateView, URLView):
-    template_name = 'faq/contract.html'
-    url_name = 'faq_contract'
-    url = U / _('faq-url') / _('faq_contract_url')
+class NominateContractView(TemplateView, URLView):
+    template_name = 'nominate/contract.html'
+    url_name = 'nominate_contract'
+    url = U / _('nominate-url') / _('faq_contract_url')
+    view_name = 'nominate'
 
 
-class FAQCooperationView(TemplateView, URLView):
-    template_name = 'faq/cooperation.html'
-    url_name = 'faq_cooperation'
-    url = U / _('faq-url') / _('faq_cooperation_url')
+class NominateCooperationView(TemplateView, URLView):
+    template_name = 'nominate/cooperation.html'
+    url_name = 'nominate_cooperation'
+    url = U / _('nominate-url') / _('faq_cooperation_url')
+    view_name = 'nominate'
 
 
-class FAQCreativeCommonsView(TemplateView, URLView):
-    template_name = 'faq/creative_commons.html'
-    url_name = 'faq_creative_commons'
-    url = U / _('faq-url') / _('faq_creative_commons_url')
+class NominateCreativeCommonsView(TemplateView, URLView):
+    template_name = 'nominate/creative_commons.html'
+    url_name = 'nominate_creative_commons'
+    url = U / _('nominate-url') / _('faq_creative_commons_url')
+    view_name = 'nominate'
 
 
-class FAQDisclaimerView(TemplateView, URLView):
-    template_name = 'faq/disclaimer.html'
-    url_name = 'faq_disclaimer'
-    url = U / _('faq-url') / _('faq_disclaimer_url')
+class NominateDisclaimerView(TemplateView, URLView):
+    template_name = 'nominate/disclaimer.html'
+    url_name = 'nominate_disclaimer'
+    url = U / _('nominate-url') / _('faq_disclaimer_url')
+    view_name = 'nominate'
 
 
-class FAQErrorView(TemplateView, URLView):
-    template_name = 'faq/error.html'
-    url_name = 'faq_error'
-    url = U / _('faq-url') / _('faq_error_url')
+class NominateErrorView(TemplateView, URLView):
+    template_name = 'nominate/error.html'
+    url_name = 'nominate_error'
+    url = U / _('nominate-url') / _('faq_error_url')
+    view_name = 'nominate'
 
 
-class FAQFaqView(TemplateView, URLView):
-    template_name = 'faq/faq.html'
-    url_name = 'faq_faq'
-    url = U / _('faq-url') / _('faq_faq_url')
+class NominateFeedbackView(TemplateView, URLView):
+    template_name = 'nominate/feedback.html'
+    url_name = 'nominate_feedback'
+    url = U / _('nominate-url') / _('faq_feedback_url')
+    view_name = 'nominate'
 
 
-class FAQFeedbackView(TemplateView, URLView):
-    template_name = 'faq/feedback.html'
-    url_name = 'faq_feedback'
-    url = U / _('faq-url') / _('faq_feedback_url')
-
-
-class FAQSourceSelectionView(TemplateView, URLView):
-    template_name = 'faq/source_selection.html'
-    url_name = 'faq_source_selection'
-    url = U / _('faq-url') / _('faq_source_selection_url')
+class NominateSourceSelectionView(TemplateView, URLView):
+    template_name = 'nominate/source_selection.html'
+    url_name = 'nominate_source_selection'
+    url = U / _('nominate-url') / _('faq_source_selection_url')
+    view_name = 'nominate'

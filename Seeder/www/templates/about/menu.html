@@ -16,13 +16,17 @@
 				<li><a class="sub_view_harvests" href="{% url 'www:about_harvests' %}">Celoplošné sklizně</a></li> / 
 				<li><a class="sub_view_documents" href="{% url 'www:about_documents' %}">Dokumenty</a></li> / 
 				<li><a class="sub_view_graphics" href="{% url 'www:about_graphics' %}">Grafické materiály</a></li> / 
-				<li><a class="sub_view_contact" href="{% url 'www:about_contact' %}">Kontakty</a></li>
+				<li><a class="sub_view_contact" href="{% url 'www:about_contact' %}">Kontakty</a></li> /
+                <li><a class="sub_view_faq" href="{% url 'www:about_faq' %}">FAQ</a></li>
+
 			{% else %}
 				<li><a class="sub_view_about" href="{% url 'www:about' %} ">About Webarchiv</a></li> / 
 				<li><a class="sub_view_harvests" href="{% url 'www:about_harvests' %}">Comprehensive Harvests</a></li> / 
-				<li><a class="sub_view_documents" href="{% url 'www:about_documents' %}">Documents</li></a> / 
-				<li><a class="sub_view_graphics" href="{% url 'www:about_graphics' %}">Banners</li></a> / 
-				<li><a class="sub_view_contact" href="{% url 'www:about_contact' %}">Contacts</li></a>
+				<li><a class="sub_view_documents" href="{% url 'www:about_documents' %}">Documents</a></li> /
+				<li><a class="sub_view_graphics" href="{% url 'www:about_graphics' %}">Banners</a></li> /
+				<li><a class="sub_view_contact" href="{% url 'www:about_contact' %}">Contacts</a></li> /
+                <li><a class="sub_view_faq" href="{% url 'www:about_faq' %}">FAQ</a></li>
+
 			{% endif %}
 		</ul>
 		<hr>

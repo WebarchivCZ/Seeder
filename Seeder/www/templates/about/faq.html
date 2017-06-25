@@ -1,10 +1,12 @@
-{block title}{% if lang == "cs" %}Často kladené dotazy{% else %}Frequently Asked Questions{% endif %} | {include #parent}{% endblock %}
+{% extends "base_www.html" %}
 
-{block menuItemActive2} class="active"{% endblock %}
+{% block title %}{% if lang == "cs" %}Často kladené dotazy{% else %}Frequently Asked Questions{% endif %}{% endblock title %}
+
+
 
 {% block content %}
 
-	{include ../commonParts/faq.latte}
+	{% include "about/menu.html" %}
 
 	<section>
 		<div class="container">
@@ -38,7 +40,7 @@
 				<div class="indent-left">
 					<h3>Jak mohu vyhledávat v českém webovém archivu?</h3>
 					<p>Český webový archiv nabízí několik možností vyhledávání. Vyhledávat můžete buď zadáním URL adresy stránek (např. http://www.nkp.cz, www.webarchiv.cz) nebo zadáním klíčových slov (např. knihovna). Navíc si můžete omezit časový rozsah, ve kterém stránky hledáte.</p>
-					<p>Druhou možností je také prohlížení stránek v <a href="http://webarchiv.cz/cs/katalog-stranek">našem katalogu</a> podle jejich tematického zařazení.</p>
+					<p>Druhou možností je také prohlížení stránek v <a href="{% url 'www:categories' %}">našem katalogu</a> podle jejich tematického zařazení.</p>
 					<p>Pro veškeré stránky, které archivujeme v rámci výběrových sklizní (jejich archivované verze jsou dostupné online), jsou také vytvářeny katalogizační záznamy jako pro ostatní dokumenty z fondu Národní knihovny. Tyto stránky tak je možné najít i v našem katalogu, popř. je možné vyhledávat přímo pouze v <a href="http://aleph22.nkp.cz/F/?func=file&file_name=find-b&local_base=web">elektronických zdrojích </a>.</p>
 
 					<h3>Proč nemohu vyhledávat jako na Google?</h3>
@@ -48,7 +50,7 @@
 					<p>V obou případech je možné hledat pomocí URL adres a vyhledávání probíhá nad stejnými daty. Vyhledávání na <a href="http://webarchiv.cz">našich stránkách</a> umožňuje navíc prohledávat archivované zdroje pomocí klíčových slov a jejich anotací. </p>
 					
 					<h3>Proč není stránka, kterou hledám v archivu?</h3>
-					<p>I když se snažíme vytvořit co nejvíce kompletní obraz českého internetu, tak to mít v archivu všechny stránky, prostě není v našich silách. Pokud zrovna ta vaše chybí, můžete ji <a href="http://webarchiv.cz/cs/pridat-web">navrhnout zde</a>.</p>
+					<p>I když se snažíme vytvořit co nejvíce kompletní obraz českého internetu, tak to mít v archivu všechny stránky, prostě není v našich silách. Pokud zrovna ta vaše chybí, můžete ji <a href="{% url 'www:nominate' %}">navrhnout zde</a>.</p>
 				</div>
 				
 				<h2 id="access">Zpřístupnění</h2>
@@ -69,7 +71,7 @@
 
 				<div class="indent-left">
 					<h3>Jak mohu přidat svoji nebo zajímavou stránku do vašeho archivu?</h3>
-					<p>Stačí <a href="http://webarchiv.cz/cs/pridat-web">vyplnit formulář</a> na našem webu, nebo nám napsat na adresu webarchiv[@]nkp.cz. Vaše stránka tak bude zařazena jako návrh k zařazení do archivu a poté budete vyrozuměni, zda je vhodná k archivaci.</p>
+					<p>Stačí <a href="{% url 'www:nominate' %}">vyplnit formulář</a> na našem webu, nebo nám napsat na adresu webarchiv[@]nkp.cz. Vaše stránka tak bude zařazena jako návrh k zařazení do archivu a poté budete vyrozuměni, zda je vhodná k archivaci.</p>
 
 					<h3>Proč je moje stránka ve webovém archivu a můžu ji odstranit?</h3>
 					<p>Posláním Národní knihovny je zachovat národní kulturní dědictví, a to v celé jeho šíři a podobě, v tištěné formě prostřednictvím povinného výtisku a v elektronické podobě prostřednictvím digitálních kopií českých webových stránek.</p>
@@ -83,7 +85,7 @@
 					<p>Můžeme se s vámi domluvit na respektováni Vašeho přání vyjádřené souborem robots.txt pro zákaz přístupu vyhledávačům. Případně můžeme dát Vaše stránky na blacklist, aby v budoucnu již stahovány nebyly. A také je kompletně znepřístupnit pro ostatní uživatele.</p>	
 					
 					<h3>Jak mohu ochránit své soukromí při archivaci mé stránky?</h3>
-					<p>Český webový archiv vytváří archivní kopie pouze stránek, které jsou veřejné přístupné, tzn. těch které je možné navštívit i běžným prohlížením internetu. Nearchivujeme webové stránky, k jejichž přístupu je nutné uživatelské jméno a heslo nebo je nutná lidská interakce (např. odeslání formuláře).</a>
+					<p>Český webový archiv vytváří archivní kopie pouze stránek, které jsou veřejné přístupné, tzn. těch které je možné navštívit i běžným prohlížením internetu. Nearchivujeme webové stránky, k jejichž přístupu je nutné uživatelské jméno a heslo nebo je nutná lidská interakce (např. odeslání formuláře).
 					<p>Pokud máte pocit, že došlo k narušení vašeho soukromí, kontaktujte nás na emailové adrese webarchiv@nkp.cz.</p>
 					
 					<h3>Archivujete emaily, chaty nebo osobní informace?</h3>
@@ -100,12 +102,12 @@
 
 				<div class="indent-left">
 					<h3>Chci být archivován, co pro to mám udělat a kolik to stojí?</h3>
-					<p>V případě, že máte zájem o archivaci vašich webových stránek, nejprve nám je zašlete jako návrh k archivaci <a href="http://webarchiv.cz/cs/pridat-web">prostřednictvím webového formuláře</a> nebo na náš email webarchiv[@]nkp.cz. </p>
+					<p>V případě, že máte zájem o archivaci vašich webových stránek, nejprve nám je zašlete jako návrh k archivaci <a href="{% url 'www:nominate' %}">prostřednictvím webového formuláře</a> nebo na náš email webarchiv[@]nkp.cz. </p>
 					<p>Všechny návrhy musí projít hodnocením a případným testováním na technické problémy. Pokud budou vaše stránky vhodné pro archivaci, kontaktujeme vás s žádostí o vyjádření souhlasu s archivací. Tento souhlas je nutné právně ošetřit, buď podepsáním smlouvy s námi nebo vystavením stránek pod licencí Creative Commons.</p>
 					<p>Archivace v rámci Webarchivu Národní knihovny ČR je zcela bezplatná, veškeré náklady na archivaci nese Národní knihovna.</p>
 			
 					<h3>Co je to licence Crative Commons?</h3>
-					<p>Je to soubor licencí, který umožňuje autorům děl tyto díla legálně sdílet a využívat veřejností za podmínek stanovených autorem (např. pouze nekomerční využití). Více se o licenci CC dočtete na <a href="http://webarchiv.cz/cs/creative-commons">našem webu</a>. </p>
+					<p>Je to soubor licencí, který umožňuje autorům děl tyto díla legálně sdílet a využívat veřejností za podmínek stanovených autorem (např. pouze nekomerční využití). Více se o licenci CC dočtete na <a href="{% url 'www:nominate_creative_commons' %}">našem webu</a>. </p>
 					
 					<h3>Jaký je rozdíl mezi uzavřením smlouvy a CC licencí?</h3>
 					<p>Vystavením licence CC na svých stránkách nabízíte vy, jako autor, souhlas potenciálním uživatelům licenční smlouvu, na základě které jim poskytuje některá svá práva k dílu a jiná si vyhrazujete. Výhodou licence je její snadná aplikace (jedná se o umístění malého banneru). Smlouvou dáváte pouze souhlas Národní knihovně s archivací vašich stránek, je však nutné ji zaslat v papírové podobě. Pro nás však mají obě varianty stejný efekt, záleží tedy na vás, jaká vám vyhovuje více.</p>
@@ -150,13 +152,13 @@
 
 				<div class="indent-left">
 					<h3>How can I search in Czech web archive?</h3>
-					<p>If you know the website you are looking for, you can use a search box on our website. You can search by URL adress or keyword (name, topic etc.). There is an option to limit your searching by date range. You can also browse archive <a href="http://webarchiv.cz/en/browse.">by subject categories</a>. It is possible to find our bibliographic records in the library catalogue.</p>
+					<p>If you know the website you are looking for, you can use a search box on our website. You can search by URL adress or keyword (name, topic etc.). There is an option to limit your searching by date range. You can also browse archive <a href="{% url 'www:categories' %}">by subject categories</a>. It is possible to find our bibliographic records in the library catalogue.</p>
 
 					<h3>Is there any difference in searching on our web or in wayback machine?</h3>
 					<p>You can search by URL adress both ways. On our website you can search by keywords extra.</p>
 
 					<h3>Why is the website i’m looking for absent?</h3>
-					<p>We are trying to archive the Czech web completely, if you are missing some website, you can <a href="http://webarchiv.cz/en/nominate-a-website">nominate it for archiving</a>. </p>
+					<p>We are trying to archive the Czech web completely, if you are missing some website, you can <a href="{% url 'www:nominate' %}">nominate it for archiving</a>. </p>
 				</div>
 				
 				<h2 id="access">Access to archive</h2>
@@ -172,13 +174,13 @@
 
 				<div class="indent-left">
 					<h3>How can I suggest a website for archiving?</h3>
-					<p>You are welcome to nominate a website for archiving, just fill in the form: http://webarchiv.cz/en/nominate-a-website.</p>
+					<p>You are welcome to nominate a website for archiving, just fill in the <a href="{% url 'www:nominate' %}">form</a>.</p>
 
 					<h3>Why is my web page in Czech web archive and how can I remove it from archive?</h3>
 					<p>One of Czech national library goals is to preserve the Czech cultural heritage. We are building the collection of the Czech websites - the cultural heritage of born-online documents. Since 2006 the Czech national library has begun to archive the whole of the CZ web domain. If you want to exclude your website from archive, please email us at webarchiv[@]nkp.cz. </p>
 
 					<h3>How can I protect my privacy?</h3>
-					<p>Czech web archive only collect and archive pages that are publicly available, the same one that you might find as you surf around the web. We do not collect pages that require a password to access or pages that are only accessible when a person types into and sends a form (for ex. search box).</a>
+					<p>Czech web archive only collect and archive pages that are publicly available, the same one that you might find as you surf around the web. We do not collect pages that require a password to access or pages that are only accessible when a person types into and sends a form (for ex. search box).
 					<p>If you think that there has been a violation of your privacy from our side, please contact us webarchiv[@]nkp.cz </p>
 					
 					<h3>Do you archive emails, chats or any other personal information?</h3>

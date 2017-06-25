@@ -1,10 +1,11 @@
-{block title}Creative Commons | {include #parent}{% endblock %}
+{% extends "base_www.html" %}
+{% load bootstrap3 i18n %}
 
-{block menuItemActive4} class="active"{% endblock %}
+{% block title %}Creative Commons{% endblock title %}
 
 {% block content %}
 
-	{include ../commonParts/add.latte}
+	{% include "nominate/header.html" %}
 
 	<section>
 		<div class="container">
@@ -36,38 +37,38 @@
 				</tr>
 				<tr>
 					<td>BY</td>
-					<td><img src="{$basePath}/images/design/cc-icons/share.png" class="cc-icon" alt="Share"><img src="{$basePath}/images/design/cc-icons/remix.png" class="cc-icon" alt="Remix"></td>
-					<td><img src="{$basePath}/images/design/cc-icons/by.png" class="cc-icon" alt="BY"></td>
+					<td><img src="{{ STATIC_URL }}www/images/design/cc-icons/share.png" class="cc-icon" alt="Share"><img src="{{ STATIC_URL }}www/images/design/cc-icons/remix.png" class="cc-icon" alt="Remix"></td>
+					<td><img src="{{ STATIC_URL }}www/images/design/cc-icons/by.png" class="cc-icon" alt="BY"></td>
 					<td>Uveďte autora</td>
 				</tr>
 				<tr>
 					<td>BY-SA</td>
-					<td><img src="{$basePath}/images/design/cc-icons/remix.png" class="cc-icon" alt="Remix"></td>
-					<td><img src="{$basePath}/images/design/cc-icons/by.png" class="cc-icon" alt="BY"><img src="{$basePath}/images/design/cc-icons/sa.png" class="cc-icon" alt="SA"></td>
+					<td><img src="{{ STATIC_URL }}www/images/design/cc-icons/remix.png" class="cc-icon" alt="Remix"></td>
+					<td><img src="{{ STATIC_URL }}www/images/design/cc-icons/by.png" class="cc-icon" alt="BY"><img src="{{ STATIC_URL }}www/images/design/cc-icons/sa.png" class="cc-icon" alt="SA"></td>
 					<td>Uveďte autora – Zachovejte licenci</td>
 				</tr>
 				<tr>
 					<td>BY-ND</td>
-					<td><img src="{$basePath}/images/design/cc-icons/share.png" class="cc-icon" alt="Share"></td>
-					<td><img src="{$basePath}/images/design/cc-icons/by.png" class="cc-icon" alt="BY"><img src="{$basePath}/images/design/cc-icons/nd.png" class="cc-icon" alt="ND"></td>
+					<td><img src="{{ STATIC_URL }}www/images/design/cc-icons/share.png" class="cc-icon" alt="Share"></td>
+					<td><img src="{{ STATIC_URL }}www/images/design/cc-icons/by.png" class="cc-icon" alt="BY"><img src="{{ STATIC_URL }}www/images/design/cc-icons/nd.png" class="cc-icon" alt="ND"></td>
 					<td>Uveďte autora – Nezpracovávejte</td>
 				</tr>
 				<tr>
 					<td>BY-NC</td>
-					<td><img src="{$basePath}/images/design/cc-icons/share.png" class="cc-icon" alt="Share"><img src="{$basePath}/images/design/cc-icons/remix.png" class="cc-icon" alt="Remix"></td>
-					<td><img src="{$basePath}/images/design/cc-icons/by.png" class="cc-icon" alt="BY"><img src="{$basePath}/images/design/cc-icons/nc.png" class="cc-icon" alt="NC"></td>
+					<td><img src="{{ STATIC_URL }}www/images/design/cc-icons/share.png" class="cc-icon" alt="Share"><img src="{{ STATIC_URL }}www/images/design/cc-icons/remix.png" class="cc-icon" alt="Remix"></td>
+					<td><img src="{{ STATIC_URL }}www/images/design/cc-icons/by.png" class="cc-icon" alt="BY"><img src="{{ STATIC_URL }}www/images/design/cc-icons/nc.png" class="cc-icon" alt="NC"></td>
 					<td>Uveďte autora – Neužívejte komerčně</td>
 				</tr>
 				<tr>
 					<td>BY-NC-SA</td>
-					<td><img src="{$basePath}/images/design/cc-icons/share.png" class="cc-icon" alt="Share"><img src="{$basePath}/images/design/cc-icons/remix.png" class="cc-icon" alt="Remix"></td>
-					<td><img src="{$basePath}/images/design/cc-icons/by.png" class="cc-icon" alt="BY"><img src="{$basePath}/images/design/cc-icons/sa.png" class="cc-icon" alt="SA"><img src="{$basePath}/images/design/cc-icons/nc.png" class="cc-icon" alt="NC"></td>
+					<td><img src="{{ STATIC_URL }}www/images/design/cc-icons/share.png" class="cc-icon" alt="Share"><img src="{{ STATIC_URL }}www/images/design/cc-icons/remix.png" class="cc-icon" alt="Remix"></td>
+					<td><img src="{{ STATIC_URL }}www/images/design/cc-icons/by.png" class="cc-icon" alt="BY"><img src="{{ STATIC_URL }}www/images/design/cc-icons/sa.png" class="cc-icon" alt="SA"><img src="{{ STATIC_URL }}www/images/design/cc-icons/nc.png" class="cc-icon" alt="NC"></td>
 					<td>Uveďte autora – Neužívejte komerčně – Zachovejte licenci</td>
 				</tr>
 				<tr>
 					<td>BY-NC-ND</td>
-					<td><img src="{$basePath}/images/design/cc-icons/share.png" class="cc-icon" alt="Share"></td>
-					<td><img src="{$basePath}/images/design/cc-icons/by.png" class="cc-icon" alt="BY"><img src="{$basePath}/images/design/cc-icons/nd.png" class="cc-icon" alt="ND"><img src="{$basePath}/images/design/cc-icons/nc.png" class="cc-icon" alt="NC"></td>
+					<td><img src="{{ STATIC_URL }}www/images/design/cc-icons/share.png" class="cc-icon" alt="Share"></td>
+					<td><img src="{{ STATIC_URL }}www/images/design/cc-icons/by.png" class="cc-icon" alt="BY"><img src="{{ STATIC_URL }}www/images/design/cc-icons/nd.png" class="cc-icon" alt="ND"><img src="{{ STATIC_URL }}www/images/design/cc-icons/nc.png" class="cc-icon" alt="NC"></td>
 					<td>Uveďte autora – Neužívejte komerčně – Nezpracovávejte</td>
 				</tr>
 			</table>

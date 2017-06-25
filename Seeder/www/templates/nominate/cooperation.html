@@ -1,10 +1,12 @@
-{block title}Pomozte nám uchovat český web | {include #parent}{% endblock %}
+{% extends "base_www.html" %}
+{% load bootstrap3 i18n %}
 
-{block menuItemActive4} class="active"{% endblock %}
+{% block title %}Pomozte nám uchovat český web{% endblock title %}
+
 
 {% block content %}
 
-	{include ../commonParts/add.latte}
+	{% include "nominate/header.html" %}
 
 	<section>
 		<div class="container">
@@ -16,9 +18,9 @@
 			<h2>Spolupracujte s Webarchivem</h2>
 			<p><strong>Vydáváte kvalitní webové stránky?</strong></p>
 			<ul class="normal">
-				<li>Dejte nám o nich vědět prostřednictvím <a href="{plink add}">formuláře</a>.</li>
+				<li>Dejte nám o nich vědět prostřednictvím <a href="{% url 'www:nominate' %}">formuláře</a>.</li>
 				<li>My vás kontaktujeme a pokusíme se s vámi uzavřít smlouvu, která nám umožní zpřístupňovat archiv Vašich webových stránek online přímo přes internet.</li>
-				<li>Vystavili jste obsah Vašich stránek pod licencí <a href="{plink creativeCommons}">Creative Commons</a> (CC)? <a href="{plink add}">Ozvěte se nám!</a></li>
+				<li>Vystavili jste obsah Vašich stránek pod licencí <a href="{% url 'www:nominate_creative_commons' %}">Creative Commons</a> (CC)? <a href="{% url 'www:nominate' %}">Ozvěte se nám!</a></li>
 				<li>Na náhled smlouvy o poskytování elektronických online zdrojů se můžete podívat <a href="http://webarchiv.cz/download/smlouvaWebarchiv.doc">zde</a>.</li>
 			</ul>
 
@@ -26,7 +28,7 @@
 			<ul class="normal">
 				<li>Vaše webové stránky budou <strong>trvale uchovány pro budoucnost a stanou se tak součástí národního kulturního dědictví</strong>, o které pečuje Národní knihovna ČR.</li>
 				<li>Váš zdroj bude <strong>zkatalogizován</strong> stejným způsobem jako např. knižní publikace a bude zařazen do České národní bibliografie a do <a href="http://aleph.nkp.cz/F/?func=file&file_name=find-a&local_base=web" target="_blank">online katalogu Národní knihovny</a>.</li>
-				<li>Na své stránky si můžete umístit náš <strong><a href="{plink graphics}">certifikát</a> „Stránky archivovány Národní knihovnou ČR“</strong>.</li>
+				<li>Na své stránky si můžete umístit náš <strong><a href="{% url 'www:about_graphics' %}">certifikát</a> „Stránky archivovány Národní knihovnou ČR“</strong>.</li>
 			</ul>
 
 		</div>
