@@ -1,1 +1,17 @@
-TTTThanks.
+{% extends "base_www.html" %}
+{% load bootstrap3 i18n %}
+
+{% block title %}{% if lang == "cs" %}Děkujeme za návrh!{% else %}Thank you for your nomination!{% endif %}{% endblock title %}
+
+
+{% block content %}
+
+	<section id="add-web">
+		<div class="container">
+            <h1>{% if lang == "cs" %}Děkujeme za návrh!{% else %}Thank you for your nomination!{% endif %}</h1>
+
+		</div>
+	</section>
+
+{% endblock %}
+

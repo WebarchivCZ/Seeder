@@ -275,3 +275,6 @@ QA_EVERY_N_MONTHS = 24
 LEGACY_URL = 'http://intranet.webarchiv.cz/wadmin/tables/resources/view/{pk}'
 LEGACY_SCREENSHOT_URL = 'http://www.webarchiv.cz/images/resource/thumb/small_{id}_{date}.jpg'
 LEGACY_SCREENSHOT_URL_PNG = 'http://www.webarchiv.cz/images/resource/thumb/small_{id}_{date}.png'
+
+
+WEBARCHIV_EMAIL = 'webarchiv@nkp.cz '

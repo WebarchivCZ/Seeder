@@ -73,8 +73,9 @@ class NewsObject(BaseModel):
 
 
 class Nomination(BaseModel):
-    url = models.CharField(_('Site address'), max_length=256)
+    url = models.CharField(_('URL'), max_length=256)
     contact_email = models.EmailField(_('Contact email'), blank=False)
+    name = models.CharField(_('Name'), max_length=64, blank=True)
     submitted_by_author = models.BooleanField(default=False)
     is_cc = models.BooleanField(
         _('Licensed under creative commons'),

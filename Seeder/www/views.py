@@ -1,5 +1,8 @@
 import re
 
+from django.core.mail import send_mail
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags
 from django.views.generic.edit import FormView
 from urljects import U, URLView, slug
 from django.views.generic.base import TemplateView, View
@@ -30,7 +33,7 @@ class PaginatedView:
     per_page = ITEMS_PER_PAGE
 
     def get_paginator(self):
-        paginator = CustomPaginator(self.get_paginator_queryset(), self.per_page) 
+        paginator = CustomPaginator(self.get_paginator_queryset(), self.per_page)
         page = self.request.GET.get('page', 1)
         try:
             sources = paginator.page(page)
@@ -169,7 +172,6 @@ class AboutContact(TemplateView, URLView):
     url_name = 'about_contact'
 
 
-
 class CategoryBaseView(PaginatedView):
     template_name = 'categories/categories.html'
     view_name = 'categories'
@@ -207,7 +209,6 @@ class CategoryBaseView(PaginatedView):
         }
 
 
-
 class Categories(CategoryBaseView, TemplateView, URLView):
     url = U / _('categories_url')
     url_name = 'categories'
@@ -216,7 +217,7 @@ class Categories(CategoryBaseView, TemplateView, URLView):
         return Source.objects.archiving()
 
     def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs) 
+        context = super().get_context_data(**kwargs)
         context.update(self.get_categories_context())
         context['sources'] = self.get_paginator()
 
@@ -256,7 +257,7 @@ class SubCategoryDetail(CategoryBaseView, DetailView, URLView):
     def get_context_data(self, **kwargs):
         category = self.get_object().category
 
-        context = super().get_context_data(**kwargs) 
+        context = super().get_context_data(**kwargs)
         context['sources'] = self.get_paginator()
         context['current_category'] = category
         context.update(self.get_categories_context())
@@ -296,7 +297,7 @@ class KeywordViews(PaginatedView, DetailView, URLView):
 
 
 class SearchRedirectView(View, URLView):
-    url = U / _('search_url') 
+    url = U / _('search_url')
     url_name = 'search_redirect'
 
     def get(self, request):
@@ -389,7 +390,42 @@ class Nominate(FormView, URLView):
     url_name = 'nominate'
 
     def form_valid(self, form):
-        form.save()
+        nomination = form.save()
+        if nomination.submitted_by_author:
+            title = _('Webarchiv.cz - archivace vasich webovych stranek %(url)s') % {"url": nomination.url}
+            email_template = 'emails/nomination_confirmation_owner.html'
+        else:
+            title = _('Webarchiv.cz - archivace webovych stranek %(url)s') % {"url": nomination.url}
+            email_template = 'emails/nomination_confirmation.html'
+
+        content = render_to_string(email_template)
+        notification_content = render_to_string(
+            'emails/nomination_notification.html',
+            {'nomination': nomination}
+        )
+
+        # Send email to user who nominated the site
+        send_mail(
+            subject=title,
+            message=strip_tags(content),
+            html_message=content,
+            from_email=settings.WEBARCHIV_EMAIL,
+            recipient_list=[
+                nomination.contact_email,
+                settings.WEBARCHIV_EMAIL
+            ]
+        )
+
+        # send notification to curators
+        send_mail(
+            subject=_('New nomination'),
+            message=strip_tags(notification_content),
+            html_message=notification_content,
+            from_email=settings.WEBARCHIV_EMAIL,
+            recipient_list=[
+                settings.WEBARCHIV_EMAIL
+            ]
+        )
         return super(Nominate, self).form_valid(form)
 
     def get_success_url(self):
@@ -400,3 +436,51 @@ class NominateSuccess(TemplateView, URLView):
     template_name = 'nominate_success.html'
     url = U / _('www_nominate_success_url')
     url_name = 'nominate_success'
+
+
+class FAQContractView(TemplateView, URLView):
+    template_name = 'faq/contract.html'
+    url_name = 'faq_contract'
+    url = U / _('faq-url') / _('faq_contract_url')
+
+
+class FAQCooperationView(TemplateView, URLView):
+    template_name = 'faq/cooperation.html'
+    url_name = 'faq_cooperation'
+    url = U / _('faq-url') / _('faq_cooperation_url')
+
+
+class FAQCreativeCommonsView(TemplateView, URLView):
+    template_name = 'faq/creative_commons.html'
+    url_name = 'faq_creative_commons'
+    url = U / _('faq-url') / _('faq_creative_commons_url')
+
+
+class FAQDisclaimerView(TemplateView, URLView):
+    template_name = 'faq/disclaimer.html'
+    url_name = 'faq_disclaimer'
+    url = U / _('faq-url') / _('faq_disclaimer_url')
+
+
+class FAQErrorView(TemplateView, URLView):
+    template_name = 'faq/error.html'
+    url_name = 'faq_error'
+    url = U / _('faq-url') / _('faq_error_url')
+
+
+class FAQFaqView(TemplateView, URLView):
+    template_name = 'faq/faq.html'
+    url_name = 'faq_faq'
+    url = U / _('faq-url') / _('faq_faq_url')
+
+
+class FAQFeedbackView(TemplateView, URLView):
+    template_name = 'faq/feedback.html'
+    url_name = 'faq_feedback'
+    url = U / _('faq-url') / _('faq_feedback_url')
+
+
+class FAQSourceSelectionView(TemplateView, URLView):
+    template_name = 'faq/source_selection.html'
+    url_name = 'faq_source_selection'
+    url = U / _('faq-url') / _('faq_source_selection_url')

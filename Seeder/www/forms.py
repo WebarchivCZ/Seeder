@@ -35,3 +35,10 @@ class NominationForm(forms.ModelForm):
     class Meta:
         model = models.Nomination
         exclude = ['resolved', 'active']
+
+        widgets = {
+            'url': forms.Textarea(attrs={'cols': 40, 'rows': 1}),
+            'contact_email': forms.Textarea(attrs={'cols': 40, 'rows': 1}),
+            'name': forms.Textarea(attrs={'cols': 40, 'rows': 1}),
+            'note': forms.Textarea(attrs={'cols': 40, 'rows': 2}),
+        }
