@@ -253,11 +253,11 @@ class Source(SearchModel, SlugOrCreateModel, BaseModel):
 
     screenshot_date = models.DateTimeField(null=True, blank=True)
     keywords = models.ManyToManyField(KeyWord, blank=True)
+    dead_source = models.BooleanField(_('Source is dead'), default=False)
 
-    slug = models.SlugField(unique=True, blank=True, null=True)    
+    slug = models.SlugField(unique=True, blank=True, null=True)
     from_field = 'stripped_main_url'
     slug_field = 'slug'
-
 
     objects = SourceManager()
 

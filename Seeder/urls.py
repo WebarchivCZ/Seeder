@@ -4,7 +4,8 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib.auth import views as auth_views
 from django.conf.urls.i18n import i18n_patterns
-
+from django.urls.base import reverse_lazy
+from django.views.generic import RedirectView
 
 from rest_framework.authtoken import views as token_views
 from urljects import U, url, view_include
@@ -67,6 +68,9 @@ seeder_urlpatterns = [
 
 
 urlpatterns = [
+    # Legacy redirects:
+    url(r'^certifikat/$', RedirectView.as_view(url=reverse_lazy('www:about_graphics'), permanent=True)),
+
     url(U / 'admin', include(admin.site.urls)),
     url(U / 'auth', include(auth_urlpatterns)),
     url(U / 'seeder', include(seeder_urlpatterns)),

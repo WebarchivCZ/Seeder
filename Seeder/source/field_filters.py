@@ -34,4 +34,4 @@ class SourceFilter(EmptyFilter):
         model = models.Source
         fields = ('name', 'owner', 'seed__url', 'publisher', 'state',
                   'category', 'sub_category', 'suggested_by', 'created',
-                  'last_changed')
+                  'last_changed', 'dead_source',)
