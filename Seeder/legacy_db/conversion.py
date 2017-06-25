@@ -4,6 +4,7 @@ import shutil
 import requests
 
 from qa.models import QualityAssuranceCheck
+from search_blob.models import update_search
 from . import models
 from . import constants
 
@@ -27,6 +28,7 @@ from voting.signals import create_voting_round
 
 LEGACY_DATABASE = 'legacy_seeder'
 post_save.disconnect(sender=source_models.Source, receiver=create_voting_round)
+post_save.disconnect(sender=source_models.Source, receiver=update_search)
 
 
 dates_format = ["%Y%m%d", "%Y-%m-%d"]
