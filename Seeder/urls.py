@@ -65,11 +65,17 @@ seeder_urlpatterns = [
     url(U, view_include(core_views, namespace='core'))
 ]
 
-
+disclaimer_redirect = RedirectView.as_view(
+    url=reverse_lazy('www:disclaimer'),
+    permanent=True
+)
 
 urlpatterns = [
     # Legacy redirects:
     url(r'^certifikat/$', RedirectView.as_view(url=reverse_lazy('www:about_graphics'), permanent=True)),
+    url(r'^cs/certifikovano/$', disclaimer_redirect),
+    url(r'^en/disclaimer/$', disclaimer_redirect),
+    url(r'^files/vydavatele/certifikat.html$', disclaimer_redirect),
 
     url(U / 'admin', include(admin.site.urls)),
     url(U / 'auth', include(auth_urlpatterns)),

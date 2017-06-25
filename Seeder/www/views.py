@@ -451,49 +451,52 @@ class NominateSuccess(TemplateView, URLView):
 
 
 class NominateContractView(TemplateView, URLView):
-    template_name = 'nominate/contract.html'
+    template_name = 'nominate/cooperation.html'
     url_name = 'nominate_contract'
-    url = U / _('nominate-url') / _('faq_contract_url')
+    url = U / _('nominate-url') / _('nominate_contract_url')
     view_name = 'nominate'
+
+    def get_context_data(self, **kwargs):
+        c = super(NominateContractView, self).get_context_data(**kwargs)
+        c['show_contract_link'] = True
+        return c
 
 
 class NominateCooperationView(TemplateView, URLView):
     template_name = 'nominate/cooperation.html'
     url_name = 'nominate_cooperation'
-    url = U / _('nominate-url') / _('faq_cooperation_url')
+    url = U / _('nominate-url') / _('nominate_cooperation_url')
     view_name = 'nominate'
-
 
 class NominateCreativeCommonsView(TemplateView, URLView):
     template_name = 'nominate/creative_commons.html'
     url_name = 'nominate_creative_commons'
-    url = U / _('nominate-url') / _('faq_creative_commons_url')
-    view_name = 'nominate'
-
-
-class NominateDisclaimerView(TemplateView, URLView):
-    template_name = 'nominate/disclaimer.html'
-    url_name = 'nominate_disclaimer'
-    url = U / _('nominate-url') / _('faq_disclaimer_url')
+    url = U / _('nominate-url') / _('nominate_creative_commons_url')
     view_name = 'nominate'
 
 
 class NominateErrorView(TemplateView, URLView):
     template_name = 'nominate/error.html'
     url_name = 'nominate_error'
-    url = U / _('nominate-url') / _('faq_error_url')
+    url = U / _('nominate-url') / _('nominate_error_url')
     view_name = 'nominate'
 
 
 class NominateFeedbackView(TemplateView, URLView):
     template_name = 'nominate/feedback.html'
     url_name = 'nominate_feedback'
-    url = U / _('nominate-url') / _('faq_feedback_url')
+    url = U / _('nominate-url') / _('nominate_feedback_url')
     view_name = 'nominate'
 
 
 class NominateSourceSelectionView(TemplateView, URLView):
     template_name = 'nominate/source_selection.html'
     url_name = 'nominate_source_selection'
-    url = U / _('nominate-url') / _('faq_source_selection_url')
+    url = U / _('nominate-url') / _('nominate_source_selection_url')
     view_name = 'nominate'
+
+
+class DisclaimerView(TemplateView, URLView):
+    template_name = 'disclaimer.html'
+    url_name = 'disclaimer'
+    url = U / _('disclaimer_url')
