@@ -157,7 +157,8 @@ class Harvest(HarvestAbstractModel):
 
     topic_collections = models.ManyToManyField(
         verbose_name=_('Topic collections'),
-        to='TopicCollection'
+        to='TopicCollection',
+        blank=True,
     )
 
     def get_seeds(self):
