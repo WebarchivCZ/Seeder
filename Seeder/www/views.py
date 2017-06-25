@@ -500,3 +500,14 @@ class DisclaimerView(TemplateView, URLView):
     template_name = 'disclaimer.html'
     url_name = 'disclaimer'
     url = U / _('disclaimer_url')
+
+
+class EmbedView(TemplateView, URLView):
+    template_name = 'embed.html'
+    url = U / 'embed'
+    url_name = 'embed'
+
+    def get_context_data(self, **kwargs):
+        c = super(EmbedView, self).get_context_data(**kwargs)
+        c['url'] = self.request.GET.get('img', '')
+        return c
