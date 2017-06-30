@@ -60,7 +60,7 @@
 				{% if not hide_search_box %}
 					<a href="#" class="search-icon"></a>
 					<div class="small-searchbox-wrapper">
-						<form action="{% url "www:search_redirect" %}" method="GET" id="frm-smallSearchBox">							
+						<form action="{% url "www:search_redirect" %}" method="GET" id="frm-smallSearchBox">
 						<input type="text" name="query" size="32" id="frm-smallSearchBox-query" value="{{ query }}" required value="" class="text">
 						<input type="submit" id="frm-smallSearchBox-submit" value="Enter" class="submit">
 						<div><!--[if IE]><input type=IEbug disabled style="display:none"><![endif]--></div>
@@ -106,7 +106,8 @@
 					<ul>
 						{% if lang == "cs" %}
 							<li>
-								<a href="{% url "www:index" %}">Webarchiv</a> je pod licencí:<br><a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" class="cc-link"><strong>CC</strong> BY/NC/ND</a>
+								<a href="{% url "www:index" %}">Webarchiv</a> je pod licencí:<br>
+								<a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" class="cc-link"><strong>CC</strong> BY/NC/ND</a>
 							</li>
 							<li>
 								<br>Koncept a grafickou podobu připravili<br>
@@ -118,7 +119,7 @@
 						{% else %}
 							<li>
 								<a href="{% url "www:index" %}">Webarchiv</a> is licensed under:<br>
-								<a href="{plink Default:creativeCommons}" class="cc-link"><strong>CC</strong> BY/NC/ND</a>
+								<a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" class="cc-link"><strong>CC</strong> BY/NC/ND</a>
 							</li>
 							<li>
 								<br>Webdesign:

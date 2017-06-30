@@ -12,7 +12,7 @@
 		<div class="container">
 
 			{% if lang == "cs" %}
-
+			  <h2>FAQ - Často kladené dotazy</h2>
 				<h2 id="general">Všeobecné</h2>
 
 				<div class="indent-left">
@@ -24,17 +24,17 @@
 
 					<h3>Co znamená archivovaná verze stránky?</h3>
 					<p>Archivovaná verze stránky je kopie, kterou pořídil český webový archiv v rámci některé ze svých sklizní. Tato kopie je pak uložena v archivu a za určitých podmínek zpřístupněna uživatelům.</p>
-				
+
 					<h3>Jak velký je český webový archiv?</h3>
 					<p>V současné době je ve webovém archivu uloženo téměř 200 TB komprimovaných dat a tento objem neustále narůstá. První archivovanou stránku máme ze září 2001. </p>
-					
+
 					<h3>Co je to Wayback Machine?</h3>
 					<p>Wayback Machine je webová aplikace, který umožňuje uživatelům přístup k archivním verzím stránek nacházejících se v našem webovém archivu.</p>
-					
+
 					<h3>Mohu citovat stránky z archivu?</h3>
 					<p>Ano, je to možné! Odkazy, které jsou v našem archivu jsou trvalé a fungují stejně jako odkazy na běžném internetu.</p>
 				</div>
-				
+
 				<h2 id="search">Vyhledávání</h2>
 
 				<div class="indent-left">
@@ -48,11 +48,11 @@
 
 					<h3>Liší se nějak vyhledávání na vašich stránkách a ve zpřístupňující aplikaci?</h3>
 					<p>V obou případech je možné hledat pomocí URL adres a vyhledávání probíhá nad stejnými daty. Vyhledávání na <a href="http://webarchiv.cz">našich stránkách</a> umožňuje navíc prohledávat archivované zdroje pomocí klíčových slov a jejich anotací. </p>
-					
+
 					<h3>Proč není stránka, kterou hledám v archivu?</h3>
 					<p>I když se snažíme vytvořit co nejvíce kompletní obraz českého internetu, tak to mít v archivu všechny stránky, prostě není v našich silách. Pokud zrovna ta vaše chybí, můžete ji <a href="{% url 'www:nominate' %}">navrhnout zde</a>.</p>
 				</div>
-				
+
 				<h2 id="access">Zpřístupnění</h2>
 
 				<div class="indent-left">
@@ -66,7 +66,7 @@
 					<h3>Proč je nejnovější verze v archivu z minulého roku, měsíce, týdne… ?</h3>
 					<p>Archivované stránky jsou z technických důvodů zpřístupňovány pro uživatele s určitým zpožděním po archivaci (zpravidla tři měsíce). Potřebujeme čas ke zpracování stahovaných dat, zejména k vytvoření indexu pro zpřístupňovací aplikaci.Dalším důvodem může být, že různé webové stránky mají nastavenou různou frekvenci, se kterou jejich kopie vytváříme. Např. u internetového periodika vytváříme kopii až 1x měsíčně, zatímco u statické webové prezentace to stačí 1x ročně. Maximální frekvence sklízení je však 1x měsíčně.</p>
 				</div>
-				
+
 				<h2 id="harvesting">Stahování dat a osobní údaje</h2>
 
 				<div class="indent-left">
@@ -82,22 +82,22 @@
 					<h3>Proč váš sklízeč stahuje data z mých stránek??</h3>
 					<p>V pravidelných intervalech provádíme tzv. <a href="http://webarchiv.cz/cs/celoplosne-sklizne">celoplošné sklizně</a>, jejichž cílem je archivace co největšího počtu stránek s doménou .cz. Účelem této archivace je vytvoření obrazu historie českého webu. Vaše stránky se tak stávají součástí historie a českého kulturního dědictví.</p>
 					<p>V případě, že nemáte zájem o zařazení do archivu historie českého webu, prosím kontaktujte nás na adrese webarchiv[@]nkp.cz.</p>
-					<p>Můžeme se s vámi domluvit na respektováni Vašeho přání vyjádřené souborem robots.txt pro zákaz přístupu vyhledávačům. Případně můžeme dát Vaše stránky na blacklist, aby v budoucnu již stahovány nebyly. A také je kompletně znepřístupnit pro ostatní uživatele.</p>	
-					
+					<p>Můžeme se s vámi domluvit na respektováni Vašeho přání vyjádřené souborem robots.txt pro zákaz přístupu vyhledávačům. Případně můžeme dát Vaše stránky na blacklist, aby v budoucnu již stahovány nebyly. A také je kompletně znepřístupnit pro ostatní uživatele.</p>
+
 					<h3>Jak mohu ochránit své soukromí při archivaci mé stránky?</h3>
 					<p>Český webový archiv vytváří archivní kopie pouze stránek, které jsou veřejné přístupné, tzn. těch které je možné navštívit i běžným prohlížením internetu. Nearchivujeme webové stránky, k jejichž přístupu je nutné uživatelské jméno a heslo nebo je nutná lidská interakce (např. odeslání formuláře).
 					<p>Pokud máte pocit, že došlo k narušení vašeho soukromí, kontaktujte nás na emailové adrese webarchiv@nkp.cz.</p>
-					
+
 					<h3>Archivujete emaily, chaty nebo osobní informace?</h3>
 					<p>Ne, nearchivujeme. Nicméně v rámci celoplošných sklizní je archivován celý český veřejný internet. Tedy pokud je na nějaké stránce veřejně vystavena např. emailová komunikace, telefonní čísla atd., pak se mohou v našem archivu objevit. Jedná se pouze o veřejně dostupné informace.</p>
-					
+
 					<h3>Mohu použít archivní verzi pro obnovení zálohy své stránky v případě její ztráty nebo poškození?</h3>
 					<p>Bohužel to není možné, český webový archiv neposkytuje tyto služby pro veřejnost. Nicméně je možné si svoji stránku najít v archivu a z ní čerpat informace k jejímu obnovení. Nemůžeme ovšem garantovat, že se vaše stránka bude nacházet archivu nebo bude v budoucnosti archivována.</p>
-					
+
 					<h3>Respektujete při sklízení soubor robot.txt?</h3>
 					<p>V současnosti standardně soubory robots.txt nezohledňujeme, jelikož věříme, že historie webu by se měla uchovat v takové podobě, v jaké ho vidí lidé a ne vyhledávače.</p>
 					</div>
-					
+
 				<h2 id="publishers">Pro vydavatele</h2>
 
 				<div class="indent-left">
@@ -105,27 +105,27 @@
 					<p>V případě, že máte zájem o archivaci vašich webových stránek, nejprve nám je zašlete jako návrh k archivaci <a href="{% url 'www:nominate' %}">prostřednictvím webového formuláře</a> nebo na náš email webarchiv[@]nkp.cz. </p>
 					<p>Všechny návrhy musí projít hodnocením a případným testováním na technické problémy. Pokud budou vaše stránky vhodné pro archivaci, kontaktujeme vás s žádostí o vyjádření souhlasu s archivací. Tento souhlas je nutné právně ošetřit, buď podepsáním smlouvy s námi nebo vystavením stránek pod licencí Creative Commons.</p>
 					<p>Archivace v rámci Webarchivu Národní knihovny ČR je zcela bezplatná, veškeré náklady na archivaci nese Národní knihovna.</p>
-			
+
 					<h3>Co je to licence Crative Commons?</h3>
 					<p>Je to soubor licencí, který umožňuje autorům děl tyto díla legálně sdílet a využívat veřejností za podmínek stanovených autorem (např. pouze nekomerční využití). Více se o licenci CC dočtete na <a href="{% url 'www:nominate_creative_commons' %}">našem webu</a>. </p>
-					
+
 					<h3>Jaký je rozdíl mezi uzavřením smlouvy a CC licencí?</h3>
 					<p>Vystavením licence CC na svých stránkách nabízíte vy, jako autor, souhlas potenciálním uživatelům licenční smlouvu, na základě které jim poskytuje některá svá práva k dílu a jiná si vyhrazujete. Výhodou licence je její snadná aplikace (jedná se o umístění malého banneru). Smlouvou dáváte pouze souhlas Národní knihovně s archivací vašich stránek, je však nutné ji zaslat v papírové podobě. Pro nás však mají obě varianty stejný efekt, záleží tedy na vás, jaká vám vyhovuje více.</p>
-				
+
 					<h3>Neohrozím svůj obsah zveřejněním pod CC licencí?</h3>
 					<p>Licence CC nabízí různé varianty licencí podle toho, jaká práva veřejnosti chcete ke svému dílu povolit či vyhradit. Ve všech variantách licence CC je však zachováno právo veřejnosti (za různých podmínek) na bezplatné šíření díla a povinnost uvést autora. Více informací o variantách licence naleznete na stránkách <a href="http://www.creativecommons.cz/licence-cc/varianty-licence/">creativecommons.cz</a>. </p>
-				
+
 					<h3>Proč musím podepisovat papírovou smlouvu?</h3>
 					<p>Z důvodu současné podoby autorského zákona je nutné, aby byl Váš souhlas s archivací stránek právně ošetřený. Proto požadujeme zaslání podepsané papírové smlouvy.</p>
-					
+
 					<h3>Kdy a jak často bude moje stránka archivována?</h3>
 					<p>Vaše stránka může být archivována 1x až 12x ročně, případně pouze jednorázově (již ukončené projekty, statické stránky jako např. e-knihy). Zpravidla to závisí na četnosti aktualizací stránek a jejich technické stránce. Po uzavření smlouvy (vystavení pod licencí CC) vás budeme o frekvenci archivace vašich stránek informovat.</p>
-					
+
 					<h3>Můžu se podívat na svoji stránku v archivu?</h3>
 					<p>Samozřejmě, stačí zadat URL adresu Vašich stránek do vyhledávače na <a href="http://webarchiv.cz">našem webu</a>. Upozorňujeme však, že archivované verze jsou zpřístupněny s určitým zpožděním (zpravidla 3 měsíce). </p>
 				</div>
 			{% else %}
-
+			  <h2>FAQ - Frequently Asked Questions</h2>
 				<h2 id="general">General information</h2>
 
 				<div class="indent-left">
@@ -137,17 +137,17 @@
 
 					<h3>What is the archived version of a webpage?</h3>
 					<p>It is a snapshot of normal webpage which is stored in our archive.</p>
-					
+
 					<h3>How big is Czech web archive?</h3>
 					<p>We store more than 200 TB data at the moment and this number is increasing. First web page was archived in September 2001. </p>
-					
+
 					<h3>What is Wayback Machine?</h3>
 					<p>Wayback Machine is a web application built for accessing web archives. Wayback Machine was originally developed by Internet Archive and we use it for our archive too.</p>
-					
+
 					<h3>Can I cite webpage from archive?</h3>
 					<p>Yes, you can! URLs in our archive are permanent, so you can cite the archived webpage as you would do with a normal webpage.</p>
 				</div>
-				
+
 				<h2 id="search">Search the archive</h2>
 
 				<div class="indent-left">
@@ -160,7 +160,7 @@
 					<h3>Why is the website i’m looking for absent?</h3>
 					<p>We are trying to archive the Czech web completely, if you are missing some website, you can <a href="{% url 'www:nominate' %}">nominate it for archiving</a>. </p>
 				</div>
-				
+
 				<h2 id="access">Access to archive</h2>
 
 				<div class="indent-left">
@@ -169,7 +169,7 @@
 
 					<h3>Why are some archived websites blocked?</h3>
 					<p>According to Czech copyright law online access to archived websites is based on agreement with website owner or on Creative Commons licence. Website without this agreement are blocked from our online archive and they are accessible only from the library terminals.</p>
-				
+
 				<h2 id="harvesting">Harvesting</h2>
 
 				<div class="indent-left">
@@ -182,16 +182,16 @@
 					<h3>How can I protect my privacy?</h3>
 					<p>Czech web archive only collect and archive pages that are publicly available, the same one that you might find as you surf around the web. We do not collect pages that require a password to access or pages that are only accessible when a person types into and sends a form (for ex. search box).
 					<p>If you think that there has been a violation of your privacy from our side, please contact us webarchiv[@]nkp.cz </p>
-					
+
 					<h3>Do you archive emails, chats or any other personal information?</h3>
 					<p>No, we do not collect or archive chat systems or personal email messages. We collect pages that are publicly available, the same ones that you might find as you surf around the web.</p>
-					
+
 					<h3>Can I get a copy of my web site from archive if my site got hacked or damaged?</h3>
 					<p>Unfortunately we don't cover backups for the general public. However, you may use the archive to locate and access archived versions of a your site, but we can't guarantee that your site has been or will be archived.</p>
-					
+
 					<h3>Do you ignore robots.txt standard?</h3>
 					<p>Yes, we ignore robots.txt at the moment.</p>
-				
+
 				</div>
 
 			{% endif %}
