@@ -29,7 +29,7 @@
 
 						<div class="searchbox-wrapper">
 
-							<form action="{% url "www:search_redirect" %}" method="GET" id="frm-bigSearchBox">								
+							<form action="{% url "www:search_redirect" %}" method="GET" id="frm-bigSearchBox">
 								{{ big_search_form.query }}
 								<input type="submit" id="frm-bigSearchBox-submit" value="Enter" class="submit">
 							</form>
@@ -37,9 +37,9 @@
 						</div>
 
 						{% if lang == "cs" %}
-							<p class="italic">hledejte „webarchiv.cz“ nebo „webarchiv“, <a href="{plink advancedSearch}">pokročilé</a></p>
+							<p class="italic">hledejte „webarchiv.cz“ nebo „webarchiv“</p>
 						{% else %}
-							<p class="italic">search „webarchiv.cz“ or „webarchiv“, <a href="{plink advancedSearch}">advanced</a></p>
+							<p class="italic">search „webarchiv.cz“ or „webarchiv“</p>
 						{% endif %}
 					</div>
 
@@ -81,16 +81,16 @@
 						</div>
 
 						{% if lang == "cs" %}
-							<p>Výběr z katalogu stránek, <br class="visible-md visible-lg"><a href="{plink catalog}">více v oborovém třídění</a></p>
+							<p>Výběr z katalogu stránek, <br class="visible-md visible-lg"><a href="{% url "www:categories" %}">více v oborovém třídění</a></p>
 						{% else %}
-							<p>Selection of contracted websites, <br class="visible-md visible-lg"><a href="{plink catalog}">see the full list</a></p>
+							<p>Selection of contracted websites, <br class="visible-md visible-lg"><a href="{% url "www:categories" %}">see the full list</a></p>
 						{% endif %}
 
 						{% if news_article.source_1 %}
 							<h2><a href="{{ news_article.source_1.wayback_url }}">{{ news_article.source_1 }}</a></h2>
 							{{ news_article.get_annotation_source_1 | safe}}
 							<p>{% if lang == "cs" %}Vydavatel: {% else %}Publisher: {% endif %} {{ news_article.source_1.publisher }}</p>
-							
+
 							{% if news_article.source_1.keywords %}
 								<ul class="inline-list">
 									{% for keyword in news_article.source_1.keywords.all %}
@@ -100,7 +100,7 @@
 							{% endif %}
 						{% endif %}
 
-						{% if news_article.source_2 %}					
+						{% if news_article.source_2 %}
 							<hr>
 
 							<h2><a href="{{ news_article.source_2.wayback_url }}">{{ news_article.source_2 }}</a></h2>
