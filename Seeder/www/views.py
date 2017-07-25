@@ -11,7 +11,7 @@ from django.views.generic.detail import DetailView
 from django.http.response import HttpResponseRedirect
 from django.utils.translation import ugettext as _
 from django.db.models import Sum, When, Case, IntegerField
-from django.core.paginator import EmptyPage, PageNotAnInteger
+from django.core.paginator import EmptyPage
 from django.core.urlresolvers import reverse
 from django.conf import settings
 
@@ -229,7 +229,6 @@ class AboutFAQ(TemplateView, URLView):
     url_name = 'about_faq'
 
 
-
 class CategoryBaseView(PaginatedView):
     template_name = 'categories/categories.html'
     view_name = 'categories'
@@ -245,7 +244,6 @@ class CategoryBaseView(PaginatedView):
                     )
                 )
             ).filter(num_sources__gt=0)
-
         }
 
     def get_categories_detail_context(self, category):
@@ -381,7 +379,7 @@ class SearchRedirectView(View, URLView):
         if re.match(regex_is_url, query):
             redirect_url = settings.WAYBACK_URL.format(url=query)
         else:
-            redirect_url = reverse('www:search', kwargs={'query':query})
+            redirect_url = reverse('www:search', kwargs={'query': query})
         return HttpResponseRedirect(redirect_url)
 
 
@@ -452,10 +450,10 @@ class Nominate(FormView, URLView):
         nomination = form.save()
         if nomination.submitted_by_author:
             title = _('Webarchiv.cz - archivace vasich webovych stranek %(url)s') % {"url": nomination.url}
-            email_template = 'emails/nomination_confirmation_owner.html'
+            email_template = 'nominateemails/nomination_confirmation_owner.html'
         else:
             title = _('Webarchiv.cz - archivace webovych stranek %(url)s') % {"url": nomination.url}
-            email_template = 'emails/nomination_confirmation.html'
+            email_template = 'nominateemails/nomination_confirmation.html'
 
         content = render_to_string(email_template)
         notification_content = render_to_string(
@@ -515,6 +513,7 @@ class NominateCooperationView(TemplateView, URLView):
     url_name = 'nominate_cooperation'
     url = U / _('nominate-url') / _('nominate_cooperation_url')
     view_name = 'nominate'
+
 
 class NominateCreativeCommonsView(TemplateView, URLView):
     template_name = 'nominate/creative_commons.html'
