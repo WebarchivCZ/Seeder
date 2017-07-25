@@ -1,4 +1,5 @@
 import re
+from urllib.parse import urlparse
 
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
@@ -16,6 +17,7 @@ from django.conf import settings
 
 from contracts.models import Contract
 from search_blob.models import Blob
+from settings.base import WAYBACK_URL
 from source.models import Source, Category, SubCategory, KeyWord
 from source.constants import ARCHIVING_STATES
 from harvests.models import TopicCollection
@@ -32,13 +34,17 @@ ITEMS_PER_PAGE = 12
 class PaginatedView:
     per_page = ITEMS_PER_PAGE
 
+    def get_page_num(self):
+        try:
+            return int(self.request.GET.get('page', 1))
+        except ValueError:
+            return 1
+
     def get_paginator(self):
         paginator = CustomPaginator(self.get_paginator_queryset(), self.per_page)
-        page = self.request.GET.get('page', 1)
+        page = self.get_page_num()
         try:
             sources = paginator.page(page)
-        except PageNotAnInteger:
-            sources = paginator.page(1)
         except EmptyPage:
             sources = paginator.page(1)
         return sources
@@ -100,8 +106,50 @@ class CollectionDetail(PaginatedView, DetailView, URLView):
         return self.get_object().custom_sources.all()
 
     def get_context_data(self, **kwargs):
+        """
+        We need to display two kind of objects on each page:
+        - custom sources
+        - custom seeds
+        so we need to decide which paginator is longer and use that for range
+        """
         context = super().get_context_data(**kwargs)
-        context['source_paginator'] = self.get_paginator()
+        custom_seeds = [
+            {
+                'name': urlparse(url).netloc,
+                'url': url,
+                'wayback_url': WAYBACK_URL.format(url=url)
+            }
+            for url in self.get_object().custom_seeds.splitlines()
+        ]
+
+        page = self.get_page_num()
+        source_paginator = CustomPaginator(
+            self.get_paginator_queryset(),
+            self.per_page
+        )
+        seed_paginator = CustomPaginator(
+            custom_seeds,
+            self.per_page
+        )
+
+        try:
+            sources = source_paginator.page(page)
+        except EmptyPage:
+            sources = []
+
+        try:
+            seed_page = seed_paginator.page(page)
+        except EmptyPage:
+            seed_page = []
+
+        bigger_paginator = (
+            sources if source_paginator.num_pages > seed_paginator.num_pages
+            else seed_page
+        )
+
+        context['source_paginator'] = sources
+        context['custom_seeds'] = seed_page
+        context['bigger_paginator'] = bigger_paginator
         return context
 
 
