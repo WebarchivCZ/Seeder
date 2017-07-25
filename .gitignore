@@ -80,7 +80,7 @@ local_settings.py
 static_root/
 media/
 
-Seeder/locale/*
+# Seeder/locale/*
 legacy_dumps/*
 
 .transifexrc
