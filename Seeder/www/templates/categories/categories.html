@@ -12,10 +12,10 @@
 			<hr>
 			<br>
 
-			{% ifequal request.session.list_type "visual"  %}
-				{% include "includes/resource_list_visual.html" %}
-			{% else %}
+			{% ifequal request.session.list_type "text"  %}
 				{% include "includes/resource_list_text.html" %}
+			{% else %}
+				{% include "includes/resource_list_visual.html" %}
 			{% endifequal %}
 
 		</div>
