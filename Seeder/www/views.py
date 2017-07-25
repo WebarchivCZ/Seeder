@@ -327,7 +327,7 @@ class ChangeListView(View, URLView):
 
     def get(self, request, list_type):
         self.request.session['list_type'] = list_type
-        return HttpResponseRedirect(request.META['HTTP_REFERER'])
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
 
 class KeywordViews(PaginatedView, DetailView, URLView):
