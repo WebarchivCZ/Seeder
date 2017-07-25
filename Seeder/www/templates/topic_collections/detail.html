@@ -3,6 +3,14 @@
 
 {% block title %}{{collection}}{% endblock title %}
 
+{% block extrahead %}
+    <style>
+    .passive_link {
+        color: black;
+        font-style: normal;
+    }
+    </style>
+{% endblock %}
 
 {% block content %}
 	<section class="collection collection-detail">
@@ -55,7 +63,7 @@
                     {% for source in custom_seeds %}
 						<div class="row">
 							<div class="col-md-12 item-textual">
-								<h2>{{ source.name }}</h2>
+								<h2 class="passive_link">{{ source.name }}</h2>
 								<p>
 									<span class="italic">{{ source.url }}</span>
 									<span class="blue">[</span><a href="{{ source.wayback_url }}">{% if lang == "cs" %}archivovaná verze{% else %}current{% endif %}</a><span class="blue">]</span>
