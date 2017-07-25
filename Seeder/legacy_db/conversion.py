@@ -230,8 +230,18 @@ class ConspectusConversion(Conversion):
     source_model = models.Conspectus
     target_model = source_models.Category
     field_map = {
-        'category': 'name'
+        'category': 'name_cs',
+        'english': 'name_en'
     }
+    update_existing = True
+
+    def clean(self, source_dict):
+        english = models.ConspectusEn.objects.using(LEGACY_DATABASE).get(
+            id=source_dict['id']
+        ).category
+
+        source_dict['english'] = english
+        return source_dict
 
 
 class SubConspectusConversion(Conversion):
@@ -240,9 +250,27 @@ class SubConspectusConversion(Conversion):
     field_map = {
         'conspectus': 'category',
         'subcategory_id': 'subcategory_id',
-        'subcategory': 'name',
+        'subcategory': 'name_cs',
+        'english': 'name_en'
+
     }
     foreign_keys = {'conspectus': models.Conspectus}
+
+    update_existing = True
+
+    def clean(self, source_dict):
+        english = models.ConspectusSubcategoriesEn.objects.using(
+            LEGACY_DATABASE).filter(
+            id=source_dict['id']
+        ).first()
+
+        if english:
+            source_dict['english'] = english.subcategory
+        else:
+            source_dict['english'] = ''
+        return source_dict
+
+
 
 
 class ResourceConversion(Conversion):
@@ -607,7 +635,6 @@ def download_file(url, base_dir):
         shutil.copyfileobj(response.raw, out_file)
     del response
     return path
-
 
 
 def download_legacy_screenshots():

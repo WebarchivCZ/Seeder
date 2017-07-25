@@ -17,7 +17,6 @@ class TransferRecord(models.Model):
     created = models.DateTimeField(auto_now_add=True)
 
 
-
 class Curators(models.Model):
     username = models.CharField(unique=True, max_length=50)
     password = models.CharField(max_length=50)
@@ -80,6 +79,15 @@ class Conspectus(models.Model):
         db_table = 'conspectus'
 
 
+class ConspectusEn(models.Model):
+    category = models.CharField(unique=True, max_length=150)
+    comments = models.TextField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'conspectus_en'
+
+
 class ConspectusSubcategories(models.Model):
     conspectus = models.ForeignKey(Conspectus)
     subcategory_id = models.CharField(max_length=40, blank=True, null=True)
@@ -89,6 +97,18 @@ class ConspectusSubcategories(models.Model):
     class Meta:
         managed = False
         db_table = 'conspectus_subcategories'
+
+
+class ConspectusSubcategoriesEn(models.Model):
+    conspectus = models.ForeignKey(Conspectus)
+    subcategory_id = models.CharField(max_length=40, blank=True, null=True)
+    subcategory = models.CharField(max_length=255)
+    comments = models.TextField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'conspectus_subcategories_en'
+        # unique_together = (('id', 'conspectus_id'),)
 
 
 class Resources(models.Model):
