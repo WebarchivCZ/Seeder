@@ -10,7 +10,7 @@ from django.views.generic.base import TemplateView, View
 from django.views.generic.detail import DetailView
 from django.http.response import HttpResponseRedirect
 from django.utils.translation import ugettext as _
-from django.db.models import Sum, When, Case, IntegerField
+from django.db.models import Sum, When, Case, IntegerField, Q
 from django.core.paginator import EmptyPage
 from django.core.urlresolvers import reverse
 from django.conf import settings
@@ -288,10 +288,15 @@ class CategoryDetail(CategoryBaseView, DetailView, URLView):
     url_name = 'category_detail'
 
     def get_paginator_queryset(self):
-        return Source.objects.archiving().filter(category=self.get_object())
+        return Source.objects.archiving().filter(
+            Q(category=self.get_object()) |
+            Q(sub_category__category=self.get_object())
+        )
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        context['sources'] = self.get_paginator()
+        context['current_category'] = self.get_object()
 
         context.update(self.get_categories_context())
         context.update(self.get_categories_detail_context(self.get_object()))
