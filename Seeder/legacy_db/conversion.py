@@ -271,8 +271,6 @@ class SubConspectusConversion(Conversion):
         return source_dict
 
 
-
-
 class ResourceConversion(Conversion):
     source_model = models.Resources
     target_model = source_models.Source
@@ -334,8 +332,6 @@ class ResourceConversion(Conversion):
 
         if screenshot_date_raw and source_dict['screenshot_date'] is None:
             print("Could not parse date", screenshot_date_raw)
-
-
 
         created = source_dict['date']
         if not created:
@@ -606,13 +602,10 @@ class KeyWordConversion(Conversion):
                 word=data['word']
             )
 
-
         key_id = self.source_dict['id']
-
-        linking_resources = models.KeywordsResources.objects.using(LEGACY_DATABASE).filter(
-            keyword_id=key_id
-        ).values_list('resource_id', flat=True)
-
+        linking_resources = models.KeywordsResources.objects.using(
+            LEGACY_DATABASE
+        ).filter(keyword_id=key_id).values_list('resource_id', flat=True)
 
         linking_transfers = models.TransferRecord.objects.filter(
             original_type=get_ct(models.Resources),
@@ -654,24 +647,29 @@ def download_legacy_screenshots():
 
     for t in transfered:
         if t.target_object.screenshot_date and not t.target_object.screenshot:
-            r = models.Resources.objects.using(LEGACY_DATABASE).get(pk=t.original_id)
-            screenshot_url_jpg = settings.LEGACY_SCREENSHOT_URL.format(
+            r = models.Resources.objects.using(LEGACY_DATABASE).get(
+                pk=t.original_id
+            )
+            url_jpg = settings.LEGACY_SCREENSHOT_URL.format(
                 id=r.id,
                 date=r.screenshot_date
             )
 
-            screenshot_url_png = settings.LEGACY_SCREENSHOT_URL_PNG.format(
+            url_png = settings.LEGACY_SCREENSHOT_URL_PNG.format(
                 id=r.id,
                 date=r.screenshot_date
             )
             try:
-                t.target_object.screenshot = download_file(screenshot_url_jpg, upload_dir)
+                t.target_object.screenshot = download_file(url_jpg, upload_dir)
             except requests.exceptions.HTTPError:
                 try:
-                    t.target_object.screenshot = download_file(screenshot_url_png, upload_dir) 
+                    t.target_object.screenshot = download_file(
+                        url_png,
+                        upload_dir
+                    )
                 except requests.exceptions.HTTPError as e:
                     print(e)
-                    print('Screenshot url could not be found', screenshot_url_png)
+                    print('Screenshot url could not be found', url_png)
                     continue
             t.target_object.save()
 
