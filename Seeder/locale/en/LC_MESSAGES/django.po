@@ -1,7 +1,7 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# 
+#
 # Translators:
 # Jaroslav Kvasnica <jaroslav.kvasnica@nkp.cz>, 2017
 # Monika Holoubkova <holoubkovamonika@gmail.com>, 2017
@@ -11,14 +11,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Seeder\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-07-03 12:06+0000\n"
+"POT-Creation-Date: 2017-07-31 11:18+0000\n"
 "PO-Revision-Date: 2017-06-27 00:16+0000\n"
 "Last-Translator: Visgean Skeloru <visgean@gmail.com>, 2017\n"
-"Language-Team: English (https://www.transifex.com/webarchivecz/teams/43032/en/)\n"
+"Language-Team: English (https://www.transifex.com/webarchivecz/teams/43032/"
+"en/)\n"
+"Language: en\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: en\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: blacklists/models.py:22
@@ -300,7 +301,7 @@ msgid "No"
 msgstr "No"
 
 #: contracts/templates/contract.html:36 publishers/models.py:30
-#: source/constants.py:118 source/models.py:203 source/tables.py:11
+#: source/constants.py:122 source/models.py:203 source/tables.py:11
 #: source/templates/duplicity_check.html:20 source/templates/source.html:64
 msgid "Publisher"
 msgstr "Publisher"
@@ -348,8 +349,10 @@ msgstr "Links"
 #, python-format
 msgid ""
 "\n"
-"            Here you can schedule contact emails that will be sent to %(contact)s,\n"
-"            these emails will be sent until you check that publisher responds to communication in contract edit.\n"
+"            Here you can schedule contact emails that will be sent to "
+"%(contact)s,\n"
+"            these emails will be sent until you check that publisher "
+"responds to communication in contract edit.\n"
 "        "
 msgstr ""
 
@@ -357,8 +360,10 @@ msgstr ""
 #, python-format
 msgid ""
 "\n"
-"                We are sorry, but this won't work, you did not set contact person in %(source)s\n"
-"                so we really have no idea who to sent this to. So you should set the contract person like right now. Thanks.\n"
+"                We are sorry, but this won't work, you did not set contact "
+"person in %(source)s\n"
+"                so we really have no idea who to sent this to. So you should "
+"set the contract person like right now. Thanks.\n"
 "            "
 msgstr ""
 
@@ -525,7 +530,7 @@ msgstr "New"
 msgid "Finished"
 msgstr "Finished"
 
-#: harvests/models.py:244 source/constants.py:121 source/models.py:199
+#: harvests/models.py:244 source/constants.py:125 source/models.py:199
 msgid "Curator"
 msgstr "Curator"
 
@@ -638,8 +643,7 @@ msgid "Custom sources"
 msgstr "Custom sources"
 
 #: harvests/templates/topic_collection.html:9 source/templates/source.html:22
-#: voting/templates/voting_round.html:24
-#: www/templates/news_admin_detail.html:9
+#: voting/templates/voting_round.html:24 www/templates/news_admin_detail.html:9
 msgid "Info"
 msgstr "Info"
 
@@ -697,8 +701,7 @@ msgstr "Attachments"
 msgid "All sources are open?"
 msgstr "All sources are open?"
 
-#: harvests/templates/topic_collection.html:87
-#: source/templates/source.html:122
+#: harvests/templates/topic_collection.html:87 source/templates/source.html:122
 msgid "WWW link"
 msgstr "WWW link"
 
@@ -899,55 +902,55 @@ msgstr "Publisher ignored requests"
 msgid "Contract terminated"
 msgstr "Contract terminated"
 
-#: source/constants.py:57
+#: source/constants.py:61
 msgid "Once only"
 msgstr "Once only"
 
-#: source/constants.py:61
+#: source/constants.py:65
 msgid "Once a year"
 msgstr "Once a year"
 
-#: source/constants.py:65
+#: source/constants.py:69
 msgid "Twice a year"
 msgstr "Twice a year"
 
-#: source/constants.py:69
+#: source/constants.py:73
 msgid "Quarterly"
 msgstr "Quarterly"
 
-#: source/constants.py:73
+#: source/constants.py:77
 msgid "Every two months"
 msgstr "Every two months"
 
-#: source/constants.py:77
+#: source/constants.py:81
 msgid "Every month"
 msgstr "Every month"
 
-#: source/constants.py:81
+#: source/constants.py:85
 msgid "Weekly"
 msgstr "Weekly"
 
-#: source/constants.py:85
+#: source/constants.py:89
 msgid "Daily"
 msgstr "Daily"
 
-#: source/constants.py:101
+#: source/constants.py:105
 msgid "Include in harvest"
 msgstr "Include in harvest"
 
-#: source/constants.py:102
+#: source/constants.py:106
 msgid "Exclude from harvest"
 msgstr "Exclude from harvest"
 
-#: source/constants.py:103
+#: source/constants.py:107
 msgid "Seed is no longer published"
 msgstr "Seed is no longer published"
 
-#: source/constants.py:119
+#: source/constants.py:123
 msgid "Visitor"
 msgstr "Visitor"
 
-#: source/constants.py:120 source/templates/source.html:102
+#: source/constants.py:124 source/templates/source.html:102
 msgid "ISSN"
 msgstr "ISSN"
 
@@ -1122,10 +1125,13 @@ msgstr "Add seed"
 #: templates/api.html:7
 msgid ""
 "\n"
-"            Below you can find links to files that contains seeds from sources\n"
+"            Below you can find links to files that contains seeds from "
+"sources\n"
 "            that have been accepted.\n"
-"            Each file also contains date of the file creation. Files are automatically\n"
-"            generated every day, but you can also manually start the process.\n"
+"            Each file also contains date of the file creation. Files are "
+"automatically\n"
+"            generated every day, but you can also manually start the "
+"process.\n"
 "        "
 msgstr ""
 
@@ -1137,8 +1143,8 @@ msgstr "Reload files"
 msgid "Seeder"
 msgstr "Seeder"
 
-#: templates/base.html:36 templates/base.html:82
-#: templates/search/search.html:7 templates/search/search.html:11
+#: templates/base.html:36 templates/base.html:82 templates/search/search.html:7
+#: templates/search/search.html:11
 msgid "Search"
 msgstr "Search"
 
@@ -1177,8 +1183,10 @@ msgid "Read the docs"
 msgstr "Read the docs"
 
 #: templates/base.html:117
-msgid "DEV notes"
-msgstr "DEV notes"
+#, fuzzy
+#| msgid "Seed url"
+msgid "Seed DB dump"
+msgstr "Seed URL"
 
 #: templates/bootstrap_comments_threaded.html:14
 msgid "Respond"
@@ -1253,7 +1261,8 @@ msgstr "Password link sent"
 #: templates/registration/password_reset_done.html:17
 msgid ""
 "\n"
-"                        Check your email for instructions. Don't forget about\n"
+"                        Check your email for instructions. Don't forget "
+"about\n"
 "                        spam folder.\n"
 "                        If you did not receive any email don't hesitate to\n"
 "                        contact us.\n"
@@ -1382,8 +1391,7 @@ msgstr "No votes yet"
 msgid "Links to review"
 msgstr "Links to review"
 
-#: voting/templates/voting_round.html:94
-#: voting/templates/voting_round.html:111
+#: voting/templates/voting_round.html:94 voting/templates/voting_round.html:111
 msgid "Sorry round closed."
 msgstr "Sorry, round closed."
 
@@ -1518,117 +1526,120 @@ msgstr "I can act for these sources"
 msgid "Zdroj s licencí Creative Commons"
 msgstr "Source with Creative Commons license"
 
-#: www/templates/topic_collections/detail.html:13
+#: www/templates/topic_collections/detail.html:21
 msgid "Klíčová slova sklizně"
 msgstr "Keywords of harvest"
 
-#: www/views.py:75
+#: www/views.py:81
 msgid "topic_collections_url"
 msgstr "topic_collections_url"
 
-#: www/views.py:94
+#: www/views.py:100
 msgid "topic_collection_detail_url"
 msgstr "topic_collection_detail_url"
 
-#: www/views.py:113
+#: www/views.py:161
 msgid "about_url"
 msgstr "about_url"
 
-#: www/views.py:121
+#: www/views.py:169
 msgid "more_about_url"
 msgstr "more_about_url"
 
-#: www/views.py:135
+#: www/views.py:183
 msgid "about_harvests_url"
 msgstr "about_harvests_url"
 
-#: www/views.py:144
+#: www/views.py:192
 msgid "about_terminology_url"
 msgstr "about_terminology_url"
 
-#: www/views.py:153
+#: www/views.py:201
 msgid "about_documents_url"
 msgstr "about_documents_url"
 
-#: www/views.py:162
+#: www/views.py:210
 msgid "about_graphics_url"
 msgstr "about_graphics_url"
 
-#: www/views.py:171
+#: www/views.py:219
 msgid "about_contact_url"
 msgstr "about_contact_url"
 
-#: www/views.py:180
+#: www/views.py:228
 msgid "about_faq_url"
 msgstr "about_faq_url"
 
-#: www/views.py:223 www/views.py:241 www/views.py:259
+#: www/views.py:269 www/views.py:287 www/views.py:310
 msgid "categories_url"
 msgstr "categories_url"
 
-#: www/views.py:292
+#: www/views.py:343
 msgid "keyword_url"
 msgstr "keyword_url"
 
-#: www/views.py:310 www/views.py:344
+#: www/views.py:361 www/views.py:395
 msgid "search_url"
 msgstr "search_url"
 
-#: www/views.py:387
+#: www/views.py:438
 msgid "www_source_url"
 msgstr "www_source_url"
 
-#: www/views.py:400
+#: www/views.py:451
 msgid "www_nominate_url"
 msgstr "www_nominate_url"
 
-#: www/views.py:406
+#: www/views.py:457
 #, python-format
 msgid "Webarchiv.cz - archivace vasich webovych stranek %(url)s"
 msgstr ""
 
-#: www/views.py:409
+#: www/views.py:460
 #, python-format
 msgid "Webarchiv.cz - archivace webovych stranek %(url)s"
 msgstr ""
 
-#: www/views.py:432
+#: www/views.py:483
 msgid "New nomination"
 msgstr "New nomination"
 
-#: www/views.py:448
+#: www/views.py:499
 msgid "www_nominate_success_url"
 msgstr "www_nominate_success_url"
 
-#: www/views.py:456 www/views.py:468 www/views.py:474 www/views.py:481
-#: www/views.py:488 www/views.py:495
+#: www/views.py:507 www/views.py:519 www/views.py:526 www/views.py:533
+#: www/views.py:540 www/views.py:547
 msgid "nominate-url"
 msgstr "nominate_url"
 
-#: www/views.py:456
+#: www/views.py:507
 msgid "nominate_contract_url"
 msgstr "nominate_contract_url"
 
-#: www/views.py:468
+#: www/views.py:519
 msgid "nominate_cooperation_url"
 msgstr "nominate_cooperation_url"
 
-#: www/views.py:474
+#: www/views.py:526
 msgid "nominate_creative_commons_url"
 msgstr "nominate_creative_commons_url"
 
-#: www/views.py:481
+#: www/views.py:533
 msgid "nominate_error_url"
 msgstr "nominate_error_url"
 
-#: www/views.py:488
+#: www/views.py:540
 msgid "nominate_feedback_url"
 msgstr "nominate_feedback_url"
 
-#: www/views.py:495
+#: www/views.py:547
 msgid "nominate_source_selection_url"
 msgstr "nominate_source_selection_url"
 
-#: www/views.py:502
+#: www/views.py:554
 msgid "disclaimer_url"
 msgstr "disclaimer_url"
+
+#~ msgid "DEV notes"
+#~ msgstr "DEV notes"
