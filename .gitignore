@@ -85,3 +85,6 @@ legacy_dumps/*
 
 .transifexrc
 *.db
+
+# OSX related maddness purged
+.DS_Store
