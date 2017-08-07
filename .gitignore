@@ -85,3 +85,6 @@ legacy_dumps/*
 
 .transifexrc
 *.db
+
+# OSX creates .DS_Store files, purging this madness from repotracking
+.DS_Store
