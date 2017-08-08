@@ -100,7 +100,7 @@ class SeedManager(models.Manager):
 
 
 class Category(models.Model, SlugOrCreateModel):
-    name = models.CharField(unique=True, max_length=150)
+    name = models.CharField(max_length=150)
     slug = models.SlugField(unique=True, blank=True, null=True)
 
     from_field = 'name'

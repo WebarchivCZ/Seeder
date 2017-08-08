@@ -230,8 +230,18 @@ class ConspectusConversion(Conversion):
     source_model = models.Conspectus
     target_model = source_models.Category
     field_map = {
-        'category': 'name'
+        'category': 'name_cs',
+        'english': 'name_en'
     }
+    update_existing = True
+
+    def clean(self, source_dict):
+        english = models.ConspectusEn.objects.using(LEGACY_DATABASE).get(
+            id=source_dict['id']
+        ).category
+
+        source_dict['english'] = english
+        return source_dict
 
 
 class SubConspectusConversion(Conversion):
@@ -240,9 +250,25 @@ class SubConspectusConversion(Conversion):
     field_map = {
         'conspectus': 'category',
         'subcategory_id': 'subcategory_id',
-        'subcategory': 'name',
+        'subcategory': 'name_cs',
+        'english': 'name_en'
+
     }
     foreign_keys = {'conspectus': models.Conspectus}
+
+    update_existing = True
+
+    def clean(self, source_dict):
+        english = models.ConspectusSubcategoriesEn.objects.using(
+            LEGACY_DATABASE).filter(
+            id=source_dict['id']
+        ).first()
+
+        if english:
+            source_dict['english'] = english.subcategory
+        else:
+            source_dict['english'] = ''
+        return source_dict
 
 
 class ResourceConversion(Conversion):
@@ -306,8 +332,6 @@ class ResourceConversion(Conversion):
 
         if screenshot_date_raw and source_dict['screenshot_date'] is None:
             print("Could not parse date", screenshot_date_raw)
-
-
 
         created = source_dict['date']
         if not created:
@@ -578,13 +602,10 @@ class KeyWordConversion(Conversion):
                 word=data['word']
             )
 
-
         key_id = self.source_dict['id']
-
-        linking_resources = models.KeywordsResources.objects.using(LEGACY_DATABASE).filter(
-            keyword_id=key_id
-        ).values_list('resource_id', flat=True)
-
+        linking_resources = models.KeywordsResources.objects.using(
+            LEGACY_DATABASE
+        ).filter(keyword_id=key_id).values_list('resource_id', flat=True)
 
         linking_transfers = models.TransferRecord.objects.filter(
             original_type=get_ct(models.Resources),
@@ -609,7 +630,6 @@ def download_file(url, base_dir):
     return path
 
 
-
 def download_legacy_screenshots():
     """
     Downloads all old screenshots.
@@ -627,24 +647,29 @@ def download_legacy_screenshots():
 
     for t in transfered:
         if t.target_object.screenshot_date and not t.target_object.screenshot:
-            r = models.Resources.objects.using(LEGACY_DATABASE).get(pk=t.original_id)
-            screenshot_url_jpg = settings.LEGACY_SCREENSHOT_URL.format(
+            r = models.Resources.objects.using(LEGACY_DATABASE).get(
+                pk=t.original_id
+            )
+            url_jpg = settings.LEGACY_SCREENSHOT_URL.format(
                 id=r.id,
                 date=r.screenshot_date
             )
 
-            screenshot_url_png = settings.LEGACY_SCREENSHOT_URL_PNG.format(
+            url_png = settings.LEGACY_SCREENSHOT_URL_PNG.format(
                 id=r.id,
                 date=r.screenshot_date
             )
             try:
-                t.target_object.screenshot = download_file(screenshot_url_jpg, upload_dir)
+                t.target_object.screenshot = download_file(url_jpg, upload_dir)
             except requests.exceptions.HTTPError:
                 try:
-                    t.target_object.screenshot = download_file(screenshot_url_png, upload_dir) 
+                    t.target_object.screenshot = download_file(
+                        url_png,
+                        upload_dir
+                    )
                 except requests.exceptions.HTTPError as e:
                     print(e)
-                    print('Screenshot url could not be found', screenshot_url_png)
+                    print('Screenshot url could not be found', url_png)
                     continue
             t.target_object.save()
 

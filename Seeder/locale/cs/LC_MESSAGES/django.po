@@ -1,0 +1,1677 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+#
+# Translators:
+# Visgean Skeloru <visgean@gmail.com>, 2017
+# mariehaskovcova <marie.haskovcova@nkp.cz>, 2017
+msgid ""
+msgstr ""
+"Project-Id-Version: Seeder\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-07-31 11:18+0000\n"
+"PO-Revision-Date: 2017-06-27 00:16+0000\n"
+"Last-Translator: mariehaskovcova <marie.haskovcova@nkp.cz>, 2017\n"
+"Language-Team: Czech (https://www.transifex.com/webarchivecz/teams/43032/"
+"cs/)\n"
+"Language: cs\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+
+#: blacklists/models.py:22
+msgid "Haritrex blacklist"
+msgstr "Heritrix blacklist"
+
+#: blacklists/models.py:23
+msgid "Wayback blacklist"
+msgstr "Wayback blacklist"
+
+#: blacklists/models.py:26 comments/models.py:54
+#: harvests/templates/harvest.html:11
+msgid "Title"
+msgstr "Název"
+
+#: blacklists/models.py:33
+msgid "List of urls to block"
+msgstr "Seznam URL adres k zablokování"
+
+#: blacklists/models.py:37
+msgid "Blacklist"
+msgstr "Blacklist"
+
+#: blacklists/models.py:38 blacklists/views.py:18 templates/base.html:97
+msgid "Blacklists"
+msgstr "Blacklisty"
+
+#: blacklists/templates/blacklists.html:5 core/generic_views.py:142
+msgid "Add"
+msgstr "Přidat"
+
+#: blacklists/templates/blacklists.html:13
+#: contracts/templates/contract.html:108 harvests/templates/harvest.html:7
+#: harvests/templates/topic_collection.html:107
+#: publishers/templates/publisher.html:36 source/templates/edit_source.html:7
+#: source/templates/edit_source.html:11 source/templates/source.html:135
+#: source/templates/source.html:144 templates/edit_form.html:6
+#: templates/edit_form.html:10 www/templates/news_admin_detail.html:84
+msgid "Edit"
+msgstr "Upravit"
+
+#: blacklists/templates/blacklists.html:14
+#: contracts/templates/contract.html:107
+#: harvests/templates/topic_collection.html:108
+#: publishers/templates/publisher.html:35 source/templates/source.html:146
+#: www/templates/news_admin_detail.html:86
+msgid "History"
+msgstr "Historie"
+
+#: comments/forms.py:24
+msgid ""
+"If you enter anything in this field your comment will be treated as spam"
+msgstr "Napíšete-li něco do tohoto pole, váš komentář bude považován za spam"
+
+#: comments/models.py:28
+msgid "content type"
+msgstr "typ obsahu"
+
+#: comments/models.py:31
+msgid "object ID"
+msgstr "ID objektu"
+
+#: comments/models.py:37
+msgid "user"
+msgstr "uživatel"
+
+#: comments/models.py:42
+msgid "user's name"
+msgstr "uživatelské jméno"
+
+#: comments/models.py:43
+msgid "user's email address"
+msgstr "uživatelská emailová adresa"
+
+#: comments/models.py:46
+msgid "IP address"
+msgstr "IP adresa"
+
+#: comments/models.py:60
+msgid "comment"
+msgstr "komentář"
+
+#: comments/models.py:64
+msgid "date/time submitted"
+msgstr "datum/čas vložení"
+
+#: comments/models.py:69
+msgid "is public"
+msgstr "veřejné"
+
+#: comments/models.py:71
+msgid ""
+"Uncheck this box to make the comment effectively disappear from the site."
+msgstr "Pro odstranění komentáře zrušte zaškrtnutí tohoto pole"
+
+#: comments/models.py:75
+msgid "is removed"
+msgstr "odstraněno"
+
+#: comments/models.py:77
+msgid ""
+"Check this box if the comment is inappropriate. A \"This comment has been "
+"removed\" message will be displayed instead."
+msgstr ""
+"Zaškrtnete-li toto pole, obsah zprávy bude nahrazen textem  \"Komentář byl "
+"odstraněn\"."
+
+#: comments/models.py:115
+msgid "Name of the registered user can't be changed"
+msgstr "Jméno registrovaného uživatele nemůže být změněno."
+
+#: comments/models.py:125
+msgid "E-mail of registered user can't be changed"
+msgstr "E-mail registrovaného uživatele nemůže být změněn."
+
+#: comments/models.py:136
+msgid "This comment has been removed"
+msgstr "Komentář byl odstraněn"
+
+#: comments/models.py:167 qa/models.py:40 qa/templates/detail.html:15
+#: source/models.py:214 source/models.py:426 source/templates/source.html:75
+#: templates/history.html:15
+msgid "Comment"
+msgstr "Komentář"
+
+#: comments/models.py:168 contracts/templates/contract.html:111
+#: harvests/templates/harvest.html:48
+#: harvests/templates/topic_collection.html:112
+#: publishers/templates/publisher.html:39 qa/templates/detail.html:22
+#: source/templates/source.html:170 voting/templates/voting_round.html:118
+#: www/templates/news_admin_detail.html:90
+msgid "Comments"
+msgstr "Komentáře"
+
+#: contracts/constants.py:12
+msgid "Contract in negotiation"
+msgstr "Smlouva v jednání"
+
+#: contracts/constants.py:13
+msgid "Publisher declined"
+msgstr "Odmítnuto vydavatelem"
+
+#: contracts/constants.py:14
+msgid "Contract is valid"
+msgstr "Platná smlouva"
+
+#: contracts/constants.py:15 source/constants.py:33
+msgid "Contract expired"
+msgstr "Vypovězená smlouva"
+
+#: contracts/constants.py:34
+msgid "CreativeCommons"
+msgstr "Creative Commons"
+
+#: contracts/constants.py:35
+msgid "Apache"
+msgstr "Apache"
+
+#: contracts/constants.py:36
+msgid "GPL"
+msgstr "GPL"
+
+#: contracts/constants.py:37
+msgid "MIT"
+msgstr "MIT"
+
+#: contracts/constants.py:38
+msgid "LGPL 2"
+msgstr "LGPL 2"
+
+#: contracts/constants.py:39
+msgid "LGPL 3"
+msgstr "LGPL 3"
+
+#: contracts/constants.py:40
+msgid "mozilla"
+msgstr "Mozilla"
+
+#: contracts/constants.py:43
+msgid "Narodni knihovna CR - archivace Vasich webovych stranek"
+msgstr "Narodni knihovna CR - archivace Vasich webovych stranek"
+
+#: contracts/models.py:46 contracts/templates/contract.html:20
+#: harvests/models.py:135 harvests/models.py:236 source/models.py:228
+#: voting/models.py:26
+msgid "State"
+msgstr "Stav"
+
+#: contracts/models.py:52
+msgid "Creative commons or other OS licence"
+msgstr "Creative commons nebo jiná otevřená licence"
+
+#: contracts/models.py:57
+msgid "Creative commons type"
+msgstr "Zdroj Creative Commons"
+
+#: contracts/models.py:64 contracts/templates/contract.html:40
+msgid "Valid from"
+msgstr "Platný od"
+
+#: contracts/models.py:69 contracts/templates/contract.html:44
+msgid "Valid to"
+msgstr "Platný do"
+
+#: contracts/models.py:75 harvests/templates/calendar.html:27
+msgid "Year"
+msgstr "Rok"
+
+#: contracts/models.py:80 contracts/templates/contract.html:69
+msgid "Contract file"
+msgstr "Smlouva"
+
+#: contracts/models.py:87
+msgid "Contract number"
+msgstr "Číslo smlouvy"
+
+#: contracts/models.py:93 source/constants.py:26
+msgid "In communication"
+msgstr "V jednání"
+
+#: contracts/models.py:94
+msgid "Does the publisher responds to the emails?"
+msgstr "Odpověděl vydavatel na emaily?"
+
+#: contracts/models.py:99 contracts/templates/contract.html:48
+msgid "Description"
+msgstr "Popis"
+
+#: contracts/models.py:120
+#, python-brace-format
+msgid "Contract in negotiation with {0}"
+msgstr "Smlouva v jednání s  {0}"
+
+#: contracts/models.py:129
+#, python-brace-format
+msgid "Contract with {0}"
+msgstr "Smlouva s {0}"
+
+#: contracts/models.py:202
+msgid "When to send this message"
+msgstr "Kdy chcete odeslat tuto zprávu?"
+
+#: contracts/tables.py:12
+msgid "link"
+msgstr "odkaz"
+
+#: contracts/tables.py:16
+msgid "publisher"
+msgstr "vydavatel"
+
+#: contracts/tables.py:18 qa/tables.py:10 templates/api.html:18
+msgid "created"
+msgstr "vytvořeno"
+
+#: contracts/tables.py:19 qa/tables.py:11
+msgid "last_changed"
+msgstr "naposledy upraveno"
+
+#: contracts/templates/contract.html:6 contracts/templates/contract.html:7
+msgid "Contract for"
+msgstr "Smlouva pro"
+
+#: contracts/templates/contract.html:15
+msgid "Value"
+msgstr "Hodnota"
+
+#: contracts/templates/contract.html:24
+msgid "Number"
+msgstr "Číslo"
+
+#: contracts/templates/contract.html:28
+msgid "Creative commons"
+msgstr "Creative Commons"
+
+#: contracts/templates/contract.html:32
+msgid "No"
+msgstr "Ne"
+
+#: contracts/templates/contract.html:36 publishers/models.py:30
+#: source/constants.py:122 source/models.py:203 source/tables.py:11
+#: source/templates/duplicity_check.html:20 source/templates/source.html:64
+msgid "Publisher"
+msgstr "Vydavatel"
+
+#: contracts/templates/contract.html:52
+msgid "Parent"
+msgstr "Zdroj"
+
+#: contracts/templates/contract.html:60
+msgid "Sub contracts"
+msgstr "Dodatky smluv"
+
+#: contracts/templates/contract.html:74
+msgid "Publisher responded to communication"
+msgstr "Vydavatel odpověděl"
+
+#: contracts/templates/contract.html:81
+msgid "Scheduled emails"
+msgstr "Naplánované emaily"
+
+#: contracts/templates/contract.html:86
+msgid "sent"
+msgstr "odesláno"
+
+#: contracts/templates/contract.html:89 contracts/templates/contract.html:101
+msgid "Sorry, nothing found."
+msgstr "Bohužel nebylo nic nalezeno"
+
+#: contracts/templates/contract.html:91
+msgid "Schedule"
+msgstr "Rozvrhnutí"
+
+#: contracts/templates/contract.html:94
+msgid "Assigned sources"
+msgstr "Přiřazené zdroje"
+
+#: contracts/templates/contract.html:106
+#: harvests/templates/topic_collection.html:106
+#: publishers/templates/publisher.html:34 source/templates/source.html:143
+#: www/templates/news_admin_detail.html:83
+msgid "Links"
+msgstr "Odkazy"
+
+#: contracts/templates/schedule.html:13
+#, python-format
+msgid ""
+"\n"
+"            Here you can schedule contact emails that will be sent to "
+"%(contact)s,\n"
+"            these emails will be sent until you check that publisher "
+"responds to communication in contract edit.\n"
+"        "
+msgstr ""
+"\n"
+"Zde můžete naplánovat emaily, které budou odeslány %(contact)s dokud "
+"nezaškrtnete v editačním okně smlouvy, že vydavatel již odpověděl."
+
+#: contracts/templates/schedule.html:20
+#, python-format
+msgid ""
+"\n"
+"                We are sorry, but this won't work, you did not set contact "
+"person in %(source)s\n"
+"                so we really have no idea who to sent this to. So you should "
+"set the contract person like right now. Thanks.\n"
+"            "
+msgstr ""
+"\n"
+"                Neuvedl/a jste kontaktní osobu v  %(source)s a není jasné, "
+"komu to poslat. Doplňte údaj.\n"
+"            "
+
+#: contracts/templates/schedule.html:32 qa/templates/qa_form.html:34
+#: source/templates/edit_source.html:22 templates/add_form.html:13
+#: templates/edit_form.html:21 templates/formset.html:13
+#: templates/formset_verbose.html:14 templates/search/search.html:21
+msgid "Send"
+msgstr "Odeslat"
+
+#: contracts/views.py:42
+msgid "Add contract"
+msgstr "Přidat smlouvu"
+
+#: contracts/views.py:67
+msgid "Assign contract"
+msgstr "Přiřadit smlouvu"
+
+#: contracts/views.py:104
+msgid "Contract number assigned."
+msgstr "Smlouvě bylo přiřazeno číslo"
+
+#: contracts/views.py:120 source/templates/source.html:159
+#: templates/base.html:94
+msgid "Contracts"
+msgstr "Smlouvy"
+
+#: contracts/views.py:130
+msgid "Schedule emails"
+msgstr "Naplánování e-mailů"
+
+#: core/dashboard_data.py:65
+msgid "Contracts in negotiation"
+msgstr "Smlouvy v jednání"
+
+#: core/dashboard_data.py:85
+msgid "Contracts without scheduled communication"
+msgstr "Smlouvy bez rozvrhnutého jednání"
+
+#: core/dashboard_data.py:112
+msgid "Voting rounds you manage"
+msgstr "Hodnocení, která spravujete"
+
+#: core/dashboard_data.py:126
+msgid "Open voting rounds"
+msgstr "Otevřená hodnocení"
+
+#: core/dashboard_data.py:152
+msgid "Sources curating"
+msgstr "Zdroje, které spravujete"
+
+#: core/dashboard_data.py:164
+msgid "Sources that need technical review"
+msgstr "Zdroje, které potřebují technický dohled"
+
+#: core/dashboard_data.py:174
+msgid "Source without Aleph ID"
+msgstr "Zdroje ke katalogizaci"
+
+#: core/dashboard_data.py:184
+msgid "Opened QAs"
+msgstr "Rozpracovaná kontrola kvality"
+
+#: core/dashboard_data.py:197
+msgid "Sources needing QA"
+msgstr "Zdroje ke kontrole"
+
+#: core/forms.py:19
+msgid "Check this to delete this object"
+msgstr "Potvrďte pro odstranění "
+
+#: core/generic_views.py:72
+msgid "Insufficient permissions."
+msgstr "Nedostatečné oprávnění"
+
+#: core/generic_views.py:80
+#, python-brace-format
+msgid "Action {0} not allowed."
+msgstr "Akce {0} nepovolena."
+
+#: core/generic_views.py:90
+msgid "Changes successfully saved."
+msgstr "Změny uloženy"
+
+#: core/views.py:19 templates/base.html:79 templates/card_detail.html:9
+msgid "Dashboard"
+msgstr "Hlavní stránka"
+
+#: core/views.py:73
+msgid "Change user information"
+msgstr "Změnit uživatelské informace"
+
+#: core/views.py:84
+msgid "Profile changed."
+msgstr "Profil změněn"
+
+#: core/views.py:93
+msgid "Password changed successfully."
+msgstr "Heslo úspěšně změněno"
+
+#: harvests/models.py:32
+msgid "Seeds by frequency"
+msgstr "Semínka podle frekvence"
+
+#: harvests/models.py:40
+msgid "Included sources"
+msgstr "Přiřazené zdroje"
+
+#: harvests/models.py:45
+msgid "Custom seeds URL"
+msgstr "Mimosystémová semínka"
+
+#: harvests/models.py:46
+msgid "One URL per line"
+msgstr "Jedna URL na řádku"
+
+#: harvests/models.py:125
+msgid "Planned"
+msgstr "Plánované"
+
+#: harvests/models.py:126 harvests/models.py:229
+msgid "Running"
+msgstr "Probíhající"
+
+#: harvests/models.py:127
+msgid "Success"
+msgstr "Úspěšné"
+
+#: harvests/models.py:128
+msgid "Success with failures"
+msgstr "Úspěšné se závadami"
+
+#: harvests/models.py:129
+msgid "Cancelled"
+msgstr "Zrušené"
+
+#: harvests/models.py:130
+msgid "Failed"
+msgstr "Neúspěšné"
+
+#: harvests/models.py:140 harvests/models.py:240 harvests/tables.py:26
+#: www/tables.py:13
+msgid "title"
+msgstr "název"
+
+#: harvests/models.py:144 harvests/templates/harvest.html:12
+#: source/models.py:215 source/templates/source.html:79
+msgid "Annotation"
+msgstr "Anotace"
+
+#: harvests/models.py:155 harvests/models.py:258
+msgid "Date of harvest"
+msgstr "Datum sklizně"
+
+#: harvests/models.py:159 harvests/models.py:289 templates/base.html:106
+msgid "Topic collections"
+msgstr "Tematické kolekce"
+
+#: harvests/models.py:230
+msgid "New"
+msgstr "Aktualita"
+
+#: harvests/models.py:231
+msgid "Finished"
+msgstr "Hotovo"
+
+#: harvests/models.py:244 source/constants.py:125 source/models.py:199
+msgid "Curator"
+msgstr "Kurátor"
+
+#: harvests/models.py:248 source/templates/source.html:83
+msgid "keywords"
+msgstr "klíčová slova"
+
+#: harvests/models.py:263
+msgid "annotation"
+msgstr "anotace"
+
+#: harvests/models.py:266
+msgid "image"
+msgstr "obrázek"
+
+#: harvests/models.py:272
+msgid "All sources are under open license or contract"
+msgstr "Všechny zdroje jsou nasmlouvány nebo vystaveny pod otevřenou licencí"
+
+#: harvests/models.py:275
+msgid "Date from"
+msgstr "Od"
+
+#: harvests/models.py:276
+msgid "Date to"
+msgstr "Do"
+
+#: harvests/models.py:288
+msgid "Topic collection"
+msgstr "Tematická sbírka"
+
+#: harvests/models.py:294
+msgid "file"
+msgstr "pole"
+
+#: harvests/templates/calendar.html:22
+msgid "Prev"
+msgstr "Předcházející"
+
+#: harvests/templates/calendar.html:23
+msgid "Today"
+msgstr "Dnes"
+
+#: harvests/templates/calendar.html:24 templates/bootstrap_table.html:52
+#: templates/card_detail.html:35 templates/search/search.html:44
+msgid "Next"
+msgstr "Další"
+
+#: harvests/templates/calendar.html:28
+msgid "Month"
+msgstr "Měsíc"
+
+#: harvests/templates/calendar.html:29
+msgid "Week"
+msgstr "Týden"
+
+#: harvests/templates/calendar.html:40
+msgid "Add harvest"
+msgstr "Přidat sklizeň"
+
+#: harvests/templates/calendar.html:48
+msgid "Close"
+msgstr "Zavřít"
+
+#: harvests/templates/harvest.html:13
+#: harvests/templates/topic_collection.html:13 source/templates/source.html:27
+msgid "Status"
+msgstr "Stav"
+
+#: harvests/templates/harvest.html:14
+msgid "Scheduled on"
+msgstr "Naplánováno na "
+
+#: harvests/templates/harvest.html:15
+msgid "Sources by frequency"
+msgstr "Zdroje podle frekvence"
+
+#: harvests/templates/harvest.html:16 publishers/tables.py:10
+#: source/tables.py:18
+msgid "Created"
+msgstr "Vytvořeno"
+
+#: harvests/templates/harvest.html:17 publishers/tables.py:11
+#: source/tables.py:19
+msgid "Last changed"
+msgstr "Poslední změna"
+
+#: harvests/templates/harvest.html:18
+msgid "List of urls"
+msgstr "Seznam URL adres"
+
+#: harvests/templates/harvest.html:22
+msgid ""
+"Poznámka: Po přepnutí sklizně do stavu running dojde ke zmražení semínek a "
+"nelze je měnit."
+msgstr ""
+
+#: harvests/templates/harvest.html:26
+msgid "Included topic collections"
+msgstr "Zahrnuté tematické kolekce"
+
+#: harvests/templates/harvest.html:34
+msgid "Custom seeds"
+msgstr " Mimosystémová semínka"
+
+#: harvests/templates/harvest.html:39
+msgid "Custom sources"
+msgstr " Manuálně nadefinované zdroje"
+
+#: harvests/templates/topic_collection.html:9 source/templates/source.html:22
+#: voting/templates/voting_round.html:24 www/templates/news_admin_detail.html:9
+msgid "Info"
+msgstr "Informace"
+
+#: harvests/templates/topic_collection.html:18
+#: www/templates/news_admin_detail.html:12
+msgid "title [cs]"
+msgstr "název (ČJ)"
+
+#: harvests/templates/topic_collection.html:23
+#: www/templates/news_admin_detail.html:17
+msgid "title [en]"
+msgstr "název (AJ)"
+
+#: harvests/templates/topic_collection.html:28
+#: www/templates/news_admin_detail.html:22
+msgid "annotation [cs]"
+msgstr "anotace (ČJ)"
+
+#: harvests/templates/topic_collection.html:33
+#: www/templates/news_admin_detail.html:27
+msgid "annotation [en]"
+msgstr "anotace (AJ)"
+
+#: harvests/templates/topic_collection.html:38
+msgid "Harvested from"
+msgstr "Sklízeno od"
+
+#: harvests/templates/topic_collection.html:43
+msgid "Harvested till"
+msgstr "Sklízeno do"
+
+#: harvests/templates/topic_collection.html:49 source/models.py:249
+#: source/templates/source.html:32
+msgid "Screenshot"
+msgstr "Screenshot"
+
+#: harvests/templates/topic_collection.html:61 source/templates/source.html:56
+#: www/templates/news_admin_detail.html:76
+msgid "Created at"
+msgstr "Vytvořeno"
+
+#: harvests/templates/topic_collection.html:65 source/templates/source.html:44
+msgid "Owner"
+msgstr "Kurátor"
+
+#: harvests/templates/topic_collection.html:70
+msgid "Keywords"
+msgstr "Klíčová slova"
+
+#: harvests/templates/topic_collection.html:75
+msgid "Attachments"
+msgstr "Přílohy"
+
+#: harvests/templates/topic_collection.html:83
+msgid "All sources are open?"
+msgstr "Všechny zdroje jsou otevřené?"
+
+#: harvests/templates/topic_collection.html:87 source/templates/source.html:122
+msgid "WWW link"
+msgstr "Link na web"
+
+#: harvests/templates/topic_collection.html:95 qa/templates/qa_form.html:20
+#: source/models.py:456 source/templates/source.html:130
+msgid "Seeds"
+msgstr "Semínka"
+
+#: harvests/views.py:45 templates/base.html:88
+msgid "Harvests"
+msgstr "Sklizně"
+
+#: harvests/views.py:139
+msgid "Add TopicCollection"
+msgstr "Přidat tematickou kolekci"
+
+#: harvests/views.py:200
+msgid "TopicCollections"
+msgstr "Tematické kolekce"
+
+#: publishers/forms.py:13
+msgid "Contact name"
+msgstr "Kontaktní osoba"
+
+#: publishers/forms.py:17 publishers/forms.py:59
+msgid "Email"
+msgstr "E-mail"
+
+#: publishers/forms.py:18 publishers/models.py:61
+#: publishers/templates/publisher.html:16
+msgid "Position"
+msgstr "Pozice"
+
+#: publishers/forms.py:57 publishers/models.py:24 publishers/models.py:57
+#: publishers/tables.py:9 source/models.py:213 source/tables.py:9
+#: www/models.py:78
+msgid "Name"
+msgstr "Jméno"
+
+#: publishers/forms.py:62
+msgid "Contact"
+msgstr "Kontakt"
+
+#: publishers/forms.py:69
+msgid "You can't use old contact and create new at the same time"
+msgstr "Nemůžete použít již existující kontakt a zároveň vytvářet nový."
+
+#: publishers/forms.py:71
+msgid "Please fill-out the email"
+msgstr "Vyplňte email"
+
+#: publishers/models.py:31 publishers/views.py:56 templates/base.html:91
+msgid "Publishers"
+msgstr "Vydavatelé"
+
+#: publishers/models.py:58
+msgid "E-mail"
+msgstr "E-mail"
+
+#: publishers/models.py:59
+msgid "Phone"
+msgstr "Telefon"
+
+#: publishers/models.py:60
+msgid "Address"
+msgstr "Adresa"
+
+#: publishers/models.py:65 source/templates/source.html:68
+msgid "Publisher contact"
+msgstr "Kontakt na vydavatele"
+
+#: publishers/models.py:66
+msgid "Publisher contacts"
+msgstr "Kontakty na vydavatele"
+
+#: publishers/templates/publisher.html:10
+msgid "Contacts:"
+msgstr "Kontakty:"
+
+#: publishers/templates/publisher.html:20 publishers/views.py:68
+msgid "Edit contacts"
+msgstr "Editovat kontakty"
+
+#: publishers/templates/publisher.html:24 source/models.py:266
+#: source/views.py:218 templates/base.html:85
+msgid "Sources"
+msgstr "Zdroje"
+
+#: publishers/views.py:22 source/views.py:63
+msgid "Add publisher"
+msgstr "Přidat vydavatele"
+
+#: qa/models.py:18 qa/templates/detail.html:11 source/models.py:265
+msgid "Source"
+msgstr "Zdroj"
+
+#: qa/models.py:24 qa/templates/detail.html:12
+msgid "Checked by"
+msgstr "Zkontroloval"
+
+#: qa/models.py:30
+msgid "Content changed too much"
+msgstr "Změna obsahu"
+
+#: qa/models.py:35
+msgid "Technical side decreased too much"
+msgstr "Technicky nevyhovující"
+
+#: qa/models.py:45
+msgid "Resulting action"
+msgstr "Následná akce"
+
+#: qa/models.py:50
+msgid "This will close QA and act upon the source"
+msgstr "Ukončení kontroly kvality "
+
+#: qa/models.py:54
+msgid "Quality assurance check"
+msgstr "Kontrola kvality"
+
+#: qa/models.py:55
+msgid "Quality assurance checks"
+msgstr "Kontroly kvality"
+
+#: qa/templates/detail.html:13
+msgid "Content changed"
+msgstr "Změna obsahu"
+
+#: qa/templates/detail.html:14
+msgid "Technical quality changed"
+msgstr "Změna technické kvality"
+
+#: qa/templates/detail.html:16
+msgid "Action"
+msgstr "Jednání"
+
+#: qa/templates/qa_form.html:6 qa/templates/qa_form.html:10
+msgid "QA"
+msgstr "Kontrola kvality"
+
+#: qa/views.py:65
+msgid "Quality assurance reports"
+msgstr "Oznámení o kontrole kvality"
+
+#: settings/base.py:166
+msgid "Czech"
+msgstr "Česky"
+
+#: settings/base.py:167
+msgid "English"
+msgstr "Anglicky"
+
+#: source/constants.py:21
+msgid "Voting"
+msgstr "Hodnocení"
+
+#: source/constants.py:22
+msgid "Duplicated record"
+msgstr "Duplicitní záznam"
+
+#: source/constants.py:23
+msgid "Waiting for response"
+msgstr "Čeká na odpověď"
+
+#: source/constants.py:24
+msgid "Waiting for reevaluation"
+msgstr "Čeká na přehodnocení"
+
+#: source/constants.py:25
+msgid "Technical review"
+msgstr "Technická kontrola"
+
+#: source/constants.py:27
+msgid "Accepted by staff"
+msgstr "Přijato Webarchivem"
+
+#: source/constants.py:28
+msgid "Declined by staff"
+msgstr "Odmítnuto Webarchivem"
+
+#: source/constants.py:29
+msgid "Archiving accepted"
+msgstr "Archivuje se"
+
+#: source/constants.py:30
+msgid "Archiving without publisher consent"
+msgstr "Archivováno bez souhlasu vydavatele"
+
+#: source/constants.py:31
+msgid "Declined by publisher"
+msgstr "Odmítnuto vydavatelem"
+
+#: source/constants.py:32
+msgid "Publisher ignored requests"
+msgstr "Bez odezvy vydavatele"
+
+#: source/constants.py:34
+msgid "Contract terminated"
+msgstr "Vydávání ukončeno"
+
+#: source/constants.py:61
+msgid "Once only"
+msgstr "Pouze jednorázově"
+
+#: source/constants.py:65
+msgid "Once a year"
+msgstr "Jednou za rok"
+
+#: source/constants.py:69
+msgid "Twice a year"
+msgstr "Dvakrát za rok"
+
+#: source/constants.py:73
+msgid "Quarterly"
+msgstr "Čtvrletně"
+
+#: source/constants.py:77
+msgid "Every two months"
+msgstr "Každé dva měsíce"
+
+#: source/constants.py:81
+msgid "Every month"
+msgstr "Každý měsíc"
+
+#: source/constants.py:85
+msgid "Weekly"
+msgstr "Týdně"
+
+#: source/constants.py:89
+msgid "Daily"
+msgstr "Denně"
+
+#: source/constants.py:105
+msgid "Include in harvest"
+msgstr "Zahrnout do sklizně"
+
+#: source/constants.py:106
+msgid "Exclude from harvest"
+msgstr "Vyjmout ze sklizně"
+
+#: source/constants.py:107
+msgid "Seed is no longer published"
+msgstr "Semínko už není vydávané"
+
+#: source/constants.py:123
+msgid "Visitor"
+msgstr "Návstěvník"
+
+#: source/constants.py:124 source/templates/source.html:102
+msgid "ISSN"
+msgstr "ISSN"
+
+#: source/forms.py:17
+msgid "Creative commons content"
+msgstr "Obsah Creative commons"
+
+#: source/forms.py:20
+msgid "Main URL"
+msgstr "Hlavní URL"
+
+#: source/forms.py:53
+msgid "Check if this is really unique source."
+msgstr "Zaškrtněte, pokud jde skutečně o nový zdroj"
+
+#: source/models.py:218 source/templates/source.html:60
+msgid "Suggested by"
+msgstr "Navrženo"
+
+#: source/models.py:234 source/templates/source.html:48 templates/api.html:18
+msgid "Frequency"
+msgstr "Frekvence"
+
+#: source/models.py:239 source/templates/source.html:90
+msgid "Category"
+msgstr "Kategorie"
+
+#: source/models.py:244 source/templates/source.html:94
+msgid "Sub category"
+msgstr "Podkategorie"
+
+#: source/models.py:256
+msgid "Source is dead"
+msgstr "Zdroj je nefunkční"
+
+#: source/models.py:408
+msgid "default"
+msgstr "výchozí"
+
+#: source/models.py:409
+msgid "low"
+msgstr "low"
+
+#: source/models.py:410
+msgid "very_low"
+msgstr "very low"
+
+#: source/models.py:421
+msgid "Seed url"
+msgstr "URL semínko"
+
+#: source/models.py:427
+msgid "From"
+msgstr "Z"
+
+#: source/models.py:428
+msgid "To"
+msgstr "Do"
+
+#: source/models.py:431
+msgid "Javascript"
+msgstr "Javascript"
+
+#: source/models.py:432
+msgid "Global reject"
+msgstr "Odmítnuto"
+
+#: source/models.py:433
+msgid "Youtube"
+msgstr "Youtube"
+
+#: source/models.py:434
+msgid "Calendars"
+msgstr "Kalendáře"
+
+#: source/models.py:435
+msgid "Local traps"
+msgstr "Local traps"
+
+#: source/models.py:436
+msgid "Redirect on seed"
+msgstr "Přesměrováno na semínko"
+
+#: source/models.py:437
+msgid "Robots.txt active"
+msgstr "aktivní Robots.txt "
+
+#: source/models.py:455
+msgid "Seed"
+msgstr "Semínko"
+
+#: source/templates/add_seeds.html:30
+msgid "Add seed url"
+msgstr "Přidat URL semínka"
+
+#: source/templates/duplicity_check.html:15
+msgid "Potential duplicities"
+msgstr "Možné duplicity"
+
+#: source/templates/duplicity_check.html:28
+msgid "Sorry, we could not find any duplicities"
+msgstr "Duplicity nenalezeny"
+
+#: source/templates/source.html:52
+msgid "Created by"
+msgstr "Vytvořil"
+
+#: source/templates/source.html:98
+msgid "Aleph id"
+msgstr "Aleph id"
+
+#: source/templates/source.html:106
+msgid "QA checks"
+msgstr "Provedení kontroly kvality"
+
+#: source/templates/source.html:116
+msgid "WA-admin link"
+msgstr "WA Admin link"
+
+#: source/templates/source.html:117
+msgid "Legacy url"
+msgstr "Stará URL"
+
+#: source/templates/source.html:139
+msgid "Add seeds"
+msgstr "Přidat semínka"
+
+#: source/templates/source.html:145
+msgid "WA-KAT"
+msgstr "WA-KAT"
+
+#: source/templates/source.html:147
+msgid "QA check"
+msgstr "Provedení kontroly kvality"
+
+#: source/templates/source.html:149
+msgid "Voting rounds"
+msgstr "Hodnocení"
+
+#: source/templates/source.html:152
+msgid "Create voting round"
+msgstr "Vytvoření hodnocení"
+
+#: source/templates/source.html:163
+msgid "Sorry no contracts yet."
+msgstr "Zatím bez smlouvy"
+
+#: source/templates/source.html:165
+msgid "Create"
+msgstr "Vytvořit"
+
+#: source/templates/source.html:166
+msgid "Assign"
+msgstr "Přiřadit"
+
+#: source/views.py:62
+msgid "Add source"
+msgstr "Přidat zdroj"
+
+#: source/views.py:64
+msgid "Choose contact person"
+msgstr "Vyberte kontaktní osobu"
+
+#: source/views.py:65
+msgid "Check for duplicities"
+msgstr "Zkontrolujte duplicity"
+
+#: source/views.py:191
+msgid "Add seed"
+msgstr "Přidat semínko"
+
+#: templates/api.html:7
+msgid ""
+"\n"
+"            Below you can find links to files that contains seeds from "
+"sources\n"
+"            that have been accepted.\n"
+"            Each file also contains date of the file creation. Files are "
+"automatically\n"
+"            generated every day, but you can also manually start the "
+"process.\n"
+"        "
+msgstr ""
+"\n"
+"Níže jsou odkazy na soubory obsahující semínka zdrojů, které byly přijaty k "
+"archivaci. Každý soubor zahrnuje datum vytvoření. Soubory jsou automaticky "
+"generovány každý den, ale je možné nastavit proces i manuálně"
+
+#: templates/api.html:28
+msgid "Reload files"
+msgstr "Obnovit soubory"
+
+#: templates/base.html:11 templates/base.html:32
+msgid "Seeder"
+msgstr "Seeder"
+
+#: templates/base.html:36 templates/base.html:82 templates/search/search.html:7
+#: templates/search/search.html:11
+msgid "Search"
+msgstr "Hledání"
+
+#: templates/base.html:41
+msgid "Languages"
+msgstr "Jazyky"
+
+#: templates/base.html:56
+msgid "Profile"
+msgstr "Profil"
+
+#: templates/base.html:59 templates/registration/password_change_form.html:6
+#: templates/registration/password_change_form.html:10
+#: templates/registration/password_reset_confirm.html:16
+msgid "Change password"
+msgstr "Změnit heslo"
+
+#: templates/base.html:62
+msgid "Logout"
+msgstr "Odhlásit se"
+
+#: templates/base.html:100
+msgid "Quality assurance"
+msgstr "Kontrola kvality"
+
+#: templates/base.html:109
+msgid "News"
+msgstr "Aktuality"
+
+#: templates/base.html:115
+msgid "Bug report"
+msgstr "Nahlásit chybu"
+
+#: templates/base.html:116
+msgid "Read the docs"
+msgstr "Dokumentace"
+
+#: templates/base.html:117
+#, fuzzy
+#| msgid "Seed url"
+msgid "Seed DB dump"
+msgstr "URL semínko"
+
+#: templates/bootstrap_comments_threaded.html:14
+msgid "Respond"
+msgstr "Odpovědět"
+
+#: templates/bootstrap_comments_threaded.html:33
+msgid "Respond to "
+msgstr "Odpovědět"
+
+#: templates/bootstrap_comments_threaded.html:41
+msgid "Submit comment"
+msgstr "Odeslat komentář"
+
+#: templates/bootstrap_table.html:48 templates/card_detail.html:31
+#: templates/search/search.html:40
+msgid "Previous"
+msgstr "Předchozí"
+
+#: templates/dashboard.html:11
+msgid "You are done, nothing more to do here."
+msgstr "Hotovo"
+
+#: templates/filtered_list.html:12
+msgid "records"
+msgstr "záznamů"
+
+#: templates/filtered_list.html:14
+msgid "Toggle filters"
+msgstr "Nastavení filtrů"
+
+#: templates/history.html:6 templates/history.html:7
+msgid "History of"
+msgstr "Historie "
+
+#: templates/history.html:13
+msgid "Author"
+msgstr "Autor"
+
+#: templates/history.html:23
+msgid "Field"
+msgstr "Pole"
+
+#: templates/history.html:24
+msgid "Original value"
+msgstr "Původní hodnota"
+
+#: templates/history.html:25
+msgid "New value"
+msgstr "Nová hodnota"
+
+#: templates/registration/login.html:5
+msgid "Login"
+msgstr "Přihlásit se"
+
+#: templates/registration/login.html:15
+msgid "Login to Seeder"
+msgstr "Přihlásit se do Seederu"
+
+#: templates/registration/login.html:17
+#: templates/registration/password_reset_subject.txt:1
+msgid "Reset password"
+msgstr "Resetovat heslo"
+
+#: templates/registration/password_reset_confirm.html:19
+msgid "Sorry, link expired."
+msgstr "Link je nefunkční"
+
+#: templates/registration/password_reset_done.html:14
+msgid "Password link sent"
+msgstr "Odkaz na resetování hesla byl odeslán"
+
+#: templates/registration/password_reset_done.html:17
+msgid ""
+"\n"
+"                        Check your email for instructions. Don't forget "
+"about\n"
+"                        spam folder.\n"
+"                        If you did not receive any email don't hesitate to\n"
+"                        contact us.\n"
+"                    "
+msgstr ""
+"\n"
+"Zkontrolujte zaslání instrukcí ve vašem e-mailu. Nezapomeňte na složku se "
+"spamy.\n"
+"Pokud jste nic nedostali, kontaktujte nás."
+
+#: templates/registration/password_reset_form.html:15
+msgid "Reset"
+msgstr "Resetovat"
+
+#: templates/search/search.html:25
+msgid "Results"
+msgstr "Výsledky"
+
+#: templates/search/search.html:33
+msgid "Nothing found"
+msgstr "Nic nenalezeno"
+
+#: templates/user_edit.html:13
+msgid "Change profile"
+msgstr "Změnit profil"
+
+#: voting/constants.py:12
+msgid "Vote in progress"
+msgstr "Probíhá hodnocení"
+
+#: voting/constants.py:17
+msgid "Include source"
+msgstr "Přijmout zdroj"
+
+#: voting/constants.py:22
+msgid "Exclude source"
+msgstr "Odmítnout zdroj"
+
+#: voting/constants.py:27
+msgid "Postpone decision"
+msgstr "Přehodnotit později"
+
+#: voting/constants.py:32
+msgid "Technically impossible"
+msgstr "Technicky neskliditelné "
+
+#: voting/forms.py:7
+msgid "Months"
+msgstr "Měsíce"
+
+#: voting/forms.py:8
+msgid "type for how many months you wish to postpone this"
+msgstr "za jak dlouho bude zdroj přehodnocen"
+
+#: voting/models.py:32
+msgid "Election"
+msgstr "Hlasování"
+
+#: voting/models.py:33
+msgid "Elections"
+msgstr "Hlasování"
+
+#: voting/models.py:95
+msgid "Round"
+msgstr "Kolo"
+
+#: voting/models.py:99 voting/templates/voting_round.html:82
+msgid "Vote"
+msgstr "Ohodnoťte"
+
+#: voting/models.py:104
+#, python-brace-format
+msgid "{0} - {1}"
+msgstr "{0} - {1}"
+
+#: voting/templates/voting_round.html:8
+msgid "Voting round"
+msgstr "Kolo hodnocení"
+
+#: voting/templates/voting_round.html:25
+#, python-format
+msgid ""
+"\n"
+"            <p>\n"
+"                <b>%(source)s</b> was added to system\n"
+"                <b>%(source_created)s</b>. This voting round determines\n"
+"                whether %(source)s will be archived\n"
+"                or die in the shadows of unarchived internet.\n"
+"            </p>\n"
+"        "
+msgstr ""
+"\n"
+"            <p>\n"
+"                <b>%(source)s</b> byl přidán do systému\n"
+"                <b>%(source_created)s</b>. Hodnocení určí, zda\n"
+"                 %(source)s bude archivován, nebo jestli skončí na "
+"smetišti \n"
+"                dějin nearchivovaného internetu.\n"
+"            </p>\n"
+"        "
+
+#: voting/templates/voting_round.html:34
+#, python-format
+msgid ""
+"\n"
+"                <p>\n"
+"                    This voting round opened <b>%(round_created)s</b>.\n"
+"                    Remember you have the power to change how future\n"
+"                    generations remember us. Cast a vote!\n"
+"                </p>\n"
+"            "
+msgstr ""
+"\n"
+"                <p>\n"
+"                    Hlasování otevřeno <b>%(round_created)s</b>.\n"
+"                    Můžeš ovlivnit, jak si nás budou pamatovat\n"
+"                    budoucí generace. Hlasuj.\n"
+"                </p>\n"
+"            "
+
+#: voting/templates/voting_round.html:42
+#, python-format
+msgid ""
+"\n"
+"                <p>\n"
+"                    Our hero <b>%(resolved_by)s</b> resolved this\n"
+"                    <b>%(round_closed)s</b>.\n"
+"                    The final decision is to <b>%(status)s</b>.\n"
+"                </p>\n"
+"            "
+msgstr ""
+"\n"
+"                <p>\n"
+"                    Kurátor <b>%(resolved_by)s</b> uzavřel toto hodnocení.\n"
+"                    <b>%(round_closed)s</b>.\n"
+"                    Konečné rozhodnutí je <b>%(status)s</b>.\n"
+"                </p>\n"
+"            "
+
+#: voting/templates/voting_round.html:52
+msgid "Voting round will be reopened on"
+msgstr "Hodnocení bude znovu otevřeno"
+
+#: voting/templates/voting_round.html:60
+msgid "Votes"
+msgstr "Hodnocení"
+
+#: voting/templates/voting_round.html:67
+msgid "No votes yet :("
+msgstr "Neohodnoceno"
+
+#: voting/templates/voting_round.html:73
+msgid "Links to review"
+msgstr "Odkazy k hodnocení"
+
+#: voting/templates/voting_round.html:94 voting/templates/voting_round.html:111
+msgid "Sorry round closed."
+msgstr "Hodnocení bylo uzavřeno."
+
+#: voting/templates/voting_round.html:99
+msgid "Management powers:"
+msgstr "Manažerské možnosti:"
+
+#: voting/templates/voting_round.html:106
+msgid "Close with result"
+msgstr "Uzavřít s výsledkem"
+
+#: voting/views.py:45
+msgid "Open round already exists. Round not created."
+msgstr "Hodnocení již existuje. Nové kolo nebylo vytvořeno."
+
+#: voting/views.py:83
+msgid "Vote changed"
+msgstr "Hodnocení změněno"
+
+#: voting/views.py:87
+msgid "Vote created"
+msgstr "Ohodnoceno"
+
+#: voting/views.py:99
+msgid "Postpone voting"
+msgstr "Hodnocení odloženo"
+
+#: www/models.py:22
+msgid "First source"
+msgstr "První zdroj"
+
+#: www/models.py:30
+msgid "second source"
+msgstr "druhý zdroj"
+
+#: www/models.py:37
+msgid "annotation for first source"
+msgstr "anotace pro první zdroj"
+
+#: www/models.py:44
+msgid "annotation for second source"
+msgstr "anotace pro druhý zdroj"
+
+#: www/models.py:71
+msgid "News article"
+msgstr "Aktualita"
+
+#: www/models.py:72
+msgid "News articles"
+msgstr "Aktuality"
+
+#: www/models.py:76
+msgid "URL"
+msgstr "URL"
+
+#: www/models.py:77
+msgid "Contact email"
+msgstr "Kontaktní e-mail"
+
+#: www/models.py:81
+msgid "Licensed under creative commons"
+msgstr "Vystaveno pod licencí Creative Commons"
+
+#: www/models.py:85
+msgid "Note"
+msgstr "Poznámka"
+
+#: www/models.py:89
+msgid "Nomination"
+msgstr "Návrh"
+
+#: www/models.py:90
+msgid "Nominations"
+msgstr "Návrhy"
+
+#: www/news_admin_views.py:22
+msgid "Add news"
+msgstr "Přidat aktualitu"
+
+#: www/news_admin_views.py:73
+msgid "news"
+msgstr "aktuality"
+
+#: www/templates/about/graphics.html:31 www/templates/about/graphics.html:45
+#: www/templates/about/graphics.html:60 www/templates/about/graphics.html:66
+#: www/templates/about/graphics.html:79 www/templates/about/graphics.html:81
+#: www/templates/about/graphics.html:83 www/templates/about/graphics.html:85
+#: www/templates/about/graphics.html:93 www/templates/about/graphics.html:97
+#: www/templates/about/graphics.html:101 www/templates/about/graphics.html:109
+#: www/templates/about/graphics.html:113 www/templates/about/graphics.html:117
+#: www/templates/about/graphics.html:127 www/templates/about/graphics.html:137
+msgid "Webarchiv certificate"
+msgstr "Webarchiv certificate"
+
+#: www/templates/news_admin_detail.html:32
+msgid "source 1 "
+msgstr "první zdroj"
+
+#: www/templates/news_admin_detail.html:37
+msgid "source 1 annotation [cs]"
+msgstr "první zdroj - anotace (ČJ)"
+
+#: www/templates/news_admin_detail.html:42
+msgid "source 1 annotation [en]"
+msgstr "druhý zdroj - anotace (AJ)"
+
+#: www/templates/news_admin_detail.html:47
+msgid "source 2 "
+msgstr "druhý zdroj"
+
+#: www/templates/news_admin_detail.html:52
+msgid "source 2 annotation [cs]"
+msgstr "druhý zdroj - anotace (ČJ)"
+
+#: www/templates/news_admin_detail.html:57
+msgid "source 2 annotation [en]"
+msgstr "druhý zdroj - anotace (AJ)"
+
+#: www/templates/news_admin_detail.html:64
+msgid "Image"
+msgstr "Obrázek"
+
+#: www/templates/news_admin_detail.html:85
+msgid "Publish on main page"
+msgstr "Publikovat na hlavní stránce"
+
+#: www/templates/nominate/nominate.html:32
+msgid "Mohu jednat za uvedené zdroje"
+msgstr ""
+
+#: www/templates/nominate/nominate.html:37
+msgid "Zdroj s licencí Creative Commons"
+msgstr ""
+
+#: www/templates/topic_collections/detail.html:21
+msgid "Klíčová slova sklizně"
+msgstr ""
+
+#: www/views.py:81
+msgid "topic_collections_url"
+msgstr "tematicke_kolekce"
+
+#: www/views.py:100
+msgid "topic_collection_detail_url"
+msgstr "tematicke_kolekce_detail"
+
+#: www/views.py:161
+msgid "about_url"
+msgstr "o_webarchivu"
+
+#: www/views.py:169
+msgid "more_about_url"
+msgstr "jsme_webarchiv"
+
+#: www/views.py:183
+msgid "about_harvests_url"
+msgstr "celoplosne_sklizne"
+
+#: www/views.py:192
+msgid "about_terminology_url"
+msgstr "terminologie"
+
+#: www/views.py:201
+msgid "about_documents_url"
+msgstr "dokumenty"
+
+#: www/views.py:210
+msgid "about_graphics_url"
+msgstr "graficke_materialy"
+
+#: www/views.py:219
+msgid "about_contact_url"
+msgstr "kontakty"
+
+#: www/views.py:228
+msgid "about_faq_url"
+msgstr "faq"
+
+#: www/views.py:269 www/views.py:287 www/views.py:310
+msgid "categories_url"
+msgstr "katalog_stranek"
+
+#: www/views.py:343
+msgid "keyword_url"
+msgstr "klicova_slova"
+
+#: www/views.py:361 www/views.py:395
+msgid "search_url"
+msgstr "hledani"
+
+#: www/views.py:438
+msgid "www_source_url"
+msgstr "zdroj"
+
+#: www/views.py:451
+msgid "www_nominate_url"
+msgstr "pridat_web"
+
+#: www/views.py:457
+#, python-format
+msgid "Webarchiv.cz - archivace vasich webovych stranek %(url)s"
+msgstr ""
+
+#: www/views.py:460
+#, python-format
+msgid "Webarchiv.cz - archivace webovych stranek %(url)s"
+msgstr ""
+
+#: www/views.py:483
+msgid "New nomination"
+msgstr "Nový návrh"
+
+#: www/views.py:499
+msgid "www_nominate_success_url"
+msgstr "prijaty_navrh"
+
+#: www/views.py:507 www/views.py:519 www/views.py:526 www/views.py:533
+#: www/views.py:540 www/views.py:547
+msgid "nominate-url"
+msgstr "pridat_web"
+
+#: www/views.py:507
+msgid "nominate_contract_url"
+msgstr "smlouva"
+
+#: www/views.py:519
+msgid "nominate_cooperation_url"
+msgstr "pomozte_nam_uchovat_cesky_web"
+
+#: www/views.py:526
+msgid "nominate_creative_commons_url"
+msgstr "creative_commons"
+
+#: www/views.py:533
+msgid "nominate_error_url"
+msgstr "chyba"
+
+#: www/views.py:540
+msgid "nominate_feedback_url"
+msgstr "odpoved"
+
+#: www/views.py:547
+msgid "nominate_source_selection_url"
+msgstr "vyber_zdroju"
+
+#: www/views.py:554
+msgid "disclaimer_url"
+msgstr ""
+
+#~ msgid "DEV notes"
+#~ msgstr "DEV notes"

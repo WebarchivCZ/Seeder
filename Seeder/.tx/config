@@ -1,8 +1,8 @@
 [main]
 host = https://www.transifex.com
 
-[seeder.djangopo]
+[seeder-production.djangopo]
 file_filter = locale/<lang>/LC_MESSAGES/django.po
 source_file = locale/en/LC_MESSAGES/django.po
-source_lang = en
+source_lang = en_us
 type = PO

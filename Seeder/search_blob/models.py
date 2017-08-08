@@ -69,6 +69,7 @@ class SearchModel:
         Blob.objects.update_or_create(
             record_type=ContentType.objects.get_for_model(self),
             record_id=self.id,
+            is_public=False,
             defaults={
                 "title": self.get_search_title(),
                 "url": self.get_search_url(),

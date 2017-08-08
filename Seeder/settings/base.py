@@ -171,6 +171,8 @@ CALENDAR_LANGUAGES = {
     'cs': 'cs-CZ',
     'en': 'en-US'
 }
+MODELTRANSLATION_DEFAULT_LANGUAGE = 'cs'
+
 
 
 LOCALE_PATHS = (

@@ -10,6 +10,8 @@
 	<section>
 		<div class="container">
 
+			{% if lang == "cs" %}
+
 			<h2>Creative Commons (CC)</h2>
 
 			<p>Licence Creative Commons (dále CC) jsou souborem licencí, které slouží k legálnímu sdílení a využívání autorských děl. CC vznikly z potřeby nějakým způsobem právně upravit vztah mezi uživateli díla a jeho autorem v případě, že autor chce, aby jeho dílo mohla za vyznačených podmínek používat široká veřejnost. Licence CC tedy umožňuje autorovi nabízet jeho dílo prostřednictvím licenční smlouvy, na základě které poskytuje veřejnosti některá práva k dílu a jiná si vyhrazuje.</p>
@@ -77,6 +79,76 @@
 			<p>Snadným způsobem pro vytvoření licence CC je <a href="http://creativecommons.org/choose/?lang=cs" target="_blank">generátor licencí</a>. Prostřednictvím formuláře si zvolíte podmínky, za kterých chcete vaše dílo sdílet, případně vyplníte autorské údaje a formulář automaticky vygeneruje typ licence a HTML kód. Tento kód už pak stačí pouze vložit do zdrojového kódu vašich stránek.</p>
 			<p>Pro zachování správného licencování stránek je třeba, aby logo licence CC na vašich stránkách odkazovalo na celé znění textu licence.</p>
 			<p>Více informací najdete na <a href="http://www.creativecommons.cz/" target="_blank">českých stránkách licence CC</a> nebo na <a href="http://creativecommons.org/" target="_blank">oficiálních stránkách licence</a>.</p>
+
+			{% else %}
+
+			<h2>Creative Commons (CC)</h2>
+
+			<p>A Creative Commons (CC) license is one of several public copyright licenses that enable the free distribution of an otherwise copyrighted work. A CC license is used when an author wants to give people the right to share, use, and build upon a work that he/she has created. CC provides an author flexibility (for example, he/she might choose to allow only non-commercial uses of his/her own work) and protects the people who use or redistribute an author's work from concerns of copyright infringement as long as they abide by the conditions that are specified in the license by which the author distributes the work.</p>
+			<p>CC are easy-to-use copyright licenses and provide a simple, standardized way to give you permission to share and use your creative work— on conditions of your choice</p>
+
+			<h3>Information for publishers and authors</h3>
+			<p>Using Creative Commons licenses is ideal if you want to allow others to freely use your work (under the terms of the license) and use it free of charge. Authorship of the work is preserved and your work can spread, develop and inspire others</p>
+			<p>There are some things that you should think about before you apply a Creative Commons license:</p>
+			<ul class="normal">
+			  <li>Make sure you own rights to material what you want to license.</li>
+			  <li>The license does not contain a warranty, so if you think there may be third party rights in the material, you may want to clear those rights in advance.</li>
+			  <li>Once you apply a CC license to your material, anyone who receives it may rely on that license for as long as the material is protected by copyright and similar rights, even if you later stop distributing it.</li>
+			</ul>
+
+			<h3>Types of licenses</h3>
+			<p>There are six different CC licenses. Two of the licenses prohibit the sharing of adaptations (BY-ND, BY-NC-ND); three prohibit commercial uses (BY-NC, BY-NC-ND, BY-NC-SA), and two require adaptations be licensed under the same license (BY-SA, BY-NC-SA):</p>
+
+			<table class="in-text">
+			  <tr>
+			    <th>Acronym</th>
+			    <th>Rights</th>
+			    <th>Obligations</th>
+			    <th>Description</th>
+			  </tr>
+			  <tr>
+			    <td>BY</td>
+			    <td><img src="{{ STATIC_URL }}www/images/design/cc-icons/share.png" class="cc-icon" alt="Share"><img src="{{ STATIC_URL }}www/images/design/cc-icons/remix.png" class="cc-icon" alt="Remix"></td>
+			    <td><img src="{{ STATIC_URL }}www/images/design/cc-icons/by.png" class="cc-icon" alt="BY"></td>
+			    <td>Attribution alone</td>
+			  </tr>
+			  <tr>
+			    <td>BY-SA</td>
+			    <td><img src="{{ STATIC_URL }}www/images/design/cc-icons/remix.png" class="cc-icon" alt="Remix"></td>
+			    <td><img src="{{ STATIC_URL }}www/images/design/cc-icons/by.png" class="cc-icon" alt="BY"><img src="{{ STATIC_URL }}www/images/design/cc-icons/sa.png" class="cc-icon" alt="SA"></td>
+			    <td>Attribution - ShareAlike</td>
+			  </tr>
+			  <tr>
+			    <td>BY-ND</td>
+			    <td><img src="{{ STATIC_URL }}www/images/design/cc-icons/share.png" class="cc-icon" alt="Share"></td>
+			    <td><img src="{{ STATIC_URL }}www/images/design/cc-icons/by.png" class="cc-icon" alt="BY"><img src="{{ STATIC_URL }}www/images/design/cc-icons/nd.png" class="cc-icon" alt="ND"></td>
+			    <td>Attribution - NoDerivatives</td>
+			  </tr>
+			  <tr>
+			    <td>BY-NC</td>
+			    <td><img src="{{ STATIC_URL }}www/images/design/cc-icons/share.png" class="cc-icon" alt="Share"><img src="{{ STATIC_URL }}www/images/design/cc-icons/remix.png" class="cc-icon" alt="Remix"></td>
+			    <td><img src="{{ STATIC_URL }}www/images/design/cc-icons/by.png" class="cc-icon" alt="BY"><img src="{{ STATIC_URL }}www/images/design/cc-icons/nc.png" class="cc-icon" alt="NC"></td>
+			    <td>Attribution - Noncommercial</td>
+			  </tr>
+			  <tr>
+			    <td>BY-NC-SA</td>
+			    <td><img src="{{ STATIC_URL }}www/images/design/cc-icons/share.png" class="cc-icon" alt="Share"><img src="{{ STATIC_URL }}www/images/design/cc-icons/remix.png" class="cc-icon" alt="Remix"></td>
+			    <td><img src="{{ STATIC_URL }}www/images/design/cc-icons/by.png" class="cc-icon" alt="BY"><img src="{{ STATIC_URL }}www/images/design/cc-icons/sa.png" class="cc-icon" alt="SA"><img src="{{ STATIC_URL }}www/images/design/cc-icons/nc.png" class="cc-icon" alt="NC"></td>
+			    <td>Attribution - Noncommercial - ShareAlike</td>
+			  </tr>
+			  <tr>
+			    <td>BY-NC-ND</td>
+			    <td><img src="{{ STATIC_URL }}www/images/design/cc-icons/share.png" class="cc-icon" alt="Share"></td>
+			    <td><img src="{{ STATIC_URL }}www/images/design/cc-icons/by.png" class="cc-icon" alt="BY"><img src="{{ STATIC_URL }}www/images/design/cc-icons/nd.png" class="cc-icon" alt="ND"><img src="{{ STATIC_URL }}www/images/design/cc-icons/nc.png" class="cc-icon" alt="NC"></td>
+			    <td>Attribution - Noncommercial - NoDerivatives</td>
+			  </tr>
+			</table>
+
+			<h3>Adopt CC lisense</h3>
+			<p>Easy way to choose a license and share your work is using <a href="http://creativecommons.org/choose/?lang=cs" target="_blank">Creative Commons tools</a>.</p>
+			<p>For more information visit <a href="http://creativecommons.org/" target="_blank">official Creative Commons website</a>.</p>
+
+			{% endif %}
 
 		</div>
 	</section>
