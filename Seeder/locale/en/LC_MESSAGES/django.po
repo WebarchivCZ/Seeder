@@ -12,7 +12,7 @@ msgstr ""
 "Project-Id-Version: Seeder\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-08-28 23:33+0000\n"
-"PO-Revision-Date: 2017-06-27 00:16+0000\n"
+"PO-Revision-Date: 2017-08-29 01:46+0200\n"
 "Last-Translator: Visgean Skeloru <visgean@gmail.com>, 2017\n"
 "Language-Team: English (https://www.transifex.com/webarchivecz/teams/43032/"
 "en/)\n"
@@ -21,6 +21,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 1.8.7.1\n"
 
 #: blacklists/models.py:22
 msgid "Haritrex blacklist"
@@ -1183,10 +1184,9 @@ msgid "Read the docs"
 msgstr "Read the docs"
 
 #: templates/base.html:117
-#, fuzzy
 #| msgid "Seed url"
 msgid "Seed DB dump"
-msgstr "Seed URL"
+msgstr "Seed DB dump"
 
 #: templates/bootstrap_comments_threaded.html:14
 msgid "Respond"
@@ -1286,70 +1286,56 @@ msgid "Change profile"
 msgstr "Change profile"
 
 #: urls.py:81
-#, fuzzy
 #| msgid "topic_collections_url"
 msgid "^topic_collections_url$"
-msgstr "topic_collections_url"
+msgstr "^topic_collections$"
 
 #: urls.py:83
-#, fuzzy
 #| msgid "topic_collections_url"
 msgid "^topic_collections_url/(?P<slug>[\\w-]+)$"
-msgstr "topic_collections_url"
+msgstr "^topic_collections/(?P<slug>[\\w-]+)$"
 
 #: urls.py:87
-#, fuzzy
 #| msgid "about_url"
 msgid "^about_url$"
-msgstr "about_url"
+msgstr "^about$"
 
 #: urls.py:88
-#, fuzzy
 #| msgid "more_about_url"
 msgid "^more_about_url$"
-msgstr "more_about_url"
+msgstr "^about/more$"
 
 #: urls.py:89
-#, fuzzy
 #| msgid "about_harvests_url"
 msgid "^about_harvests_url$"
-msgstr "about_harvests_url"
+msgstr "^about/harvests$"
 
 #: urls.py:90
-#, fuzzy
-#| msgid "about_terminology_url"
 msgid "^about_terminology_url$"
-msgstr "about_terminology_url"
+msgstr "^about/terminology$"
 
 #: urls.py:91
-#, fuzzy
 #| msgid "about_documents_url"
 msgid "^about_documents_url$"
-msgstr "about_documents_url"
+msgstr "^about/documents$"
 
 #: urls.py:92
-#, fuzzy
 #| msgid "about_graphics_url"
 msgid "^about_graphics_url$"
-msgstr "about_graphics_url"
+msgstr "^about/graphics$"
 
 #: urls.py:93
-#, fuzzy
 #| msgid "about_contact_url"
 msgid "^about_contact_url$"
-msgstr "about_contact_url"
+msgstr "^about/contact$"
 
 #: urls.py:94
-#, fuzzy
-#| msgid "about_faq_url"
 msgid "^about_faq_url$"
-msgstr "about_faq_url"
+msgstr "^about/faq_url$"
 
 #: urls.py:96
-#, fuzzy
-#| msgid "categories_url"
 msgid "^categories_url$"
-msgstr "categories_url"
+msgstr "^categories$"
 
 #: urls.py:97
 msgid "^categories_url/(?P<slug>[\\w-]+)$"
@@ -1368,10 +1354,9 @@ msgid "^keyword_url/(?P<slug>[\\w-]+)$"
 msgstr ""
 
 #: urls.py:112
-#, fuzzy
 #| msgid "search_url"
 msgid "^search_url$"
-msgstr "search_url"
+msgstr "^search$"
 
 #: urls.py:114
 msgid "^search_url/(?P<query>.*)"
@@ -1382,58 +1367,49 @@ msgid "^www_source_url/(?P<slug>[\\w-]+)$"
 msgstr ""
 
 #: urls.py:121
-#, fuzzy
 #| msgid "www_nominate_url"
 msgid "^www_nominate_url$"
-msgstr "www_nominate_url"
+msgstr "^nominate$"
 
 #: urls.py:122
-#, fuzzy
 #| msgid "www_nominate_success_url"
 msgid "^www_nominate_success_url$"
-msgstr "www_nominate_success_url"
+msgstr "^nominate/success$"
 
 #: urls.py:124
-#, fuzzy
 #| msgid "nominate_contract_url"
 msgid "^www_nominate_url/contract_url$"
-msgstr "nominate_contract_url"
+msgstr "^nominate/contract$"
 
 #: urls.py:127
-#, fuzzy
 #| msgid "nominate_cooperation_url"
 msgid "^www_nominate_url/cooperation_url$"
-msgstr "nominate_cooperation_url"
+msgstr "^nominate/cooperation$"
 
 #: urls.py:130
-#, fuzzy
 #| msgid "nominate_creative_commons_url"
 msgid "^www_nominate_url/creative_commons_url$"
-msgstr "nominate_creative_commons_url"
+msgstr "^nominate_url/creative_commons$"
 
 #: urls.py:133
-#, fuzzy
 #| msgid "nominate_error_url"
 msgid "^www_nominate_url/error_url$"
-msgstr "nominate_error_url"
+msgstr "^nominate/error$"
 
 #: urls.py:136
-#, fuzzy
 #| msgid "nominate_feedback_url"
 msgid "^www_nominate_url/feedback_url$"
-msgstr "nominate_feedback_url"
+msgstr "^nominate_url/feedback$"
 
 #: urls.py:139
-#, fuzzy
 #| msgid "nominate_source_selection_url"
 msgid "^www_nominate_url/source_selection_url$"
-msgstr "nominate_source_selection_url"
+msgstr "^nominate/source_selection$"
 
 #: urls.py:143
-#, fuzzy
 #| msgid "disclaimer_url"
 msgid "^disclaimer_url"
-msgstr "disclaimer_url"
+msgstr "^disclaimer"
 
 #: urls.py:147
 msgid "^embed_url"
