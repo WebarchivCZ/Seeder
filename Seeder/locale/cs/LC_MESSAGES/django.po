@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Seeder\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-08-28 23:33+0000\n"
+"POT-Creation-Date: 2017-08-28 23:52+0000\n"
 "PO-Revision-Date: 2017-08-29 01:43+0200\n"
 "Last-Translator: mariehaskovcova <marie.haskovcova@nkp.cz>, 2017\n"
 "Language-Team: Czech (https://www.transifex.com/webarchivecz/teams/43032/"
@@ -1400,12 +1400,16 @@ msgid "^www_nominate_url/source_selection_url$"
 msgstr "^vybez_zdroju$"
 
 #: urls.py:143
-msgid "^disclaimer_url"
-msgstr ""
+#, fuzzy
+#| msgid "^search_url$"
+msgid "^disclaimer_url$"
+msgstr "^hledani$"
 
 #: urls.py:147
-msgid "^embed_url"
-msgstr ""
+#, fuzzy
+#| msgid "^about_url$"
+msgid "^embed_url$"
+msgstr "^o_webarchivu$"
 
 #: voting/constants.py:12
 msgid "Vote in progress"
