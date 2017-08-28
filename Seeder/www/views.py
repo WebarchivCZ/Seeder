@@ -5,7 +5,6 @@ from django.core.mail import send_mail
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 from django.views.generic.edit import FormView
-from urljects import U, URLView, slug
 from django.views.generic.base import TemplateView, View
 from django.views.generic.detail import DetailView
 from django.http.response import HttpResponseRedirect
@@ -41,7 +40,9 @@ class PaginatedView:
             return 1
 
     def get_paginator(self):
-        paginator = CustomPaginator(self.get_paginator_queryset(), self.per_page)
+        paginator = CustomPaginator(
+            self.get_paginator_queryset(),
+            self.per_page)
         page = self.get_page_num()
         try:
             sources = paginator.page(page)
@@ -54,12 +55,9 @@ class PaginatedView:
         raise NotImplementedError
 
 
-class Index(TemplateView, URLView):
+class Index(TemplateView):
     template_name = 'index.html'
     view_name = 'index'
-
-    url = U
-    url_name = 'index'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -73,13 +71,10 @@ class Index(TemplateView, URLView):
         return context
 
 
-class TopicCollections(PaginatedView, TemplateView, URLView):
+class TopicCollections(PaginatedView, TemplateView):
     template_name = 'topic_collections/list.html'
     view_name = 'topic_collections'
     sub_view_name = 'topic_collections'
-
-    url = U / _('topic_collections_url')
-    url_name = 'topic_collections'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -90,17 +85,13 @@ class TopicCollections(PaginatedView, TemplateView, URLView):
         return TopicCollection.objects.filter(active=True)
 
 
-class CollectionDetail(PaginatedView, DetailView, URLView):
+class CollectionDetail(PaginatedView, DetailView):
     template_name = 'topic_collections/detail.html'
     view_name = 'topic_collections'
 
     model = TopicCollection
     context_object_name = 'collection'
-
-    url = U / _('topic_collection_detail_url') / slug
-    url_name = 'collection_detail'
     per_page = 6
-
 
     def get_paginator_queryset(self):
         return self.get_object().custom_sources.all()
@@ -153,21 +144,15 @@ class CollectionDetail(PaginatedView, DetailView, URLView):
         return context
 
 
-class About(TemplateView, URLView):
+class About(TemplateView):
     template_name = 'about/about.html'
     view_name = 'about'
     sub_view_name = 'about'
 
-    url = U / _('about_url')
-    url_name = 'about'
 
-
-class MoreAbout(TemplateView, URLView):
+class MoreAbout(TemplateView):
     template_name = 'about/more_about.html'
     view_name = 'about'
-
-    url = U / _('more_about_url')
-    url_name = 'more_about'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -175,58 +160,40 @@ class MoreAbout(TemplateView, URLView):
         return context
 
 
-class AboutHarvest(TemplateView, URLView):
+class AboutHarvest(TemplateView):
     template_name = 'about/harvests.html'
     view_name = 'about'
     sub_view_name = 'harvests'
 
-    url = U / _('about_harvests_url')
-    url_name = 'about_harvests'
 
-
-class AboutTerminology(TemplateView, URLView):
+class AboutTerminology(TemplateView):
     template_name = 'about/terminology.html'
     view_name = 'about'
     sub_view_name = 'terminology'
 
-    url = U / _('about_terminology_url')
-    url_name = 'about_terminology'
 
-
-class AboutDocuments(TemplateView, URLView):
+class AboutDocuments(TemplateView):
     template_name = 'about/documents.html'
     view_name = 'about'
     sub_view_name = 'documents'
 
-    url = U / _('about_documents_url')
-    url_name = 'about_documents'
 
-
-class AboutGraphics(TemplateView, URLView):
+class AboutGraphics(TemplateView):
     template_name = 'about/graphics.html'
     view_name = 'about'
     sub_view_name = 'graphics'
 
-    url = U / _('about_graphics_url')
-    url_name = 'about_graphics'
 
-
-class AboutContact(TemplateView, URLView):
+class AboutContact(TemplateView):
     template_name = 'about/contact.html'
     view_name = 'about'
     sub_view_name = 'contact'
 
-    url = U / _('about_contact_url')
-    url_name = 'about_contact'
 
-
-class AboutFAQ(TemplateView, URLView):
+class AboutFAQ(TemplateView):
     template_name = 'about/faq.html'
     view_name = 'about'
     sub_view_name = 'faq'
-
-    url = U / _('about_faq_url')
-    url_name = 'about_faq'
 
 
 class CategoryBaseView(PaginatedView):
@@ -265,10 +232,7 @@ class CategoryBaseView(PaginatedView):
         }
 
 
-class Categories(CategoryBaseView, TemplateView, URLView):
-    url = U / _('categories_url')
-    url_name = 'categories'
-
+class Categories(CategoryBaseView, TemplateView):
     def get_paginator_queryset(self):
         return Source.objects.archiving()
 
@@ -280,12 +244,9 @@ class Categories(CategoryBaseView, TemplateView, URLView):
         return context
 
 
-class CategoryDetail(CategoryBaseView, DetailView, URLView):
+class CategoryDetail(CategoryBaseView, DetailView):
     model = Category
     context_object_name = 'current_category'
-
-    url = U / _('categories_url') / slug
-    url_name = 'category_detail'
 
     def get_paginator_queryset(self):
         return Source.objects.archiving().filter(
@@ -303,12 +264,9 @@ class CategoryDetail(CategoryBaseView, DetailView, URLView):
         return context
 
 
-class SubCategoryDetail(CategoryBaseView, DetailView, URLView):
+class SubCategoryDetail(CategoryBaseView, DetailView):
     model = SubCategory
     context_object_name = 'current_sub_category'
-
-    url = U / _('categories_url') / r'(?P<category_slug>[\w-]+)' / slug
-    url_name = 'sub_category_detail'
 
     def get_paginator_queryset(self):
         return Source.objects.archiving().filter(
@@ -326,22 +284,16 @@ class SubCategoryDetail(CategoryBaseView, DetailView, URLView):
         return context
 
 
-class ChangeListView(View, URLView):
-    url = U / 'change_list_view' / r'(?P<list_type>visual|text)'
-    url_name = 'change_list_view'
-
+class ChangeListView(View):
     def get(self, request, list_type):
         self.request.session['list_type'] = list_type
         return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
 
-class KeywordViews(PaginatedView, DetailView, URLView):
+class KeywordViews(PaginatedView, DetailView):
     model = KeyWord
     context_object_name = 'keyword'
     view_name = 'index'
-
-    url = U / _('keyword_url') / slug
-    url_name = 'keyword'
 
     template_name = 'keyword.html'
 
@@ -353,14 +305,10 @@ class KeywordViews(PaginatedView, DetailView, URLView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['sources'] = self.get_paginator()
-
         return context
 
 
-class SearchRedirectView(View, URLView):
-    url = U / _('search_url')
-    url_name = 'search_redirect'
-
+class SearchRedirectView(View):
     def get(self, request):
         query = self.request.GET.get('query', '')
 
@@ -388,12 +336,9 @@ class SearchRedirectView(View, URLView):
         return HttpResponseRedirect(redirect_url)
 
 
-class SearchView(PaginatedView, TemplateView, URLView):
+class SearchView(PaginatedView, TemplateView):
     template_name = 'search.html'
     view_name = 'index'
-
-    url = U / _('search_url') / r'(?P<query>.*)'
-    url_name = 'search'
 
     def get_query(self):
         return self.kwargs['query']
@@ -430,26 +375,21 @@ class SearchView(PaginatedView, TemplateView, URLView):
         return context
 
 
-class SourceDetail(DetailView, URLView):
+class SourceDetail(DetailView):
     model = Source
     context_object_name = 'source'
     template_name = 'source_public.html'
-
-    url = U / _('www_source_url') / slug
-    url_name = 'source_detail'
 
     def get_queryset(self):
         return Source.objects.archiving()
 
 
-class Nominate(FormView, URLView):
+class Nominate(FormView):
     model = Nomination
     form_class = NominationForm
     view_name = 'nominate'
 
     template_name = 'nominate/nominate.html'
-    url = U / _('www_nominate_url')
-    url_name = 'nominate'
 
     def form_valid(self, form):
         nomination = form.save()
@@ -494,17 +434,13 @@ class Nominate(FormView, URLView):
         return reverse('www:nominate_success')
 
 
-class NominateSuccess(TemplateView, URLView):
+class NominateSuccess(TemplateView):
     template_name = 'nominate/nominate_success.html'
-    url = U / _('www_nominate_success_url')
-    url_name = 'nominate_success'
     view_name = 'nominate'
 
 
-class NominateContractView(TemplateView, URLView):
+class NominateContractView(TemplateView):
     template_name = 'nominate/cooperation.html'
-    url_name = 'nominate_contract'
-    url = U / _('nominate-url') / _('nominate_contract_url')
     view_name = 'nominate'
 
     def get_context_data(self, **kwargs):
@@ -513,51 +449,37 @@ class NominateContractView(TemplateView, URLView):
         return c
 
 
-class NominateCooperationView(TemplateView, URLView):
+class NominateCooperationView(TemplateView):
     template_name = 'nominate/cooperation.html'
-    url_name = 'nominate_cooperation'
-    url = U / _('nominate-url') / _('nominate_cooperation_url')
     view_name = 'nominate'
 
 
-class NominateCreativeCommonsView(TemplateView, URLView):
+class NominateCreativeCommonsView(TemplateView):
     template_name = 'nominate/creative_commons.html'
-    url_name = 'nominate_creative_commons'
-    url = U / _('nominate-url') / _('nominate_creative_commons_url')
     view_name = 'nominate'
 
 
-class NominateErrorView(TemplateView, URLView):
+class NominateErrorView(TemplateView):
     template_name = 'nominate/error.html'
-    url_name = 'nominate_error'
-    url = U / _('nominate-url') / _('nominate_error_url')
     view_name = 'nominate'
 
 
-class NominateFeedbackView(TemplateView, URLView):
+class NominateFeedbackView(TemplateView):
     template_name = 'nominate/feedback.html'
-    url_name = 'nominate_feedback'
-    url = U / _('nominate-url') / _('nominate_feedback_url')
     view_name = 'nominate'
 
 
-class NominateSourceSelectionView(TemplateView, URLView):
+class NominateSourceSelectionView(TemplateView):
     template_name = 'nominate/source_selection.html'
-    url_name = 'nominate_source_selection'
-    url = U / _('nominate-url') / _('nominate_source_selection_url')
     view_name = 'nominate'
 
 
-class DisclaimerView(TemplateView, URLView):
+class DisclaimerView(TemplateView):
     template_name = 'disclaimer.html'
-    url_name = 'disclaimer'
-    url = U / _('disclaimer_url')
 
 
-class EmbedView(TemplateView, URLView):
+class EmbedView(TemplateView):
     template_name = 'embed.html'
-    url = U / 'embed'
-    url_name = 'embed'
 
     def get_context_data(self, **kwargs):
         c = super(EmbedView, self).get_context_data(**kwargs)
