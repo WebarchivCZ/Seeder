@@ -9,8 +9,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Seeder\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-07-31 11:18+0000\n"
-"PO-Revision-Date: 2017-06-27 00:16+0000\n"
+"POT-Creation-Date: 2017-08-28 23:52+0000\n"
+"PO-Revision-Date: 2017-08-29 01:55+0200\n"
 "Last-Translator: mariehaskovcova <marie.haskovcova@nkp.cz>, 2017\n"
 "Language-Team: Czech (https://www.transifex.com/webarchivecz/teams/43032/"
 "cs/)\n"
@@ -19,6 +19,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
+"X-Generator: Poedit 1.8.7.1\n"
 
 #: blacklists/models.py:22
 msgid "Haritrex blacklist"
@@ -630,6 +631,8 @@ msgid ""
 "Poznámka: Po přepnutí sklizně do stavu running dojde ke zmražení semínek a "
 "nelze je měnit."
 msgstr ""
+"Poznámka: Po přepnutí sklizně do stavu running dojde ke zmražení semínek a "
+"nelze je měnit."
 
 #: harvests/templates/harvest.html:26
 msgid "Included topic collections"
@@ -1188,10 +1191,8 @@ msgid "Read the docs"
 msgstr "Dokumentace"
 
 #: templates/base.html:117
-#, fuzzy
-#| msgid "Seed url"
 msgid "Seed DB dump"
-msgstr "URL semínko"
+msgstr "Seed DB dump"
 
 #: templates/bootstrap_comments_threaded.html:14
 msgid "Respond"
@@ -1293,6 +1294,119 @@ msgstr "Nic nenalezeno"
 #: templates/user_edit.html:13
 msgid "Change profile"
 msgstr "Změnit profil"
+
+#: urls.py:81
+msgid "^topic_collections_url$"
+msgstr "^tematicke_kolekce$"
+
+#: urls.py:83
+msgid "^topic_collections_url/(?P<slug>[\\w-]+)$"
+msgstr "^tematicka_kolecke/(?P<slug>[\\w-]+)$"
+
+#: urls.py:87
+msgid "^about_url$"
+msgstr "^o_webarchivu$"
+
+#: urls.py:88
+msgid "^more_about_url$"
+msgstr "^jsme_webarchiv$"
+
+#: urls.py:89
+msgid "^about_harvests_url$"
+msgstr "^celoplosne_sklizne$"
+
+#: urls.py:90
+msgid "^about_terminology_url$"
+msgstr "^terminologie$"
+
+#: urls.py:91
+msgid "^about_documents_url$"
+msgstr "^dokumenty$"
+
+#: urls.py:92
+msgid "^about_graphics_url$"
+msgstr "^graficke_materialy$"
+
+#: urls.py:93
+msgid "^about_contact_url$"
+msgstr "^kontakty$"
+
+#: urls.py:94
+msgid "^about_faq_url$"
+msgstr "^faq$"
+
+#: urls.py:96
+msgid "^categories_url$"
+msgstr "^katalog_stranek$"
+
+#: urls.py:97
+msgid "^categories_url/(?P<slug>[\\w-]+)$"
+msgstr "^katalog/(?P<slug>[\\w-]+)$"
+
+#: urls.py:100
+msgid "^categories_url/(?P<category_slug>[\\w-]+)/(?P<slug>[\\w-]+)$"
+msgstr "^katalog/(?P<category_slug>[\\w-]+)/(?P<slug>[\\w-]+)$"
+
+#: urls.py:104
+msgid "^change_list_view/(?P<list_type>visual|text)$"
+msgstr "^zobrazeni/(?P<list_type>visual|text)$"
+
+#: urls.py:108
+msgid "^keyword_url/(?P<slug>[\\w-]+)$"
+msgstr "^klicove_slovo/(?P<slug>[\\w-]+)$"
+
+#: urls.py:112
+msgid "^search_url$"
+msgstr "^hledani$"
+
+#: urls.py:114
+msgid "^search_url/(?P<query>.*)"
+msgstr "^hledat/(?P<query>.*)"
+
+#: urls.py:117
+msgid "^www_source_url/(?P<slug>[\\w-]+)$"
+msgstr "^zdroj/(?P<slug>[\\w-]+)$"
+
+#: urls.py:121
+msgid "^www_nominate_url$"
+msgstr "^pridat_web$"
+
+#: urls.py:122
+msgid "^www_nominate_success_url$"
+msgstr "^prijaty_navrh$"
+
+#: urls.py:124
+msgid "^www_nominate_url/contract_url$"
+msgstr "^smlouva$"
+
+#: urls.py:127
+msgid "^www_nominate_url/cooperation_url$"
+msgstr "^pomozte_nam_uchovat_cesky_web$"
+
+#: urls.py:130
+msgid "^www_nominate_url/creative_commons_url$"
+msgstr "^creative_commons$"
+
+#: urls.py:133
+msgid "^www_nominate_url/error_url$"
+msgstr "^chyba$"
+
+#: urls.py:136
+msgid "^www_nominate_url/feedback_url$"
+msgstr "^odpoved$"
+
+#: urls.py:139
+msgid "^www_nominate_url/source_selection_url$"
+msgstr "^vybez_zdroju$"
+
+#: urls.py:143
+msgid "^disclaimer_url$"
+msgstr "^disclaimer$"
+
+#: urls.py:147
+#| msgid "^about_url$"
+msgid "^embed_url$"
+msgstr "^embed$"
 
 #: voting/constants.py:12
 msgid "Vote in progress"
@@ -1552,126 +1666,41 @@ msgstr "Publikovat na hlavní stránce"
 
 #: www/templates/nominate/nominate.html:32
 msgid "Mohu jednat za uvedené zdroje"
-msgstr ""
+msgstr "Mohu jednat za uvedené zdroje"
 
 #: www/templates/nominate/nominate.html:37
 msgid "Zdroj s licencí Creative Commons"
-msgstr ""
+msgstr "Zdroj s licencí Creative Commons"
 
 #: www/templates/topic_collections/detail.html:21
 msgid "Klíčová slova sklizně"
-msgstr ""
+msgstr "Klíčová slova sklizně"
 
-#: www/views.py:81
-msgid "topic_collections_url"
-msgstr "tematicke_kolekce"
-
-#: www/views.py:100
-msgid "topic_collection_detail_url"
-msgstr "tematicke_kolekce_detail"
-
-#: www/views.py:161
-msgid "about_url"
-msgstr "o_webarchivu"
-
-#: www/views.py:169
-msgid "more_about_url"
-msgstr "jsme_webarchiv"
-
-#: www/views.py:183
-msgid "about_harvests_url"
-msgstr "celoplosne_sklizne"
-
-#: www/views.py:192
-msgid "about_terminology_url"
-msgstr "terminologie"
-
-#: www/views.py:201
-msgid "about_documents_url"
-msgstr "dokumenty"
-
-#: www/views.py:210
-msgid "about_graphics_url"
-msgstr "graficke_materialy"
-
-#: www/views.py:219
-msgid "about_contact_url"
-msgstr "kontakty"
-
-#: www/views.py:228
-msgid "about_faq_url"
-msgstr "faq"
-
-#: www/views.py:269 www/views.py:287 www/views.py:310
-msgid "categories_url"
-msgstr "katalog_stranek"
-
-#: www/views.py:343
-msgid "keyword_url"
-msgstr "klicova_slova"
-
-#: www/views.py:361 www/views.py:395
-msgid "search_url"
-msgstr "hledani"
-
-#: www/views.py:438
-msgid "www_source_url"
-msgstr "zdroj"
-
-#: www/views.py:451
-msgid "www_nominate_url"
-msgstr "pridat_web"
-
-#: www/views.py:457
+#: www/views.py:397
 #, python-format
 msgid "Webarchiv.cz - archivace vasich webovych stranek %(url)s"
-msgstr ""
+msgstr "Webarchiv.cz - archivace vasich webovych stranek %(url)s"
 
-#: www/views.py:460
+#: www/views.py:400
 #, python-format
 msgid "Webarchiv.cz - archivace webovych stranek %(url)s"
-msgstr ""
+msgstr "Webarchiv.cz - archivace webovych stranek %(url)s"
 
-#: www/views.py:483
+#: www/views.py:423
 msgid "New nomination"
 msgstr "Nový návrh"
 
-#: www/views.py:499
-msgid "www_nominate_success_url"
-msgstr "prijaty_navrh"
-
-#: www/views.py:507 www/views.py:519 www/views.py:526 www/views.py:533
-#: www/views.py:540 www/views.py:547
-msgid "nominate-url"
-msgstr "pridat_web"
-
-#: www/views.py:507
-msgid "nominate_contract_url"
-msgstr "smlouva"
-
-#: www/views.py:519
-msgid "nominate_cooperation_url"
-msgstr "pomozte_nam_uchovat_cesky_web"
-
-#: www/views.py:526
-msgid "nominate_creative_commons_url"
-msgstr "creative_commons"
-
-#: www/views.py:533
-msgid "nominate_error_url"
-msgstr "chyba"
-
-#: www/views.py:540
-msgid "nominate_feedback_url"
-msgstr "odpoved"
-
-#: www/views.py:547
-msgid "nominate_source_selection_url"
-msgstr "vyber_zdroju"
-
-#: www/views.py:554
-msgid "disclaimer_url"
-msgstr ""
-
 #~ msgid "DEV notes"
 #~ msgstr "DEV notes"
+
+#~ msgid "topic_collection_detail_url"
+#~ msgstr "tematicke_kolekce_detail"
+
+#~ msgid "keyword_url"
+#~ msgstr "klicova_slova"
+
+#~ msgid "www_source_url"
+#~ msgstr "zdroj"
+
+#~ msgid "nominate-url"
+#~ msgstr "pridat_web"
