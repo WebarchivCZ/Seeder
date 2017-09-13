@@ -184,8 +184,8 @@ BOWER_COMPONENTS_ROOT = BASE_DIR
 BOWER_INSTALLED_APPS = ()   # everything is on CDN now
 
 
-LOGIN_URL = '/auth/login/'
-LOGOUT_URL = '/auth/logout/'
+LOGIN_URL = '/seeder/auth/login/'
+LOGOUT_URL = '/seeder/auth/logout/'
 LOGIN_REDIRECT_URL = '/'
 
 TIME_ZONE = 'UTC'
