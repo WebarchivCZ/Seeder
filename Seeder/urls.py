@@ -67,7 +67,7 @@ seeder_urlpatterns = [
     url(U / 'news', view_include(news_admin_views, namespace='news')),
 
     # beware: wild card regexp!
-    url(U, view_include(core_views, namespace='core'))
+    url('', view_include(core_views, namespace='core'))
 ]
 
 disclaimer_redirect = RedirectView.as_view(
