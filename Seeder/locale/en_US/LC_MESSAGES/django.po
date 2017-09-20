@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: Seeder\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-08-28 23:52+0000\n"
-"PO-Revision-Date: 2017-06-27 00:16+0000\n"
+"PO-Revision-Date: 2017-09-20 14:03+0200\n"
 "Last-Translator: Visgean Skeloru <visgean@gmail.com>, 2017\n"
 "Language-Team: English (United States) (https://www.transifex.com/"
 "webarchivecz/teams/43032/en_US/)\n"
@@ -18,6 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Poedit 2.0.3\n"
 
 #: blacklists/models.py:22
 msgid "Haritrex blacklist"
@@ -209,7 +210,7 @@ msgstr "State"
 
 #: contracts/models.py:52
 msgid "Creative commons or other OS licence"
-msgstr "Creative Commons or other OS license"
+msgstr "CC"
 
 #: contracts/models.py:57
 msgid "Creative commons type"
@@ -263,19 +264,19 @@ msgstr "When to send this message"
 
 #: contracts/tables.py:12
 msgid "link"
-msgstr "link"
+msgstr "Link"
 
 #: contracts/tables.py:16
 msgid "publisher"
-msgstr "publisher"
+msgstr "Publisher"
 
 #: contracts/tables.py:18 qa/tables.py:10 templates/api.html:18
 msgid "created"
-msgstr "created"
+msgstr "Created"
 
 #: contracts/tables.py:19 qa/tables.py:11
 msgid "last_changed"
-msgstr "last_changed"
+msgstr "Last_changed"
 
 #: contracts/templates/contract.html:6 contracts/templates/contract.html:7
 msgid "Contract for"
@@ -352,6 +353,12 @@ msgid ""
 "responds to communication in contract edit.\n"
 "        "
 msgstr ""
+"\n"
+"            Here you can schedule contact emails that will be sent to "
+"%(contact)s,\n"
+"            these emails will be sent until you check that publisher "
+"responds to communication in contract edit.\n"
+"        "
 
 #: contracts/templates/schedule.html:20
 #, python-format
@@ -363,6 +370,12 @@ msgid ""
 "set the contract person like right now. Thanks.\n"
 "            "
 msgstr ""
+"\n"
+"                We are sorry, but this won’t work, you did not set contact "
+"person in %(source)s\n"
+"                so we really have no idea who to sent this to. So you should "
+"set the contract person like right now. Thanks.\n"
+"            "
 
 #: contracts/templates/schedule.html:32 qa/templates/qa_form.html:34
 #: source/templates/edit_source.html:22 templates/add_form.html:13
@@ -504,7 +517,7 @@ msgstr "Failed"
 #: harvests/models.py:140 harvests/models.py:240 harvests/tables.py:26
 #: www/tables.py:13
 msgid "title"
-msgstr "title"
+msgstr "Title"
 
 #: harvests/models.py:144 harvests/templates/harvest.html:12
 #: source/models.py:215 source/templates/source.html:79
@@ -1131,6 +1144,15 @@ msgid ""
 "process.\n"
 "        "
 msgstr ""
+"\n"
+"            Below you can find links to files that contains seeds from "
+"sources\n"
+"            that have been accepted.\n"
+"            Each file also contains date of the file creation. Files are "
+"automatically\n"
+"            generated every day, but you can also manually start the "
+"process.\n"
+"        "
 
 #: templates/api.html:28
 msgid "Reload files"
@@ -1189,7 +1211,7 @@ msgstr "Respond"
 
 #: templates/bootstrap_comments_threaded.html:33
 msgid "Respond to "
-msgstr "Respond to"
+msgstr "Respond to "
 
 #: templates/bootstrap_comments_threaded.html:41
 msgid "Submit comment"
@@ -1263,6 +1285,13 @@ msgid ""
 "                        contact us.\n"
 "                    "
 msgstr ""
+"\n"
+"                        Check your email for instructions. Don’t forget "
+"about\n"
+"                        spam folder.\n"
+"                        If you did not receive any email don’t hesitate to\n"
+"                        contact us.\n"
+"                    "
 
 #: templates/registration/password_reset_form.html:15
 msgid "Reset"
@@ -1346,7 +1375,7 @@ msgstr "^search$"
 
 #: urls.py:114
 msgid "^search_url/(?P<query>.*)"
-msgstr ""
+msgstr "^search/(?P<query>.*)"
 
 #: urls.py:117
 msgid "^www_source_url/(?P<slug>[\\w-]+)$"
@@ -1459,6 +1488,14 @@ msgid ""
 "            </p>\n"
 "        "
 msgstr ""
+"\n"
+"            <p>\n"
+"                <b>%(source)s</b> was added to system\n"
+"                <b>%(source_created)s</b>. This voting round determines\n"
+"                whether %(source)s will be archived\n"
+"                or die in the shadows of unarchived internet.\n"
+"            </p>\n"
+"        "
 
 #: voting/templates/voting_round.html:34
 #, python-format
@@ -1471,6 +1508,13 @@ msgid ""
 "                </p>\n"
 "            "
 msgstr ""
+"\n"
+"                <p>\n"
+"                    This voting round opened <b>%(round_created)s</b>.\n"
+"                    Remember you have the power to change how future\n"
+"                    generations remember us. Cast a vote!\n"
+"                </p>\n"
+"            "
 
 #: voting/templates/voting_round.html:42
 #, python-format
@@ -1483,6 +1527,13 @@ msgid ""
 "                </p>\n"
 "            "
 msgstr ""
+"\n"
+"                <p>\n"
+"                    Our hero <b>%(resolved_by)s</b> resolved this\n"
+"                    <b>%(round_closed)s</b>.\n"
+"                    The final decision is to <b>%(status)s</b>.\n"
+"                </p>\n"
+"            "
 
 #: voting/templates/voting_round.html:52
 msgid "Voting round will be reopened on"
@@ -1597,7 +1648,7 @@ msgstr "Webarchiv certificate"
 
 #: www/templates/news_admin_detail.html:32
 msgid "source 1 "
-msgstr "source 1"
+msgstr "source 1 "
 
 #: www/templates/news_admin_detail.html:37
 msgid "source 1 annotation [cs]"
@@ -1609,7 +1660,7 @@ msgstr "source 1 annotation [en]"
 
 #: www/templates/news_admin_detail.html:47
 msgid "source 2 "
-msgstr "source 2"
+msgstr "source 2 "
 
 #: www/templates/news_admin_detail.html:52
 msgid "source 2 annotation [cs]"
@@ -1642,12 +1693,12 @@ msgstr "Keywords of harvest"
 #: www/views.py:397
 #, python-format
 msgid "Webarchiv.cz - archivace vasich webovych stranek %(url)s"
-msgstr ""
+msgstr "Webarchiv.cz - web archiving your pages %(url)s"
 
 #: www/views.py:400
 #, python-format
 msgid "Webarchiv.cz - archivace webovych stranek %(url)s"
-msgstr ""
+msgstr "Webarchiv.cz - web archiving %(url)s"
 
 #: www/views.py:423
 msgid "New nomination"
