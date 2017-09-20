@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: Seeder\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-07-03 12:06+0000\n"
-"PO-Revision-Date: 2017-09-20 14:11+0200\n"
+"PO-Revision-Date: 2017-09-20 15:28+0200\n"
 "Last-Translator: mariehaskovcova <marie.haskovcova@nkp.cz>, 2017\n"
 "Language-Team: Czech (https://www.transifex.com/webarchivecz/teams/43032/cs/)\n"
 "MIME-Version: 1.0\n"
@@ -1486,35 +1486,35 @@ msgstr "Publikovat na hlavní stránce"
 
 #: www/templates/nominate/nominate.html:32
 msgid "Mohu jednat za uvedené zdroje"
-msgstr ""
+msgstr "Mohu jednat za uvedené zdroje"
 
 #: www/templates/nominate/nominate.html:37
 msgid "Zdroj s licencí Creative Commons"
-msgstr ""
+msgstr "Zdroj s licencí Creative Commons"
 
 #: www/templates/topic_collections/detail.html:13
 msgid "Klíčová slova sklizně"
-msgstr ""
+msgstr "Klíčová slova sklizně"
 
 #: www/views.py:75
 msgid "topic_collections_url"
-msgstr "tematicke_kolekce"
+msgstr "tematicke-kolekce"
 
 #: www/views.py:94
 msgid "topic_collection_detail_url"
-msgstr "tematicke_kolekce_detail"
+msgstr "tematicke-kolekce-detail"
 
 #: www/views.py:113
 msgid "about_url"
-msgstr "o_webarchivu"
+msgstr "o-webarchivu"
 
 #: www/views.py:121
 msgid "more_about_url"
-msgstr "jsme_webarchiv"
+msgstr "jsme-webarchiv"
 
 #: www/views.py:135
 msgid "about_harvests_url"
-msgstr "celoplosne_sklizne"
+msgstr "celoplosne-sklizne"
 
 #: www/views.py:144
 msgid "about_terminology_url"
@@ -1526,7 +1526,7 @@ msgstr "dokumenty"
 
 #: www/views.py:162
 msgid "about_graphics_url"
-msgstr "graficke_materialy"
+msgstr "graficke-materialy"
 
 #: www/views.py:171
 msgid "about_contact_url"
@@ -1538,15 +1538,15 @@ msgstr "faq"
 
 #: www/views.py:223 www/views.py:241 www/views.py:259
 msgid "categories_url"
-msgstr "katalog_stranek"
+msgstr "katalog-stranek"
 
 #: www/views.py:292
 msgid "keyword_url"
-msgstr "klicova_slova"
+msgstr "klicove-slovo"
 
 #: www/views.py:310 www/views.py:344
 msgid "search_url"
-msgstr "hledani"
+msgstr "hledat"
 
 #: www/views.py:387
 msgid "www_source_url"
@@ -1554,17 +1554,17 @@ msgstr "zdroj"
 
 #: www/views.py:400
 msgid "www_nominate_url"
-msgstr "pridat_web"
+msgstr "pridat-web"
 
 #: www/views.py:406
 #, python-format
 msgid "Webarchiv.cz - archivace vasich webovych stranek %(url)s"
-msgstr ""
+msgstr "Webarchiv.cz - archivace vasich webovych stranek %(url)s"
 
 #: www/views.py:409
 #, python-format
 msgid "Webarchiv.cz - archivace webovych stranek %(url)s"
-msgstr ""
+msgstr "Webarchiv.cz - archivace webovych stranek %(url)s"
 
 #: www/views.py:432
 msgid "New nomination"
@@ -1572,11 +1572,11 @@ msgstr "Nový návrh"
 
 #: www/views.py:448
 msgid "www_nominate_success_url"
-msgstr "prijaty_navrh"
+msgstr "web-pridan"
 
 #: www/views.py:456 www/views.py:468 www/views.py:474 www/views.py:481 www/views.py:488 www/views.py:495
 msgid "nominate-url"
-msgstr "pridat_web"
+msgstr "pridat-web"
 
 #: www/views.py:456
 msgid "nominate_contract_url"
@@ -1584,24 +1584,24 @@ msgstr "smlouva"
 
 #: www/views.py:468
 msgid "nominate_cooperation_url"
-msgstr "pomozte_nam_uchovat_cesky_web"
+msgstr "pomozte-nam-uchovat-cesky-web"
 
 #: www/views.py:474
 msgid "nominate_creative_commons_url"
-msgstr "creative_commons"
+msgstr "creative-commons"
 
 #: www/views.py:481
 msgid "nominate_error_url"
-msgstr "chyba"
+msgstr "error"
 
 #: www/views.py:488
 msgid "nominate_feedback_url"
-msgstr "odpoved"
+msgstr "zpetna-vazba"
 
 #: www/views.py:495
 msgid "nominate_source_selection_url"
-msgstr "vyber_zdroju"
+msgstr "vyber-zdroju"
 
 #: www/views.py:502
 msgid "disclaimer_url"
-msgstr ""
+msgstr "certifikovano"
