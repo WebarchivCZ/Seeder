@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: Seeder\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-08-28 23:52+0000\n"
-"PO-Revision-Date: 2017-09-20 14:03+0200\n"
+"PO-Revision-Date: 2017-09-20 22:26+0200\n"
 "Last-Translator: Visgean Skeloru <visgean@gmail.com>, 2017\n"
 "Language-Team: English (United States) (https://www.transifex.com/"
 "webarchivecz/teams/43032/en_US/)\n"
@@ -1323,51 +1323,51 @@ msgstr "^about$"
 
 #: urls.py:88
 msgid "^more_about_url$"
-msgstr "^about/more$"
+msgstr "^more-about$"
 
 #: urls.py:89
 msgid "^about_harvests_url$"
-msgstr "^about/harvests$"
+msgstr "^harvests$"
 
 #: urls.py:90
 msgid "^about_terminology_url$"
-msgstr "^about/terminology$"
+msgstr "^terminology$"
 
 #: urls.py:91
 msgid "^about_documents_url$"
-msgstr "^about/documents$"
+msgstr "^documents$"
 
 #: urls.py:92
 msgid "^about_graphics_url$"
-msgstr "^about/graphics$"
+msgstr "^graphics$"
 
 #: urls.py:93
 msgid "^about_contact_url$"
-msgstr "^about/contact$"
+msgstr "^contact$"
 
 #: urls.py:94
 msgid "^about_faq_url$"
-msgstr "^about/faq_url$"
+msgstr "^faq$"
 
 #: urls.py:96
 msgid "^categories_url$"
-msgstr "^categories$"
+msgstr "^browse$"
 
 #: urls.py:97
 msgid "^categories_url/(?P<slug>[\\w-]+)$"
-msgstr ""
+msgstr "^browse/(?P<slug>[\\w-]+)$"
 
 #: urls.py:100
 msgid "^categories_url/(?P<category_slug>[\\w-]+)/(?P<slug>[\\w-]+)$"
-msgstr ""
+msgstr "^browse/(?P<category_slug>[\\w-]+)/(?P<slug>[\\w-]+)$"
 
 #: urls.py:104
 msgid "^change_list_view/(?P<list_type>visual|text)$"
-msgstr ""
+msgstr "^change-list-view/(?P<list_type>visual|text)$"
 
 #: urls.py:108
 msgid "^keyword_url/(?P<slug>[\\w-]+)$"
-msgstr ""
+msgstr "^keyword/(?P<slug>[\\w-]+)$"
 
 #: urls.py:112
 msgid "^search_url$"
@@ -1379,39 +1379,39 @@ msgstr "^search/(?P<query>.*)"
 
 #: urls.py:117
 msgid "^www_source_url/(?P<slug>[\\w-]+)$"
-msgstr ""
+msgstr "^source/(?P<slug>[\\w-]+)$"
 
 #: urls.py:121
 msgid "^www_nominate_url$"
-msgstr "^nominate$"
+msgstr "^add$"
 
 #: urls.py:122
 msgid "^www_nominate_success_url$"
-msgstr "^nominate/success$"
+msgstr "^success$"
 
 #: urls.py:124
 msgid "^www_nominate_url/contract_url$"
-msgstr "^nominate/contract$"
+msgstr "^contract$"
 
 #: urls.py:127
 msgid "^www_nominate_url/cooperation_url$"
-msgstr "^nominate/cooperation$"
+msgstr "^cooperation$"
 
 #: urls.py:130
 msgid "^www_nominate_url/creative_commons_url$"
-msgstr "^nominate_url/creative_commons$"
+msgstr "^cc$"
 
 #: urls.py:133
 msgid "^www_nominate_url/error_url$"
-msgstr "^nominate/error$"
+msgstr "^error$"
 
 #: urls.py:136
 msgid "^www_nominate_url/feedback_url$"
-msgstr "^nominate_url/feedback$"
+msgstr "^feedback$"
 
 #: urls.py:139
 msgid "^www_nominate_url/source_selection_url$"
-msgstr "^nominate/source_selection$"
+msgstr "^source-selection$"
 
 #: urls.py:143
 #| msgid "^disclaimer_url"
