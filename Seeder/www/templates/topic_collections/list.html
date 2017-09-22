@@ -25,10 +25,11 @@
 		<div class="container collection">
 			<span class="pull-right switch_style">{% include "includes/switch_item_style.html" %}</span>
 			{% if lang == "cs" %}
-				<h2>Tématické sbírky</h2>
+				<h2>Tematické sbírky</h2>
 				<p>Tematické sbírky jsou monotematické soubory webových dokumentů. V rámci tematických sklizní sledujeme především takové děje, které doprovází celospolečenská debata a je u nich tedy předpoklad, že zaujmou významnější místo z hlediska dějin České republiky. Cíleně vybíráme události, které mají širší ohlas v prostředí internetu. Monitorujeme očekávané akce (např. volby), ale i nenadálé situace (např. povodně).</p>
 			{% else %}
 				<h2>Topic collections</h2>
+				<p>Topic collections are collections of resources which are related to certain event or topic.</p>
 			{% endif %}
 			<div class="padding20"></div>
 
@@ -41,7 +42,7 @@
 
 
 		</div>
-	
+
 	{% include "includes/paginator.html" with paginator=collections %}
 	</section>
 
