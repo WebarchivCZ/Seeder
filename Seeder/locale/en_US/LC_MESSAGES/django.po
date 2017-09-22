@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: Seeder\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-08-28 23:52+0000\n"
-"PO-Revision-Date: 2017-09-20 22:26+0200\n"
+"PO-Revision-Date: 2017-09-22 13:21+0200\n"
 "Last-Translator: Visgean Skeloru <visgean@gmail.com>, 2017\n"
 "Language-Team: English (United States) (https://www.transifex.com/"
 "webarchivecz/teams/43032/en_US/)\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 2.0.3\n"
+"X-Generator: Poedit 2.0.4\n"
 
 #: blacklists/models.py:22
 msgid "Haritrex blacklist"
@@ -546,7 +546,7 @@ msgstr "Curator"
 
 #: harvests/models.py:248 source/templates/source.html:83
 msgid "keywords"
-msgstr "keywords"
+msgstr "Keywords"
 
 #: harvests/models.py:263
 msgid "annotation"
@@ -1311,11 +1311,11 @@ msgstr "Change profile"
 
 #: urls.py:81
 msgid "^topic_collections_url$"
-msgstr "^topic_collections$"
+msgstr "^topic-collections$"
 
 #: urls.py:83
 msgid "^topic_collections_url/(?P<slug>[\\w-]+)$"
-msgstr "^topic_collections/(?P<slug>[\\w-]+)$"
+msgstr "^topic-collections/(?P<slug>[\\w-]+)$"
 
 #: urls.py:87
 msgid "^about_url$"
