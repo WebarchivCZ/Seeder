@@ -395,10 +395,10 @@ class Nominate(FormView):
         nomination = form.save()
         if nomination.submitted_by_author:
             title = _('Webarchiv.cz - archivace vasich webovych stranek %(url)s') % {"url": nomination.url}
-            email_template = 'nominateemails/nomination_confirmation_owner.html'
+            email_template = 'nominate/emails/nomination_confirmation_owner.html'
         else:
             title = _('Webarchiv.cz - archivace webovych stranek %(url)s') % {"url": nomination.url}
-            email_template = 'nominateemails/nomination_confirmation.html'
+            email_template = 'nominate/emails/nomination_confirmation.html'
 
         content = render_to_string(email_template)
         notification_content = render_to_string(
