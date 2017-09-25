@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: Seeder\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-09-25 11:57+0000\n"
-"PO-Revision-Date: 2017-09-25 13:08+0100\n"
+"PO-Revision-Date: 2017-09-25 14:20+0200\n"
 "Last-Translator: mariehaskovcova <marie.haskovcova@nkp.cz>, 2017\n"
 "Language-Team: Czech (https://www.transifex.com/webarchivecz/teams/43032/"
 "cs/)\n"
@@ -19,7 +19,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Poedit 1.8.7.1\n"
+"X-Generator: Poedit 2.0.4\n"
 
 #: blacklists/models.py:22
 msgid "Haritrex blacklist"
@@ -1308,72 +1308,72 @@ msgstr "Změnit profil"
 #: urls.py:80
 #| msgid "topic_collections_url"
 msgid "^topic_collections_url$"
-msgstr "^tematicke_kolekce$"
+msgstr "^tematicke-kolekce$"
 
 #: urls.py:82
 #| msgid "topic_collections_url"
 msgid "^topic_collections_url/(?P<slug>[\\w-]+)$"
-msgstr "^tematicke_kolekce/(?P<slug>[\\w-]+)$"
+msgstr "^tematicke-kolekce/(?P<slug>[\\w-]+)$"
 
 #: urls.py:86
 #| msgid "about_url"
 msgid "^about_url$"
-msgstr "^o_nas$"
+msgstr "^o-webarchivu$"
 
 #: urls.py:87
 #| msgid "more_about_url"
 msgid "^more_about_url$"
-msgstr "^o_nas/vice$"
+msgstr "^jsme-webarchiv$"
 
 #: urls.py:88
 msgid "^about_harvests_url$"
-msgstr "^o_nas/sklizne$"
+msgstr "^celoplosne-sklizne$"
 
 #: urls.py:89
 #| msgid "about_terminology_url"
 msgid "^about_terminology_url$"
-msgstr "^o_nas/terminologie$"
+msgstr "^terminologie$"
 
 #: urls.py:90
 #| msgid "about_documents_url"
 msgid "^about_documents_url$"
-msgstr "^o_nas/dokumenty$"
+msgstr "^dokumenty$"
 
 #: urls.py:91
 #| msgid "about_graphics_url"
 msgid "^about_graphics_url$"
-msgstr "^o_nas/graficke_materialy$"
+msgstr "^graficke-materialy$"
 
 #: urls.py:92
 #| msgid "about_contact_url"
 msgid "^about_contact_url$"
-msgstr "^o_nas/kontakt$"
+msgstr "^kontakty$"
 
 #: urls.py:93
 #| msgid "about_faq_url"
 msgid "^about_faq_url$"
-msgstr "^o_nas/faq$"
+msgstr "^faq$"
 
 #: urls.py:95
 #| msgid "categories_url"
 msgid "^categories_url$"
-msgstr "^katalog_stranek$"
+msgstr "^katalog-stranek$"
 
 #: urls.py:96
 msgid "^categories_url/(?P<slug>[\\w-]+)$"
-msgstr "^katalog/(?P<slug>[\\w-]+)$"
+msgstr "^katalog-stranek/(?P<slug>[\\w-]+)$"
 
 #: urls.py:99
 msgid "^categories_url/(?P<category_slug>[\\w-]+)/(?P<slug>[\\w-]+)$"
-msgstr "^katalog/(?P<category_slug>[\\w-]+)/(?P<slug>[\\w-]+)$"
+msgstr "^katalog-stranek/(?P<category_slug>[\\w-]+)/(?P<slug>[\\w-]+)$"
 
 #: urls.py:103
 msgid "^change_list_view/(?P<list_type>visual|text)$"
-msgstr "^zmenit_zobrazeni/(?P<list_type>visual|text)$"
+msgstr "^zmenit-zobrazeni/(?P<list_type>visual|text)$"
 
 #: urls.py:107
 msgid "^keyword_url/(?P<slug>[\\w-]+)$"
-msgstr "^klicove_slovo/(?P<slug>[\\w-]+)$"
+msgstr "^klicove-slovo/(?P<slug>[\\w-]+)$"
 
 #: urls.py:111
 #| msgid "search_url"
@@ -1391,45 +1391,45 @@ msgstr "^zdroj/(?P<slug>[\\w-]+)$"
 #: urls.py:120
 #| msgid "www_nominate_url"
 msgid "^www_nominate_url$"
-msgstr "^nominovat$"
+msgstr "^pridat-web$"
 
 #: urls.py:121
 #| msgid "www_nominate_success_url"
 msgid "^www_nominate_success_url$"
-msgstr "^uspsne_nominovano$"
+msgstr "^web-pridan$"
 
 #: urls.py:123
 msgid "^www_nominate_url/contract_url$"
-msgstr "^nominovat/smlouva$"
+msgstr "^smlouva$"
 
 #: urls.py:126
 #| msgid "nominate_cooperation_url"
 msgid "^www_nominate_url/cooperation_url$"
-msgstr "^nominovat/pomozte_nam$"
+msgstr "^pomozte-nam-uchovat-cesky-web$"
 
 #: urls.py:129
 #| msgid "nominate_creative_commons_url"
 msgid "^www_nominate_url/creative_commons_url$"
-msgstr "^nominovat/creative_commons$"
+msgstr "^creative-commons$"
 
 #: urls.py:132
 msgid "^www_nominate_url/error_url$"
-msgstr "^nominovat/chyba$"
+msgstr "^error$"
 
 #: urls.py:135
 #| msgid "nominate_feedback_url"
 msgid "^www_nominate_url/feedback_url$"
-msgstr "^nominovat/zpetna_vazba$"
+msgstr "^nominovat/zpetna-vazba$"
 
 #: urls.py:138
 #| msgid "nominate_source_selection_url"
 msgid "^www_nominate_url/source_selection_url$"
-msgstr "^nominovat/zdroje$"
+msgstr "^nominovat/vyber-zdroju$"
 
 #: urls.py:142
 #| msgid "disclaimer_url"
 msgid "^disclaimer_url$"
-msgstr "^vypovezeni_odpovednosti$"
+msgstr "^certifikovano$"
 
 #: urls.py:146
 msgid "^embed_url$"
