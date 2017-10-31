@@ -381,7 +381,7 @@ class SourceDetail(DetailView):
     template_name = 'source_public.html'
 
     def get_queryset(self):
-        return Source.objects.archiving()
+        return Source.objects.public()
 
 
 class Nominate(FormView):
