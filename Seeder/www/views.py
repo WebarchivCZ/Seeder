@@ -22,7 +22,7 @@ from source.constants import ARCHIVING_STATES
 from harvests.models import TopicCollection
 from paginator.paginator import CustomPaginator
 from www.forms import NominationForm
-from www.models import Nomination
+from www.models import Nomination, SearchLog
 
 from . import models
 from . import forms
@@ -311,6 +311,17 @@ class KeywordViews(PaginatedView, DetailView):
 class SearchRedirectView(View):
     def get(self, request):
         query = self.request.GET.get('query', '')
+
+        x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+        if x_forwarded_for:
+            ip = x_forwarded_for.split(',')[0]
+        else:
+            ip = request.META.get('REMOTE_ADDR')
+
+        SearchLog(
+            search_term=query,
+            ip_address=ip,
+        ).save()
 
         regex_is_url = (
             # SCHEME:
