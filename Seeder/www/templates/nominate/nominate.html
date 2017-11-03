@@ -4,6 +4,10 @@
 {% block title %}{% if lang == "cs" %}Nechte se Webarchivovat!{% else %}Let’s get Webarchived!{% endif %}{% endblock title %}
 
 
+{% block extrahead %}
+{{ form.media }}
+{% endblock %}
+
 {% block content %}
 
 	{% include "nominate/header.html" %}
@@ -66,10 +70,20 @@
 						{{ form.note }}
 					</div>
 				</div>
+				<div class="row" style="margin-bottom: 1em;">
+					<div class="col-sm-2 col-md-3 no-right-padding">
+						<span class="form-label">{% trans 'Are you a human?' %}</span>
+					</div>
+					<div class="col-sm-8 col-md-6">
+						{{ form.captcha }}
+						{{ form.captcha.errors }}
+					</div>
+				</div>
 
                 {% if form.non_field_errors %}
                     <div class="row">
                         {{ form.non_field_errors }}
+
                     </div>
                 {% endif %}
 				<div class="row">

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Seeder\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-09-25 11:57+0000\n"
+"POT-Creation-Date: 2017-11-03 16:49+0000\n"
 "PO-Revision-Date: 2017-09-22 13:21+0200\n"
 "Last-Translator: Visgean Skeloru <visgean@gmail.com>, 2017\n"
 "Language-Team: English (United States) (https://www.transifex.com/"
@@ -140,7 +140,7 @@ msgid "This comment has been removed"
 msgstr "This comment has been removed"
 
 #: comments/models.py:167 qa/models.py:40 qa/templates/detail.html:15
-#: source/models.py:214 source/models.py:426 source/templates/source.html:75
+#: source/models.py:220 source/models.py:432 source/templates/source.html:75
 #: templates/history.html:15
 msgid "Comment"
 msgstr "Comment"
@@ -203,7 +203,7 @@ msgid "Narodni knihovna CR - archivace Vasich webovych stranek"
 msgstr "National library of the CR - archiving your web sites"
 
 #: contracts/models.py:46 contracts/templates/contract.html:20
-#: harvests/models.py:135 harvests/models.py:236 source/models.py:228
+#: harvests/models.py:135 harvests/models.py:236 source/models.py:234
 #: voting/models.py:26
 msgid "State"
 msgstr "State"
@@ -299,7 +299,7 @@ msgid "No"
 msgstr "No"
 
 #: contracts/templates/contract.html:36 publishers/models.py:30
-#: source/constants.py:122 source/models.py:203 source/tables.py:11
+#: source/constants.py:122 source/models.py:209 source/tables.py:11
 #: source/templates/duplicity_check.html:20 source/templates/source.html:64
 msgid "Publisher"
 msgstr "Publisher"
@@ -520,7 +520,7 @@ msgid "title"
 msgstr "Title"
 
 #: harvests/models.py:144 harvests/templates/harvest.html:12
-#: source/models.py:215 source/templates/source.html:79
+#: source/models.py:221 source/templates/source.html:79
 msgid "Annotation"
 msgstr "Annotation"
 
@@ -540,7 +540,7 @@ msgstr "New"
 msgid "Finished"
 msgstr "Finished"
 
-#: harvests/models.py:244 source/constants.py:125 source/models.py:199
+#: harvests/models.py:244 source/constants.py:125 source/models.py:205
 msgid "Curator"
 msgstr "Curator"
 
@@ -685,7 +685,7 @@ msgstr "Harvested from"
 msgid "Harvested till"
 msgstr "Harvested till"
 
-#: harvests/templates/topic_collection.html:49 source/models.py:249
+#: harvests/templates/topic_collection.html:49 source/models.py:255
 #: source/templates/source.html:32
 msgid "Screenshot"
 msgstr "Screenshot"
@@ -716,7 +716,7 @@ msgid "WWW link"
 msgstr "WWW link"
 
 #: harvests/templates/topic_collection.html:95 qa/templates/qa_form.html:20
-#: source/models.py:456 source/templates/source.html:130
+#: source/models.py:462 source/templates/source.html:130
 msgid "Seeds"
 msgstr "Seeds"
 
@@ -746,7 +746,7 @@ msgid "Position"
 msgstr "Position"
 
 #: publishers/forms.py:57 publishers/models.py:24 publishers/models.py:57
-#: publishers/tables.py:9 source/models.py:213 source/tables.py:9
+#: publishers/tables.py:9 source/models.py:219 source/tables.py:9
 #: www/models.py:78
 msgid "Name"
 msgstr "Name"
@@ -795,7 +795,7 @@ msgstr "Contacts:"
 msgid "Edit contacts"
 msgstr "Edit contacts"
 
-#: publishers/templates/publisher.html:24 source/models.py:266
+#: publishers/templates/publisher.html:24 source/models.py:272
 #: source/views.py:218 templates/base.html:85
 msgid "Sources"
 msgstr "Sources"
@@ -804,7 +804,7 @@ msgstr "Sources"
 msgid "Add publisher"
 msgstr "Add publisher"
 
-#: qa/models.py:18 qa/templates/detail.html:11 source/models.py:265
+#: qa/models.py:18 qa/templates/detail.html:11 source/models.py:271
 msgid "Source"
 msgstr "Source"
 
@@ -856,11 +856,11 @@ msgstr "QA"
 msgid "Quality assurance reports"
 msgstr "Quality assurance reports"
 
-#: settings/base.py:166
+#: settings/base.py:167
 msgid "Czech"
 msgstr "Czech"
 
-#: settings/base.py:167
+#: settings/base.py:168
 msgid "English"
 msgstr "English"
 
@@ -976,79 +976,79 @@ msgstr "Main URL"
 msgid "Check if this is really unique source."
 msgstr "Check if this is really unique source."
 
-#: source/models.py:218 source/templates/source.html:60
+#: source/models.py:224 source/templates/source.html:60
 msgid "Suggested by"
 msgstr "Suggested by"
 
-#: source/models.py:234 source/templates/source.html:48 templates/api.html:18
+#: source/models.py:240 source/templates/source.html:48 templates/api.html:18
 msgid "Frequency"
 msgstr "Frequency"
 
-#: source/models.py:239 source/templates/source.html:90
+#: source/models.py:245 source/templates/source.html:90
 msgid "Category"
 msgstr "Category"
 
-#: source/models.py:244 source/templates/source.html:94
+#: source/models.py:250 source/templates/source.html:94
 msgid "Sub category"
 msgstr "Sub category"
 
-#: source/models.py:256
+#: source/models.py:262
 msgid "Source is dead"
 msgstr "Source is dead"
 
-#: source/models.py:408
+#: source/models.py:414
 msgid "default"
 msgstr "default"
 
-#: source/models.py:409
+#: source/models.py:415
 msgid "low"
 msgstr "low"
 
-#: source/models.py:410
+#: source/models.py:416
 msgid "very_low"
 msgstr "very_low"
 
-#: source/models.py:421
+#: source/models.py:427
 msgid "Seed url"
 msgstr "Seed URL"
 
-#: source/models.py:427
+#: source/models.py:433
 msgid "From"
 msgstr "From"
 
-#: source/models.py:428
+#: source/models.py:434
 msgid "To"
 msgstr "To"
 
-#: source/models.py:431
+#: source/models.py:437
 msgid "Javascript"
 msgstr "Javascript"
 
-#: source/models.py:432
+#: source/models.py:438
 msgid "Global reject"
 msgstr "Global reject"
 
-#: source/models.py:433
+#: source/models.py:439
 msgid "Youtube"
 msgstr "YouTube"
 
-#: source/models.py:434
+#: source/models.py:440
 msgid "Calendars"
 msgstr "Calendars"
 
-#: source/models.py:435
+#: source/models.py:441
 msgid "Local traps"
 msgstr "Local traps"
 
-#: source/models.py:436
+#: source/models.py:442
 msgid "Redirect on seed"
 msgstr "Redirect on seed"
 
-#: source/models.py:437
+#: source/models.py:443
 msgid "Robots.txt active"
 msgstr "Robots.txt active"
 
-#: source/models.py:455
+#: source/models.py:461
 msgid "Seed"
 msgstr "Seed"
 
@@ -1194,14 +1194,20 @@ msgid "News"
 msgstr "News"
 
 #: templates/base.html:115
+#, fuzzy
+#| msgid "Search"
+msgid "Search logs"
+msgstr "Search"
+
+#: templates/base.html:121
 msgid "Bug report"
 msgstr "Bug report"
 
-#: templates/base.html:116
+#: templates/base.html:122
 msgid "Read the docs"
 msgstr "Read the docs"
 
-#: templates/base.html:117
+#: templates/base.html:123
 msgid "Seed DB dump"
 msgstr "Seed DB dump"
 
@@ -1676,29 +1682,33 @@ msgstr "Image"
 msgid "Publish on main page"
 msgstr "Publish on main page"
 
-#: www/templates/nominate/nominate.html:32
+#: www/templates/nominate/nominate.html:36
 msgid "Mohu jednat za uvedené zdroje"
 msgstr "I can act for these sources"
 
-#: www/templates/nominate/nominate.html:37
+#: www/templates/nominate/nominate.html:41
 msgid "Zdroj s licencí Creative Commons"
 msgstr "Source with Creative Commons license"
+
+#: www/templates/nominate/nominate.html:75
+msgid "Are you a human?"
+msgstr ""
 
 #: www/templates/topic_collections/detail.html:21
 msgid "Klíčová slova sklizně"
 msgstr "Keywords of harvest"
 
-#: www/views.py:397
+#: www/views.py:408
 #, python-format
 msgid "Webarchiv.cz - archivace vasich webovych stranek %(url)s"
 msgstr "Webarchiv.cz - web archiving your pages %(url)s"
 
-#: www/views.py:400
+#: www/views.py:411
 #, python-format
 msgid "Webarchiv.cz - archivace webovych stranek %(url)s"
 msgstr "Webarchiv.cz - web archiving %(url)s"
 
-#: www/views.py:423
+#: www/views.py:433
 msgid "New nomination"
 msgstr "New nomination"
 
