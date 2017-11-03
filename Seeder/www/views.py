@@ -425,7 +425,6 @@ class Nominate(FormView):
             from_email=settings.WEBARCHIV_EMAIL,
             recipient_list=[
                 nomination.contact_email,
-                settings.WEBARCHIV_EMAIL
             ]
         )
 
