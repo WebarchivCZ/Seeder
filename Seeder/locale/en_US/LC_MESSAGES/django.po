@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: Seeder\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-11-03 16:49+0000\n"
-"PO-Revision-Date: 2017-09-22 13:21+0200\n"
+"PO-Revision-Date: 2017-11-07 12:38+0100\n"
 "Last-Translator: Visgean Skeloru <visgean@gmail.com>, 2017\n"
 "Language-Team: English (United States) (https://www.transifex.com/"
 "webarchivecz/teams/43032/en_US/)\n"
@@ -1194,10 +1194,8 @@ msgid "News"
 msgstr "News"
 
 #: templates/base.html:115
-#, fuzzy
-#| msgid "Search"
 msgid "Search logs"
-msgstr "Search"
+msgstr "Search logs"
 
 #: templates/base.html:121
 msgid "Bug report"
@@ -1209,7 +1207,7 @@ msgstr "Read the docs"
 
 #: templates/base.html:123
 msgid "Seed DB dump"
-msgstr "Seed DB dump"
+msgstr "Whitelist"
 
 #: templates/bootstrap_comments_threaded.html:14
 msgid "Respond"

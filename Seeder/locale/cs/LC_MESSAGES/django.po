@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: Seeder\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-11-03 16:49+0000\n"
-"PO-Revision-Date: 2017-11-07 12:19+0100\n"
+"PO-Revision-Date: 2017-11-07 12:37+0100\n"
 "Last-Translator: mariehaskovcova <marie.haskovcova@nkp.cz>, 2017\n"
 "Language-Team: Czech (https://www.transifex.com/webarchivecz/teams/43032/"
 "cs/)\n"
@@ -1189,10 +1189,8 @@ msgid "News"
 msgstr "Aktuality"
 
 #: templates/base.html:115
-#, fuzzy
-#| msgid "Search"
 msgid "Search logs"
-msgstr "Hledání"
+msgstr "Historie hledání"
 
 #: templates/base.html:121
 msgid "Bug report"
@@ -1204,7 +1202,7 @@ msgstr "Dokumentace"
 
 #: templates/base.html:123
 msgid "Seed DB dump"
-msgstr "Seed DB dump"
+msgstr "Generovat whitelist"
 
 #: templates/bootstrap_comments_threaded.html:14
 msgid "Respond"
