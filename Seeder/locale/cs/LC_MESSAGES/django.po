@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: Seeder\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-11-03 16:49+0000\n"
-"PO-Revision-Date: 2017-09-25 14:20+0200\n"
+"PO-Revision-Date: 2017-11-07 12:19+0100\n"
 "Last-Translator: mariehaskovcova <marie.haskovcova@nkp.cz>, 2017\n"
 "Language-Team: Czech (https://www.transifex.com/webarchivecz/teams/43032/"
 "cs/)\n"
@@ -1697,16 +1697,16 @@ msgstr "Klíčová slova sklizně"
 #: www/views.py:408
 #, python-format
 msgid "Webarchiv.cz - archivace vasich webovych stranek %(url)s"
-msgstr "Webarchiv.cz - archivace vasich webovych stranek %(url)s"
+msgstr "Webarchiv.cz - archivace Vašich webových stránek %(url)s"
 
 #: www/views.py:411
 #, python-format
 msgid "Webarchiv.cz - archivace webovych stranek %(url)s"
-msgstr "Webarchiv.cz - archivace webovych stranek %(url)s"
+msgstr "Webarchiv.cz - archivace webových stránek %(url)s"
 
 #: www/views.py:433
 msgid "New nomination"
-msgstr "Nový návrh"
+msgstr "Nový návrh %(url)s"
 
 #~ msgid "DEV notes"
 #~ msgstr "DEV notes"
