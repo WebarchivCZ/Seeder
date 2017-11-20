@@ -17,4 +17,4 @@ class TopicCollectionForm(forms.ModelForm):
 @admin.register(models.TopicCollection)
 class TopicCollectionAdmin(TranslationAdmin):
     form = TopicCollectionForm
-    prepopulated_fields = {"slug": ("title_cs",)}
+    # prepopulated_fields = {"slug": ("title_cs",)}

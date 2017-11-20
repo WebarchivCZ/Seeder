@@ -150,6 +150,12 @@ class SourceManager(models.Manager):
             state__in=constants.ARCHIVING_STATES
         )
 
+    def public(self):
+        return self.get_queryset().filter(
+            state__in=constants.STATE_RUNNING
+        )
+
+
     def needs_qa(self):
         """
         Finds sources that are archived and don't have QA or its QAs are old
@@ -301,7 +307,7 @@ class Source(SearchModel, SlugOrCreateModel, BaseModel):
         return ' '.join(filter(None, parts))
 
     def get_public_search_blob(self):
-        if not self.state in constants.ARCHIVING_STATES:
+        if not self.state == constants.STATE_RUNNING:
             return None
 
         parts = [

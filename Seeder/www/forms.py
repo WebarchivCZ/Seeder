@@ -1,3 +1,4 @@
+from captcha.fields import ReCaptchaField
 from django import forms
 from django import forms
 
@@ -32,6 +33,8 @@ class NewsForm(forms.ModelForm):
 
 
 class NominationForm(forms.ModelForm):
+    captcha = ReCaptchaField()
+
     class Meta:
         model = models.Nomination
         exclude = ['resolved', 'active']
