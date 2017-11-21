@@ -212,14 +212,14 @@ CKEDITOR_CONFIGS = {
         'toolbar': 'Custom',
         'toolbar_Custom': [
             ['Bold', 'Italic', 'Underline'],
-            ['NumberedList', 'BulletedList'],
+            ['NumberedList', 'BulletedList', 'Link'],
         ],
     },
     'mini': {
         'toolbar': 'Custom',
         'toolbar_Custom': [
             ['Bold', 'Italic', 'Underline'],
-            ['NumberedList', 'BulletedList'],
+            ['NumberedList', 'BulletedList', 'Link'],
         ],
         'width': 800,
         'height':100,
