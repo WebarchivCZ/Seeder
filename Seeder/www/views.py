@@ -450,7 +450,7 @@ class NominateSuccess(TemplateView):
 
 
 class NominateContractView(TemplateView):
-    template_name = 'nominate/cooperation.html'
+    template_name = 'nominate/contract.html'
     view_name = 'nominate'
 
     def get_context_data(self, **kwargs):
