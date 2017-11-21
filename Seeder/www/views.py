@@ -7,7 +7,7 @@ from django.utils.html import strip_tags
 from django.views.generic.edit import FormView
 from django.views.generic.base import TemplateView, View
 from django.views.generic.detail import DetailView
-from django.http.response import HttpResponseRedirect
+from django.http.response import HttpResponseRedirect, Http404
 from django.utils.translation import ugettext as _
 from django.db.models import Sum, When, Case, IntegerField, Q
 from django.core.paginator import EmptyPage
@@ -390,6 +390,17 @@ class SourceDetail(DetailView):
     model = Source
     context_object_name = 'source'
     template_name = 'source_public.html'
+
+    def get(self, request, *args, **kwargs):
+        try:
+            self.object = self.get_object()
+            return super(SourceDetail, self).get(request, *args, **kwargs)
+        except Http404:
+            redirect_url = reverse(
+                'www:search',
+                kwargs={'query': self.kwargs['slug']}
+            )
+            return HttpResponseRedirect(redirect_url)
 
     def get_queryset(self):
         return Source.objects.public()
