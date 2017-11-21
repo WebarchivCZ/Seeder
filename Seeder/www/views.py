@@ -430,7 +430,7 @@ class Nominate(FormView):
 
         # send notification to curators
         send_mail(
-            subject=_('New nomination'),
+            subject=_('New nomination %(url)s') % {"url": nomination.url},
             message=strip_tags(notification_content),
             html_message=notification_content,
             from_email=settings.WEBARCHIV_EMAIL,
