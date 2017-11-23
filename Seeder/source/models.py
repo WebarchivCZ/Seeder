@@ -152,9 +152,8 @@ class SourceManager(models.Manager):
 
     def public(self):
         return self.get_queryset().filter(
-            state__in=constants.STATE_RUNNING
+            state=constants.STATE_RUNNING
         )
-
 
     def needs_qa(self):
         """
@@ -320,7 +319,11 @@ class Source(SearchModel, SlugOrCreateModel, BaseModel):
 
     @property
     def main_seed(self):
-        return self.seed_set.first()
+        main_active = self.seed_set.filter(
+            state=constants.SEED_STATE_INCLUDE
+        ).first()
+
+        return main_active if main_active else self.seed_set.first()
 
     @property
     def url(self):
