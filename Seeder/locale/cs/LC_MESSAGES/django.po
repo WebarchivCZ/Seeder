@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: Seeder\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-11-21 13:16+0000\n"
-"PO-Revision-Date: 2017-11-07 12:37+0100\n"
+"PO-Revision-Date: 2017-11-22 13:43+0100\n"
 "Last-Translator: mariehaskovcova <marie.haskovcova@nkp.cz>, 2017\n"
 "Language-Team: Czech (https://www.transifex.com/webarchivecz/teams/43032/"
 "cs/)\n"
@@ -1686,7 +1686,7 @@ msgstr "Zdroj s licencí Creative Commons"
 
 #: www/templates/nominate/nominate.html:75
 msgid "Are you a human?"
-msgstr ""
+msgstr " "
 
 #: www/templates/topic_collections/detail.html:21
 msgid "Klíčová slova sklizně"
