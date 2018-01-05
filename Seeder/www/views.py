@@ -340,7 +340,7 @@ class SearchRedirectView(View):
             "(#[a-z_.-][a-z0-9+\$_.-]*)?"
         )
 
-        if re.match(regex_is_url, query):
+        if re.match(regex_is_url, query.lower()):
             redirect_url = settings.WAYBACK_URL.format(url=query)
         else:
             redirect_url = reverse('www:search', kwargs={'query': query})
