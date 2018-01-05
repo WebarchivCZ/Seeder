@@ -32,13 +32,6 @@ DATABASES = {
 }
 
 
-HAYSTACK_CONNECTIONS = {
-    'default': {
-        'ENGINE': 'elasticstack.backends.ConfigurableElasticSearchEngine',
-        'URL': 'http://elastic:9200/',
-        'INDEX_NAME': 'haystack',
-    },
-}
 
 CACHES = {
     'default': {
