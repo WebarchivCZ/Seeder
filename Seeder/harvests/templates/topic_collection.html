@@ -35,6 +35,12 @@
                 </tr>
 
                 <tr>
+                    <td>{% trans 'Seeds by frequency' %}</td>
+                    <td>{{ object.get_target_frequency_display }}</td>
+                </tr>
+
+
+                <tr>
                     <td>{% trans 'Harvested from' %}</td>
                     <td>{{ object.date_from }}</td>
                 </tr>
