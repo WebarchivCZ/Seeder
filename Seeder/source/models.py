@@ -91,8 +91,9 @@ class SeedManager(models.Manager):
     def get_queryset(self):
         today = timezone.now()
         return super().get_queryset().filter(
-            Q(source__state__in=constants.ARCHIVING_STATES,
-              state=constants.SEED_STATE_INCLUDE) &
+            Q(
+                source__state__in=constants.ARCHIVING_STATES,
+                state=constants.SEED_STATE_INCLUDE) &
             Q(
                 Q(to_time__lte=today, from_time__gte=today) |
                 Q(to_time__isnull=True))

@@ -58,6 +58,7 @@ class TopicCollectionForm(forms.ModelForm):
             'date_to',
             'image',    
             'all_open',
+            'target_frequency',
             'custom_seeds',
             'custom_sources',
             # 'slug',
