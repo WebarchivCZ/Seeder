@@ -42,6 +42,9 @@ class DashboardCard(object):
     def get_queryset(self):
         raise NotImplementedError
 
+    def get_count(self):
+        return self.get_queryset().count()
+
     def elements(self):
         for element in self.page.object_list:
             context_element = {
