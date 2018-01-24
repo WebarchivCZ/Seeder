@@ -88,15 +88,25 @@ class SeedManager(models.Manager):
     """
     Auto-filters seeds that are ready to be archived
     """
-    def get_queryset(self):
+
+    def valid_seeds(self):
         today = timezone.now()
         return super().get_queryset().filter(
-            Q(
-                source__state__in=constants.ARCHIVING_STATES,
-                state=constants.SEED_STATE_INCLUDE) &
+            Q(state=constants.SEED_STATE_INCLUDE) &
             Q(
                 Q(to_time__lte=today, from_time__gte=today) |
-                Q(to_time__isnull=True))
+                Q(to_time__isnull=True)
+            )
+        )
+
+    def get_queryset(self):
+        return self.valid_seeds().filter(
+            source__state__in=constants.ARCHIVING_STATES,
+        )
+
+    def public_seeds(self):
+        return self.valid_seeds().filter(
+            source__state=constants.STATE_RUNNING
         )
 
 

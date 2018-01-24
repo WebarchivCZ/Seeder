@@ -15,7 +15,7 @@
             these emails will be sent until you check that publisher responds to communication in contract edit.
         {% endblocktrans %}
     </p>
-    {% if not source.publisher_contact or not source.publisher %}
+    {% if not source.publisher_contact or not source.publisher or not source.publisher_contact.email %}
         <div class="alert alert-danger" role="alert">
             {% blocktrans with source=source %}
                 We are sorry, but this won't work, you did not set contact person in {{ source }}

@@ -41,6 +41,10 @@
                 {% endif %}
 
                 <tr>
+                    <td>{% trans 'Dead' %}</td>
+                    <td>{{ source.dead_source|yesno }}</td>
+                </tr>
+                <tr>
                     <td>{% trans 'Owner' %}</td>
                     <td>{{ source.owner.get_full_name }}</td>
                 </tr>

@@ -33,3 +33,4 @@ django-autoslug==1.9.3
 django-multiupload==0.5.2
 unidecode
 django-recaptcha
+django-multiselectfield==0.1.8
