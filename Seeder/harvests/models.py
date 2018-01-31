@@ -77,6 +77,8 @@ class HarvestAbstractModel(BaseModel):
         self.save()
 
     def get_seeds_by_frequency(self):
+        if not self.target_frequency:
+            return []
         seeds = Seed.archiving.filter(source__frequency__in=self.target_frequency)
         return list(seeds.values_list('url', flat=True))
 
@@ -95,7 +97,7 @@ class HarvestAbstractModel(BaseModel):
         :return: set of urls
         """
         if self.seeds_frozen:
-            return self.seeds_frozen.splitlines()
+            return set(self.seeds_frozen.splitlines())
 
         seeds = set(
             chain(
