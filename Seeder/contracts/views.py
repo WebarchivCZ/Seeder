@@ -147,7 +147,8 @@ class Schedule(ContractView, FormView, ObjectMixinFixed, URLView):
         return modelformset_factory(
             models.EmailNegotiation,
             fields=('to_email', 'scheduled_date', 'title', 'content', ),
-            extra=extra, can_delete=True)
+            extra=extra, can_delete=True
+        )
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
@@ -175,6 +176,7 @@ class Schedule(ContractView, FormView, ObjectMixinFixed, URLView):
                 'title': constants.EMAILS_TITLE,
                 'scheduled_date': scheduled_date,
                 'to_email': source.publisher_contact.email
+                            if source.publisher_contact else ''
             })
         return initial
 
