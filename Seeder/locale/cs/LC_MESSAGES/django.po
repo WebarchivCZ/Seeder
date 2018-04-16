@@ -10,7 +10,7 @@ msgstr ""
 "Project-Id-Version: Seeder\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2017-11-21 13:16+0000\n"
-"PO-Revision-Date: 2017-11-22 13:43+0100\n"
+"PO-Revision-Date: 2018-04-16 13:40+0200\n"
 "Last-Translator: mariehaskovcova <marie.haskovcova@nkp.cz>, 2017\n"
 "Language-Team: Czech (https://www.transifex.com/webarchivecz/teams/43032/"
 "cs/)\n"
@@ -19,7 +19,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"X-Generator: Poedit 2.0.4\n"
+"X-Generator: Poedit 2.0.6\n"
 
 #: blacklists/models.py:22
 msgid "Haritrex blacklist"
@@ -167,7 +167,7 @@ msgstr "Platná smlouva"
 
 #: contracts/constants.py:15 source/constants.py:33
 msgid "Contract expired"
-msgstr "Smlouva vypršela"
+msgstr "Bez smlouvy"
 
 #: contracts/constants.py:34
 msgid "CreativeCommons"
@@ -911,27 +911,27 @@ msgstr "Vypovězená smlouva"
 
 #: source/constants.py:61
 msgid "Once only"
-msgstr "Pouze jednorázově"
+msgstr "Jednorázově"
 
 #: source/constants.py:65
 msgid "Once a year"
-msgstr "Jednou za rok"
+msgstr "Jednou za rok (ročně)"
 
 #: source/constants.py:69
 msgid "Twice a year"
-msgstr "Dvakrát za rok"
+msgstr "Dvakrát za rok (půlročně)"
 
 #: source/constants.py:73
 msgid "Quarterly"
-msgstr "Čtvrletně"
+msgstr "Čtyřikrát za rok (čtvrletně)"
 
 #: source/constants.py:77
 msgid "Every two months"
-msgstr "Každé dva měsíce"
+msgstr "Šestkrát za rok (každé dva měsíce)"
 
 #: source/constants.py:81
 msgid "Every month"
-msgstr "Každý měsíc"
+msgstr "Dvanáctkrát za rok (měsíčně)"
 
 #: source/constants.py:85
 msgid "Weekly"
@@ -951,7 +951,7 @@ msgstr "Vyjmout ze sklizně"
 
 #: source/constants.py:107
 msgid "Seed is no longer published"
-msgstr "Semínko už není vydávané"
+msgstr "Ukončeno vydávání"
 
 #: source/constants.py:123
 msgid "Visitor"
@@ -1426,11 +1426,11 @@ msgstr "Probíhá hodnocení"
 
 #: voting/constants.py:17
 msgid "Include source"
-msgstr "Přijmout zdroj"
+msgstr "Přijatý zdroj"
 
 #: voting/constants.py:22
 msgid "Exclude source"
-msgstr "Odmítnout zdroj"
+msgstr "Odmítnutý zdroj"
 
 #: voting/constants.py:27
 msgid "Postpone decision"
