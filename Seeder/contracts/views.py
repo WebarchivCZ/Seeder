@@ -1,3 +1,5 @@
+from django.views import View
+
 from . import models
 from . import forms
 from . import tables
@@ -18,7 +20,7 @@ from urljects import U, URLView, pk
 from comments.views import CommentViewGeneric
 from source.models import Source
 from core.generic_views import (ObjectMixinFixed, LoginMixin, EditView,
-                                HistoryView, FilteredListView)
+                                HistoryView, FilteredListView, MessageView)
 
 
 class ContractView(LoginMixin):
@@ -189,3 +191,25 @@ class Schedule(ContractView, FormView, ObjectMixinFixed, URLView):
             obj.delete()
 
         return HttpResponseRedirect(self.object.get_absolute_url())
+
+
+class DeleteView(View, MessageView, ContractView, ObjectMixinFixed,  URLView):
+    url = U / pk / 'delete'
+    url_name = 'delete'
+
+    def post(self, request, *args, **kwargs):
+        contract = self.get_object()
+        if not contract.can_delete():
+            self.add_message(
+                _("Can't delete contract with number"),
+                messages.ERROR
+            )
+            return HttpResponseRedirect(contract.get_absolute_url())
+
+        source_url = contract.sources.first().get_absolute_url()
+        contract.delete()
+        self.add_message(
+            _('Contract deleted.'),
+            messages.SUCCESS
+        )
+        return HttpResponseRedirect(source_url)
