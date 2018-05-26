@@ -187,7 +187,7 @@ class Contract(BaseModel):
         return max_number + 1
 
     def can_delete(self):
-        return bool(self.contract_number)
+        return not self.contract_number
 
 
 @revisions.register(exclude=('last_changed',))

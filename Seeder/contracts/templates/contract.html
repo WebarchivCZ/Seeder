@@ -106,10 +106,36 @@
         <h4>{% trans 'Links' %}:</h4>
         <a href="{% url 'contracts:history' pk=object.pk %}" class="btn btn-primary btn-info btn-block">{% trans 'History' %}</a>
         <a href="{% url 'contracts:edit' pk=object.pk %}" class="btn btn-primary btn-warning btn-block">{% trans 'Edit' %}</a>
+        {% if contract.can_delete %}
+		    <a href="" class="btn btn-primary btn-danger btn-block" data-toggle="modal" data-target="#exampleModal">
+			    {% trans 'Delete' %}
+		    </a>
+        {% endif %}
     </div>
     <div class="col-xs-12 col-md-12">
         <h2>{% trans 'Comments' %}</h2>
         {% include 'bootstrap_comments.html' with comments=comments form=comment_form %}
     </div>
 
+	<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h5 class="modal-title" id="exampleModalLabel">{% trans 'Do you really want to delete this contract?' %}</h5>
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	          <span aria-hidden="true">&times;</span>
+	        </button>
+	      </div>
+	      <div class="modal-body">
+            <form method="post" action="{% url 'voting:cast' pk=contract.pk %}">
+                {% csrf_token %}
+                <input class="btn btn-block btn-danger" type="submit" value="{% trans 'Delete' %}"/>
+            </form>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
 {% endblock %}
