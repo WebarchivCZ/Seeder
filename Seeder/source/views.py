@@ -1,9 +1,12 @@
+from django.urls import reverse
+from django.views import View
 from django.views.generic import DetailView
 from django.http.response import HttpResponseRedirect
 from django.utils.translation import ugettext_lazy as _
 from django.views.generic.base import TemplateView
 from django.views.generic.edit import FormView
 from django.db.models import Q
+from django.contrib import messages
 
 from dal import autocomplete
 from formtools.wizard.views import SessionWizardView
@@ -11,6 +14,7 @@ from datetime import datetime
 from urljects import U, URLView, pk
 
 from contracts.models import Contract
+from core.generic_views import ObjectMixinFixed, MessageView
 from publishers import forms as publisher_forms
 from core import generic_views
 from comments.views import CommentViewGeneric
@@ -180,6 +184,31 @@ class SourceEdit(SourceView, generic_views.EditView, URLView):
 
     url = U / 'edit' / pk
     url_name = 'edit'
+
+
+
+class DeleteView(View, MessageView, SourceView, ObjectMixinFixed,  URLView):
+    url = U / pk / 'delete'
+    url_name = 'delete'
+
+    def post(self, request, *args, **kwargs):
+        s = self.get_object()
+
+        if not request.user.is_superuser:
+            self.add_message(
+                _("You dont have permission for deactivating source"),
+                messages.ERROR
+            )
+            return HttpResponseRedirect(s.get_absolute_url())
+
+        s.active = False
+        s.save()
+
+        self.add_message(
+            _('Source deactivated, it might still appear in searches.'),
+            messages.SUCCESS
+        )
+        return HttpResponseRedirect(reverse('source:list'))
 
 
 class SeedAdd(SourceView, generic_views.ObjectMixinFixed, FormView, URLView):

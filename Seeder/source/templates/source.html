@@ -150,6 +150,14 @@
             <a href="{% url 'source:history' pk=source.pk %}" class="btn btn-primary btn-info btn-block">{% trans 'History' %}</a>
             <a href="{% url 'qa:create' pk=source.pk %}" class="btn btn-primary btn-warning btn-block">{% trans 'QA check' %}</a>
 
+
+            {% if user.is_superuser %}
+			    <a href="" class="btn btn-primary btn-danger btn-block" data-toggle="modal" data-target="#deactivateModal">
+				    {% trans 'Deactivate' %}
+			    </a>
+            {% endif %}
+
+
             <h4>{% trans 'Voting rounds' %}</h4>
             <form action='{% url 'voting:create' pk=source.pk %}' method='post'>
                 {% csrf_token %}
@@ -176,5 +184,27 @@
     </div>
 
     {% include 'bootstrap_gallery.html' %}
+
+	<div class="modal fade" id="deactivateModal" tabindex="-1" role="dialog" aria-labelledby="deactivateModalLabel" aria-hidden="true">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h5 class="modal-title" id="deactivateModalLabel">{% trans 'Proceed with deletion?' %}</h5>
+	      </div>
+	      <div class="modal-body">
+		      <p>{% trans 'If you proceed it will be very hard to reactivate this source.' %}</p>
+
+            <form method="post" action="{% url 'source:delete' pk=source.pk %}">
+                {% csrf_token %}
+                <input class="btn btn-block btn-danger" type="submit" value="{% trans 'Deactivate' %}"/>
+            </form>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-secondary btn-success" data-dismiss="modal">{% trans 'Close' %}</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+
 
 {% endblock %}
