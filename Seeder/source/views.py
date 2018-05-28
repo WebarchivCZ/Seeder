@@ -204,6 +204,9 @@ class DeleteView(View, MessageView, SourceView, ObjectMixinFixed,  URLView):
         s.active = False
         s.save()
 
+        s.delete_blob()  # remove from search
+
+
         self.add_message(
             _('Source deactivated, it might still appear in searches.'),
             messages.SUCCESS
