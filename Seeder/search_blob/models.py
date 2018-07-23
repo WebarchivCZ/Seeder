@@ -61,8 +61,17 @@ class SearchModel:
     def get_search_public_url(self):
         return self.get_search_url()
 
+    def delete_blob(self):
+        Blob.objects.filter(
+            record_type=ContentType.objects.get_for_model(self),
+            record_id=self.id,
+        ).delete()
+
     def update_search_blob(self):
-        # Add version without diacritics: 
+        if hasattr(self, 'active') and not self.active:
+            return
+
+        # Add version without diacritics:
         search_blob = self.get_search_blob()
         blob_all = search_blob + unidecode(search_blob)
 
