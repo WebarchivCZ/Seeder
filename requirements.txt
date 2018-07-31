@@ -1,6 +1,6 @@
 odictliteral==1.0.0
 django==1.10.4
-Pillow==5.3.0
+Pillow==5.2.0
 sorl-thumbnail==12.4a1
 psycopg2==2.7.3.1
 djangorestframework==3.3.3
