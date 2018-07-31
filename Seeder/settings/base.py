@@ -282,7 +282,7 @@ LEGACY_SCREENSHOT_URL_PNG = 'http://www.webarchiv.cz/images/resource/thumb/small
 
 WEBARCHIV_EMAIL = 'webarchiv@nkp.cz'
 
-RECAPTCHA_PUBLIC_KEY = ''
-RECAPTCHA_PRIVATE_KEY = ''
+# RECAPTCHA_PUBLIC_KEY = ''
+# RECAPTCHA_PRIVATE_KEY = ''
 
 NOCAPTCHA = True
