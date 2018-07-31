@@ -22,7 +22,7 @@ django-autocomplete-light==3.2.1
 django_crontab==0.7.1
 urljects==1.11
 dateutils==0.6.6
-raven==5.32.0
+raven
 requests==2.10.0
 django-haystack==2.6.0
 elasticsearch==2.3.0
