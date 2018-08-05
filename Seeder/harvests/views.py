@@ -1,4 +1,6 @@
 import time
+from itertools import chain
+
 import datetime
 
 from . import models
@@ -125,6 +127,24 @@ class ListUrls(HarvestView, DetailView, TemplateView, URLView):
         self.object = self.get_object()
         context = super().get_context_data(**kwargs)
         context['urls'] = self.object.get_seeds()
+        return context
+
+
+class ListUrlsByTimeAndType(HarvestView, TemplateView, URLView):
+    url = U / '(?P<date>\d{4}-\d{2}-\d{2})' / '(?P<h_type>)' / 'urls'
+    url_name = 'urls'
+    template_name = 'urls.html'
+
+    def get_context_data(self, date, h_type, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        harvests = models.Harvest.objects.filter(
+            scheduled_on=date,
+            target_frequency=h_type
+        )
+
+        urls = chain([h.get_seeds() for h in harvests])
+        context['urls'] = urls
         return context
 
 
