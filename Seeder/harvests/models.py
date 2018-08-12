@@ -173,10 +173,12 @@ class Harvest(HarvestAbstractModel):
         return reverse('harvests:detail', args=[str(self.id)])
 
     def get_date_url(self):
-        return reverse('harvests:urls_by_time', args=[
-            str(self.scheduled_on.isoformat()),
-            str(self.target_frequency[0]),
-        ])
+        if self.target_frequency:
+            return reverse('harvests:urls_by_time', args=[
+                str(self.scheduled_on.isoformat()),
+                str(self.target_frequency[0]),
+            ])
+        return None
 
     def freeze_seeds(self):
         """
