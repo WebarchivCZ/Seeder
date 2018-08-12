@@ -4,6 +4,7 @@ from itertools import chain
 
 import datetime
 from django.urls import reverse
+from django.utils import dateparse
 
 from source.constants import SOURCE_FREQUENCY_PER_YEAR
 from . import models
@@ -134,19 +135,24 @@ class ListUrls(HarvestView, DetailView, TemplateView, URLView):
 
 
 class ListUrlsByTimeAndType(HarvestView, TemplateView, URLView):
-    url = U / '(?P<h_date>\d{4}-\d{2}-\d{2})' / '(?P<h_type>)\w+' / 'urls'
+    url = U / '(?P<h_date>\d{4}-\d{2}-\d{2})' / '(?P<h_type>\w+)' / 'urls'
     url_name = 'urls_by_time'
     template_name = 'urls.html'
 
     def get_context_data(self, h_date, h_type, **kwargs):
         context = super().get_context_data(**kwargs)
+        dt = dateparse.parse_date(h_date)
+
 
         harvests = models.Harvest.objects.filter(
-            scheduled_on=h_date,
-            target_frequency=h_type
+            scheduled_on=dt,
+            target_frequency__contains=h_type
         )
 
-        urls = chain([h.get_seeds() for h in harvests])
+        urls = []
+        for h in harvests:
+            urls.extend(list(h.get_seeds()))
+
         context['urls'] = urls
         return context
 
@@ -173,10 +179,6 @@ class HarvestUrlCatalogue(TemplateView, URLView):
         }
         context['harvest_urls'] = urls
         return context
-
-
-
-
 
 
 class TCView(generic_views.LoginMixin):
