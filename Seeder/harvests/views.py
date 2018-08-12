@@ -1,8 +1,11 @@
 import time
+from datetime import date
 from itertools import chain
 
 import datetime
+from django.urls import reverse
 
+from source.constants import SOURCE_FREQUENCY_PER_YEAR
 from . import models
 from . import forms
 from . import tables
@@ -131,21 +134,49 @@ class ListUrls(HarvestView, DetailView, TemplateView, URLView):
 
 
 class ListUrlsByTimeAndType(HarvestView, TemplateView, URLView):
-    url = U / '(?P<date>\d{4}-\d{2}-\d{2})' / '(?P<h_type>)' / 'urls'
-    url_name = 'urls'
+    url = U / '(?P<h_date>\d{4}-\d{2}-\d{2})' / '(?P<h_type>)\w+' / 'urls'
+    url_name = 'urls_by_time'
     template_name = 'urls.html'
 
-    def get_context_data(self, date, h_type, **kwargs):
+    def get_context_data(self, h_date, h_type, **kwargs):
         context = super().get_context_data(**kwargs)
 
         harvests = models.Harvest.objects.filter(
-            scheduled_on=date,
+            scheduled_on=h_date,
             target_frequency=h_type
         )
 
         urls = chain([h.get_seeds() for h in harvests])
         context['urls'] = urls
         return context
+
+
+class HarvestUrlCatalogue(TemplateView, URLView):
+    url = U / 'catalogue'
+    url_name = 'catalogue'
+    template_name = 'harvest_catalogue.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        dt = date.today()
+
+        url_by_type = lambda key: reverse(
+            'harvests:urls_by_time',
+            kwargs={
+                'h_date': dt.isoformat(),
+                'h_type': str(key)}
+        )
+
+        urls = {
+            url_by_type(key): title
+            for key, title in SOURCE_FREQUENCY_PER_YEAR
+        }
+        context['harvest_urls'] = urls
+        return context
+
+
+
+
 
 
 class TCView(generic_views.LoginMixin):
