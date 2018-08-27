@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block title %}
+	{% trans 'Harvest catalogue' %}
+{% endblock %}
+
+{% block page_header %}
+	{% trans 'Harvest catalogue' %}
+{% endblock %}
+
+{% block content %}
+	<p>
+		Below you will urls that give you harvests for each day for each type.
+	</p>
+	<table class="table">
+		<tr>
+			<th>URL</th>
+			<th>Description</th>
+		</tr>
+
+	{% for harvest_url, title in harvest_urls.items %}
+		<tr>
+			<td><code>{{harvest_url}}</code></td>
+			<td><a href="{{ harvest_url }}">{{ title }}</a></td>
+		</tr>
+	{% endfor %}
+	</table>
+
+{% endblock %}
