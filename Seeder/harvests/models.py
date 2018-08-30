@@ -169,9 +169,16 @@ class Harvest(HarvestAbstractModel):
             base_set.update(collection.get_seeds())
         return base_set
 
-
     def get_absolute_url(self):
         return reverse('harvests:detail', args=[str(self.id)])
+
+    def get_date_url(self):
+        if self.target_frequency:
+            return reverse('harvests:urls_by_time', args=[
+                str(self.scheduled_on.isoformat()),
+                str(self.target_frequency[0]),
+            ])
+        return None
 
     def freeze_seeds(self):
         """
