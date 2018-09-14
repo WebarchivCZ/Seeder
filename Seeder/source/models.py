@@ -92,7 +92,7 @@ class SeedManager(models.Manager):
     def valid_seeds(self):
         today = timezone.now()
         return super().get_queryset().filter(
-            Q(source__active=False) &
+            Q(source__active=True) &
             Q(state=constants.SEED_STATE_INCLUDE) &
             Q(
                 Q(to_time__lte=today, from_time__gte=today) |
