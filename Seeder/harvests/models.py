@@ -106,7 +106,7 @@ class HarvestAbstractModel(BaseModel):
                 self.get_custom_sources_seeds()
             )
         )
-        
+
         blacklisted = Blacklist.collect_urls_by_type(Blacklist.TYPE_HARVEST)
         return seeds - set(blacklisted)
 
