@@ -23,7 +23,7 @@ django_crontab==0.7.1
 urljects==1.11
 dateutils==0.6.6
 raven
-requests==2.10.0
+requests>=2.20.0
 django-haystack==2.6.0
 elasticsearch==2.3.0
 python-memcached==1.58
