@@ -17,9 +17,9 @@ class NewsTable(tables.Table):
     class Meta:
         model = models.NewsObject
         fields = ('title', )
-
         attrs = {
             'class': 'table table-striped table-hover'
         }
+        order_by = '-created'
 
 

@@ -26,3 +26,4 @@ class SourceTable(tables.Table):
         attrs = {
             'class': 'table table-striped table-hover'
         }
+        order_by = '-created'

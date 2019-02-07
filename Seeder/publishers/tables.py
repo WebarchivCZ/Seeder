@@ -13,7 +13,7 @@ class PublisherTable(tables.Table):
     class Meta:
         model = models.Publisher
         fields = ('name', )
-
         attrs = {
             'class': 'table table-striped table-hover'
         }
+        order_by = '-created'

@@ -11,7 +11,7 @@ class SearchLogTable(tables.Table):
             'log_time',
             'ip_address',
         )
-
         attrs = {
             'class': 'table table-striped table-hover'
         }
+        order_by = '-log_time'
