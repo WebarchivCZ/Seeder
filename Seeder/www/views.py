@@ -63,7 +63,7 @@ class Index(TemplateView):
         context = super().get_context_data(**kwargs)
         context.update({
             'contract_count': Contract.objects.valid().count(),
-            'last_sources': Source.objects.archiving().order_by('-created')[:5],
+            'last_sources': Source.objects.public().order_by('-created')[:5],
             'news_article': models.NewsObject.objects.filter(active=True).first(),
             'big_search_form': forms.BigSearchForm(data=self.request.GET),
             'hide_search_box': True,
@@ -202,7 +202,7 @@ class CategoryBaseView(PaginatedView):
 
     def get_categories_context(self):
         return {
-            'sources_total': Source.objects.archiving().count(),
+            'sources_total': Source.objects.public().count(),
             'categories': Category.objects.all().annotate(
                 num_sources=Sum(
                     Case(
@@ -234,7 +234,7 @@ class CategoryBaseView(PaginatedView):
 
 class Categories(CategoryBaseView, TemplateView):
     def get_paginator_queryset(self):
-        return Source.objects.archiving()
+        return Source.objects.public()
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -249,7 +249,7 @@ class CategoryDetail(CategoryBaseView, DetailView):
     context_object_name = 'current_category'
 
     def get_paginator_queryset(self):
-        return Source.objects.archiving().filter(
+        return Source.objects.public().filter(
             Q(category=self.get_object()) |
             Q(sub_category__category=self.get_object())
         )
@@ -269,7 +269,7 @@ class SubCategoryDetail(CategoryBaseView, DetailView):
     context_object_name = 'current_sub_category'
 
     def get_paginator_queryset(self):
-        return Source.objects.archiving().filter(
+        return Source.objects.public().filter(
             sub_category=self.get_object()
         )
 
@@ -298,7 +298,7 @@ class KeywordViews(PaginatedView, DetailView):
     template_name = 'keyword.html'
 
     def get_paginator_queryset(self):
-        return Source.objects.archiving().filter(
+        return Source.objects.public().filter(
             keywords=self.get_object()
         )
 
