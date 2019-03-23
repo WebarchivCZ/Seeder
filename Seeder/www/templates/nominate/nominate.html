@@ -4,6 +4,10 @@
 {% block title %}{% if lang == "cs" %}Nechte se Webarchivovat!{% else %}Let’s get Webarchived!{% endif %}{% endblock title %}
 
 
+{% block extrahead %}
+{{ form.media }}
+{% endblock %}
+
 {% block content %}
 
 	{% include "nominate/header.html" %}
@@ -66,10 +70,20 @@
 						{{ form.note }}
 					</div>
 				</div>
+				<div class="row" style="margin-bottom: 1em;">
+					<div class="col-sm-2 col-md-3 no-right-padding">
+						<span class="form-label">{% trans 'Are you a human?' %}</span>
+					</div>
+					<div class="col-sm-8 col-md-6">
+						{{ form.captcha }}
+						{{ form.captcha.errors }}
+					</div>
+				</div>
 
                 {% if form.non_field_errors %}
                     <div class="row">
                         {{ form.non_field_errors }}
+
                     </div>
                 {% endif %}
 				<div class="row">
@@ -86,9 +100,9 @@
 
 			<ul class="normal">
 				<li>byl vydán na území České republiky</li>
-				<li>jeho jazykem je čeština</li>
-				<li>autor je české národnosti</li>
-				<li>obsah se týká České republiky nebo českého národa</li>
+				<li>je napsán v češtině</li>
+				<li>autor je původem z Česka</li>
+				<li>obsah se týká České republiky</li>
 			</ul>
 
 			<p>Jsou vybírány především materiály významné kulturní či vědecké hodnoty, které vznikají jako původní digitální díla (tzn. nemají souběžnou tištěnou podobu).</p>
@@ -98,7 +112,7 @@
 
 			<h2>Do výběrových sklizní nespadají:</h2>
 			<p>počítačové hry (aplikace), internetové obchody, firemní weby, nabídkové katalogy, intranety, osobní weblogy (bez vědecké či kulturní hodnoty), portály shromažďující obsah z jiných zdrojů, rozhlasové a televizní vysílání, atd. (tyto zdroje ale mohou být archivovány v rámci celoplošných sklizní)</p>
-			<p>Vyhrazujeme si právo Váš návrh kdykoliv odmítnout. Smlouvu, prosím, nepodepisujte s předstihem, budeme Vás informovat. Pokud používáte licenci <a href="{% url 'www:nominate_creative_commons' %}">Creative Commons</a>, smlouvu uzavírat nemusíme, obdržíte od nás jen informativní zprávu o výsledku hodnocení.      </p>
+			<p>Vyhrazujeme si právo Váš návrh kdykoliv odmítnout. Pokud již používáte licenci <a href="{% url 'www:nominate_creative_commons' %}">Creative Commons</a>, obdržíte od nás jen informativní zprávu o výsledku hodnocení.</p>
 
 			{% else %}
 
@@ -118,11 +132,10 @@
 
 			<h2>Web documents that will not be included into the specific collection:</h2>
 			<p>Computer games (applications), online stores, corporate sites, offering catalogues, intranets, personal weblogs (without scientific and cultural values), portals that collects content from other sources, Radio and Television Broadcasting, etc. (Never less, these resources can be archive as a part of the nationwide  collection)</p>
-			<p>We reserve the right to reject your suggested website. Please, do not sign contract ahead.  Wait for our respond, we´ll inform you. If you are using a <a href="{% url 'www:nominate_creative_commons' %}">Creative Commons license</a>, you do not have to sign the contract. You will receive only an informative report that will notify you about the result of our evaluation.</p>
+			<p>We reserve the right to reject your suggested website. Wait for our respond, we´ll inform you. If you are using a <a href="{% url 'www:nominate_creative_commons' %}">Creative Commons license</a>, you will receive only an informative report that will notify you about the result of our evaluation.</p>
 
 			{% endif %}
 		</div>
 	</section>
 
 {% endblock %}
-

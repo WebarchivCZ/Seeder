@@ -42,6 +42,9 @@ class DashboardCard(object):
     def get_queryset(self):
         raise NotImplementedError
 
+    def get_count(self):
+        return self.get_queryset().count()
+
     def elements(self):
         for element in self.page.object_list:
             context_element = {
@@ -165,7 +168,6 @@ class TechnicalReview(SourceCard):
 
     def get_queryset(self):
         return self.get_basic_queryset().filter(
-            owner=self.user,
             state=source_models.constants.STATE_TECHNICAL_REVIEW
         )
 
@@ -176,7 +178,7 @@ class WithoutAleph(SourceCard):
     def get_queryset(self):
         return self.get_basic_queryset().filter(
             state__in=source_models.constants.ARCHIVING_STATES,
-            aleph_id=None
+            aleph_id__exact=''
         )
 
 

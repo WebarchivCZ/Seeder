@@ -3,6 +3,7 @@ import os
 import shutil
 import requests
 
+from contracts.constants import CONTRACT_STATE_VALID
 from qa.models import QualityAssuranceCheck
 from search_blob.models import update_search
 from . import models
@@ -672,6 +673,28 @@ def download_legacy_screenshots():
                     print('Screenshot url could not be found', url_png)
                     continue
             t.target_object.save()
+
+
+def sync_cc_status():
+    transfered = models.TransferRecord.objects.filter(
+        target_type=ContentType.objects.get_for_model(source_models.Source),
+    )
+    for t in transfered:
+        r = models.Resources.objects.using(LEGACY_DATABASE).get(
+            pk=t.original_id
+        )
+        if r.creative_commons and not t.target_object.contract_set.filter(
+                creative_commons=True, state=CONTRACT_STATE_VALID).exist():
+            contract = Contract(
+                creative_commons=True,
+                state=CONTRACT_STATE_VALID.exist(),
+                publisher=t.target_object.contract_set.first()
+            )
+            contract.save()
+            contract.sources.add(t.target_object)
+
+
+
 
 
 CONVERSIONS = [

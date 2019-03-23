@@ -7,7 +7,7 @@ from django.utils.html import strip_tags
 from django.views.generic.edit import FormView
 from django.views.generic.base import TemplateView, View
 from django.views.generic.detail import DetailView
-from django.http.response import HttpResponseRedirect
+from django.http.response import HttpResponseRedirect, Http404
 from django.utils.translation import ugettext as _
 from django.db.models import Sum, When, Case, IntegerField, Q
 from django.core.paginator import EmptyPage
@@ -22,7 +22,7 @@ from source.constants import ARCHIVING_STATES
 from harvests.models import TopicCollection
 from paginator.paginator import CustomPaginator
 from www.forms import NominationForm
-from www.models import Nomination
+from www.models import Nomination, SearchLog
 
 from . import models
 from . import forms
@@ -63,7 +63,7 @@ class Index(TemplateView):
         context = super().get_context_data(**kwargs)
         context.update({
             'contract_count': Contract.objects.valid().count(),
-            'last_sources': Source.objects.archiving().order_by('-created')[:5],
+            'last_sources': Source.objects.public().order_by('-created')[:5],
             'news_article': models.NewsObject.objects.filter(active=True).first(),
             'big_search_form': forms.BigSearchForm(data=self.request.GET),
             'hide_search_box': True,
@@ -202,7 +202,7 @@ class CategoryBaseView(PaginatedView):
 
     def get_categories_context(self):
         return {
-            'sources_total': Source.objects.archiving().count(),
+            'sources_total': Source.objects.public().count(),
             'categories': Category.objects.all().annotate(
                 num_sources=Sum(
                     Case(
@@ -234,7 +234,7 @@ class CategoryBaseView(PaginatedView):
 
 class Categories(CategoryBaseView, TemplateView):
     def get_paginator_queryset(self):
-        return Source.objects.archiving()
+        return Source.objects.public()
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -249,7 +249,7 @@ class CategoryDetail(CategoryBaseView, DetailView):
     context_object_name = 'current_category'
 
     def get_paginator_queryset(self):
-        return Source.objects.archiving().filter(
+        return Source.objects.public().filter(
             Q(category=self.get_object()) |
             Q(sub_category__category=self.get_object())
         )
@@ -269,7 +269,7 @@ class SubCategoryDetail(CategoryBaseView, DetailView):
     context_object_name = 'current_sub_category'
 
     def get_paginator_queryset(self):
-        return Source.objects.archiving().filter(
+        return Source.objects.public().filter(
             sub_category=self.get_object()
         )
 
@@ -298,7 +298,7 @@ class KeywordViews(PaginatedView, DetailView):
     template_name = 'keyword.html'
 
     def get_paginator_queryset(self):
-        return Source.objects.archiving().filter(
+        return Source.objects.public().filter(
             keywords=self.get_object()
         )
 
@@ -311,6 +311,17 @@ class KeywordViews(PaginatedView, DetailView):
 class SearchRedirectView(View):
     def get(self, request):
         query = self.request.GET.get('query', '')
+
+        x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+        if x_forwarded_for:
+            ip = x_forwarded_for.split(',')[0]
+        else:
+            ip = request.META.get('REMOTE_ADDR')
+
+        SearchLog(
+            search_term=query,
+            ip_address=ip,
+        ).save()
 
         regex_is_url = (
             # SCHEME:
@@ -329,7 +340,7 @@ class SearchRedirectView(View):
             "(#[a-z_.-][a-z0-9+\$_.-]*)?"
         )
 
-        if re.match(regex_is_url, query):
+        if re.match(regex_is_url, query.lower()):
             redirect_url = settings.WAYBACK_URL.format(url=query)
         else:
             redirect_url = reverse('www:search', kwargs={'query': query})
@@ -380,8 +391,19 @@ class SourceDetail(DetailView):
     context_object_name = 'source'
     template_name = 'source_public.html'
 
+    def get(self, request, *args, **kwargs):
+        try:
+            self.object = self.get_object()
+            return super(SourceDetail, self).get(request, *args, **kwargs)
+        except Http404:
+            redirect_url = reverse(
+                'www:search',
+                kwargs={'query': self.kwargs['slug']}
+            )
+            return HttpResponseRedirect(redirect_url)
+
     def get_queryset(self):
-        return Source.objects.archiving()
+        return Source.objects.public()
 
 
 class Nominate(FormView):
@@ -395,10 +417,10 @@ class Nominate(FormView):
         nomination = form.save()
         if nomination.submitted_by_author:
             title = _('Webarchiv.cz - archivace vasich webovych stranek %(url)s') % {"url": nomination.url}
-            email_template = 'nominateemails/nomination_confirmation_owner.html'
+            email_template = 'nominate/emails/nomination_confirmation_owner.html'
         else:
             title = _('Webarchiv.cz - archivace webovych stranek %(url)s') % {"url": nomination.url}
-            email_template = 'nominateemails/nomination_confirmation.html'
+            email_template = 'nominate/emails/nomination_confirmation.html'
 
         content = render_to_string(email_template)
         notification_content = render_to_string(
@@ -414,13 +436,12 @@ class Nominate(FormView):
             from_email=settings.WEBARCHIV_EMAIL,
             recipient_list=[
                 nomination.contact_email,
-                settings.WEBARCHIV_EMAIL
             ]
         )
 
         # send notification to curators
         send_mail(
-            subject=_('New nomination'),
+            subject=_('New nomination %(url)s') % {"url": nomination.url},
             message=strip_tags(notification_content),
             html_message=notification_content,
             from_email=settings.WEBARCHIV_EMAIL,
@@ -440,7 +461,7 @@ class NominateSuccess(TemplateView):
 
 
 class NominateContractView(TemplateView):
-    template_name = 'nominate/cooperation.html'
+    template_name = 'nominate/contract.html'
     view_name = 'nominate'
 
     def get_context_data(self, **kwargs):

@@ -56,7 +56,7 @@
 
 					<hr>
 					<br>
-					
+
 					{% ifequal request.session.list_type "visual"  %}
 						{% include "includes/resource_list_visual.html" with paginator=results %}
 					{% else %}
@@ -73,11 +73,11 @@
 
 				{% if lang == "cs" %}
 					<p>Bohužel se nám nepodařilo najít zadané slovní spojení.</p>
-					<p>Můžete ho zkusit upravit nebo <a href="{plink advanced-search}">hledat podle adresy</a>.</p>
+					<p>Můžete ho zkusit upravit nebo <a href="{% url "www:index" %}">hledat podle adresy</a>.</p>
 
 				{% else %}
 					<p>Your search did not match any documents.</p>
-					<p>You can try different keywords or <a href="{plink advanced-search}">search by URL</a>.</p>
+					<p>You can try different keywords or <a href="{% url "www:index" %}">search by URL</a>.</p>
 				{% endif %}
 
 			</div>

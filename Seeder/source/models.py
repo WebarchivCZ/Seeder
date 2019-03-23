@@ -88,14 +88,26 @@ class SeedManager(models.Manager):
     """
     Auto-filters seeds that are ready to be archived
     """
-    def get_queryset(self):
+
+    def valid_seeds(self):
         today = timezone.now()
         return super().get_queryset().filter(
-            Q(source__state__in=constants.ARCHIVING_STATES,
-              state=constants.SEED_STATE_INCLUDE) &
+            Q(source__active=True) &
+            Q(state=constants.SEED_STATE_INCLUDE) &
             Q(
                 Q(to_time__lte=today, from_time__gte=today) |
-                Q(to_time__isnull=True))
+                Q(to_time__isnull=True)
+            )
+        )
+
+    def get_queryset(self):
+        return self.valid_seeds().filter(
+            source__state__in=constants.ARCHIVING_STATES,
+        )
+
+    def public_seeds(self):
+        return self.valid_seeds().filter(
+            source__state=constants.STATE_RUNNING
         )
 
 
@@ -145,9 +157,17 @@ class SourceManager(models.Manager):
     Filters sources that needs quality assurance
     """
 
+    def get_queryset(self):
+        return super(SourceManager, self).get_queryset().exclude(active=False)
+
     def archiving(self):
         return self.get_queryset().filter(
             state__in=constants.ARCHIVING_STATES
+        )
+
+    def public(self):
+        return self.get_queryset().filter(
+            state=constants.STATE_RUNNING
         )
 
     def needs_qa(self):
@@ -301,7 +321,7 @@ class Source(SearchModel, SlugOrCreateModel, BaseModel):
         return ' '.join(filter(None, parts))
 
     def get_public_search_blob(self):
-        if not self.state in constants.ARCHIVING_STATES:
+        if not self.state == constants.STATE_RUNNING:
             return None
 
         parts = [
@@ -314,7 +334,11 @@ class Source(SearchModel, SlugOrCreateModel, BaseModel):
 
     @property
     def main_seed(self):
-        return self.seed_set.first()
+        main_active = self.seed_set.filter(
+            state=constants.SEED_STATE_INCLUDE
+        ).first()
+
+        return main_active if main_active else self.seed_set.first()
 
     @property
     def url(self):

@@ -139,7 +139,7 @@
 					<ul>
 						<li><a href="{% url "www:about_contact" %}">{% if lang == "cs" %}kontakt{% else %}contact{% endif %}</a></li>
 						<li><a href="https://www.facebook.com/webarchivcz">facebook</a></li>
-						<li><a href="http://blog.webarchiv.cz/">blog</a></li>
+						<li><a href="{% url 'www:nominate' %}">{% if lang == "cs" %}přidat web{% else %}nominate a site{% endif %}</a></li>
 						<li><a href="{% url "www:about_graphics" %}">logo</a></li>
 					</ul>
 				</div>

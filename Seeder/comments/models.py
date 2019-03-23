@@ -140,7 +140,7 @@ class Comment(SearchModel, MPTTModel):
         return self.text
 
     def get_absolute_url(self):
-        return self.content_object.get_absolute_url()
+        return self.content_object.get_absolute_url() if self.content_object else None
     
     def get_search_title(self):
         return str(self.content_object)

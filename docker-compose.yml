@@ -9,7 +9,6 @@ services:
     links:
       - postgres
       - mysql
-      - elastic
       - memcached
       - manet
     volumes:

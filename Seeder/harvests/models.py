@@ -18,7 +18,7 @@ from harvests.scheduler import get_dates_for_timedelta
 from source.constants import SOURCE_FREQUENCY_PER_YEAR, HARVESTED_FREQUENCIES
 from source.models import Source, Seed, KeyWord
 from django.contrib.auth.models import User
-
+from multiselectfield import MultiSelectField
 
 
 class HarvestAbstractModel(BaseModel):
@@ -28,7 +28,7 @@ class HarvestAbstractModel(BaseModel):
     status = NotImplemented
     scheduled_on = NotImplemented
     
-    target_frequency = models.IntegerField(
+    target_frequency = MultiSelectField(
         verbose_name=_('Seeds by frequency'),
         choices=SOURCE_FREQUENCY_PER_YEAR,
         blank=True,
@@ -77,7 +77,9 @@ class HarvestAbstractModel(BaseModel):
         self.save()
 
     def get_seeds_by_frequency(self):
-        seeds = Seed.archiving.filter(source__frequency=self.target_frequency)
+        if not self.target_frequency:
+            return []
+        seeds = Seed.archiving.filter(source__frequency__in=self.target_frequency)
         return list(seeds.values_list('url', flat=True))
 
     def get_custom_seeds(self):
@@ -95,7 +97,7 @@ class HarvestAbstractModel(BaseModel):
         :return: set of urls
         """
         if self.seeds_frozen:
-            return self.seeds_frozen.splitlines()
+            return set(self.seeds_frozen.splitlines())
 
         seeds = set(
             chain(
@@ -167,9 +169,16 @@ class Harvest(HarvestAbstractModel):
             base_set.update(collection.get_seeds())
         return base_set
 
-
     def get_absolute_url(self):
         return reverse('harvests:detail', args=[str(self.id)])
+
+    def get_date_url(self):
+        if self.target_frequency:
+            return reverse('harvests:urls_by_time', args=[
+                str(self.scheduled_on.isoformat()),
+                str(self.target_frequency[0]),
+            ])
+        return None
 
     def freeze_seeds(self):
         """
