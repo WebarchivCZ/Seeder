@@ -2,20 +2,20 @@
 from dateutil.relativedelta import relativedelta
 from django.utils.translation import ugettext_lazy as _
 
-STATE_VOTE = 'voting'
-STATE_DUPLICITY = 'duplicity'
-STATE_WAITING = 'waiting'
-STATE_REEVALUTATION = 'reevaluation'
-STATE_TECHNICAL_REVIEW = 'technical'
-STATE_COMMUNICATING = 'communication'
-STATE_ACCEPTED_BY_STAFF = 'vote_accepted'
-STATE_DECLINED_BY_STAFF = 'vote_declined'
-STATE_DECLINED_BY_PUBLISHER = 'declined'
-STATE_PUBLISHER_IGNORED_REQUEST = 'ignored'
-STATE_RUNNING = 'success'
-STATE_WITHOUT_PUBLISHER = 'forced'
-STATE_CONTRACT_EXPIRED = 'expired'
-STATE_CONTRACT_TERMINATED = 'terminated'
+STATE_VOTE = 'voting'                       # Hodnocení
+STATE_DUPLICITY = 'duplicity'               # Duplicitní záznam
+STATE_WAITING = 'waiting'                   # Čeká na odpověď
+STATE_REEVALUTATION = 'reevaluation'        # Čeká na přehodnocení
+STATE_TECHNICAL_REVIEW = 'technical'        # Technická kontrola
+STATE_COMMUNICATING = 'communication'       # V jednání
+STATE_ACCEPTED_BY_STAFF = 'vote_accepted'   # Přijato Webarchivem
+STATE_DECLINED_BY_STAFF = 'vote_declined'   # Odmítnuto Webarchivem
+STATE_DECLINED_BY_PUBLISHER = 'declined'    # Odmítnuto vydavatelem
+STATE_PUBLISHER_IGNORED_REQUEST = 'ignored' # Bez odezvy
+STATE_RUNNING = 'success'                   # Archivován
+STATE_WITHOUT_PUBLISHER = 'forced'          # Archivováno bez smlouvy
+STATE_CONTRACT_EXPIRED = 'expired'          # Bez smlouvy
+STATE_CONTRACT_TERMINATED = 'terminated'    # Vypovězená smlouva
 
 SOURCE_STATES = (
     (STATE_VOTE, _('Voting')),
