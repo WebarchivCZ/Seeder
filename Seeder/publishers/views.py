@@ -91,7 +91,7 @@ class PublisherAutocomplete(autocomplete.Select2QuerySetView, URLView):
     url = U / 'autocomplete'
 
     def get_queryset(self):
-        if not self.request.user.is_authenticated():
+        if not self.request.user.is_authenticated:
             return models.Publisher.objects.none()
         qs = models.Publisher.objects.all()
         if self.q:
@@ -104,7 +104,7 @@ class PublisherContactAutocomplete(autocomplete.Select2QuerySetView, URLView):
     url = U / 'contact_autocomplete'
 
     def get_queryset(self):
-        if not self.request.user.is_authenticated():
+        if not self.request.user.is_authenticated:
             return models.ContactPerson.objects.none()
         qs = models.ContactPerson.objects.all()
         publisher = self.forwarded.get('publisher', None)

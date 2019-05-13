@@ -262,7 +262,7 @@ class CategoryAutocomplete(autocomplete.Select2QuerySetView, URLView):
     url = U / 'category_autocomplete'
 
     def get_queryset(self):
-        if not self.request.user.is_authenticated():
+        if not self.request.user.is_authenticated:
             return models.Category.objects.none()
 
         qs = models.Category.objects.all()
@@ -276,7 +276,7 @@ class SubcategoryAutocomplete(autocomplete.Select2QuerySetView, URLView):
     url = U / 'subcategory_autocomplete'
 
     def get_queryset(self):
-        if not self.request.user.is_authenticated():
+        if not self.request.user.is_authenticated:
             return models.SubCategory.objects.none()
         qs = models.SubCategory.objects.all()
 
@@ -294,7 +294,7 @@ class SourceAutocomplete(autocomplete.Select2QuerySetView, URLView):
     url = U / 'source_autocomplete'
 
     def get_queryset(self):
-        if not self.request.user.is_authenticated():
+        if not self.request.user.is_authenticated:
             return models.Source.objects.none()
 
         qs = models.Source.objects.all()
@@ -311,7 +311,7 @@ class SourcePublicAutocomplete(autocomplete.Select2QuerySetView, URLView):
     url = U / 'source_public_autocomplete'
 
     def get_queryset(self):
-        if not self.request.user.is_authenticated():
+        if not self.request.user.is_authenticated:
             return models.Source.objects.none()
 
         qs = models.Source.objects.archiving()
@@ -328,7 +328,7 @@ class KeywordAutocomplete(autocomplete.Select2QuerySetView, URLView):
     url = U / 'keyword_autocomplete'
 
     def get_queryset(self):
-        if not self.request.user.is_authenticated():
+        if not self.request.user.is_authenticated:
             return models.KeyWord.objects.none()
 
         qs = models.KeyWord.objects.all()
