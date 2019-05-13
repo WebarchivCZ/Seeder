@@ -18,7 +18,8 @@ class Comment(SearchModel, MPTTModel):
     """
     # Threading:
     parent = TreeForeignKey('self', null=True, blank=True,
-                            related_name='children', db_index=True)
+                            related_name='children', db_index=True,
+                            on_delete=models.SET_NULL)
 
     # Content-object field
     content_type = models.ForeignKey(
@@ -141,7 +142,7 @@ class Comment(SearchModel, MPTTModel):
 
     def get_absolute_url(self):
         return self.content_object.get_absolute_url() if self.content_object else None
-    
+
     def get_search_title(self):
         return str(self.content_object)
 
@@ -166,5 +167,6 @@ class Comment(SearchModel, MPTTModel):
         permissions = [("can_moderate", "Can moderate comments")]
         verbose_name = _('Comment')
         verbose_name_plural = _('Comments')
+
 
 post_save.connect(update_search, sender=Comment)

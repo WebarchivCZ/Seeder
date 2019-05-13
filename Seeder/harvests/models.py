@@ -27,7 +27,7 @@ class HarvestAbstractModel(BaseModel):
 
     status = NotImplemented
     scheduled_on = NotImplemented
-    
+
     target_frequency = MultiSelectField(
         verbose_name=_('Seeds by frequency'),
         choices=SOURCE_FREQUENCY_PER_YEAR,
@@ -58,7 +58,6 @@ class HarvestAbstractModel(BaseModel):
             self.custom_sources.count()
         )
 
-
     def __str__(self):
         return self.repr()
 
@@ -79,7 +78,8 @@ class HarvestAbstractModel(BaseModel):
     def get_seeds_by_frequency(self):
         if not self.target_frequency:
             return []
-        seeds = Seed.archiving.filter(source__frequency__in=self.target_frequency)
+        seeds = Seed.archiving.filter(
+            source__frequency__in=self.target_frequency)
         return list(seeds.values_list('url', flat=True))
 
     def get_custom_seeds(self):
@@ -118,7 +118,7 @@ class Harvest(HarvestAbstractModel):
     """
     STATE_PLANNED = 0
     STATE_RUNNING = 1
-    STATE_SUCCESS = 2 
+    STATE_SUCCESS = 2
     STATE_SUCCESS_WITH_FAILURES = 3
     STATE_CANCELLED = 4
     STATE_FAILED = 5
@@ -137,7 +137,7 @@ class Harvest(HarvestAbstractModel):
         verbose_name=_('State'),
         default=STATE_PLANNED
     )
-    
+
     title = models.CharField(
         verbose_name=_('title'),
         blank=True, max_length=255
@@ -245,7 +245,7 @@ class TopicCollection(HarvestAbstractModel):
         verbose_name=_('State'),
         default=STATE_NEW
     )
-    
+
     title = models.CharField(verbose_name=_('title'), max_length=255)
     slug = AutoSlugField(unique=True, populate_from='title_cs')
 
@@ -265,7 +265,7 @@ class TopicCollection(HarvestAbstractModel):
 
     scheduled_on = DatePickerField(
         verbose_name=_('Date of harvest'),
-        null=True, blank=True, 
+        null=True, blank=True,
     )
 
     annotation = models.TextField(
@@ -274,7 +274,7 @@ class TopicCollection(HarvestAbstractModel):
     image = models.ImageField(
         verbose_name=_('image'),
         upload_to='photos',
-        null=True, blank=True, 
+        null=True, blank=True,
     )
 
     all_open = models.BooleanField(
@@ -301,8 +301,9 @@ class TopicCollection(HarvestAbstractModel):
 
 class Attachment(models.Model):
     file = models.FileField(verbose_name=_('file'), upload_to='attachments')
-    topic_collection = models.ForeignKey(TopicCollection)
-    
+    topic_collection = models.ForeignKey(TopicCollection,
+                                         on_delete=models.CASCADE)
+
     def __str__(self):
         return os.path.basename(self.file.name)
 
