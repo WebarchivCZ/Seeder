@@ -1,7 +1,7 @@
 from django.views.generic import DetailView, FormView
 from django.utils.translation import ugettext_lazy as _
 from django.http.response import HttpResponseRedirect
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 
 from urljects import U, URLView, pk
 from dal import autocomplete

@@ -4,7 +4,7 @@ from . import forms
 
 from datetime import datetime, timedelta
 
-from django.core.urlresolvers import reverse_lazy
+from django.urls import reverse_lazy
 from django.contrib import messages
 from django.views.generic import DetailView, FormView
 from django.views.generic.detail import SingleObjectMixin

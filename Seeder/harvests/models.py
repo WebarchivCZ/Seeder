@@ -4,7 +4,7 @@ from itertools import chain
 
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.dispatch import receiver
 from django.db.models.signals import pre_save
 

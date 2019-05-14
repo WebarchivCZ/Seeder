@@ -11,7 +11,7 @@ from django.http.response import HttpResponseRedirect, Http404
 from django.utils.translation import ugettext as _
 from django.db.models import Sum, When, Case, IntegerField, Q
 from django.core.paginator import EmptyPage
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.conf import settings
 
 from contracts.models import Contract

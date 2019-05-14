@@ -5,7 +5,7 @@ from django.conf import settings
 from django.db.models import Q
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import User
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.core.exceptions import ValidationError
 from django.contrib.contenttypes.models import ContentType
 from django.utils import timezone

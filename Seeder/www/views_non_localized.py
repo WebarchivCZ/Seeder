@@ -1,7 +1,7 @@
 from django.views.generic.base import View
 from django.http.response import HttpResponseRedirect
 from django.utils.http import is_safe_url
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.utils import translation
 
 from urljects import U, URLView
