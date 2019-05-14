@@ -6,7 +6,6 @@ from django.views.generic.base import TemplateView
 from django.views.generic.edit import FormView
 
 from reversion import revisions
-from urljects import U, URLView, pk
 
 from core import generic_views
 from . import models, forms
@@ -18,9 +17,7 @@ class BlacklistView(generic_views.LoginMixin):
     title = _('Blacklists')
 
 
-class ListView(BlacklistView, TemplateView, URLView):
-    url_name = 'list'
-    url = U
+class ListView(BlacklistView, TemplateView):
     template_name = 'blacklists.html'
 
     def get_context_data(self, **kwargs):
@@ -29,9 +26,7 @@ class ListView(BlacklistView, TemplateView, URLView):
         return context
 
 
-class AddView(BlacklistView, FormView, URLView):
-    url = U / 'add'
-    url_name = 'add'
+class AddView(BlacklistView, FormView):
     form_class = forms.AddForm
     template_name = 'add_form.html'
 
@@ -40,9 +35,7 @@ class AddView(BlacklistView, FormView, URLView):
         return HttpResponseRedirect(reverse('blacklists:list'))
 
 
-class EditView(BlacklistView, generic_views.EditView, URLView):
-    url = U / pk / 'edit'
-    url_name = 'edit'
+class EditView(BlacklistView, generic_views.EditView):
     form_class = forms.EditForm
     template_name = 'edit_form.html'
 
@@ -53,9 +46,8 @@ class EditView(BlacklistView, generic_views.EditView, URLView):
         return HttpResponseRedirect(reverse('blacklists:list'))
 
 
-class History(BlacklistView, generic_views.HistoryView, URLView):
+class History(BlacklistView, generic_views.HistoryView):
     """
         History log
     """
-    url = U / 'history' / pk
-    url_name = 'history'
+    pass

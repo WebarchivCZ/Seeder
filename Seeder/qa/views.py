@@ -1,9 +1,6 @@
-
 from django.views.generic import DetailView, FormView
 from django.utils.translation import ugettext_lazy as _
 from django.http.response import HttpResponseRedirect
-
-from urljects import U, URLView, pk
 
 from comments.views import CommentViewGeneric
 from source.models import Source
@@ -17,15 +14,11 @@ class QAView(LoginMixin):
     model = models.QualityAssuranceCheck
 
 
-class QACreate(QAView, FormView, DetailView, URLView):
+class QACreate(QAView, FormView, DetailView):
     model = Source
     form_class = forms.QACreateForm
     template_name = 'qa_form.html'
     context_object_name = 'source'
-
-    url = U / 'source' / pk / 'create'
-    url_name = 'create'
-
 
     def form_valid(self, form):
         qa = form.save(commit=False)
@@ -36,12 +29,9 @@ class QACreate(QAView, FormView, DetailView, URLView):
         return HttpResponseRedirect(qa.get_absolute_url())
 
 
-class QAEdit(QAView, EditView, URLView):
+class QAEdit(QAView, EditView):
     form_class = forms.QAEditForm
     template_name = 'qa_form.html'
-
-    url = U / pk / 'edit'
-    url_name = 'edit'
 
     def form_valid(self, form):
         redirect = super().form_valid(form)
@@ -54,17 +44,11 @@ class QAEdit(QAView, EditView, URLView):
         return context
 
 
-class QADetail(QAView, DetailView, CommentViewGeneric, URLView):
+class QADetail(QAView, DetailView, CommentViewGeneric):
     template_name = 'detail.html'
 
-    url = U / pk / 'detail'
-    url_name = 'detail'
 
-
-class ListView(QAView, FilteredListView, URLView):
+class ListView(QAView, FilteredListView):
     title = _('Quality assurance reports')
     table_class = tables.QATable
     filter_class = field_filters.QAFilter
-
-    url = U
-    url_name = 'list'

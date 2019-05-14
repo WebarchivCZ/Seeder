@@ -20,7 +20,6 @@ django-debug-toolbar==1.4
 tld==0.7.6
 django-autocomplete-light==3.3.4
 django_crontab==0.7.1
-urljects==1.11
 dateutils==0.6.6
 raven
 requests>=2.20.0

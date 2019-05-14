@@ -12,8 +12,6 @@ from django.utils.translation import ugettext_lazy as _
 from django.utils import timezone
 from django.http.response import HttpResponseRedirect
 
-from urljects import U, URLView, pk
-
 from comments.views import CommentViewGeneric
 from source.models import Source
 from core.generic_views import (
@@ -29,10 +27,7 @@ class VotingView(LoginMixin):
     model = models.VotingRound
 
 
-class Create(VotingView, DetailView, URLView, MessageView):
-    url = U / pk / 'create'
-    url_name = 'create'
-
+class Create(VotingView, DetailView, MessageView):
     model = Source
 
     def post(self, request, *args, **kwargs):
@@ -50,12 +45,9 @@ class Create(VotingView, DetailView, URLView, MessageView):
         return HttpResponseRedirect(voting_round.get_absolute_url())
 
 
-class VotingDetail(VotingView, DetailView, CommentViewGeneric, URLView):
+class VotingDetail(VotingView, DetailView, CommentViewGeneric):
     template_name = 'voting_round.html'
     context_object_name = 'voting_round'
-
-    url = U / pk / 'detail'
-    url_name = 'detail'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -63,16 +55,12 @@ class VotingDetail(VotingView, DetailView, CommentViewGeneric, URLView):
         return context
 
 
-
-class CastVote(LoginMixin, SingleObjectMixin, ActionView, URLView):
+class CastVote(LoginMixin, SingleObjectMixin, ActionView):
     """
     View for casting votes
     """
     model = models.VotingRound
     allowed_actions = constants.VOTE_DICT.keys()
-
-    url = U / pk / 'vote'
-    url_name = 'cast'
 
     def process_action(self, action):
         vote, created = models.Vote.objects.get_or_create(
@@ -93,14 +81,11 @@ class CastVote(LoginMixin, SingleObjectMixin, ActionView, URLView):
         return self.get_object().get_absolute_url()
 
 
-class Postpone(VotingView, ObjectMixinFixed, FormView, URLView):
+class Postpone(VotingView, ObjectMixinFixed, FormView):
     form_class = forms.PostponeForm
     template_name = 'edit_form.html'
     title = _('Postpone voting')
     view_name = 'voting'
-
-    url = U / pk / 'postpone'
-    url_name = 'postpone'
 
     def form_valid(self, form):
         voting_round = self.get_object()
@@ -115,15 +100,12 @@ class Postpone(VotingView, ObjectMixinFixed, FormView, URLView):
         return HttpResponseRedirect(voting_round.get_absolute_url())
 
 
-class Resolve(LoginMixin, SingleObjectMixin, ActionView, URLView):
+class Resolve(LoginMixin, SingleObjectMixin, ActionView):
     """
     View for resolving the round
     """
     model = models.VotingRound
     allowed_actions = constants.VOTE_DICT.keys()
-
-    url = U / pk / 'resolve'
-    url_name = 'resolve'
 
     def check_permissions(self, user):
         return self.get_object().can_manage(user)

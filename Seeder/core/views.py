@@ -8,19 +8,14 @@ from django.views.generic.edit import UpdateView
 from django.utils.http import is_safe_url
 from django.utils import translation
 
-from urljects import U, URLView
-
 from .generic_views import LoginMixin, MessageView
 from .dashboard_data import get_cards, cards_registry
 
 
-class DashboardView(LoginMixin, TemplateView, URLView):
+class DashboardView(LoginMixin, TemplateView):
     template_name = 'dashboard.html'
     title = _('Dashboard')
     view_name = 'dashboard'
-
-    url = U
-    url_name = 'dashboard'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data()
@@ -30,13 +25,10 @@ class DashboardView(LoginMixin, TemplateView, URLView):
         return context
 
 
-class DashboardCard(LoginMixin, TemplateView, URLView):
+class DashboardCard(LoginMixin, TemplateView):
     card = None
     template_name = 'card_detail.html'
     view_name = 'dashboard'
-
-    url = U / 'card' / r'(?P<card>\w+)'
-    url_name = 'card'
 
     def get(self, request, *args, **kwargs):
         card = cards_registry[self.kwargs['card']]
@@ -53,9 +45,7 @@ class DashboardCard(LoginMixin, TemplateView, URLView):
         return self.card.get_queryset()
 
 
-class ChangeLanguage(View, URLView):
-    url = U / 'lang' / r'(?P<code>\w+)'
-    url_name = 'change_language'
+class ChangeLanguage(View):
 
     def get(self, request, code):
         redirect = request.META.get('HTTP_REFERER')
@@ -66,15 +56,12 @@ class ChangeLanguage(View, URLView):
         return HttpResponseRedirect(redirect)
 
 
-class UserProfileEdit(LoginMixin, UpdateView, MessageView, URLView):
+class UserProfileEdit(LoginMixin, UpdateView, MessageView):
     form_class = forms.UserForm
     view_name = 'user_edit'
     template_name = 'user_edit.html'
     title = _('Change user information')
     success_url = '/'
-
-    url = U / 'profile'
-    url_name = 'user_edit'
 
     def get_object(self, queryset=None):
         return self.request.user
@@ -89,30 +76,26 @@ class PasswordChangeDone(LoginMixin, MessageView, View):
     """
         Redirect page that adds success message
     """
+
     def get(self, request):
         self.add_message(_('Password changed successfully.'), messages.SUCCESS)
         return HttpResponseRedirect('/')
 
 
-class CrashTestView(URLView, LoginMixin, View):
+class CrashTestView(LoginMixin, View):
     """
     This view servers as crash test: it purposefully crashes request handling
     so that we can see how will the server handle crashes.
     """
 
-    url = U / 'crash_test'
-    url_name = 'crash_test'
-
     def get(self, *args, **kwargs):
         assert False
 
 
-class DevNotesView(URLView, LoginMixin, TemplateView):
+class DevNotesView(LoginMixin, TemplateView):
     """
     This view will provide basic information about API 
     and some other end points. 
     """
 
-    url = U / 'dev'
-    url_name = 'dev_notes'
     template_name = 'dev_notes.html'

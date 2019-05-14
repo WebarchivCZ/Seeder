@@ -18,7 +18,6 @@ from django.views.generic.base import TemplateView
 from django.views.generic import DetailView, FormView
 from django.conf import settings
 
-from urljects import U, URLView, pk
 from core import generic_views
 from comments.views import CommentViewGeneric
 from core.generic_views import EditView
@@ -51,10 +50,8 @@ class HarvestView(generic_views.LoginMixin):
     title = _('Harvests')
 
 
-class CalendarView(HarvestView, URLView, TemplateView):
+class CalendarView(HarvestView, TemplateView):
     template_name = 'calendar.html'
-    url = U
-    url_name = 'calendar'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -67,10 +64,7 @@ class CalendarView(HarvestView, URLView, TemplateView):
         return context
 
 
-class CalendarJsonView(generic_views.JSONView, URLView):
-    url = U / 'json'
-    url_name = 'json_calendar'
-
+class CalendarJsonView(generic_views.JSONView):
     def get_data(self, context):
         date_from = timestamp_to_datetime(self.request.GET.get('from', ''))
         date_to = timestamp_to_datetime(self.request.GET.get('to', ''))
@@ -98,9 +92,7 @@ class CalendarJsonView(generic_views.JSONView, URLView):
         }
 
 
-class AddView(HarvestView, FormView, URLView):
-    url = U / 'add'
-    url_name = 'add'
+class AddView(HarvestView, FormView):
     form_class = forms.HarvestCreateForm
     template_name = 'add_form.html'
 
@@ -110,21 +102,15 @@ class AddView(HarvestView, FormView, URLView):
         return HttpResponseRedirect(harvest.get_absolute_url())
 
 
-class Detail(HarvestView, DetailView, CommentViewGeneric, URLView):
+class Detail(HarvestView, DetailView, CommentViewGeneric):
     template_name = 'harvest.html'
-    url = U / pk / 'detail'
-    url_name = 'detail'
 
 
-class Edit(HarvestView, EditView, URLView):
-    url = U / pk / 'edit'
-    url_name = 'edit'
+class Edit(HarvestView, EditView):
     form_class = forms.HarvestEditForm
 
 
-class ListUrls(HarvestView, DetailView, TemplateView, URLView):
-    url = U / pk / 'urls'
-    url_name = 'urls'
+class ListUrls(HarvestView, DetailView, TemplateView):
     template_name = 'urls.html'
 
     def get_context_data(self, **kwargs):
@@ -134,15 +120,12 @@ class ListUrls(HarvestView, DetailView, TemplateView, URLView):
         return context
 
 
-class ListUrlsByTimeAndType(HarvestView, TemplateView, URLView):
-    url = U / '(?P<h_date>\d{4}-\d{2}-\d{2})' / '(?P<h_type>\w+)' / 'urls'
-    url_name = 'urls_by_time'
+class ListUrlsByTimeAndType(HarvestView, TemplateView):
     template_name = 'urls.html'
 
     def get_context_data(self, h_date, h_type, **kwargs):
         context = super().get_context_data(**kwargs)
         dt = dateparse.parse_date(h_date)
-
 
         harvests = models.Harvest.objects.filter(
             scheduled_on=dt,
@@ -157,16 +140,14 @@ class ListUrlsByTimeAndType(HarvestView, TemplateView, URLView):
         return context
 
 
-class HarvestUrlCatalogue(TemplateView, URLView):
-    url = U / 'catalogue'
-    url_name = 'catalogue'
+class HarvestUrlCatalogue(TemplateView):
     template_name = 'harvest_catalogue.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         dt = date.today()
 
-        url_by_type = lambda key: reverse(
+        def url_by_type(key): return reverse(
             'harvests:urls_by_time',
             kwargs={
                 'h_date': dt.isoformat(),
@@ -186,30 +167,24 @@ class TCView(generic_views.LoginMixin):
     model = models.TopicCollection
 
 
-class AddTopicCollection(TCView, FormView, URLView):
+class AddTopicCollection(TCView, FormView):
     form_class = forms.TopicCollectionForm
     template_name = 'add_form.html'
     title = _('Add TopicCollection')
 
-    url = U / 'add_topic_collection'
-    url_name = 'topic_collection_add'
-
     def form_valid(self, form):
         topic = form.save()
-        
+
         for each in form.cleaned_data["attachments"]:
             models.Attachment.objects.create(
-                file=each, 
+                file=each,
                 topic_collection=topic
             )
         return HttpResponseRedirect(topic.get_absolute_url())
 
 
-class EditCollection(TCView, generic_views.EditView, URLView):
+class EditCollection(TCView, generic_views.EditView):
     form_class = forms.TopicCollectionEditForm
-
-    url = U / pk / 'collection_edit'
-    url_name = 'topic_collection_edit'
 
     def get_form(self, form_class=None):
         if not form_class:
@@ -220,41 +195,33 @@ class EditCollection(TCView, generic_views.EditView, URLView):
     def form_valid(self, form):
         topic = form.save()
 
-        ids_to_delete = form.cleaned_data['files_to_delete']        
+        ids_to_delete = form.cleaned_data['files_to_delete']
         for att in models.Attachment.objects.filter(id__in=ids_to_delete):
             att.file.delete()
             att.delete()
 
         for each in form.cleaned_data["attachments"]:
             models.Attachment.objects.create(
-                file=each, 
+                file=each,
                 topic_collection=topic
             )
         return HttpResponseRedirect(topic.get_absolute_url())
 
 
-class CollectionDetail(TCView, DetailView, CommentViewGeneric, URLView):
+class CollectionDetail(TCView, DetailView, CommentViewGeneric):
     template_name = 'topic_collection.html'
 
-    url = U / pk / 'collection_detail'
-    url_name = 'topic_collection_detail'
 
-
-class CollectionHistory(TCView, generic_views.HistoryView, URLView):
+class CollectionHistory(TCView, generic_views.HistoryView):
     """
         History of changes to TopicCollections
     """
-
-    url = U / pk / 'collection_history'
-    url_name = 'topic_collection_history'
+    pass
 
 
-class CollectionListView(TCView, generic_views.FilteredListView, URLView):
+class CollectionListView(TCView, generic_views.FilteredListView):
     title = _('TopicCollections')
     table_class = tables.TopicCollectionTable
     filter_class = field_filters.TopicCollectionFilter
 
-    url = U / 'collections'
-    url_name = 'topic_collection_list'
-
-    add_link = 'harvests:topic_collection_add' 
+    add_link = 'harvests:topic_collection_add'

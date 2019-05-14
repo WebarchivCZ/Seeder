@@ -1,6 +1,5 @@
 from django.views.generic.base import TemplateView
 from core.generic_views import LoginMixin, FilteredListView
-from urljects import U, URLView
 
 from search_blob.field_filters import SearchLogFilter
 from search_blob.tables import SearchLogTable
@@ -9,12 +8,9 @@ from .models import Blob
 from .forms import SearchForm
 
 
-class SearchView(LoginMixin, TemplateView, URLView):
+class SearchView(LoginMixin, TemplateView):
     template_name = 'search/search.html'
     view_name = 'search'
-
-    url = U / 'search'
-    url_name = 'search'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -35,13 +31,10 @@ class SearchView(LoginMixin, TemplateView, URLView):
         return context
 
 
-class SearchLogView(LoginMixin, FilteredListView, URLView):
+class SearchLogView(LoginMixin, FilteredListView):
     title = 'Search log'
     table_class = SearchLogTable
     filter_class = SearchLogFilter
 
     view_name = 'searchlog'
     model = SearchLog
-
-    url = U
-    url_name = 'list'
