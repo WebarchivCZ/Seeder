@@ -102,16 +102,15 @@ INSTALLED_APPS = (
 )
 
 
-MIDDLEWARE_CLASSES = (
-    'reversion.middleware.RevisionMiddleware',
+MIDDLEWARE = (
+    'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'django.middleware.security.SecurityMiddleware',
+    'reversion.middleware.RevisionMiddleware',
     'django.middleware.locale.LocaleMiddleware',
 )
 
@@ -175,7 +174,6 @@ CALENDAR_LANGUAGES = {
 MODELTRANSLATION_DEFAULT_LANGUAGE = 'cs'
 
 
-
 LOCALE_PATHS = (
     os.path.join(BASE_DIR, 'locale'),
 )
@@ -222,7 +220,7 @@ CKEDITOR_CONFIGS = {
             ['NumberedList', 'BulletedList', 'Link'],
         ],
         'width': 800,
-        'height':100,
+        'height': 100,
     },
 }
 
@@ -260,13 +258,12 @@ REST_FRAMEWORK = {
 
 if DEBUG:
     REST_FRAMEWORK['DEFAULT_PERMISSION_CLASSES'] = [
-       'rest_framework.permissions.AllowAny'
+        'rest_framework.permissions.AllowAny'
     ]
 
 
 WAKAT_URL = 'http://forpsi.kitakitsune.org:8080/?url_id={id}'
 WAYBACK_URL = "http://wayback.webarchiv.cz/wayback/query?type=urlquery&url={url}"
-
 
 
 SEEDS_EXPORT_DIR = 'seeds'
