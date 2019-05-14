@@ -70,6 +70,7 @@ INSTALLED_APPS = (
     'django.contrib.postgres',
 
     # 'djangobower', # everything is on cdn
+    'django_extensions',
     'django_tables2',
     'django_filters',
     'bootstrap3',

@@ -130,7 +130,7 @@ www_urls = [
 
 urlpatterns = [
     # Legacy redirects:
-    path(r'certifikat', RedirectView.as_view(
+    path('certifikat', RedirectView.as_view(
         url=reverse_lazy('www:about_graphics'), permanent=True)
         ),
     path('cs/certifikovano/', disclaimer_redirect),
