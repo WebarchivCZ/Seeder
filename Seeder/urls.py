@@ -28,20 +28,20 @@ from api import api_router
 admin.site.index_title = admin.site.site_header = admin.site.site_title = 'Administrace WWW'  # noqa
 
 seeder_urlpatterns = [
-    path('ckeditor', include('ckeditor_uploader.urls')),
-    path('api/auth', include(
+    path('ckeditor/', include('ckeditor_uploader.urls')),
+    path('api/auth/', include(
         ('rest_framework.urls', 'rest_framework'), namespace='rest_framework')),
-    path('api/token', token_views.obtain_auth_token),
-    path('search', include(('search_blob.urls', 'search_blob'), namespace='search')),
+    path('api/token/', token_views.obtain_auth_token),
+    path('search/', include(('search_blob.urls', 'search_blob'), namespace='search')),
 
-    path('api', include(api_router.urls)),
-    path('source', include(('source.urls', 'source'), namespace='source')),
-    path('publisher', include(('publishers.urls', 'publishers'), namespace='publishers')),    # noqa
-    path('voting', include(('voting.urls', 'voting'), namespace='voting')),
-    path('contracts', include(('contracts.urls', 'contracts'), namespace='contracts')),
-    path('harvests', include(('harvests.urls', 'harvests'), namespace='harvests')),
-    path('blacklists', include(('blacklists.urls', 'blacklists'), namespace='blacklists')),  # noqa
-    path('qa', include(('qa.urls', 'qa'), namespace='qa')),
+    path('api/', include(api_router.urls)),
+    path('source/', include(('source.urls', 'source'), namespace='source')),
+    path('publisher/', include(('publishers.urls', 'publishers'), namespace='publishers')),    # noqa
+    path('voting/', include(('voting.urls', 'voting'), namespace='voting')),
+    path('contracts/', include(('contracts.urls', 'contracts'), namespace='contracts')),
+    path('harvests/', include(('harvests.urls', 'harvests'), namespace='harvests')),
+    path('blacklists/', include(('blacklists.urls', 'blacklists'), namespace='blacklists')),  # noqa
+    path('qa/', include(('qa.urls', 'qa'), namespace='qa')),
 
     # TODO: currently only loading news_admin and non_localized, the rest is solved below
     path('', include('www.urls')),
@@ -133,13 +133,13 @@ urlpatterns = [
     path(r'certifikat', RedirectView.as_view(
         url=reverse_lazy('www:about_graphics'), permanent=True)
         ),
-    path('cs/certifikovano', disclaimer_redirect),
-    path('en/disclaimer', disclaimer_redirect),
+    path('cs/certifikovano/', disclaimer_redirect),
+    path('en/disclaimer/', disclaimer_redirect),
     path('files/vydavatele/certifikat.html', disclaimer_redirect),
 
-    path('seeder/admin', admin.site.urls),
-    path('seeder/auth', include('django.contrib.auth.urls')),
-    path('seeder', include(seeder_urlpatterns)),
+    path('seeder/admin/', admin.site.urls),
+    path('seeder/auth/', include('django.contrib.auth.urls')),
+    path('seeder/', include(seeder_urlpatterns)),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 urlpatterns += i18n_patterns(
