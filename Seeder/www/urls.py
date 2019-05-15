@@ -16,6 +16,6 @@ urlpatterns_non_localized = [
 ]
 
 urlpatterns = [
-    path('news', include((urlpatterns_news_admin, 'www'), namespace='news')),
-    path('lang', include((urlpatterns_non_localized, 'www'), namespace='www_no_lang')),
+    path('seeder/news/', include((urlpatterns_news_admin, 'www'), namespace='news')),
+    path('lang/', include((urlpatterns_non_localized, 'www'), namespace='www_no_lang')),
 ]

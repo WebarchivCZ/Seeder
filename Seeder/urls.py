@@ -30,9 +30,6 @@ seeder_urlpatterns = [
     path('blacklists/', include(('blacklists.urls', 'blacklists'), namespace='blacklists')),  # noqa
     path('qa/', include(('qa.urls', 'qa'), namespace='qa')),
 
-    # TODO: currently only loading news_admin and non_localized, the rest is solved below
-    path('', include('www.urls')),
-
     path('', include(('core.urls', 'core'), namespace='core'))
 ]
 
@@ -127,6 +124,8 @@ urlpatterns = [
     path('seeder/admin/', admin.site.urls),
     path('seeder/auth/', include('django.contrib.auth.urls')),
     path('seeder/', include(seeder_urlpatterns)),
+    # TODO: currently only loading news_admin and non_localized, the rest is solved below
+    path('', include('www.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 urlpatterns += i18n_patterns(
