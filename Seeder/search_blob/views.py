@@ -34,7 +34,7 @@ class SearchView(LoginMixin, TemplateView):
 class SearchLogView(LoginMixin, FilteredListView):
     title = 'Search log'
     table_class = SearchLogTable
-    filter_class = SearchLogFilter
+    filterset_class = SearchLogFilter
 
     view_name = 'searchlog'
     model = SearchLog

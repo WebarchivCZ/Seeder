@@ -57,6 +57,6 @@ class History(NewsView, generic_views.HistoryView):
 class ListView(NewsView, generic_views.FilteredListView):
     title = _('news')
     table_class = tables.NewsTable
-    filter_class = field_filters.NewsFilter
+    filterset_class = field_filters.NewsFilter
 
     add_link = 'news:add'

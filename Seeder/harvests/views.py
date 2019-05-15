@@ -222,6 +222,6 @@ class CollectionHistory(TCView, generic_views.HistoryView):
 class CollectionListView(TCView, generic_views.FilteredListView):
     title = _('TopicCollections')
     table_class = tables.TopicCollectionTable
-    filter_class = field_filters.TopicCollectionFilter
+    filterset_class = field_filters.TopicCollectionFilter
 
     add_link = 'harvests:topic_collection_add'

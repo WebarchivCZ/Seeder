@@ -13,7 +13,7 @@ class EmptyFilter(django_filters.FilterSet):
         models.CharField: {
             'filter_class': django_filters.CharFilter,
             'extra': lambda f: {
-                'lookup_type': 'icontains',
+                'lookup_expr': 'icontains',
             }
         }
     }

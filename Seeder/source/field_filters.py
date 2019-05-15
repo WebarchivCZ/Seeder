@@ -7,7 +7,7 @@ from .import models
 
 
 class SourceFilter(EmptyFilter):
-    seed__url = django_filters.CharFilter(lookup_type='icontains')
+    seed__url = django_filters.CharFilter(lookup_expr='icontains')
 
     publisher = django_filters.ModelChoiceFilter(
         queryset=Publisher.objects.all(),

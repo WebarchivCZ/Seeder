@@ -51,4 +51,4 @@ class QADetail(QAView, DetailView, CommentViewGeneric):
 class ListView(QAView, FilteredListView):
     title = _('Quality assurance reports')
     table_class = tables.QATable
-    filter_class = field_filters.QAFilter
+    filterset_class = field_filters.QAFilter

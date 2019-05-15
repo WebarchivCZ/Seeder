@@ -227,7 +227,8 @@ class History(SourceView, generic_views.HistoryView):
 class SourceList(SourceView, generic_views.FilteredListView):
     title = _('Sources')
     table_class = tables.SourceTable
-    filter_class = field_filters.SourceFilter
+    filterset_class = field_filters.SourceFilter
+    filterset_class = field_filters.SourceFilter
 
     add_link = 'source:add'
 

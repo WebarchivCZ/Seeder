@@ -42,7 +42,7 @@ class History(PublisherView, generic_views.HistoryView):
 class ListView(PublisherView, generic_views.FilteredListView):
     title = _('Publishers')
     table_class = tables.PublisherTable
-    filter_class = field_filters.PublisherFilter
+    filterset_class = field_filters.PublisherFilter
 
     add_link = 'publishers:add'
 

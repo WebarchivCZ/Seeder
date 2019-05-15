@@ -105,7 +105,7 @@ class History(ContractView, HistoryView):
 class ListView(ContractView, FilteredListView):
     title = _('Contracts')
     table_class = tables.ContractTable
-    filter_class = field_filters.ContractFilter
+    filterset_class = field_filters.ContractFilter
 
 
 class Schedule(ContractView, FormView, ObjectMixinFixed):
