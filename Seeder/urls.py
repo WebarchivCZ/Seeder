@@ -8,21 +8,8 @@ from django.views.generic import RedirectView
 from django.utils.translation import ugettext_lazy as _
 
 from rest_framework.authtoken import views as token_views
-
-from source import views as source_views
-from publishers import views as publisher_views
-from voting import views as voting_views
-from contracts import views as contracts_views
-from harvests import views as harvests_views
-from blacklists import views as blacklists_views
-from search_blob import views as search_views
-
-from qa import views as qa_views
-from www import views as www_views
-from www import views_non_localized
-from www import news_admin_views
-
 from api import api_router
+from www import views as www_views
 
 
 admin.site.index_title = admin.site.site_header = admin.site.site_title = 'Administrace WWW'  # noqa
