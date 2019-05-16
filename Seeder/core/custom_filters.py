@@ -41,12 +41,15 @@ class DateRangeFilter(django_filters.Filter):
     field_class = RangeField
 
     def filter(self, qs, value):
+        # When no value is passed (filter not used), return default
+        if value is None:
+            return qs
         date_from, date_to = value
         filter_queries = {}
         if date_from:
-            filter_queries['{0}__gte'.format(self.name)] = date_from
+            filter_queries['{0}__gte'.format(self.field_name)] = date_from
         if date_to:
-            filter_queries['{0}__lte'.format(self.name)] = date_to
+            filter_queries['{0}__lte'.format(self.field_name)] = date_to
 
         if filter_queries:
             return qs.filter(**filter_queries)
