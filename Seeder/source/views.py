@@ -228,7 +228,6 @@ class SourceList(SourceView, generic_views.FilteredListView):
     title = _('Sources')
     table_class = tables.SourceTable
     filterset_class = field_filters.SourceFilter
-    filterset_class = field_filters.SourceFilter
 
     add_link = 'source:add'
 
