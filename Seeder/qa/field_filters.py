@@ -1,9 +1,9 @@
 from . import models
 
-from core.custom_filters import EmptyFilter
+from core.custom_filters import BaseFilterSet
 
 
-class QAFilter(EmptyFilter):
+class QAFilter(BaseFilterSet):
     class Meta:
         model = models.QualityAssuranceCheck
         fields = [

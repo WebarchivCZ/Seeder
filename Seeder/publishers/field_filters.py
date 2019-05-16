@@ -1,9 +1,9 @@
 from . import models
 
-from core.custom_filters import EmptyFilter
+from core.custom_filters import BaseFilterSet
 
 
-class PublisherFilter(EmptyFilter):
+class PublisherFilter(BaseFilterSet):
     class Meta:
         model = models.Publisher
         fields = {

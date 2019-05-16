@@ -1,9 +1,9 @@
 from . import models
 
-from core.custom_filters import EmptyFilter, DateRangeFilter
+from core.custom_filters import BaseFilterSet, DateRangeFilter
 
 
-class ContractFilter(EmptyFilter):
+class ContractFilter(BaseFilterSet):
     valid_from = DateRangeFilter()
     valid_to = DateRangeFilter()
 

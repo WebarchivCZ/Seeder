@@ -1,8 +1,8 @@
 from . import models
-from core.custom_filters import EmptyFilter
+from core.custom_filters import BaseFilterSet
 
 
-class TopicCollectionFilter(EmptyFilter):
+class TopicCollectionFilter(BaseFilterSet):
     class Meta:
         model = models.TopicCollection
         fields = {

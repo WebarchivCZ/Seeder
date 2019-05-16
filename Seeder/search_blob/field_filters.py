@@ -1,8 +1,8 @@
 from www.models import SearchLog
-from core.custom_filters import EmptyFilter
+from core.custom_filters import BaseFilterSet
 
 
-class SearchLogFilter(EmptyFilter):
+class SearchLogFilter(BaseFilterSet):
     class Meta:
         model = SearchLog
         fields = {
