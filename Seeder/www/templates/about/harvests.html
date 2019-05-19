@@ -4,52 +4,70 @@
 
 {% block content %}
 
-	{% include "about/menu.html" %}
+{% include "about/menu.html" %}
 
-	<section>
-		<div class="container">
+<section>
+	<div class="container">
 
-			{% if lang == "cs" %}
+		{% if lang == "cs" %}
 
-				<h2>Celoplošné sklizně</h2>
-				<p>Celoplošná sklizeň je zaměřena na archivaci všech webových stránek zveřejněných na *.cz doméně. Jejich kompletní seznam má Webarchiv k dispozici díky podpoře sdružení CZ.NIC. Celoplošná sklizeň je prováděna zpravidla jednou až dvakrát ročně a takto archivované stránky jsou z důvodu prostorových kapacit sklízeny na nižší úroveň než sklizně výběrové a tematické. Cílem celoplošných sklizní je zachycení obrazu českého internetu v daném čase. Tento přístup představuje archivaci co největšího počtu webových zdrojů na základě parametrů definovaných v aplikovaném SW, tedy vyžadující minimum další intelektuální práce.</p>
+		<h2>Celoplošné sklizně</h2>
+		<p>Celoplošná sklizeň je zaměřena na archivaci všech webových stránek zveřejněných na *.cz doméně. Jejich
+			kompletní seznam má Webarchiv k dispozici díky podpoře sdružení CZ.NIC. Celoplošná sklizeň je prováděna
+			zpravidla jednou až dvakrát ročně a takto archivované stránky jsou z důvodu prostorových kapacit sklízeny na
+			nižší úroveň než sklizně výběrové a tematické. Cílem celoplošných sklizní je zachycení obrazu českého
+			internetu v daném čase. Tento přístup představuje archivaci co největšího počtu webových zdrojů na základě
+			parametrů definovaných v aplikovaném SW, tedy vyžadující minimum další intelektuální práce.</p>
 
-				<ul class="normal">
-					<li><strong>Doména</strong> – celoplošné sklízení je zaměření na archivaci národní domény (národní webový prostor *.cz). Zdroje umístěné mimo národní doménu jsou také archivovány, ale v jiných typech sklizní.</li>
-				</ul>
+		<ul class="normal">
+			<li><strong>Doména</strong> – celoplošné sklízení je zaměření na archivaci národní domény (národní webový
+				prostor *.cz). Zdroje umístěné mimo národní doménu jsou také archivovány, ale v jiných typech sklizní.
+			</li>
+		</ul>
 
-				<p>Ostatní aspekty (formát, přístup, počet souborů) jsou volitelné, záleží na technickém vybavení a dalších možnostech.</p>
+		<p>Ostatní aspekty (formát, přístup, počet souborů) jsou volitelné, záleží na technickém vybavení a dalších
+			možnostech.</p>
 
-				<ul class="normal">
-					<li><strong>Formát</strong> – automaticky jsou stahovány takové formáty, jaké dokáže aplikovaný harvester stáhnout. Na základě dostupné paměťové kapacity a dalších faktorů lze nastavit limity pro různé typy souborů, kategorie typů souborů, velikosti souborů apod.</li>
-					<li><strong>Přístup</strong> – archivovány jsou pouze volně přístupné zdroje.</li>
-					<li><strong>Počet souborů</strong> – pro většinu zdrojů je nastaveno stahování maximálně 5000 souborů z jedné domény.</li>
-				</ul>
+		<ul class="normal">
+			<li><strong>Formát</strong> – automaticky jsou stahovány takové formáty, jaké dokáže aplikovaný harvester
+				stáhnout. Na základě dostupné paměťové kapacity a dalších faktorů lze nastavit limity pro různé typy
+				souborů, kategorie typů souborů, velikosti souborů apod.</li>
+			<li><strong>Přístup</strong> – archivovány jsou pouze volně přístupné zdroje.</li>
+			<li><strong>Počet souborů</strong> – pro většinu zdrojů je nastaveno stahování maximálně 5000 souborů z
+				jedné domény.</li>
+		</ul>
 
-				<p>Celoplošné sklízení umožňuje partnerství se sdružením <a href="https://www.nic.cz">CZ.NIC</a>. Sdružení poskytuje Webarchivu seznam registrovaných domén pro celoplošné sklizně české národní domény .cz.<br><img src="{{ STATIC_URL }}www/images/logo_cznic.png" alt="{% trans "CZ.NIC logo" %}"></p>
+		<p>Celoplošné sklízení umožňuje partnerství se sdružením <a href="https://www.nic.cz">CZ.NIC</a>. Sdružení
+			poskytuje Webarchivu seznam registrovaných domén pro celoplošné sklizně české národní domény .cz.<br><img
+				src="{{ STATIC_URL }}www/images/logo_cznic.png" alt="CZ.NIC logo"></p>
 
-			{% else %}
+		{% else %}
 
-				<h2>Comprehensive Harvests</h2>
-				<p>The main focus of comprehensive crawls is to automatically harvest the biggest number of Czech web resources. The requirements of comprehensive crawls are: </p>
+		<h2>Comprehensive Harvests</h2>
+		<p>The main focus of comprehensive crawls is to automatically harvest the biggest number of Czech web resources.
+			The requirements of comprehensive crawls are: </p>
 
-				<ul class="normal">
-					<li><strong>Domain</strong> – Czech domain (.cz) web resources are collected. Resources with other domains can be also harvested, but in other types of harvests.</li>
-				</ul>
+		<ul class="normal">
+			<li><strong>Domain</strong> – Czech domain (.cz) web resources are collected. Resources with other domains
+				can be also harvested, but in other types of harvests.</li>
+		</ul>
 
-				<p>Other requirements </p>
+		<p>Other requirements </p>
 
-				<ul class="normal">
-					<li><strong>Format</strong> – harvesting different formats of resources depends on a technical settings of the harvester</li>
-					<li><strong>Access</strong> – only freely accessible resources are harvested</li>
-					<li><strong>Number of files</strong> – maximum 5000 files from one domain</li>
-				</ul>
+		<ul class="normal">
+			<li><strong>Format</strong> – harvesting different formats of resources depends on a technical settings of
+				the harvester</li>
+			<li><strong>Access</strong> – only freely accessible resources are harvested</li>
+			<li><strong>Number of files</strong> – maximum 5000 files from one domain</li>
+		</ul>
 
-				<p>Comprehensive harvesting wouldn't be possible without our partner CZ domain registry <a href="https://www.nic.cz">CZ.NIC</a> which provides us list of .cz domains.<br><img src="{{ STATIC_URL }}www/images/logo_cznic_en.png" alt="{% trans "CZ.NIC logo" %}"></p>
+		<p>Comprehensive harvesting wouldn't be possible without our partner CZ domain registry <a
+				href="https://www.nic.cz">CZ.NIC</a> which provides us list of .cz domains.<br><img
+				src="{{ STATIC_URL }}www/images/logo_cznic_en.png" alt="CZ.NIC logo"></p>
 
-			{% endif %}
+		{% endif %}
 
-		</div>
-	</section>
+	</div>
+</section>
 
 {% endblock %}

@@ -5,148 +5,201 @@
 
 {% block content %}
 
-	{% include "about/menu.html" %}
+{% include "about/menu.html" %}
 
-	<section id="graphics">
-		<div class="container">
+<section id="graphics">
+	<div class="container">
 
-			<h2>{% if lang == "cs" %}Grafické materiály{% else %}Banners{% endif %}</h2>
+		<h2>{% if lang == "cs" %}Grafické materiály{% else %}Banners{% endif %}</h2>
 
-			{% if lang == "cs" %}
-				<p>Pokud jste pyšní, že se vaše stránky webarchivují, udělejte nám radost a dejte si na svůj web náš certifikát:</p>
-			{% else %}
-				<p>If you are proud your websites are webarchived, make us pleasure and place our certificate on your site:
-			{% endif %}
+		{% if lang == "cs" %}
+		<p>Pokud jste pyšní, že se vaše stránky webarchivují, udělejte nám radost a dejte si na svůj web náš
+			certifikát.<br>
+			Veškeré grafické materiály jsou vystaveny pod licencí <a
+				href="http://creativecommons.org/licenses/by-sa/4.0/"><strong>CC</strong>
+				BY-SA 4.0</a>.
+		</p>
+		{% else %}
+		<p>If you are proud your websites are webarchived, make us pleasure and place our certificate on your site.
+			<br>
+			This work is licensed under a <a href="http://creativecommons.org/licenses/by-sa/4.0/"><strong>CC</strong>
+				BY-SA 4.0</a>.
+		</p>
+		{% endif %}
 
-			<div class="row">
-				<div class="col-lg-2">
-					<p>{% if lang == "cs" %}certifikát{% else %}certificate{% endif %}</p>
-				</div>
-				<div class="col-lg-4">
-					{% if lang == "cs" %}
-						<p>varianta bílý podklad<br>(pro užití na bílém nebo světlém podkladu)</p>
-					{% else %}
-						<p>white style<br>(for usage in white or light background)</p>
-					{% endif %}
-					<br><img src="{{ STATIC_URL }}www/images/graphics/webarchiv-certifikat-01.png" alt="{% trans "Webarchiv certificate" %}">
-					{% if lang == "cs" %}
-						<br><a onclick="return !window.open(this, 'kod', 'toolbar=no, menubar=no, directories=no, resizable=yes, status=no, width=600, height=210, top=200, left=50')" href="{% url 'www:embed' %}?img=http://webarchiv.cz{{ STATIC_URL }}www/images/webarchiv-certifikat-01.png">Zdrojový kód obrázku</a>
-					{% else %}
-						<br><a onclick="return !window.open(this, 'kod', 'toolbar=no, menubar=no, directories=no, resizable=yes, status=no, width=600, height=210, top=200, left=50')" href="{% url 'www:embed' %}?img=http://webarchiv.cz{{ STATIC_URL }}www/images/webarchiv-certifikat-01.png">embed code</a>
-					{% endif %}
-
-				</div>
-				<div class="col-lg-4">
-					{% if lang == "cs" %}
-						<p>varianta modrý podklad<br>(pro užití na barevném nebo tmavém podkladu)</p>
-					{% else %}
-						<p>blue style<br>(for usage in colored or dark background)</p>
-					{% endif %}
-					<br><img src="{{ STATIC_URL }}www/images/graphics/webarchiv-certifikat-02.png" alt="{% trans "Webarchiv certificate" %}">
-					{% if lang == "cs" %}
-						<br><a onclick="return !window.open(this, 'kod', 'toolbar=no, menubar=no, directories=no, resizable=yes, status=no, width=600, height=210, top=200, left=50')" href="{% url 'www:embed' %}?img=http://webarchiv.cz{{ STATIC_URL }}www/images/webarchiv-certifikat-02.png">Zdrojový kód obrázku</a>
-					{% else %}
-						<br><a onclick="return !window.open(this, 'kod', 'toolbar=no, menubar=no, directories=no, resizable=yes, status=no, width=600, height=210, top=200, left=50')" href="{% url 'www:embed' %}?img=http://webarchiv.cz{{ STATIC_URL }}www/images/webarchiv-certifikat-02.png">embed code</a>
-					{% endif %}
-				</div>
+		<div class="row">
+			<div class="col-lg-2">
+				<p>{% if lang == "cs" %}certifikát{% else %}certificate{% endif %}</p>
 			</div>
+			<div class="col-lg-4">
+				{% if lang == "cs" %}
+				<p>varianta bílý podklad<br>(pro užití na bílém nebo světlém podkladu)</p>
+				{% else %}
+				<p>white style<br>(for usage in white or light background)</p>
+				{% endif %}
+				<br><img src="{{ STATIC_URL }}www/images/graphics/webarchiv-certifikat-01.png"
+					alt="{% trans "Webarchiv certificate" %}">
+				{% if lang == "cs" %}
+				<br><a
+					onclick="return !window.open(this, 'kod', 'toolbar=no, menubar=no, directories=no, resizable=yes, status=no, width=600, height=210, top=200, left=50')"
+					href="{% url 'www:embed' %}?img=http://webarchiv.cz{{ STATIC_URL }}www/images/webarchiv-certifikat-01.png">Zdrojový
+					kód obrázku</a>
+				{% else %}
+				<br><a
+					onclick="return !window.open(this, 'kod', 'toolbar=no, menubar=no, directories=no, resizable=yes, status=no, width=600, height=210, top=200, left=50')"
+					href="{% url 'www:embed' %}?img=http://webarchiv.cz{{ STATIC_URL }}www/images/webarchiv-certifikat-01.png">embed
+					code</a>
+				{% endif %}
 
-			<div class="row">
-				<div class="col-lg-2">
-					<p>{% if lang == "cs" %}naše logo<br>v křivkách{% else %}our vector<br>logo{% endif %}</p>
-				</div>
-				<div class="col-lg-4">
-					<br><br>
-					<img src="{{ STATIC_URL }}www/images/graphics/webarchiv-logo-color.png" alt="{% trans "Webarchiv certificate" %}">
-					<br>
-						<br><a  href="{{ STATIC_URL }}www/images/graphics/webarchiv-logo-color-rgb.eps">download (RGB)</a><br><a  href="{{ STATIC_URL }}www/images/graphics/webarchiv-logo-color-cmyk.eps">download (CMYK)</a>
-				</div>
-				<div class="col-lg-4">
-					<br><br>
-					<img src="{{ STATIC_URL }}www/images/graphics/webarchiv-logo-black.png" alt="{% trans "Webarchiv certificate" %}">
-					<br>
-						<br><a  href="{{ STATIC_URL }}www/images/graphics/webarchiv-logo-color-rgb.eps">download (RGB)</a><br><a  href="{{ STATIC_URL }}www/images/graphics/webarchiv-logo-color-cmyk.eps">download (CMYK)</a>
-				</div>
 			</div>
-
-			<div class="row">
-				<div class="col-lg-2">
-					<p>{% if lang == "cs" %}bannery{% else %}banners{% endif %}</p>
-				</div>
-				<div class="col-lg-9">
-					<p>468 x 60 px</p>
-					<br>
-					<img src="{{ STATIC_URL }}www/images/graphics/webarchiv-ico468x60-01.png" alt="{% trans "Webarchiv certificate" %}">
-					<br><br>
-					<img src="{{ STATIC_URL }}www/images/graphics/webarchiv-ico468x60-02.png" alt="{% trans "Webarchiv certificate" %}">
-					<br><br>
-					<img src="{{ STATIC_URL }}www/images/graphics/webarchiv-ico468x60-03.png" alt="{% trans "Webarchiv certificate" %}">
-					<br><br>
-					<img src="{{ STATIC_URL }}www/images/graphics/webarchiv-ico468x60-04.png" alt="{% trans "Webarchiv certificate" %}">
-				</div>
+			<div class="col-lg-4">
+				{% if lang == "cs" %}
+				<p>varianta modrý podklad<br>(pro užití na barevném nebo tmavém podkladu)</p>
+				{% else %}
+				<p>blue style<br>(for usage in colored or dark background)</p>
+				{% endif %}
+				<br><img src="{{ STATIC_URL }}www/images/graphics/webarchiv-certifikat-02.png"
+					alt="{% trans "Webarchiv certificate" %}">
+				{% if lang == "cs" %}
+				<br><a
+					onclick="return !window.open(this, 'kod', 'toolbar=no, menubar=no, directories=no, resizable=yes, status=no, width=600, height=210, top=200, left=50')"
+					href="{% url 'www:embed' %}?img=http://webarchiv.cz{{ STATIC_URL }}www/images/webarchiv-certifikat-02.png">Zdrojový
+					kód obrázku</a>
+				{% else %}
+				<br><a
+					onclick="return !window.open(this, 'kod', 'toolbar=no, menubar=no, directories=no, resizable=yes, status=no, width=600, height=210, top=200, left=50')"
+					href="{% url 'www:embed' %}?img=http://webarchiv.cz{{ STATIC_URL }}www/images/webarchiv-certifikat-02.png">embed
+					code</a>
+				{% endif %}
 			</div>
-
-			<div class="row">
-				<div class="col-lg-2 col-lg-offset-2">
-					<p>99 x 89 px</p>
-					<br>
-					<img src="{{ STATIC_URL }}www/images/graphics/webarchiv-ico99x89-01.png" alt="{% trans "Webarchiv certificate" %}">
-				</div>
-				<div class="col-lg-2">
-					<br><br>
-					<img src="{{ STATIC_URL }}www/images/graphics/webarchiv-ico99x89-02.png" alt="{% trans "Webarchiv certificate" %}">
-				</div>
-				<div class="col-lg-2">
-					<br><br>
-					<img src="{{ STATIC_URL }}www/images/graphics/webarchiv-ico99x89-03.png" alt="{% trans "Webarchiv certificate" %}">
-				</div>
-			</div>
-
-			<div class="row">
-				<div class="col-lg-2 col-lg-offset-2">
-					<p>88 x 31px</p>
-					<br>
-					<img src="{{ STATIC_URL }}www/images/graphics/webarchiv-ico88x31-01.png" alt="{% trans "Webarchiv certificate" %}">
-				</div>
-				<div class="col-lg-2">
-					<br><br>
-					<img src="{{ STATIC_URL }}www/images/graphics/webarchiv-ico88x31-02.png" alt="{% trans "Webarchiv certificate" %}">
-				</div>
-				<div class="col-lg-2">
-					<br><br>
-					<img src="{{ STATIC_URL }}www/images/graphics/webarchiv-ico88x31-03.png" alt="{% trans "Webarchiv certificate" %}">
-				</div>
-			</div>
-
-			<div class="row">
-				<div class="col-lg-2">
-					<p>{% if lang == "cs" %}starší verze<br>certifikátu{% else %}old version of<br>certificate{% endif %}</p>
-				</div>
-				<div class="col-lg-4">
-					<br><br>
-					<img src="{{ STATIC_URL }}www/images/webarchiv_certifikat_c.gif" alt="{% trans "Webarchiv certificate" %}">
-					<br>
-					{% if lang == "cs" %}
-						<br><a onclick="return !window.open(this, 'kod', 'toolbar=no, menubar=no, directories=no, resizable=yes, status=no, width=600, height=210, top=200, left=50')" href="{% url 'www:embed' %}?img=http://webarchiv.cz{{ STATIC_URL }}www/images/webarchiv_certifikat_c.gif">Zdrojový kód obrázku</a>
-					{% else %}
-						<br><a onclick="return !window.open(this, 'kod', 'toolbar=no, menubar=no, directories=no, resizable=yes, status=no, width=600, height=210, top=200, left=50')" href="{% url 'www:embed' %}?img=http://webarchiv.cz{{ STATIC_URL }}www/images/webarchiv_certifikat_c.gif">embed code</a>
-					{% endif %}
-				</div>
-				<div class="col-lg-4">
-					<br><br>
-					<img src="{{ STATIC_URL }}www/images/webarchiv_certifikat_cb.gif" alt="{% trans "Webarchiv certificate" %}">
-					<br>
-					{% if lang == "cs" %}
-						<br><a onclick="return !window.open(this, 'kod', 'toolbar=no, menubar=no, directories=no, resizable=yes, status=no, width=600, height=210, top=200, left=50')" href="{% url 'www:embed' %}?img=http://webarchiv.cz{{ STATIC_URL }}www/images/webarchiv_certifikat_cb.gif">Zdrojový kód obrázku</a>
-					{% else %}
-						<br><a onclick="return !window.open(this, 'kod', 'toolbar=no, menubar=no, directories=no, resizable=yes, status=no, width=600, height=210, top=200, left=50')" href="{% url 'www:embed' %}?img=http://webarchiv.cz{{ STATIC_URL }}www/images/webarchiv_certifikat_cb.gif">embed code</a>
-					{% endif %}
-				</div>
-			</div>
-
-			<br><br>
-
 		</div>
-	</section>
+
+		<div class="row">
+			<div class="col-lg-2">
+				<p>{% if lang == "cs" %}naše logo<br>v křivkách{% else %}our vector<br>logo{% endif %}</p>
+			</div>
+			<div class="col-lg-4">
+				<br><br>
+				<img src="{{ STATIC_URL }}www/images/graphics/webarchiv-logo-color.png"
+					alt="{% trans "Webarchiv certificate" %}">
+				<br>
+				<br><a href="{{ STATIC_URL }}www/images/graphics/webarchiv-logo-color-rgb.eps">download
+					(RGB)</a><br><a href="{{ STATIC_URL }}www/images/graphics/webarchiv-logo-color-cmyk.eps">download
+					(CMYK)</a>
+			</div>
+			<div class="col-lg-4">
+				<br><br>
+				<img src="{{ STATIC_URL }}www/images/graphics/webarchiv-logo-black.png"
+					alt="{% trans "Webarchiv certificate" %}">
+				<br>
+				<br><a href="{{ STATIC_URL }}www/images/graphics/webarchiv-logo-color-rgb.eps">download
+					(RGB)</a><br><a href="{{ STATIC_URL }}www/images/graphics/webarchiv-logo-color-cmyk.eps">download
+					(CMYK)</a>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-lg-2">
+				<p>{% if lang == "cs" %}bannery{% else %}banners{% endif %}</p>
+			</div>
+			<div class="col-lg-9">
+				<p>468 x 60 px</p>
+				<br>
+				<img src="{{ STATIC_URL }}www/images/graphics/webarchiv-ico468x60-01.png"
+					alt="{% trans "Webarchiv certificate" %}">
+				<br><br>
+				<img src="{{ STATIC_URL }}www/images/graphics/webarchiv-ico468x60-02.png"
+					alt="{% trans "Webarchiv certificate" %}">
+				<br><br>
+				<img src="{{ STATIC_URL }}www/images/graphics/webarchiv-ico468x60-03.png"
+					alt="{% trans "Webarchiv certificate" %}">
+				<br><br>
+				<img src="{{ STATIC_URL }}www/images/graphics/webarchiv-ico468x60-04.png"
+					alt="{% trans "Webarchiv certificate" %}">
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-lg-2 col-lg-offset-2">
+				<p>99 x 89 px</p>
+				<br>
+				<img src="{{ STATIC_URL }}www/images/graphics/webarchiv-ico99x89-01.png"
+					alt="{% trans "Webarchiv certificate" %}">
+			</div>
+			<div class="col-lg-2">
+				<br><br>
+				<img src="{{ STATIC_URL }}www/images/graphics/webarchiv-ico99x89-02.png"
+					alt="{% trans "Webarchiv certificate" %}">
+			</div>
+			<div class="col-lg-2">
+				<br><br>
+				<img src="{{ STATIC_URL }}www/images/graphics/webarchiv-ico99x89-03.png"
+					alt="{% trans "Webarchiv certificate" %}">
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-lg-2 col-lg-offset-2">
+				<p>88 x 31px</p>
+				<br>
+				<img src="{{ STATIC_URL }}www/images/graphics/webarchiv-ico88x31-01.png"
+					alt="{% trans "Webarchiv certificate" %}">
+			</div>
+			<div class="col-lg-2">
+				<br><br>
+				<img src="{{ STATIC_URL }}www/images/graphics/webarchiv-ico88x31-02.png"
+					alt="{% trans "Webarchiv certificate" %}">
+			</div>
+			<div class="col-lg-2">
+				<br><br>
+				<img src="{{ STATIC_URL }}www/images/graphics/webarchiv-ico88x31-03.png"
+					alt="{% trans "Webarchiv certificate" %}">
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-lg-2">
+				<p>{% if lang == "cs" %}starší verze<br>certifikátu{% else %}old version
+					of<br>certificate{% endif %}</p>
+			</div>
+			<div class="col-lg-4">
+				<br><br>
+				<img src="{{ STATIC_URL }}www/images/webarchiv_certifikat_c.gif"
+					alt="{% trans "Webarchiv certificate" %}">
+				<br>
+				{% if lang == "cs" %}
+				<br><a
+					onclick="return !window.open(this, 'kod', 'toolbar=no, menubar=no, directories=no, resizable=yes, status=no, width=600, height=210, top=200, left=50')"
+					href="{% url 'www:embed' %}?img=http://webarchiv.cz{{ STATIC_URL }}www/images/webarchiv_certifikat_c.gif">Zdrojový
+					kód obrázku</a>
+				{% else %}
+				<br><a
+					onclick="return !window.open(this, 'kod', 'toolbar=no, menubar=no, directories=no, resizable=yes, status=no, width=600, height=210, top=200, left=50')"
+					href="{% url 'www:embed' %}?img=http://webarchiv.cz{{ STATIC_URL }}www/images/webarchiv_certifikat_c.gif">embed
+					code</a>
+				{% endif %}
+			</div>
+			<div class="col-lg-4">
+				<br><br>
+				<img src="{{ STATIC_URL }}www/images/webarchiv_certifikat_cb.gif"
+					alt="{% trans "Webarchiv certificate" %}">
+				<br>
+				{% if lang == "cs" %}
+				<br><a
+					onclick="return !window.open(this, 'kod', 'toolbar=no, menubar=no, directories=no, resizable=yes, status=no, width=600, height=210, top=200, left=50')"
+					href="{% url 'www:embed' %}?img=http://webarchiv.cz{{ STATIC_URL }}www/images/webarchiv_certifikat_cb.gif">Zdrojový
+					kód obrázku</a>
+				{% else %}
+				<br><a
+					onclick="return !window.open(this, 'kod', 'toolbar=no, menubar=no, directories=no, resizable=yes, status=no, width=600, height=210, top=200, left=50')"
+					href="{% url 'www:embed' %}?img=http://webarchiv.cz{{ STATIC_URL }}www/images/webarchiv_certifikat_cb.gif">embed
+					code</a>
+				{% endif %}
+			</div>
+		</div>
+
+		<br><br>
+	</div>
+</section>
 
 {% endblock %}
