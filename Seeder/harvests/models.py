@@ -110,6 +110,17 @@ class HarvestAbstractModel(BaseModel):
         blacklisted = Blacklist.collect_urls_by_type(Blacklist.TYPE_HARVEST)
         return seeds - set(blacklisted)
 
+    @classmethod
+    def get_harvests_by_frequency(cls, freq, **kwargs):
+        """
+        Necessary because MultiSelectField returns e.g. '12', '52' for query '2'
+        """
+        harvests = cls.objects.filter(
+            **kwargs, target_frequency__contains=freq)
+        # Filter only the ones that really contain the frequency
+        ids = [h.pk for h in harvests if freq in h.target_frequency]
+        return cls.objects.filter(pk__in=ids) # QuerySet instead of LC
+
 
 @revisions.register(exclude=('last_changed',))
 class Harvest(HarvestAbstractModel):

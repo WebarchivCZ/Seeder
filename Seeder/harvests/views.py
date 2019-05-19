@@ -127,9 +127,9 @@ class ListUrlsByTimeAndType(HarvestView, TemplateView):
         context = super().get_context_data(**kwargs)
         dt = dateparse.parse_date(h_date)
 
-        harvests = models.Harvest.objects.filter(
+        harvests = models.Harvest.get_harvests_by_frequency(
+            h_type,
             scheduled_on=dt,
-            target_frequency__contains=h_type
         )
 
         urls = []
@@ -137,6 +137,7 @@ class ListUrlsByTimeAndType(HarvestView, TemplateView):
             urls.extend(list(h.get_seeds()))
 
         context['urls'] = urls
+        context['harvest_ids'] = [h.pk for h in harvests]
         return context
 
 
