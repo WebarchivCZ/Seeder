@@ -5,6 +5,7 @@ from itertools import chain
 import datetime
 from django.urls import reverse
 from django.utils import dateparse
+from django.http import Http404
 
 from source.constants import SOURCE_FREQUENCY_PER_YEAR
 from . import models
@@ -123,9 +124,12 @@ class ListUrls(HarvestView, DetailView, TemplateView):
 class ListUrlsByTimeAndType(HarvestView, TemplateView):
     template_name = 'urls.html'
 
-    def get_context_data(self, h_date, h_type, **kwargs):
+    def get_context_data(self, h_date, h_date2=None, h_type=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        dt = dateparse.parse_date(h_date)
+        # Must be different variables due to Django URLConf
+        if (h_date != h_date2):
+            raise Http404("prd")
+        dt = h_date
 
         harvests = models.Harvest.get_harvests_by_frequency(
             h_type,

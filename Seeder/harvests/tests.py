@@ -57,8 +57,9 @@ class HarvestUrlTest(TestCase):
     def test_correct_harvests_returned(self):
         for freq,_ in SOURCE_FREQUENCY_PER_YEAR:
             h_type = str(freq)
-            get_url = reverse('harvests:urls_by_time', kwargs={
-                'h_date': "{:%Y-%m-%d}".format(self.DATE),
+            get_url = reverse('harvests:urls_by_date_and_type', kwargs={
+                'h_date': self.DATE,
+                'h_date2': self.DATE,
                 'h_type': h_type,
             })
             res = self.c.get(get_url)
@@ -66,3 +67,22 @@ class HarvestUrlTest(TestCase):
             harvests = Harvest.objects.filter(pk__in=harvest_ids)
             for h in harvests:
                 self.assertTrue(h_type in h.target_frequency)
+
+    def test_url_dates_do_match(self):
+        get_url = reverse('harvests:urls_by_date_and_type', kwargs={
+            'h_date': self.DATE,
+            'h_date2': self.DATE,
+            'h_type': '1',
+        })
+        res = self.c.get(get_url)
+        self.assertNotEqual(404, res.status_code)
+        self.assertEqual(200, res.status_code)
+    
+    def test_url_dates_do_not_match(self):
+        get_url = reverse('harvests:urls_by_date_and_type', kwargs={
+            'h_date': self.DATE,
+            'h_date2': self.DATE + timedelta(days=1),
+            'h_type': '1',
+        })
+        res = self.c.get(get_url)
+        self.assertEqual(404, res.status_code)
