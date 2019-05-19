@@ -41,6 +41,6 @@ urlpatterns = [
          name='topic_collection_list'),
     path('<date:h_date>/urls',
          ListUrlsByTimeAndType.as_view(), name='urls_by_date'),
-    path('<date:h_date>/seeds-<date:h_date2>-<str:h_type>.txt',
+    path('<date:h_date>/seeds-<date:h_date2>-<str:shortcut>.txt',
          ListUrlsByTimeAndType.as_view(), name='urls_by_date_and_type'),
 ]

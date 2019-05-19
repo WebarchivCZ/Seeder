@@ -1,4 +1,5 @@
 import time
+import re
 from datetime import date
 from itertools import chain
 
@@ -122,26 +123,66 @@ class ListUrls(HarvestView, DetailView, TemplateView):
 
 
 class ListUrlsByTimeAndType(HarvestView, TemplateView):
+    """
+    Allowed shortcuts:
+        'V1', 'V2', 'V4', 'V6', 'V12', 'V52', 'V365',
+        'TT-<str>',
+        'ArchiveIt', 'VNC', 'Tests', 'Totals', 'OneShot'
+    """
     template_name = 'urls.html'
 
-    def get_context_data(self, h_date, h_date2=None, h_type=None, **kwargs):
+    def get_context_data(self, h_date, h_date2=None, shortcut=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        # Must be different variables due to Django URLConf
+
+        TT_PREFIX = 'TT-'
+        ALLOWED_FREQUENCIES = [
+            str(f) for (f, _) in SOURCE_FREQUENCY_PER_YEAR if str(f) != '0']
+
+        # Must be different variables due to Django URLConf, but should match
         if (h_date != h_date2):
-            raise Http404("prd")
-        dt = h_date
+            raise Http404("Harvest dates must match.")
 
-        harvests = models.Harvest.get_harvests_by_frequency(
-            h_type,
-            scheduled_on=dt,
-        )
+        match_frequency = re.match(r'^V(?P<freq>\d+)$', shortcut)
+        match_tt = re.match(
+            r'^{}(?P<slug>[a-zA-Z0-9_-]+)$'.format(TT_PREFIX), shortcut)
 
-        urls = []
-        for h in harvests:
-            urls.extend(list(h.get_seeds()))
+        # Vx
+        if match_frequency is not None:
+            frequency = match_frequency.group('freq')
+            if frequency not in ALLOWED_FREQUENCIES:
+                raise Http404(
+                    "Invalid frequency: '{}'. Only {} allowed.".format(
+                        frequency, ALLOWED_FREQUENCIES))
+            harvests = models.Harvest.get_harvests_by_frequency(
+                frequency,
+                scheduled_on=h_date,
+            )
 
-        context['urls'] = urls
-        context['harvest_ids'] = [h.pk for h in harvests]
+            urls = []
+            for h in harvests:
+                urls.extend(list(h.get_seeds()))
+
+            context['urls'] = urls
+            context['harvest_ids'] = [h.pk for h in harvests]
+        # TT-
+        elif match_tt is not None:
+            slug = match_tt.group('slug')
+            raise NotImplementedError()
+        # ArchiveIt, VNC, Tests, Totals, OneShot
+        elif shortcut == 'ArchiveIt':
+            raise NotImplementedError()
+        elif shortcut == 'VNC':
+            raise NotImplementedError()
+        elif shortcut == 'Tests':
+            raise NotImplementedError()
+        elif shortcut == 'Totals':
+            raise NotImplementedError()
+        elif shortcut == 'OneShot':
+            raise NotImplementedError()
+        # Invalid shortcut
+        else:
+            raise Http404("Invalid shortcut: '{}'".format(shortcut))
+
         return context
 
 
