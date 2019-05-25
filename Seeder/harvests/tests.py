@@ -114,6 +114,7 @@ class HarvestUrlTest(TestCase):
             'h_date': self.DATE,
         })
         res = self.c.get(get_url)
+        self.assertEqual(200, res.status_code)
         harvest_ids = res.context['harvest_ids']
         correct_harvest_ids = [
             h.pk for h in Harvest.objects.filter(scheduled_on=self.DATE)
@@ -135,5 +136,7 @@ class HarvestUrlTest(TestCase):
             self.assertEqual(200, res.status_code)
             harvest_ids = res.context['harvest_ids']
             harvests = Harvest.objects.filter(pk__in=harvest_ids)
+            # Looked up frequency appears in harvest config
             for h in harvests:
+                self.assertEqual(self.DATE, h.scheduled_on)
                 self.assertTrue(str(freq) in h.target_frequency)
