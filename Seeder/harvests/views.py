@@ -129,8 +129,37 @@ class ListUrlsByDate(HarvestView, TemplateView):
         context = super().get_context_data(**kwargs)
 
         harvests = models.Harvest.objects.filter(scheduled_on=h_date)
-        
+        if harvests.count() == 0:
+            context['urls'] = []
+            return context
 
+        # Gather all the possible frequencies and topic collections available
+        # TODO ArchiveIt, VNC, Tests
+        frequencies = set()
+        tt_slugs = set()
+        for h in harvests:
+            if h.target_frequency is not None:
+                for f in h.target_frequency:
+                    frequencies.add(int(f))
+            for t in h.topic_collections.all():
+                tt_slugs.add(t.slug)
+        # Gather all formatted shortcuts
+        shortcuts = []
+        for freq in sorted(frequencies - set([0])):
+            shortcuts.append('V{}'.format(freq))
+        for slug in tt_slugs:
+            shortcuts.append('TT-{}'.format(slug))
+        if 0 in frequencies:
+            shortcuts.append('OneShot')
+        shortcuts.append('Totals')
+        # Reverse the urls for all shortcuts
+        urls = []
+        for shortcut in shortcuts:
+            urls.append(reverse('harvests:urls_by_date_and_type', kwargs={
+                'h_date': h_date,
+                'h_date2': h_date,
+                'shortcut': shortcut,
+            }))
 
         context['urls'] = urls
         return context

@@ -117,28 +117,35 @@ class HarvestUrlTest(TestCase):
             res = self.c.get(get_url)
             self.assertEqual(404, res.status_code)
 
-    def test_harvest_urls(self):
+    def test_harvest_urls(self, h_date=DATE):
         get_url = reverse('harvests:urls_by_date', kwargs={
-            'h_date': self.DATE,
+            'h_date': h_date,
         })
         res = self.c.get(get_url)
         self.assertEqual(200, res.status_code)
         urls = res.context['urls']
-        self.assertNotEqual(0, len(urls))
-        
-        print(urls)
-        
+
+        harvest_ids = []
         # Try accessing all the returned urls
         for url in urls:
             r = self.c.get(url)
             self.assertEqual(200, r.status_code)
-    
+            harvest_ids.extend(r.context['harvest_ids'])
+        # Make sure all harvests for that date appear
+        correct_harvest_ids = [
+            h.pk for h in Harvest.objects.filter(scheduled_on=h_date)
+        ]
+        self.assertListEqual(sorted(correct_harvest_ids),
+                             sorted(set(harvest_ids)))
+        return res
+
     def test_harvest_urls_other(self):
-        get_url = reverse('harvests:urls_by_date', kwargs={
-            'h_date': self.DATE + timedelta(weeks=4),
-        })
-        res = self.c.get(get_url)
-        self.assertEqual(200, res.status_code)
+        res = self.test_harvest_urls(h_date=self.DATE + timedelta(weeks=4))
+        self.assertNotEqual(0, len(res.context['urls']))
+
+    def test_harvest_urls_no_harvests(self):
+        res = self.test_harvest_urls(h_date=self.DATE + timedelta(days=-365))
+        self.assertEqual(0, len(res.context['urls']))
 
     def test_harvests_by_frequency(self):
         for freq, _ in SOURCE_FREQUENCY_PER_YEAR:
@@ -171,7 +178,7 @@ class HarvestUrlTest(TestCase):
         correct_harvest_ids = [
             h.pk for h in Harvest.objects.filter(scheduled_on=self.DATE)
         ]
-        self.assertListEqual(harvest_ids, correct_harvest_ids)
+        self.assertListEqual(correct_harvest_ids, harvest_ids)
 
     def test_harvests_totals_no_harvests(self):
         get_url = reverse('harvests:urls_by_date_and_type', kwargs={
