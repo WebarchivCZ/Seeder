@@ -116,7 +116,7 @@ class HarvestUrlTest(TestCase):
         res = self.c.get(get_url)
         harvest_ids = res.context['harvest_ids']
         correct_harvest_ids = [
-            h.pk for h in self.harvests if h.scheduled_on == self.DATE
+            h.pk for h in Harvest.objects.filter(scheduled_on=self.DATE)
         ]
         self.assertListEqual(harvest_ids, correct_harvest_ids)
 
