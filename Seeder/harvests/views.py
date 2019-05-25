@@ -122,6 +122,22 @@ class ListUrls(HarvestView, DetailView, TemplateView):
         return context
 
 
+class ListUrlsByDate(HarvestView, TemplateView):
+    template_name = 'urls.html'
+
+    def get_context_data(self, h_date, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        harvests = models.Harvest.objects.filter(scheduled_on=h_date)
+        urls = []
+        for h in harvests:
+            urls.extend(list(h.get_seeds()))
+
+        context['urls'] = urls
+        context['harvest_ids'] = [h.pk for h in harvests]
+        return context
+
+
 class ListUrlsByTimeAndType(HarvestView, TemplateView):
     """
     Allowed shortcuts:
