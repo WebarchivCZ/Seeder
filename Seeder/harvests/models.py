@@ -20,6 +20,14 @@ from source.models import Source, Seed, KeyWord
 from django.contrib.auth.models import User
 from multiselectfield import MultiSelectField
 
+# Django 2 fix (https://github.com/goinnn/django-multiselectfield/issues/74)
+
+
+class PatchedMultiSelectField(MultiSelectField):
+    def value_to_string(self, obj):
+        value = self.value_from_object(obj)
+        return self.get_prep_value(value)
+
 
 class HarvestAbstractModel(BaseModel):
     class Meta:
@@ -28,7 +36,7 @@ class HarvestAbstractModel(BaseModel):
     status = NotImplemented
     scheduled_on = NotImplemented
 
-    target_frequency = MultiSelectField(
+    target_frequency = PatchedMultiSelectField(
         verbose_name=_('Seeds by frequency'),
         choices=SOURCE_FREQUENCY_PER_YEAR,
         blank=True,
@@ -119,7 +127,7 @@ class HarvestAbstractModel(BaseModel):
             **kwargs, target_frequency__contains=freq)
         # Filter only the ones that really contain the frequency
         ids = [h.pk for h in harvests if freq in h.target_frequency]
-        return cls.objects.filter(pk__in=ids) # QuerySet instead of LC
+        return cls.objects.filter(pk__in=ids)  # QuerySet instead of LC
 
 
 @revisions.register(exclude=('last_changed',))
@@ -185,10 +193,11 @@ class Harvest(HarvestAbstractModel):
 
     def get_date_url(self):
         if self.target_frequency:
-            return reverse('harvests:urls_by_time', args=[
-                str(self.scheduled_on.isoformat()),
-                str(self.target_frequency[0]),
-            ])
+            return reverse('harvests:urls_by_date_and_type', kwargs={
+                'h_date': self.scheduled_on,
+                'h_date2': self.scheduled_on,
+                'shortcut': 'V{}'.format(self.target_frequency[0]),
+            })
         return None
 
     def freeze_seeds(self):

@@ -129,12 +129,10 @@ class ListUrlsByDate(HarvestView, TemplateView):
         context = super().get_context_data(**kwargs)
 
         harvests = models.Harvest.objects.filter(scheduled_on=h_date)
-        urls = []
-        for h in harvests:
-            urls.extend(list(h.get_seeds()))
+        
+
 
         context['urls'] = urls
-        context['harvest_ids'] = [h.pk for h in harvests]
         return context
 
 
@@ -186,7 +184,7 @@ class ListUrlsByTimeAndType(HarvestView, TemplateView):
         elif shortcut == 'Tests':
             raise NotImplementedError()
         elif shortcut == 'Totals':
-            raise NotImplementedError()
+            harvests = models.Harvest.objects.filter(scheduled_on=h_date)
         elif shortcut == 'OneShot':
             harvests = models.Harvest.get_harvests_by_frequency(
                 '0',
@@ -215,16 +213,17 @@ class HarvestUrlCatalogue(TemplateView):
         context = super().get_context_data(**kwargs)
         dt = date.today()
 
-        def url_by_type(key): return reverse(
-            'harvests:urls_by_time',
-            kwargs={
-                'h_date': dt.isoformat(),
-                'h_type': str(key)}
-        )
+        def url_by_type(key):
+            return reverse('harvests:urls_by_date_and_type', kwargs={
+                'h_date': dt,
+                'h_date2': dt,
+                'shortcut': 'V{}'.format(key),
+            })
 
         urls = {
             url_by_type(key): title
             for key, title in SOURCE_FREQUENCY_PER_YEAR
+            if str(key) != '0'
         }
         context['harvest_urls'] = urls
         return context

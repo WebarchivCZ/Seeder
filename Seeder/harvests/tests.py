@@ -60,6 +60,14 @@ class HarvestUrlTest(TestCase):
                     target_frequency=['1'])
             for i in (-3, -1, 1, 3)
         ])
+        # Fewer harvests on a different date, primarily for url testing
+        self.harvests.extend([
+            Harvest(status=Harvest.STATE_PLANNED,
+                    title="Harvest (other) {}".format(i+1),
+                    scheduled_on=self.DATE + timedelta(weeks=4),
+                    target_frequency=freq)
+            for i, freq in enumerate(self.GENERATE_FREQUENCIES[2:6])
+        ])
         for h in self.harvests:
             h.save()
 
@@ -109,26 +117,28 @@ class HarvestUrlTest(TestCase):
             res = self.c.get(get_url)
             self.assertEqual(404, res.status_code)
 
-    def test_no_shortcut(self):
+    def test_harvest_urls(self):
         get_url = reverse('harvests:urls_by_date', kwargs={
             'h_date': self.DATE,
         })
         res = self.c.get(get_url)
         self.assertEqual(200, res.status_code)
-        harvest_ids = res.context['harvest_ids']
-        correct_harvest_ids = [
-            h.pk for h in Harvest.objects.filter(scheduled_on=self.DATE)
-        ]
-        self.assertListEqual(harvest_ids, correct_harvest_ids)
+        urls = res.context['urls']
+        self.assertNotEqual(0, len(urls))
+        
+        print(urls)
+        
+        # Try accessing all the returned urls
+        for url in urls:
+            r = self.c.get(url)
+            self.assertEqual(200, r.status_code)
     
-    def test_no_shortcut_no_harvests(self):
+    def test_harvest_urls_other(self):
         get_url = reverse('harvests:urls_by_date', kwargs={
-            'h_date': self.DATE + timedelta(days=-365),
+            'h_date': self.DATE + timedelta(weeks=4),
         })
         res = self.c.get(get_url)
         self.assertEqual(200, res.status_code)
-        self.assertListEqual([], res.context['harvest_ids'])
-        self.assertListEqual([], res.context['urls'])
 
     def test_harvests_by_frequency(self):
         for freq, _ in SOURCE_FREQUENCY_PER_YEAR:
@@ -148,6 +158,31 @@ class HarvestUrlTest(TestCase):
             for h in harvests:
                 self.assertEqual(self.DATE, h.scheduled_on)
                 self.assertTrue(str(freq) in h.target_frequency)
+
+    def test_harvests_totals(self):
+        get_url = reverse('harvests:urls_by_date_and_type', kwargs={
+            'h_date': self.DATE,
+            'h_date2': self.DATE,
+            'shortcut': 'Totals',
+        })
+        res = self.c.get(get_url)
+        self.assertEqual(200, res.status_code)
+        harvest_ids = res.context['harvest_ids']
+        correct_harvest_ids = [
+            h.pk for h in Harvest.objects.filter(scheduled_on=self.DATE)
+        ]
+        self.assertListEqual(harvest_ids, correct_harvest_ids)
+
+    def test_harvests_totals_no_harvests(self):
+        get_url = reverse('harvests:urls_by_date_and_type', kwargs={
+            'h_date': self.DATE + timedelta(days=-365),
+            'h_date2': self.DATE + timedelta(days=-365),
+            'shortcut': 'Totals',
+        })
+        res = self.c.get(get_url)
+        self.assertEqual(200, res.status_code)
+        self.assertListEqual([], res.context['harvest_ids'])
+        self.assertListEqual([], res.context['urls'])
 
     def test_harvests_oneshot(self):
         get_url = reverse('harvests:urls_by_date_and_type', kwargs={
