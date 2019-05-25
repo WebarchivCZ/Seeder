@@ -6,7 +6,7 @@ from django.urls import reverse
 
 from source.constants import SOURCE_FREQUENCY_PER_YEAR
 from harvests.scheduler import get_dates_for_timedelta
-from harvests.models import Harvest
+from harvests.models import Harvest, TopicCollection
 
 
 class ScheduleTest(TestCase):
@@ -44,6 +44,18 @@ class HarvestUrlTest(TestCase):
         User.objects.create_user('pedro', 'pedro@seeder.com', 'password')
         self.c = Client()
         self.c.login(username='pedro', password='password')
+        # Topic collections
+        self.topic_collections = [
+            TopicCollection(status=TopicCollection.STATE_NEW,
+                            title_cs="CS Topic C {}".format(i+1),
+                            title_en="EN Topic C {}".format(i+1),
+                            owner=User.objects.get(username='pedro'),
+                            scheduled_on=self.DATE,
+                            all_open=True,)
+            for i in range(5)
+        ]
+        for tc in self.topic_collections:
+            tc.save()
         # Various different frequencies and frequency combinations
         self.harvests = [
             Harvest(status=Harvest.STATE_PLANNED,
@@ -68,6 +80,18 @@ class HarvestUrlTest(TestCase):
                     target_frequency=freq)
             for i, freq in enumerate(self.GENERATE_FREQUENCIES[2:6])
         ])
+        # Harvests with topic collections
+        self.tt_harvests = [
+            Harvest(status=Harvest.STATE_PLANNED,
+                    title="Harvest (TC) {}".format(i+1),
+                    scheduled_on=self.DATE + timedelta(weeks=1),
+                    target_frequency=freq)
+            for i, freq in enumerate(self.GENERATE_FREQUENCIES[:5])
+        ]
+        for i, h in enumerate(self.tt_harvests):
+            h.save()
+            h.topic_collections.add(self.topic_collections[i])
+            h.save()
         for h in self.harvests:
             h.save()
 
@@ -143,6 +167,10 @@ class HarvestUrlTest(TestCase):
         res = self.test_harvest_urls(h_date=self.DATE + timedelta(weeks=4))
         self.assertNotEqual(0, len(res.context['urls']))
 
+    def test_harvest_urls_with_tts(self):
+        res = self.test_harvest_urls(h_date=self.DATE + timedelta(weeks=1))
+        self.assertNotEqual(0, len(res.context['urls']))
+
     def test_harvest_urls_no_harvests(self):
         res = self.test_harvest_urls(h_date=self.DATE + timedelta(days=-365))
         self.assertEqual(0, len(res.context['urls']))
@@ -165,6 +193,19 @@ class HarvestUrlTest(TestCase):
             for h in harvests:
                 self.assertEqual(self.DATE, h.scheduled_on)
                 self.assertTrue(str(freq) in h.target_frequency)
+
+    def test_harvests_with_tts(self):
+        for h in self.tt_harvests:
+            shortcut = 'TT-{}'.format(h.topic_collections.all()[0].slug)
+            get_url = reverse('harvests:urls_by_date_and_type', kwargs={
+                'h_date': h.scheduled_on,
+                'h_date2': h.scheduled_on,
+                'shortcut': shortcut,
+            })
+            res = self.c.get(get_url)
+            self.assertEqual(200, res.status_code)
+            harvest_ids = res.context['harvest_ids']
+            self.assertIn(h.pk, harvest_ids)
 
     def test_harvests_totals(self):
         get_url = reverse('harvests:urls_by_date_and_type', kwargs={

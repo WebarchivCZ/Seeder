@@ -204,7 +204,13 @@ class ListUrlsByTimeAndType(HarvestView, TemplateView):
         # TT-
         elif match_tt is not None:
             slug = match_tt.group('slug')
-            raise NotImplementedError()
+            harvests = models.Harvest.objects.filter(
+                scheduled_on=h_date,
+                topic_collections__slug=slug,
+            )
+            # No harvests have selected topic collection
+            if harvests.count() == 0:
+                raise Http404("No harvests with TT '{}'".format(slug))
         # ArchiveIt, VNC, Tests, Totals, OneShot
         elif shortcut == 'ArchiveIt':
             raise NotImplementedError()
