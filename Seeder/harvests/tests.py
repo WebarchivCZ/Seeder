@@ -120,8 +120,17 @@ class HarvestUrlTest(TestCase):
             h.pk for h in Harvest.objects.filter(scheduled_on=self.DATE)
         ]
         self.assertListEqual(harvest_ids, correct_harvest_ids)
+    
+    def test_no_shortcut_no_harvests(self):
+        get_url = reverse('harvests:urls_by_date', kwargs={
+            'h_date': self.DATE + timedelta(days=-365),
+        })
+        res = self.c.get(get_url)
+        self.assertEqual(200, res.status_code)
+        self.assertListEqual([], res.context['harvest_ids'])
+        self.assertListEqual([], res.context['urls'])
 
-    def test_correct_frequency_harvests_returned(self):
+    def test_harvests_by_frequency(self):
         for freq, _ in SOURCE_FREQUENCY_PER_YEAR:
             # 'V0' is not valid
             if freq == 0:
@@ -136,7 +145,20 @@ class HarvestUrlTest(TestCase):
             self.assertEqual(200, res.status_code)
             harvest_ids = res.context['harvest_ids']
             harvests = Harvest.objects.filter(pk__in=harvest_ids)
-            # Looked up frequency appears in harvest config
             for h in harvests:
                 self.assertEqual(self.DATE, h.scheduled_on)
                 self.assertTrue(str(freq) in h.target_frequency)
+
+    def test_harvests_oneshot(self):
+        get_url = reverse('harvests:urls_by_date_and_type', kwargs={
+            'h_date': self.DATE,
+            'h_date2': self.DATE,
+            'shortcut': 'OneShot',
+        })
+        res = self.c.get(get_url)
+        self.assertEqual(200, res.status_code)
+        harvest_ids = res.context['harvest_ids']
+        harvests = Harvest.objects.filter(pk__in=harvest_ids)
+        for h in harvests:
+            self.assertEqual(self.DATE, h.scheduled_on)
+            self.assertTrue('0' in h.target_frequency)

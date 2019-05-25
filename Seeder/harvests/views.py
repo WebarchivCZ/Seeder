@@ -161,6 +161,7 @@ class ListUrlsByTimeAndType(HarvestView, TemplateView):
         match_frequency = re.match(r'^V(?P<freq>\d+)$', shortcut)
         match_tt = re.match(
             r'^{}(?P<slug>[a-zA-Z0-9_-]+)$'.format(TT_PREFIX), shortcut)
+        harvests = None
 
         # Vx
         if match_frequency is not None:
@@ -173,13 +174,6 @@ class ListUrlsByTimeAndType(HarvestView, TemplateView):
                 frequency,
                 scheduled_on=h_date,
             )
-
-            urls = []
-            for h in harvests:
-                urls.extend(list(h.get_seeds()))
-
-            context['urls'] = urls
-            context['harvest_ids'] = [h.pk for h in harvests]
         # TT-
         elif match_tt is not None:
             slug = match_tt.group('slug')
@@ -194,11 +188,23 @@ class ListUrlsByTimeAndType(HarvestView, TemplateView):
         elif shortcut == 'Totals':
             raise NotImplementedError()
         elif shortcut == 'OneShot':
-            raise NotImplementedError()
+            harvests = models.Harvest.get_harvests_by_frequency(
+                '0',
+                scheduled_on=h_date,
+            )
         # Invalid shortcut
         else:
             raise Http404("Invalid shortcut: '{}'".format(shortcut))
 
+        # 'harvests' should be filled in by one of the rules
+        if harvests is None:
+            raise Exception("Server error: No harvests were gathered")
+
+        urls = []
+        for h in harvests:
+            urls.extend(list(h.get_seeds()))
+        context['urls'] = urls
+        context['harvest_ids'] = [h.pk for h in harvests]
         return context
 
 
