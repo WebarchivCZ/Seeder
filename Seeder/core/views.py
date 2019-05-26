@@ -49,7 +49,7 @@ class ChangeLanguage(View):
 
     def get(self, request, code):
         redirect = request.META.get('HTTP_REFERER')
-        if not is_safe_url(url=redirect, host=request.get_host()):
+        if not is_safe_url(url=redirect, allowed_hosts=request.get_host()):
             redirect = '/'
         if translation.check_for_language(code):
             request.session[translation.LANGUAGE_SESSION_KEY] = code
