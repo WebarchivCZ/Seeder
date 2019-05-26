@@ -115,6 +115,8 @@ MIDDLEWARE = (
     'django.middleware.locale.LocaleMiddleware',
 )
 
+SESSION_COOKIE_NAME = 'seeder_sessionid'
+
 ROOT_URLCONF = 'urls'
 
 WSGI_APPLICATION = 'wsgi.application'
