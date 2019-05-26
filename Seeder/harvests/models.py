@@ -1,6 +1,7 @@
 import os
 
 from itertools import chain
+from datetime import date
 
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
@@ -182,10 +183,46 @@ class Harvest(HarvestAbstractModel):
         blank=True,
     )
 
+    archive_it = models.BooleanField(
+        verbose_name=_('ArchiveIt'),
+        default=False,
+    )
+
+    def get_previously_harvested_seeds(self):
+        seeds = set()
+        for h in Harvest.objects.filter(scheduled_on__lt=self.scheduled_on):
+            seeds.update(h.get_seeds())
+        return seeds
+
+    def get_archiveit_seeds(self):
+        if not self.archive_it:
+            return set()
+        # Get all potential ArchiveIt seeds
+        archiveit = Seed.archiving.filter(source__frequency__in=[1, 2, 4])
+        archiveit = set(archiveit.values_list('url', flat=True))
+        # Get all harvested seeds up to this Harvest's scheduled date
+        previously_harvested = self.get_previously_harvested_seeds()
+        # Return only the ArchiveIt seeds that haven't been harvested yet
+        return archiveit - previously_harvested
+
+    def get_oneshot_seeds(self):
+        if self.target_frequency and '0' not in self.target_frequency:
+            return set()
+        # Get all potential OneShot seeds
+        oneshot = Seed.archiving.filter(source__frequency=0)
+        oneshot = set(oneshot.values_list('url', flat=True))
+        # Get all harvested seeds up to this Harvest's scheduled date
+        previously_harvested = self.get_previously_harvested_seeds()
+        # Return only the OneShot seeds that haven't been harvested yet
+        return oneshot - previously_harvested
+
     def get_seeds(self):
         base_set = super(Harvest, self).get_seeds()
         for collection in self.topic_collections.all():
             base_set.update(collection.get_seeds())
+        # Both return an empty set if not ArchiveIt or OneShot
+        base_set.update(self.get_archiveit_seeds())
+        base_set.update(self.get_oneshot_seeds())
         return base_set
 
     def get_absolute_url(self):
