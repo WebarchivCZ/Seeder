@@ -107,7 +107,7 @@ class SeedManager(models.Manager):
 
     def public_seeds(self):
         return self.valid_seeds().filter(
-            source__state=constants.STATE_RUNNING
+            source__state__in=constants.PUBLIC_STATES
         )
 
 
@@ -167,7 +167,7 @@ class SourceManager(models.Manager):
 
     def public(self):
         return self.get_queryset().filter(
-            state=constants.STATE_RUNNING
+            state__in=constants.PUBLIC_STATES
         )
 
     def needs_qa(self):
