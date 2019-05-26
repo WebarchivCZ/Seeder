@@ -230,10 +230,14 @@ class Harvest(HarvestAbstractModel):
 
     def get_date_url(self):
         if self.target_frequency:
+            if self.target_frequency[0] == '0':
+                shortcut = 'OneShot'
+            else:
+                shortcut = 'V{}'.format(self.target_frequency[0])
             return reverse('harvests:urls_by_date_and_type', kwargs={
                 'h_date': self.scheduled_on,
                 'h_date2': self.scheduled_on,
-                'shortcut': 'V{}'.format(self.target_frequency[0]),
+                'shortcut': shortcut,
             })
         return None
 
