@@ -1,8 +1,23 @@
-from multiupload.fields import MultiFileField
+from multiupload.fields import MultiUploadMetaField, MultiUploadMetaInput
 from django import forms
 from dal import autocomplete
 from . import models
 
+# Django 2 fix (https://github.com/Chive/django-multiupload/issues/31)
+
+
+class PatchedMultiUploadMetaInput(MultiUploadMetaInput):
+    def render(self, name, value, attrs=None, renderer=None):
+        return super(PatchedMultiUploadMetaInput, self).render(name, value, attrs)
+
+
+class PatchedMultiFileField(MultiUploadMetaField):
+    def __init__(self, *args, **kwargs):
+        super(PatchedMultiFileField, self).__init__(*args, **kwargs)
+        self.widget = PatchedMultiUploadMetaInput(
+            attrs=kwargs.pop('attrs', {}),
+            multiple=(self.max_num is None or self.max_num > 1),
+        )
 
 
 autocomplete_widgets = {
@@ -46,7 +61,7 @@ class HarvestEditForm(forms.ModelForm):
 
 
 class TopicCollectionForm(forms.ModelForm):
-    attachments = MultiFileField(min_num=0, required=False)
+    attachments = PatchedMultiFileField(min_num=0, required=False)
 
     class Meta:
         model = models.TopicCollection
@@ -58,7 +73,7 @@ class TopicCollectionForm(forms.ModelForm):
             'annotation_en',
             'date_from',
             'date_to',
-            'image',    
+            'image',
             'all_open',
             'target_frequency',
             'custom_seeds',
@@ -89,4 +104,3 @@ class TopicCollectionEditForm(TopicCollectionForm):
 
     class Meta(TopicCollectionForm.Meta):
         fields = TopicCollectionForm.Meta.fields + ('files_to_delete',)
-
