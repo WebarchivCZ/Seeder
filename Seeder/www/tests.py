@@ -12,6 +12,19 @@ from source.models import Category, SubCategory, KeyWord, Source
 from publishers.models import Publisher, ContactPerson
 from harvests.models import TopicCollection
 
+def create_test_objects():
+    User.objects.create_user('pedro', 'pedro@seeder.com', 'password')
+    user = User.objects.all()[0]
+    Publisher(name="P").save()
+    KeyWord(word="K", slug="k").save()
+    Category(name="T", slug="t").save()
+    SubCategory(name="T sub", slug="t_sub",
+                category=Category.objects.all()[0]).save()
+    Source(created_by=user, owner=user, name="S",
+            category=Category.objects.all()[0], slug="s",
+            publisher=Publisher.objects.all()[0]).save()
+    TopicCollection(title_cs="tc", title_en="tc", owner=user,
+                    custom_seeds="", annotation="", all_open=True).save()
 
 class UrlAccessor(TestCase):
     def __init__(self):
@@ -45,8 +58,14 @@ class UrlAccessor(TestCase):
         for name in url_names:
             try:
                 url_kwargs = kwargs.get(name)
-                if url_kwargs:
+                # Just kwargs
+                if type(url_kwargs) == dict:
                     url = reverse(name, kwargs=url_kwargs)
+                # Kwargs and GET parameters
+                elif type(url_kwargs) == list:
+                    url = '{}{}'.format(
+                        reverse(name, kwargs=url_kwargs[0]), url_kwargs[1])
+                # None
                 else:
                     url = reverse(name)
                 response = self.c.get(url)
@@ -70,19 +89,7 @@ class UrlAccessor(TestCase):
 class WwwUrlsTest(TestCase):
     def setUp(self):
         self.a = UrlAccessor()
-        # Create some test objects
-        User.objects.create_user('pedro', 'pedro@seeder.com', 'password')
-        user = User.objects.all()[0]
-        Publisher(name="P").save()
-        KeyWord(word="K", slug="k").save()
-        Category(name="T", slug="t").save()
-        SubCategory(name="T sub", slug="t_sub",
-                    category=Category.objects.all()[0]).save()
-        Source(created_by=user, owner=user, name="S",
-               category=Category.objects.all()[0], slug="s",
-               publisher=Publisher.objects.all()[0]).save()
-        TopicCollection(title_cs="tc", title_en="tc", owner=user,
-                        custom_seeds="", annotation="", all_open=True).save()
+        create_test_objects()
         # Reused for both locales
         self.url_names_www = self.a.get_recursive_url_names(urls_www, 'www')
         self.url_kwargs_www = {
@@ -95,13 +102,13 @@ class WwwUrlsTest(TestCase):
             'www:collection_detail': {'slug': 'tc'},
         }
 
-    def test_en_urls_no_arguments(self):
+    def test_en_www_urls(self):
         self.a.access_urls(self.url_names_www, self.url_kwargs_www, 'en')
 
-    def test_cs_urls_no_arguments(self):
+    def test_cs_www_urls(self):
         self.a.access_urls(self.url_names_www, self.url_kwargs_www, 'cs')
 
-    def test_legacy_urls(self):
+    def test_legacy_www_urls(self):
         # /media path is also a URLPattern but has name None, no need to test
         url_names = [url.name for url in urls_root
                      if type(url) == URLPattern and url.name is not None]
@@ -112,19 +119,15 @@ class WwwUrlsTest(TestCase):
 class SeederUrlsTest(TestCase):
     def setUp(self):
         self.a = UrlAccessor()
+        User.objects.create_user('pedro', 'pedro@seeder.com', 'password')
         self.a.login(username='pedro', password='password')
 
     def test_en_urls_no_arguments(self):
         url_names = self.a.get_recursive_url_names(urls_seeder, namespace=None)
-        # self.a.c.get(reverse('www:search', kwargs={'query':'a'}))
-        # url_names = []
-        # for url in urls_root:
-        #     if type(url) == URLResolver:
-        #         print("URLResolver")
-        #     else:
-        #         url_names.append(url.name)
-        #self.a.access_urls(None, url_names, 'en')
-        pass
+        kwargs = {
+            'harvests:json_calendar': [{}, '?from=1000&to=10000']
+        }
+        self.a.access_urls(url_names, kwargs, 'en')
 
     def test_cs_urls_no_arguments(self):
         # self.access_urls('www', [url.name for url in urlpatterns_www], 'cs')
