@@ -61,11 +61,12 @@ urlpatterns_non_localized = [
 urlpatterns = [
     # Legacy redirects:
     path('certifikat', RedirectView.as_view(
-        url=reverse_lazy('www:about_graphics'), permanent=True)
-    ),
-    path('cs/certifikovano/', disclaimer_redirect),
-    path('en/disclaimer/', disclaimer_redirect),
-    path('files/vydavatele/certifikat.html', disclaimer_redirect),
+        url=reverse_lazy('www:about_graphics'), permanent=True),
+        name='certifikat'),
+    path('cs/certifikovano/', disclaimer_redirect, name='disclaimer_cs'),
+    path('en/disclaimer/', disclaimer_redirect, name='disclaimer_en'),
+    path('files/vydavatele/certifikat.html', disclaimer_redirect,
+         name='disclaimer_file'),
 
     path('seeder/admin/', admin.site.urls),
     path('seeder/auth/', include('django.contrib.auth.urls')),
