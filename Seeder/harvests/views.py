@@ -134,7 +134,6 @@ class ListUrlsByDate(HarvestView, TemplateView):
             return context
 
         # Gather all the possible frequencies and topic collections available
-        # TODO VNC, Tests
         frequencies = set()
         tt_slugs = set()
         archive_it = False
@@ -263,7 +262,7 @@ class ListUrlsByTimeAndType(HarvestView, TemplateView):
         # 'harvests' should be filled in by one of the rules
         if harvests is None:
             raise Exception("Server error: No harvests were gathered")
-            
+
         context['urls'] = list(urls)
         context['harvest_ids'] = [h.pk for h in harvests]
         return context
@@ -276,18 +275,27 @@ class HarvestUrlCatalogue(TemplateView):
         context = super().get_context_data(**kwargs)
         dt = date.today()
 
-        def url_by_type(key):
+        def url_by_shortcut(shortcut):
             return reverse('harvests:urls_by_date_and_type', kwargs={
                 'h_date': dt,
                 'h_date2': dt,
-                'shortcut': 'V{}'.format(key),
+                'shortcut': shortcut,
             })
 
         urls = {
-            url_by_type(key): title
+            url_by_shortcut('V{}'.format(key)): title
             for key, title in source_constants.SOURCE_FREQUENCY_PER_YEAR
             if str(key) != '0'
         }
+        urls[url_by_shortcut(
+            'OneShot')] = source_constants.SOURCE_FREQUENCY_PER_YEAR[0][1]
+        urls[url_by_shortcut('ArchiveIt')] = _('ArchiveIt')
+        urls[url_by_shortcut('VNC')] = _('VNC')
+        urls[url_by_shortcut('Tests')] = _('Tests')
+        urls[url_by_shortcut('Totals')] = _('Totals')
+        urls[reverse('harvests:urls_by_date', kwargs={
+            'h_date': dt
+        })] = _('Available URLs for date')
         context['harvest_urls'] = urls
         return context
 
