@@ -20,6 +20,8 @@ from qa.models import QualityAssuranceCheck
 from www.models import NewsObject
 from voting.models import VotingRound
 
+DATE = date.today()
+
 
 def create_test_objects():
     User.objects.create_superuser('pedro', 'pedro@seeder.com', 'password')
@@ -48,7 +50,7 @@ def create_test_objects():
               url_list="x").save()
     Contract(pk=0, publisher=Publisher.objects.get(pk=0)).save()
     Contract.objects.get(pk=0).sources.add(Source.objects.get(pk=0))
-    QualityAssuranceCheck(pk=0, source=Source.objects.get(pk=0), 
+    QualityAssuranceCheck(pk=0, source=Source.objects.get(pk=0),
                           checked_by=user).save()
     NewsObject(pk=0, title="N", annotation="NN").save()
     VotingRound(pk=0, source=Source.objects.get(pk=0)).save()
@@ -132,8 +134,8 @@ class WwwUrlsTest(TestCase):
         self.a = UrlAccessor()
         create_test_objects()
         # Reused for both locales
-        self.url_names_www = self.a.get_recursive_url_names(urls_www, 'www')
-        self.url_kwargs_www = {
+        self.url_names = self.a.get_recursive_url_names(urls_www, 'www')
+        self.url_kwargs = {
             'www:search': {'query': 'a'},
             'www:search_redirect': [{}, '', [302]],
             'www:category_detail': {'slug': 't'},
@@ -145,10 +147,10 @@ class WwwUrlsTest(TestCase):
         }
 
     def test_en_www_urls(self):
-        self.a.access_urls(self.url_names_www, self.url_kwargs_www, 'en')
+        self.a.access_urls(self.url_names, self.url_kwargs, 'en')
 
     def test_cs_www_urls(self):
-        self.a.access_urls(self.url_names_www, self.url_kwargs_www, 'cs')
+        self.a.access_urls(self.url_names, self.url_kwargs, 'cs')
 
     def test_legacy_www_urls(self):
         # /media path is also a URLPattern but has name None, no need to test
@@ -159,26 +161,23 @@ class WwwUrlsTest(TestCase):
 
 
 class SeederUrlsTest(TestCase):
-    DATE = date.today()
-
     def setUp(self):
         self.a = UrlAccessor()
         create_test_objects()
-
-    def test_en_seeder_urls(self):
-        url_names = self.a.get_recursive_url_names(urls_seeder, namespace=None)
+        self.url_names = self.a.get_recursive_url_names(
+            urls_seeder, namespace=None)
         # No need to test some URLs
-        url_names.remove('ckeditor_upload')
-        url_names.remove('core:crash_test')
-        url_names.remove('voting:create') # requires POST
-        url_names.remove('source:delete') # requires POST
-        url_names.remove('contracts:delete') # requires POST
-        kwargs = {
+        self.url_names.remove('ckeditor_upload')     # probably requires POST
+        self.url_names.remove('core:crash_test')     # literally meant to crash
+        self.url_names.remove('voting:create')       # requires POST
+        self.url_names.remove('source:delete')       # requires POST
+        self.url_names.remove('contracts:delete')    # requires POST
+        self.url_kwargs = {
             'harvests:json_calendar': [{}, '?from=1000&to=10000'],
-            'harvests:urls_by_date': {'h_date': self.DATE},
+            'harvests:urls_by_date': {'h_date': DATE},
             'harvests:urls_by_date_and_type': {
-                'h_date': self.DATE,
-                'h_date2': self.DATE,
+                'h_date': DATE,
+                'h_date2': DATE,
                 'shortcut': 'V1',
             },
             'harvests:detail': {'pk': 0},
@@ -222,7 +221,9 @@ class SeederUrlsTest(TestCase):
             'source-detail': {'pk': 0},
             'seed-detail': {'pk': 0},
         }
-        self.a.access_urls(url_names, kwargs, 'en', admin=True)
 
-    def test_login(self):
-        pass
+    def test_en_seeder_urls(self):
+        self.a.access_urls(self.url_names, self.url_kwargs, 'en', admin=True)
+
+    def test_cs_seeder_urls(self):
+        self.a.access_urls(self.url_names, self.url_kwargs, 'cs', admin=True)
