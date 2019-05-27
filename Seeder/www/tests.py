@@ -15,6 +15,10 @@ from source import constants as source_constants
 from publishers.models import Publisher, ContactPerson
 from harvests.models import Harvest, TopicCollection
 from blacklists.models import Blacklist
+from contracts.models import Contract
+from qa.models import QualityAssuranceCheck
+from www.models import NewsObject
+from voting.models import VotingRound
 
 
 def create_test_objects():
@@ -26,17 +30,28 @@ def create_test_objects():
     Category(pk=0, name="T", slug="t").save()
     SubCategory(pk=0, name="T sub", slug="t_sub",
                 category=Category.objects.all()[0]).save()
-    Source(pk=0, created_by=user, owner=user, name="S",
+    Source(pk=0, created_by=user, owner=user, name="S1",
            state=source_constants.STATE_RUNNING,
            category=Category.objects.all()[0], slug="s",
            publisher=Publisher.objects.all()[0]).save()
-    Seed(pk=0, source=Source.objects.all()[0]).save()
+    Source(pk=1, created_by=user, owner=user, name="S2",
+           state=source_constants.STATE_RUNNING,
+           category=Category.objects.all()[0], slug="s2",
+           publisher=Publisher.objects.all()[0]).save()
+    Seed(pk=0, source=Source.objects.get(pk=0)).save()
+    Seed(pk=1, source=Source.objects.get(pk=1)).save()
     TopicCollection(pk=0, title_cs="tc", title_en="tc", owner=user,
                     custom_seeds="", annotation="", all_open=True).save()
     Harvest(pk=0, status=Harvest.STATE_PLANNED, title="H",
             scheduled_on=date.today(), target_frequency=['1']).save()
     Blacklist(pk=0, title="B", blacklist_type=Blacklist.TYPE_HARVEST,
               url_list="x").save()
+    Contract(pk=0, publisher=Publisher.objects.get(pk=0)).save()
+    Contract.objects.get(pk=0).sources.add(Source.objects.get(pk=0))
+    QualityAssuranceCheck(pk=0, source=Source.objects.get(pk=0), 
+                          checked_by=user).save()
+    NewsObject(pk=0, title="N", annotation="NN").save()
+    VotingRound(pk=0, source=Source.objects.get(pk=0)).save()
 
 
 class UrlAccessor(TestCase):
@@ -155,6 +170,9 @@ class SeederUrlsTest(TestCase):
         # No need to test some URLs
         url_names.remove('ckeditor_upload')
         url_names.remove('core:crash_test')
+        url_names.remove('voting:create') # requires POST
+        url_names.remove('source:delete') # requires POST
+        url_names.remove('contracts:delete') # requires POST
         kwargs = {
             'harvests:json_calendar': [{}, '?from=1000&to=10000'],
             'harvests:urls_by_date': {'h_date': self.DATE},
@@ -171,6 +189,38 @@ class SeederUrlsTest(TestCase):
             'harvests:topic_collection_history': {'pk': 0},
             'blacklists:edit': {'pk': 0},
             'blacklists:history': {'pk': 0},
+            'source:detail': {'pk': 0},
+            'source:edit': {'pk': 0},
+            'source:history': {'pk': 0},
+            'source:add_seed': {'pk': 0},
+            'source:seed_edit': {'pk': 0},
+            'publishers:detail': {'pk': 0},
+            'publishers:edit': {'pk': 0},
+            'publishers:history': {'pk': 0},
+            'publishers:edit_contacts': {'pk': 0},
+            'contracts:detail': {'pk': 0},
+            'contracts:create': {'pk': 0},
+            'contracts:assign': {'pk': 0},
+            'contracts:edit': {'pk': 0},
+            'contracts:history': {'pk': 0},
+            'contracts:schedule': {'pk': 0},
+            'qa:create': {'pk': 0},
+            'qa:edit': {'pk': 0},
+            'qa:detail': {'pk': 0},
+            'news:detail': {'pk': 0},
+            'news:edit': {'pk': 0},
+            'news:history': {'pk': 0},
+            'news:publish': [{'pk': 0}, '', [302]],
+            'voting:detail': {'pk': 0},
+            'voting:cast': [{'pk': 0}, '', [302]],
+            'voting:postpone': {'pk': 0},
+            'voting:resolve': [{'pk': 0}, '', [302]],
+            'core:card': {'card': 'contracts'},
+            'core:change_language': [{'code': 'en'}, '', [302]],
+            # api
+            'category-detail': {'pk': 0},
+            'source-detail': {'pk': 0},
+            'seed-detail': {'pk': 0},
         }
         self.a.access_urls(url_names, kwargs, 'en', admin=True)
 
