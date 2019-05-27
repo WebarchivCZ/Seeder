@@ -10,7 +10,8 @@ from urls import urlpatterns as urls_root
 from urls import seeder_urlpatterns as urls_seeder
 
 from django.contrib.auth.models import User
-from source.models import Category, SubCategory, KeyWord, Source
+from source.models import Category, SubCategory, KeyWord, Source, Seed
+from source import constants as source_constants
 from publishers.models import Publisher, ContactPerson
 from harvests.models import Harvest, TopicCollection
 from blacklists.models import Blacklist
@@ -26,8 +27,10 @@ def create_test_objects():
     SubCategory(pk=0, name="T sub", slug="t_sub",
                 category=Category.objects.all()[0]).save()
     Source(pk=0, created_by=user, owner=user, name="S",
+           state=source_constants.STATE_RUNNING,
            category=Category.objects.all()[0], slug="s",
            publisher=Publisher.objects.all()[0]).save()
+    Seed(pk=0, source=Source.objects.all()[0]).save()
     TopicCollection(pk=0, title_cs="tc", title_en="tc", owner=user,
                     custom_seeds="", annotation="", all_open=True).save()
     Harvest(pk=0, status=Harvest.STATE_PLANNED, title="H",
@@ -117,10 +120,11 @@ class WwwUrlsTest(TestCase):
         self.url_names_www = self.a.get_recursive_url_names(urls_www, 'www')
         self.url_kwargs_www = {
             'www:search': {'query': 'a'},
+            'www:search_redirect': [{}, '', [302]],
             'www:category_detail': {'slug': 't'},
             'www:sub_category_detail': {'category_slug': 't', 'slug': 't_sub'},
             'www:keyword': {'slug': 'k'},
-            'www:change_list_view': {'list_type': 'text'},
+            'www:change_list_view': [{'list_type': 'text'}, '', [302]],
             'www:source_detail': {'slug': 's'},
             'www:collection_detail': {'slug': 'tc'},
         }
