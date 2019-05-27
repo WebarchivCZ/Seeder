@@ -1,3 +1,5 @@
+from datetime import date
+
 from django.test import TestCase, Client
 from django.utils.translation import activate
 from django.urls import reverse
@@ -10,10 +12,11 @@ from urls import seeder_urlpatterns as urls_seeder
 from django.contrib.auth.models import User
 from source.models import Category, SubCategory, KeyWord, Source
 from publishers.models import Publisher, ContactPerson
-from harvests.models import TopicCollection
+from harvests.models import Harvest, TopicCollection
+
 
 def create_test_objects():
-    User.objects.create_user('pedro', 'pedro@seeder.com', 'password')
+    User.objects.create_superuser('pedro', 'pedro@seeder.com', 'password')
     user = User.objects.all()[0]
     Publisher(name="P").save()
     KeyWord(word="K", slug="k").save()
@@ -21,18 +24,24 @@ def create_test_objects():
     SubCategory(name="T sub", slug="t_sub",
                 category=Category.objects.all()[0]).save()
     Source(created_by=user, owner=user, name="S",
-            category=Category.objects.all()[0], slug="s",
-            publisher=Publisher.objects.all()[0]).save()
-    TopicCollection(title_cs="tc", title_en="tc", owner=user,
+           category=Category.objects.all()[0], slug="s",
+           publisher=Publisher.objects.all()[0]).save()
+    TopicCollection(pk=0, title_cs="tc", title_en="tc", owner=user,
                     custom_seeds="", annotation="", all_open=True).save()
+    Harvest(pk=0, status=Harvest.STATE_PLANNED, title="H",
+            scheduled_on=date.today(), target_frequency=['1']).save()
+
 
 class UrlAccessor(TestCase):
     def __init__(self):
         super().__init__()
         self.c = Client()
 
-    def login(self, **kwargs):
-        self.c.login(**kwargs)
+    def login_as_admin(self, **kwargs):
+        self.admin = User.objects.create_superuser(username='admin',
+                                                   email='admin@seeder.com',
+                                                   password='password')
+        self.c.force_login(self.admin)
 
     def get_recursive_url_names(self, url_patterns, namespace=None):
         url_names = []
@@ -55,6 +64,7 @@ class UrlAccessor(TestCase):
         activate(locale)
         no_reverse = []
         exceptions = []
+        # TODO: Currently returns 302 for many urls (redirect to login)
         for name in url_names:
             try:
                 url_kwargs = kwargs.get(name)
@@ -117,15 +127,30 @@ class WwwUrlsTest(TestCase):
 
 
 class SeederUrlsTest(TestCase):
+    DATE = date.today()
+
     def setUp(self):
         self.a = UrlAccessor()
-        User.objects.create_user('pedro', 'pedro@seeder.com', 'password')
-        self.a.login(username='pedro', password='password')
+        self.a.login_as_admin()
 
     def test_en_urls_no_arguments(self):
         url_names = self.a.get_recursive_url_names(urls_seeder, namespace=None)
         kwargs = {
-            'harvests:json_calendar': [{}, '?from=1000&to=10000']
+            'harvests:json_calendar': [{}, '?from=1000&to=10000'],
+            'harvests:urls_by_date': {'h_date': self.DATE},
+            'harvests:urls_by_date_and_type': {
+                'h_date': self.DATE,
+                'h_date2': self.DATE,
+                'shortcut': 'V1',
+            },
+            'harvests:detail': {'pk': 0},
+            'harvests:edit': {'pk': 0},
+            'harvests:urls': {'pk': 0},
+            'harvests:topic_collection_edit': {'pk': 0},
+            'harvests:topic_collection_detail': {'pk': 0},
+            'harvests:topic_collection_history': {'pk': 0},
+            'blacklists:edit': {'pk': 1},
+            'blacklists:history': {'pk': 1},
         }
         self.a.access_urls(url_names, kwargs, 'en')
 
