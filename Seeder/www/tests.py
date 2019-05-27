@@ -13,35 +13,39 @@ from django.contrib.auth.models import User
 from source.models import Category, SubCategory, KeyWord, Source
 from publishers.models import Publisher, ContactPerson
 from harvests.models import Harvest, TopicCollection
+from blacklists.models import Blacklist
 
 
 def create_test_objects():
     User.objects.create_superuser('pedro', 'pedro@seeder.com', 'password')
     user = User.objects.all()[0]
-    Publisher(name="P").save()
-    KeyWord(word="K", slug="k").save()
-    Category(name="T", slug="t").save()
-    SubCategory(name="T sub", slug="t_sub",
+    # If pk is not specified, it can start at weird places
+    Publisher(pk=0, name="P").save()
+    KeyWord(pk=0, word="K", slug="k").save()
+    Category(pk=0, name="T", slug="t").save()
+    SubCategory(pk=0, name="T sub", slug="t_sub",
                 category=Category.objects.all()[0]).save()
-    Source(created_by=user, owner=user, name="S",
+    Source(pk=0, created_by=user, owner=user, name="S",
            category=Category.objects.all()[0], slug="s",
            publisher=Publisher.objects.all()[0]).save()
     TopicCollection(pk=0, title_cs="tc", title_en="tc", owner=user,
                     custom_seeds="", annotation="", all_open=True).save()
     Harvest(pk=0, status=Harvest.STATE_PLANNED, title="H",
             scheduled_on=date.today(), target_frequency=['1']).save()
+    Blacklist(pk=0, title="B", blacklist_type=Blacklist.TYPE_HARVEST,
+              url_list="x").save()
 
 
 class UrlAccessor(TestCase):
     def __init__(self):
         super().__init__()
         self.c = Client()
+        self.login_as_admin()
 
     def login_as_admin(self, **kwargs):
-        self.admin = User.objects.create_superuser(username='admin',
-                                                   email='admin@seeder.com',
-                                                   password='password')
-        self.c.force_login(self.admin)
+        if User.objects.filter(username='admin').count() == 0:
+            self.admin = User.objects.create_superuser('admin', '', 'password')
+        self.c.login(username='admin', password='password')
 
     def get_recursive_url_names(self, url_patterns, namespace=None):
         url_names = []
@@ -60,40 +64,49 @@ class UrlAccessor(TestCase):
                 print("Something else than P/R: {}".format(url))
         return url_names
 
-    def access_urls(self, url_names, kwargs, locale):
+    def access_urls(self, url_names, options, locale, admin=False):
         activate(locale)
         no_reverse = []
         exceptions = []
-        # TODO: Currently returns 302 for many urls (redirect to login)
         for name in url_names:
+            # Necessary when one of the urls is a logout page
+            if admin:
+                self.login_as_admin()
             try:
-                url_kwargs = kwargs.get(name)
+                url_options = options.get(name)
+                allowed_status_codes = [200, 301, 302]
                 # Just kwargs
-                if type(url_kwargs) == dict:
-                    url = reverse(name, kwargs=url_kwargs)
-                # Kwargs and GET parameters
-                elif type(url_kwargs) == list:
-                    url = '{}{}'.format(
-                        reverse(name, kwargs=url_kwargs[0]), url_kwargs[1])
+                if type(url_options) == dict:
+                    url = reverse(name, kwargs=url_options)
+                # Kwargs and other options
+                elif type(url_options) == list:
+                    # GET params
+                    if len(url_options) >= 2:
+                        url = reverse(name, kwargs=url_options[0])
+                        url += url_options[1]
+                    # Status codes
+                    if len(url_options) == 3:
+                        allowed_status_codes.extend(url_options[2])
                 # None
                 else:
                     url = reverse(name)
                 response = self.c.get(url)
+
                 # Allow redirects (e.g. /en/search)
-                self.assertIn(response.status_code, [200, 301, 302])
+                self.assertIn(response.status_code, allowed_status_codes)
             except NoReverseMatch:
                 no_reverse.append(name)
             except Exception as e:
-                exceptions.append((url, e))
+                exceptions.append((url, name, e))
         if len(no_reverse) > 0:
             print("\nWARNING: Wasn't able to reverse {} urls:\n{}".format(
                 len(no_reverse), no_reverse))
         if len(exceptions) > 0:
             print("\nERROR: Following URLs caused ERRORs:")
-            for url, e in exceptions:
-                print('- {}\n\t{}'.format(url, e))
+            for url, name, e in exceptions:
+                print('- {} ({})\n\t{}'.format(url, name, e))
             print("\nFirst exception for url '{}': ".format(exceptions[0][0]))
-            raise exceptions[0][1]
+            raise exceptions[0][2]
 
 
 class WwwUrlsTest(TestCase):
@@ -131,10 +144,13 @@ class SeederUrlsTest(TestCase):
 
     def setUp(self):
         self.a = UrlAccessor()
-        self.a.login_as_admin()
+        create_test_objects()
 
-    def test_en_urls_no_arguments(self):
+    def test_en_seeder_urls(self):
         url_names = self.a.get_recursive_url_names(urls_seeder, namespace=None)
+        # No need to test some URLs
+        url_names.remove('ckeditor_upload')
+        url_names.remove('core:crash_test')
         kwargs = {
             'harvests:json_calendar': [{}, '?from=1000&to=10000'],
             'harvests:urls_by_date': {'h_date': self.DATE},
@@ -149,11 +165,10 @@ class SeederUrlsTest(TestCase):
             'harvests:topic_collection_edit': {'pk': 0},
             'harvests:topic_collection_detail': {'pk': 0},
             'harvests:topic_collection_history': {'pk': 0},
-            'blacklists:edit': {'pk': 1},
-            'blacklists:history': {'pk': 1},
+            'blacklists:edit': {'pk': 0},
+            'blacklists:history': {'pk': 0},
         }
-        self.a.access_urls(url_names, kwargs, 'en')
+        self.a.access_urls(url_names, kwargs, 'en', admin=True)
 
-    def test_cs_urls_no_arguments(self):
-        # self.access_urls('www', [url.name for url in urlpatterns_www], 'cs')
+    def test_login(self):
         pass
