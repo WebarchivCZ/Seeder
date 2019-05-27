@@ -138,6 +138,7 @@ class ListUrlsByDate(HarvestView, TemplateView):
         tt_slugs = set()
         archive_it = False
         vnc = False
+        tests = False
         for h in harvests:
             if h.target_frequency is not None:
                 for f in h.target_frequency:
@@ -146,6 +147,8 @@ class ListUrlsByDate(HarvestView, TemplateView):
                 archive_it = True
             if h.custom_seeds or h.custom_sources.count() > 0:
                 vnc = True
+            if h.tests:
+                tests = True
             for t in h.topic_collections.all():
                 tt_slugs.add(t.slug)
         # Gather all formatted shortcuts
@@ -160,7 +163,8 @@ class ListUrlsByDate(HarvestView, TemplateView):
             shortcuts.append('ArchiveIt')
         if vnc:
             shortcuts.append('VNC')
-        shortcuts.append('Tests')
+        if tests:
+            shortcuts.append('Tests')
         shortcuts.append('Totals')
         # Reverse the urls for all shortcuts
         urls = []

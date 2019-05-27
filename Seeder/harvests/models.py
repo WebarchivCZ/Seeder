@@ -103,11 +103,6 @@ class HarvestAbstractModel(BaseModel):
         seeds = Seed.archiving.filter(source__in=self.custom_sources.all())
         return set(seeds.values_list('url', flat=True)) - self.get_blacklisted()
 
-    def get_tests_seeds(self):
-        seeds = Seed.archiving.filter(
-            source__state=source_constants.STATE_TECHNICAL_REVIEW)
-        return set(seeds.values_list('url', flat=True)) - self.get_blacklisted()
-
     def get_seeds(self):
         """
         :return: set of urls
@@ -120,7 +115,6 @@ class HarvestAbstractModel(BaseModel):
                 self.get_seeds_by_frequency(),
                 self.get_custom_seeds(),
                 self.get_custom_sources_seeds(),
-                self.get_tests_seeds(),
             )
         )
 
@@ -198,11 +192,23 @@ class Harvest(HarvestAbstractModel):
         default=False,
     )
 
+    tests = models.BooleanField(
+        verbose_name=_('Tests'),
+        default=False,
+    )
+
     def get_previously_harvested_seeds(self):
         seeds = set()
         for h in Harvest.objects.filter(scheduled_on__lt=self.scheduled_on):
             seeds.update(h.get_seeds())
         return seeds
+
+    def get_tests_seeds(self):
+        if not self.tests:
+            return set()
+        seeds = Seed.archiving.filter(
+            source__state=source_constants.STATE_TECHNICAL_REVIEW)
+        return set(seeds.values_list('url', flat=True)) - self.get_blacklisted()
 
     def get_oneshot_seeds(self):
         if self.target_frequency and '0' not in self.target_frequency:
@@ -238,6 +244,7 @@ class Harvest(HarvestAbstractModel):
         # Add seeds from all topic collections
         for collection in self.topic_collections.all():
             base_set.update(collection.get_seeds())
+        base_set.update(self.get_tests_seeds())
         base_set.update(self.get_oneshot_seeds())
         base_set.update(self.get_archiveit_seeds())
         return base_set - self.get_blacklisted()
