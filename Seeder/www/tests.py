@@ -74,7 +74,7 @@ class UrlAccessor(TestCase):
                 self.login_as_admin()
             try:
                 url_options = options.get(name)
-                allowed_status_codes = [200, 301, 302]
+                allowed_status_codes = [200, 301]
                 # Just kwargs
                 if type(url_options) == dict:
                     url = reverse(name, kwargs=url_options)
