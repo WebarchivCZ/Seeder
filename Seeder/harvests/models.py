@@ -16,7 +16,7 @@ from autoslug import AutoSlugField
 from blacklists.models import Blacklist
 from core.models import BaseModel, DatePickerField
 from harvests.scheduler import get_dates_for_timedelta
-from source.constants import SOURCE_FREQUENCY_PER_YEAR, HARVESTED_FREQUENCIES
+from source import constants as source_constants
 from source.models import Source, Seed, KeyWord
 from django.contrib.auth.models import User
 from multiselectfield import MultiSelectField
@@ -39,7 +39,7 @@ class HarvestAbstractModel(BaseModel):
 
     target_frequency = PatchedMultiSelectField(
         verbose_name=_('Seeds by frequency'),
-        choices=SOURCE_FREQUENCY_PER_YEAR,
+        choices=source_constants.SOURCE_FREQUENCY_PER_YEAR,
         blank=True,
         null=True
     )
@@ -84,22 +84,29 @@ class HarvestAbstractModel(BaseModel):
         self.custom_seeds = u'\n'.join(cleaned_urls)
         self.save()
 
+    def get_blacklisted(self):
+        return set(Blacklist.collect_urls_by_type(Blacklist.TYPE_HARVEST))
+
     def get_seeds_by_frequency(self):
         if not self.target_frequency:
-            return []
+            return set()
         seeds = Seed.archiving.filter(
             source__frequency__in=self.target_frequency)
-        return list(seeds.values_list('url', flat=True))
+        return set(seeds.values_list('url', flat=True)) - self.get_blacklisted()
 
     def get_custom_seeds(self):
-        return self.custom_seeds.splitlines() if self.custom_seeds else []
+        if not self.custom_seeds:
+            return set()
+        return set(self.custom_seeds.splitlines())
 
     def get_custom_sources_seeds(self):
         seeds = Seed.archiving.filter(source__in=self.custom_sources.all())
-        return list(seeds.values_list('url', flat=True))
+        return set(seeds.values_list('url', flat=True)) - self.get_blacklisted()
 
-    def get_calendar_style(self):
-        return 'calendar_state_{0}'.format(self.status)
+    def get_tests_seeds(self):
+        seeds = Seed.archiving.filter(
+            source__state=source_constants.STATE_TECHNICAL_REVIEW)
+        return set(seeds.values_list('url', flat=True)) - self.get_blacklisted()
 
     def get_seeds(self):
         """
@@ -112,12 +119,15 @@ class HarvestAbstractModel(BaseModel):
             chain(
                 self.get_seeds_by_frequency(),
                 self.get_custom_seeds(),
-                self.get_custom_sources_seeds()
+                self.get_custom_sources_seeds(),
+                self.get_tests_seeds(),
             )
         )
 
-        blacklisted = Blacklist.collect_urls_by_type(Blacklist.TYPE_HARVEST)
-        return seeds - set(blacklisted)
+        return seeds - self.get_blacklisted()
+
+    def get_calendar_style(self):
+        return 'calendar_state_{0}'.format(self.status)
 
     @classmethod
     def get_harvests_by_frequency(cls, freq, **kwargs):
@@ -128,7 +138,7 @@ class HarvestAbstractModel(BaseModel):
             **kwargs, target_frequency__contains=freq)
         # Filter only the ones that really contain the frequency
         ids = [h.pk for h in harvests if freq in h.target_frequency]
-        return cls.objects.filter(pk__in=ids)  # QuerySet instead of LC
+        return cls.objects.filter(pk__in=ids)  # QuerySet instead of a list
 
 
 @revisions.register(exclude=('last_changed',))
@@ -194,17 +204,6 @@ class Harvest(HarvestAbstractModel):
             seeds.update(h.get_seeds())
         return seeds
 
-    def get_archiveit_seeds(self):
-        if not self.archive_it:
-            return set()
-        # Get all potential ArchiveIt seeds
-        archiveit = Seed.archiving.filter(source__frequency__in=[1, 2, 4])
-        archiveit = set(archiveit.values_list('url', flat=True))
-        # Get all harvested seeds up to this Harvest's scheduled date
-        previously_harvested = self.get_previously_harvested_seeds()
-        # Return only the ArchiveIt seeds that haven't been harvested yet
-        return archiveit - previously_harvested
-
     def get_oneshot_seeds(self):
         if self.target_frequency and '0' not in self.target_frequency:
             return set()
@@ -216,14 +215,32 @@ class Harvest(HarvestAbstractModel):
         # Return only the OneShot seeds that haven't been harvested yet
         return oneshot - previously_harvested
 
+    def get_archiveit_seeds(self):
+        if not self.archive_it:
+            return set()
+        # Get all potential ArchiveIt seeds
+        archiveit = Seed.archiving.filter(source__frequency__in=[1, 2, 4])
+        archiveit = set(archiveit.values_list('url', flat=True))
+        # Get all harvested seeds up to this Harvest's scheduled date
+        previously_harvested = self.get_previously_harvested_seeds()
+        # Return only the ArchiveIt seeds that haven't been harvested yet
+        return archiveit - previously_harvested
+
+    def get_topic_collection_seeds(self, slug):
+        seeds = set()
+        # Technically there should only be one with the slug
+        for tc in self.topic_collections.filter(slug=slug):
+            seeds.update(tc.get_seeds())
+        return seeds - self.get_blacklisted()
+
     def get_seeds(self):
         base_set = super(Harvest, self).get_seeds()
+        # Add seeds from all topic collections
         for collection in self.topic_collections.all():
             base_set.update(collection.get_seeds())
-        # Both return an empty set if not ArchiveIt or OneShot
-        base_set.update(self.get_archiveit_seeds())
         base_set.update(self.get_oneshot_seeds())
-        return base_set
+        base_set.update(self.get_archiveit_seeds())
+        return base_set - self.get_blacklisted()
 
     def get_absolute_url(self):
         return reverse('harvests:detail', args=[str(self.id)])
@@ -256,7 +273,7 @@ class Harvest(HarvestAbstractModel):
         :param ignore_existing: should the algorithm skip if there is already
                                 scheduled stuff?
         """
-        for freq, info in HARVESTED_FREQUENCIES.items():
+        for freq, info in source_constants.HARVESTED_FREQUENCIES.items():
             delta = info['delta']
 
             if not delta:

@@ -8,7 +8,7 @@ from django.urls import reverse
 from django.utils import dateparse
 from django.http import Http404
 
-from source.constants import SOURCE_FREQUENCY_PER_YEAR
+from source import constants as source_constants
 from . import models
 from . import forms
 from . import tables
@@ -134,16 +134,19 @@ class ListUrlsByDate(HarvestView, TemplateView):
             return context
 
         # Gather all the possible frequencies and topic collections available
-        # TODO ArchiveIt, VNC, Tests
+        # TODO VNC, Tests
         frequencies = set()
         tt_slugs = set()
         archive_it = False
+        vnc = False
         for h in harvests:
             if h.target_frequency is not None:
                 for f in h.target_frequency:
                     frequencies.add(int(f))
             if h.archive_it:
                 archive_it = True
+            if h.custom_seeds or h.custom_sources.count() > 0:
+                vnc = True
             for t in h.topic_collections.all():
                 tt_slugs.add(t.slug)
         # Gather all formatted shortcuts
@@ -156,6 +159,9 @@ class ListUrlsByDate(HarvestView, TemplateView):
             shortcuts.append('OneShot')
         if archive_it:
             shortcuts.append('ArchiveIt')
+        if vnc:
+            shortcuts.append('VNC')
+        shortcuts.append('Tests')
         shortcuts.append('Totals')
         # Reverse the urls for all shortcuts
         urls = []
@@ -184,7 +190,8 @@ class ListUrlsByTimeAndType(HarvestView, TemplateView):
 
         TT_PREFIX = 'TT-'
         ALLOWED_FREQUENCIES = [
-            str(f) for (f, _) in SOURCE_FREQUENCY_PER_YEAR if str(f) != '0']
+            str(f) for (f, _) in source_constants.SOURCE_FREQUENCY_PER_YEAR
+            if str(f) != '0']
 
         # Must be different variables due to Django URLConf, but should match
         if (h_date != h_date2):
@@ -194,6 +201,7 @@ class ListUrlsByTimeAndType(HarvestView, TemplateView):
         match_tt = re.match(
             r'^{}(?P<slug>[a-zA-Z0-9_-]+)$'.format(TT_PREFIX), shortcut)
         harvests = None
+        urls = set()
 
         # Vx
         if match_frequency is not None:
@@ -206,6 +214,8 @@ class ListUrlsByTimeAndType(HarvestView, TemplateView):
                 frequency,
                 scheduled_on=h_date,
             )
+            for h in harvests:
+                urls.update(h.get_seeds_by_frequency())
         # TT-
         elif match_tt is not None:
             slug = match_tt.group('slug')
@@ -216,23 +226,36 @@ class ListUrlsByTimeAndType(HarvestView, TemplateView):
             # No harvests have the selected topic collection
             if harvests.count() == 0:
                 raise Http404("No harvests with TT '{}'".format(slug))
+            for h in harvests:
+                urls.update(h.get_topic_collection_seeds(slug))
         # ArchiveIt, OneShot, VNC, Tests, Totals
         elif shortcut == 'ArchiveIt':
             harvests = models.Harvest.objects.filter(
                 scheduled_on=h_date,
                 archive_it=True,
             )
+            for h in harvests:
+                urls.update(h.get_archiveit_seeds())
         elif shortcut == 'OneShot':
             harvests = models.Harvest.get_harvests_by_frequency(
                 '0',
                 scheduled_on=h_date,
             )
+            for h in harvests:
+                urls.update(h.get_oneshot_seeds())
         elif shortcut == 'VNC':
-            raise NotImplementedError()
+            harvests = models.Harvest.objects.filter(scheduled_on=h_date)
+            for h in harvests:
+                urls.update(h.get_custom_seeds())
+                urls.update(h.get_custom_sources_seeds())
         elif shortcut == 'Tests':
-            raise NotImplementedError()
+            harvests = models.Harvest.objects.filter(scheduled_on=h_date)
+            for h in harvests:
+                urls.update(h.get_tests_seeds())
         elif shortcut == 'Totals':
             harvests = models.Harvest.objects.filter(scheduled_on=h_date)
+            for h in harvests:
+                urls.update(h.get_seeds())
         # Invalid shortcut
         else:
             raise Http404("Invalid shortcut: '{}'".format(shortcut))
@@ -240,19 +263,7 @@ class ListUrlsByTimeAndType(HarvestView, TemplateView):
         # 'harvests' should be filled in by one of the rules
         if harvests is None:
             raise Exception("Server error: No harvests were gathered")
-
-        urls = set()
-        for h in harvests:
-            if shortcut == 'ArchiveIt':
-                urls.update(h.get_archiveit_seeds())
-            elif shortcut == 'OneShot':
-                urls.update(h.get_oneshot_seeds())
-            else:
-                urls.update(h.get_seeds())
-                # get_seeds() returns ArchiveIt and OneShot seeds as well
-                if shortcut != 'Totals':
-                    urls -= h.get_archiveit_seeds()
-                    urls -= h.get_oneshot_seeds()
+            
         context['urls'] = list(urls)
         context['harvest_ids'] = [h.pk for h in harvests]
         return context
@@ -274,7 +285,7 @@ class HarvestUrlCatalogue(TemplateView):
 
         urls = {
             url_by_type(key): title
-            for key, title in SOURCE_FREQUENCY_PER_YEAR
+            for key, title in source_constants.SOURCE_FREQUENCY_PER_YEAR
             if str(key) != '0'
         }
         context['harvest_urls'] = urls
