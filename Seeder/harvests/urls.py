@@ -37,6 +37,8 @@ urlpatterns = [
          name='topic_collection_detail'),
     path('<int:pk>/collection_history', CollectionHistory.as_view(),
          name='topic_collection_history'),
+    path('<int:pk>/toggle_publish', CollectionTogglePublish.as_view(),
+         name='topic_collection_toggle_publish'),
     path('collections', CollectionListView.as_view(),
          name='topic_collection_list'),
     path('<date:h_date>/urls',

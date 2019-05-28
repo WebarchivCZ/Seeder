@@ -7,6 +7,7 @@ import datetime
 from django.urls import reverse
 from django.utils import dateparse
 from django.http import Http404
+from django.contrib import messages
 
 from source import constants as source_constants
 from . import models
@@ -362,6 +363,24 @@ class CollectionHistory(TCView, generic_views.HistoryView):
         History of changes to TopicCollections
     """
     pass
+
+
+class CollectionTogglePublish(TCView, DetailView, generic_views.MessageView):
+    """
+    Toggles the publish status of a collection
+    """
+    model = models.TopicCollection
+
+    def post(self, request, *args, **kwargs):
+        obj = self.get_object()
+        obj.active = not obj.active
+        obj.save()
+        if obj.active:
+            self.add_message(_('Topic collection published'), messages.SUCCESS)
+        else:
+            self.add_message(_('Topic collection unpublished'),
+                             messages.SUCCESS)
+        return HttpResponseRedirect(obj.get_absolute_url())
 
 
 class CollectionListView(TCView, generic_views.FilteredListView):

@@ -75,6 +75,10 @@ class TopicCollections(PaginatedView, TemplateView):
     view_name = 'topic_collections'
     sub_view_name = 'topic_collections'
 
+    def get_queryset(self):
+        qs = super(TopicCollections, self).get_queryset()
+        return qs.filter(active=True)
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['collections'] = self.get_paginator()
@@ -91,6 +95,10 @@ class CollectionDetail(PaginatedView, DetailView):
     model = TopicCollection
     context_object_name = 'collection'
     per_page = 6
+
+    def get_queryset(self):
+        qs = super(CollectionDetail, self).get_queryset()
+        return qs.filter(active=True)
 
     def get_paginator_queryset(self):
         return self.get_object().custom_sources.all()

@@ -112,6 +112,11 @@
         <h4>{% trans 'Links' %}:</h4>
             <a href="{% url 'harvests:topic_collection_edit' pk=object.pk %}" class="btn btn-primary btn-warning btn-block">{% trans 'Edit' %}</a>
             <a href="{% url 'harvests:topic_collection_history' pk=object.pk %}" class="btn btn-primary btn-info btn-block">{% trans 'History' %}</a>
+            <br />
+            <form action='{% url 'harvests:topic_collection_toggle_publish' pk=object.pk %}' method='post'>
+                {% csrf_token %}
+                <button class="btn {% if object.active %} btn-danger {% else %} btn-success {% endif %} btn-block">{% if object.active %} {% trans 'Unpublish' %} {% else %} {% trans 'Publish' %} {% endif %}</button>
+            </form>
     </div>
 
     <div class="col-xs-12 col-md-12">
