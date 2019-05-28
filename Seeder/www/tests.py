@@ -115,7 +115,12 @@ class UrlAccessor(TestCase):
                 # Allow redirects (e.g. /en/search)
                 self.assertIn(response.status_code, allowed_status_codes)
             except NoReverseMatch:
-                no_reverse.append(name)
+                # Try a default next time
+                if url_options is None:
+                    url_names.append(name)
+                    options[name] = {'pk': 0}
+                else:
+                    no_reverse.append(name)
             except Exception as e:
                 exceptions.append((url, name, e))
         if len(no_reverse) > 0:
@@ -180,46 +185,11 @@ class SeederUrlsTest(TestCase):
                 'h_date2': DATE,
                 'shortcut': 'V1',
             },
-            'harvests:detail': {'pk': 0},
-            'harvests:edit': {'pk': 0},
-            'harvests:urls': {'pk': 0},
-            'harvests:topic_collection_edit': {'pk': 0},
-            'harvests:topic_collection_detail': {'pk': 0},
-            'harvests:topic_collection_history': {'pk': 0},
-            'blacklists:edit': {'pk': 0},
-            'blacklists:history': {'pk': 0},
-            'source:detail': {'pk': 0},
-            'source:edit': {'pk': 0},
-            'source:history': {'pk': 0},
-            'source:add_seed': {'pk': 0},
-            'source:seed_edit': {'pk': 0},
-            'publishers:detail': {'pk': 0},
-            'publishers:edit': {'pk': 0},
-            'publishers:history': {'pk': 0},
-            'publishers:edit_contacts': {'pk': 0},
-            'contracts:detail': {'pk': 0},
-            'contracts:create': {'pk': 0},
-            'contracts:assign': {'pk': 0},
-            'contracts:edit': {'pk': 0},
-            'contracts:history': {'pk': 0},
-            'contracts:schedule': {'pk': 0},
-            'qa:create': {'pk': 0},
-            'qa:edit': {'pk': 0},
-            'qa:detail': {'pk': 0},
-            'news:detail': {'pk': 0},
-            'news:edit': {'pk': 0},
-            'news:history': {'pk': 0},
             'news:publish': [{'pk': 0}, '', [302]],
-            'voting:detail': {'pk': 0},
             'voting:cast': [{'pk': 0}, '', [302]],
-            'voting:postpone': {'pk': 0},
             'voting:resolve': [{'pk': 0}, '', [302]],
             'core:card': {'card': 'contracts'},
             'core:change_language': [{'code': 'en'}, '', [302]],
-            # api
-            'category-detail': {'pk': 0},
-            'source-detail': {'pk': 0},
-            'seed-detail': {'pk': 0},
         }
 
     def test_en_seeder_urls(self):
