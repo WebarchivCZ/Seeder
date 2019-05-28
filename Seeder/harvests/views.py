@@ -226,7 +226,8 @@ class ListUrlsByTimeAndType(HarvestView, TemplateView):
             slug = match_tt.group('slug')
             harvests = models.Harvest.objects.filter(scheduled_on=h_date)
             # No harvests have the selected topic collection
-            no_slug = harvests.filter(topic_collections__slug=slug).count() == 0
+            no_slug = harvests.filter(
+                topic_collections__slug=slug).count() == 0
             in_freq = any([h.get_topic_collections_by_frequency().filter(
                 slug=slug).count() > 0 for h in harvests])
             if no_slug and not in_freq:

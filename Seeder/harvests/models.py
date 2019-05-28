@@ -76,7 +76,9 @@ class HarvestAbstractModel(BaseModel):
         """
         cleaned_urls = []
         for seed_url in self.custom_seeds.splitlines():
-            seed = Seed.objects.filter(url__icontains=seed_url).first()
+            seed = Seed.objects.filter(
+                state=source_constants.SEED_STATE_INCLUDE,
+                url__icontains=seed_url).first()
             if seed:
                 self.custom_sources.add(seed.source)
             else:
