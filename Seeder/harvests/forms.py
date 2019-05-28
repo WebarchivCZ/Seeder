@@ -40,6 +40,7 @@ class HarvestCreateForm(forms.ModelForm):
             'custom_seeds',
             'custom_sources',
             'topic_collections',
+            'topic_collection_frequency',
         ]
         widgets = autocomplete_widgets
 
@@ -58,6 +59,7 @@ class HarvestEditForm(forms.ModelForm):
             'custom_seeds',
             'custom_sources',
             'topic_collections',
+            'topic_collection_frequency',
         ]
         widgets = autocomplete_widgets
 

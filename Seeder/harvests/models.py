@@ -87,13 +87,6 @@ class HarvestAbstractModel(BaseModel):
     def get_blacklisted(self):
         return set(Blacklist.collect_urls_by_type(Blacklist.TYPE_HARVEST))
 
-    def get_seeds_by_frequency(self):
-        if not self.target_frequency:
-            return set()
-        seeds = Seed.archiving.filter(
-            source__frequency__in=self.target_frequency)
-        return set(seeds.values_list('url', flat=True)) - self.get_blacklisted()
-
     def get_custom_seeds(self):
         if not self.custom_seeds:
             return set()
@@ -112,7 +105,6 @@ class HarvestAbstractModel(BaseModel):
 
         seeds = set(
             chain(
-                self.get_seeds_by_frequency(),
                 self.get_custom_seeds(),
                 self.get_custom_sources_seeds(),
             )
@@ -187,6 +179,13 @@ class Harvest(HarvestAbstractModel):
         blank=True,
     )
 
+    topic_collection_frequency = PatchedMultiSelectField(
+        verbose_name=_('Topic collections by frequency'),
+        choices=source_constants.SOURCE_FREQUENCY_PER_YEAR,
+        blank=True,
+        null=True
+    )
+
     archive_it = models.BooleanField(
         verbose_name=_('ArchiveIt'),
         default=False,
@@ -197,11 +196,25 @@ class Harvest(HarvestAbstractModel):
         default=False,
     )
 
+    def get_topic_collections_by_frequency(self):
+        pks = []
+        for freq in self.topic_collection_frequency:
+            pks.extend(TopicCollection.get_harvests_by_frequency(
+                freq).values_list('pk', flat=True))
+        return TopicCollection.objects.filter(pk__in=pks)
+
     def get_previously_harvested_seeds(self):
         seeds = set()
         for h in Harvest.objects.filter(scheduled_on__lt=self.scheduled_on):
             seeds.update(h.get_seeds())
         return seeds
+
+    def get_seeds_by_frequency(self):
+        if not self.target_frequency:
+            return set()
+        seeds = Seed.archiving.filter(
+            source__frequency__in=self.target_frequency)
+        return set(seeds.values_list('url', flat=True)) - self.get_blacklisted()
 
     def get_tests_seeds(self):
         if not self.tests:
@@ -237,13 +250,20 @@ class Harvest(HarvestAbstractModel):
         # Technically there should only be one with the slug
         for tc in self.topic_collections.filter(slug=slug):
             seeds.update(tc.get_seeds())
+        # Could be either manual or by frequency
+        for tc in self.get_topic_collections_by_frequency().filter(slug=slug):
+            seeds.update(tc.get_seeds())
         return seeds - self.get_blacklisted()
 
     def get_seeds(self):
         base_set = super(Harvest, self).get_seeds()
-        # Add seeds from all topic collections
-        for collection in self.topic_collections.all():
-            base_set.update(collection.get_seeds())
+        # Add seeds from all selected topic collections
+        for tc in self.topic_collections.all():
+            base_set.update(tc.get_seeds())
+        # Add all topic collections by frequency
+        for tc in self.get_topic_collections_by_frequency():
+            base_set.update(tc.get_seeds())
+        base_set.update(self.get_seeds_by_frequency())
         base_set.update(self.get_tests_seeds())
         base_set.update(self.get_oneshot_seeds())
         base_set.update(self.get_archiveit_seeds())

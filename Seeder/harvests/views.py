@@ -149,8 +149,10 @@ class ListUrlsByDate(HarvestView, TemplateView):
                 vnc = True
             if h.tests:
                 tests = True
-            for t in h.topic_collections.all():
-                tt_slugs.add(t.slug)
+            for tc in h.topic_collections.all():
+                tt_slugs.add(tc.slug)
+            for tc in h.get_topic_collections_by_frequency():
+                tt_slugs.add(tc.slug)
         # Gather all formatted shortcuts
         shortcuts = []
         for freq in sorted(frequencies - set([0])):
@@ -222,12 +224,12 @@ class ListUrlsByTimeAndType(HarvestView, TemplateView):
         # TT-
         elif match_tt is not None:
             slug = match_tt.group('slug')
-            harvests = models.Harvest.objects.filter(
-                scheduled_on=h_date,
-                topic_collections__slug=slug,
-            )
+            harvests = models.Harvest.objects.filter(scheduled_on=h_date)
             # No harvests have the selected topic collection
-            if harvests.count() == 0:
+            no_slug = harvests.filter(topic_collections__slug=slug).count() == 0
+            in_freq = any([h.get_topic_collections_by_frequency().filter(
+                slug=slug).count() > 0 for h in harvests])
+            if no_slug and not in_freq:
                 raise Http404("No harvests with TT '{}'".format(slug))
             for h in harvests:
                 urls.update(h.get_topic_collection_seeds(slug))

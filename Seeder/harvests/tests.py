@@ -8,26 +8,44 @@ from source.constants import SOURCE_FREQUENCY_PER_YEAR
 from harvests.scheduler import get_dates_for_timedelta
 from harvests.models import Harvest, TopicCollection
 
+TODAY = date.today()
 
-class ScheduleTest(TestCase):
-    """
-    Tests scheduling functionality
-    """
 
-    def test_timedelta_scheduler(self):
-        scheduled = get_dates_for_timedelta(
-            timedelta(days=10),
-            date(2012, 1, 1),
-            date(2012, 1, 22)
-        )
-        self.assertEqual(
-            scheduled,
-            [
-                date(2012, 1, 1),
-                date(2012, 1, 11),
-                date(2012, 1, 21)
-            ]
-        )
+class TopicCollectionTests(TestCase):
+    def setUp(self):
+        if User.objects.filter(username='pedro').count() == 0:
+            User.objects.create_superuser('pedro', '', 'password')
+        user = User.objects.get(username='pedro')
+        self.c = Client()
+        self.c.login(username='pedro', password='password')
+
+        for i, freq in enumerate([['1'], ['2', '4'], ['6', '12'], ['4', '12']]):
+            TopicCollection(pk=i, status=TopicCollection.STATE_NEW, owner=user,
+                            title_cs="CS TC {}".format(i+1),
+                            title_en="EN TC {}".format(i+1),
+                            scheduled_on=TODAY, all_open=True,
+                            target_frequency=freq).save()
+        Harvest(status=Harvest.STATE_PLANNED, title="Harvest 1",
+                scheduled_on=TODAY, topic_collection_frequency=['4']).save()
+
+    def test_topic_collections_appear_in_harvest_urls(self):
+        url = reverse('harvests:urls_by_date', kwargs={'h_date': TODAY})
+        res = self.c.get(url)
+        content = res.content.decode('utf-8')
+        self.assertIn("TT-cs-tc-2", content)
+        self.assertIn("TT-cs-tc-4", content)
+        self.assertNotIn("TT-cs-tc-1", content)
+        self.assertNotIn("TT-cs-tc-3", content)
+    
+    def test_topic_collections_accessible_from_harvest_urls(self):
+        url = reverse('harvests:urls_by_date', kwargs={'h_date': TODAY})
+        res = self.c.get(url)
+        urls = [u.rstrip('<br>') 
+                for u in res.content.decode('utf-8').splitlines()
+                if len(u) > 0]
+        for url in urls:
+            r = self.c.get(url)
+            self.assertEqual(200, r.status_code)
 
 
 class HarvestUrlTest(TestCase):
@@ -245,3 +263,24 @@ class HarvestUrlTest(TestCase):
         for h in harvests:
             self.assertEqual(self.DATE, h.scheduled_on)
             self.assertTrue('0' in h.target_frequency)
+
+
+class ScheduleTest(TestCase):
+    """
+    Tests scheduling functionality
+    """
+
+    def test_timedelta_scheduler(self):
+        scheduled = get_dates_for_timedelta(
+            timedelta(days=10),
+            date(2012, 1, 1),
+            date(2012, 1, 22)
+        )
+        self.assertEqual(
+            scheduled,
+            [
+                date(2012, 1, 1),
+                date(2012, 1, 11),
+                date(2012, 1, 21)
+            ]
+        )
