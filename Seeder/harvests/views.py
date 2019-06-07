@@ -319,6 +319,8 @@ class AddTopicCollection(TCView, FormView):
     title = _('Add TopicCollection')
 
     def form_valid(self, form):
+        # Set the order manually to max + 1
+        form.instance.order = models.TopicCollection.objects.max_order + 1
         topic = form.save()
 
         for each in form.cleaned_data["attachments"]:
@@ -339,7 +341,14 @@ class EditCollection(TCView, generic_views.EditView):
         return form_class(files, **self.get_form_kwargs())
 
     def form_valid(self, form):
+        original_order = models.TopicCollection.objects.get(
+            pk=form.instance.pk).order
+        new_order = form.cleaned_data['order']
+        # Keep original order for save so that it's not messed up
+        form.instance.order = original_order
         topic = form.save()
+        # Change order using the manager 'move' function (re-orders other)
+        models.TopicCollection.objects.move(form.instance, new_order)
 
         ids_to_delete = form.cleaned_data['files_to_delete']
         for att in models.Attachment.objects.filter(id__in=ids_to_delete):

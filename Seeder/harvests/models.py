@@ -14,7 +14,7 @@ from ckeditor.fields import RichTextField
 from autoslug import AutoSlugField
 
 from blacklists.models import Blacklist
-from core.models import BaseModel, DatePickerField
+from core.models import BaseModel, DatePickerField, OrderedModel
 from harvests.scheduler import get_dates_for_timedelta
 from source import constants as source_constants
 from source.models import Source, Seed, KeyWord
@@ -333,7 +333,7 @@ class Harvest(HarvestAbstractModel):
 
 
 @revisions.register(exclude=('last_changed',))
-class TopicCollection(HarvestAbstractModel):
+class TopicCollection(HarvestAbstractModel, OrderedModel):
     """
         Represents the event of harvesting the sources
     """
@@ -404,7 +404,7 @@ class TopicCollection(HarvestAbstractModel):
     class Meta:
         verbose_name = _('Topic collection')
         verbose_name_plural = _('Topic collections')
-        ordering = ['id']
+        ordering = ('order',)
 
 
 class Attachment(models.Model):

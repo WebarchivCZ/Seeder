@@ -100,6 +100,12 @@ class TopicCollectionForm(forms.ModelForm):
 class TopicCollectionEditForm(TopicCollectionForm):
     files_to_delete = forms.MultipleChoiceField(required=False)
 
+    def clean_order(self):
+        updated_order = self.cleaned_data['order']
+        if updated_order < 1:
+            raise (forms.ValidationError("Order must be >= 1"))
+        return updated_order
+
     def __init__(self, attachment_list, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['files_to_delete']._set_choices(
@@ -107,4 +113,5 @@ class TopicCollectionEditForm(TopicCollectionForm):
         )
 
     class Meta(TopicCollectionForm.Meta):
-        fields = TopicCollectionForm.Meta.fields + ('files_to_delete',)
+        fields = ('order',) + TopicCollectionForm.Meta.fields + \
+            ('files_to_delete',)
