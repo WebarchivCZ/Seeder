@@ -34,7 +34,7 @@ class CommentViewGeneric(TemplateResponseMixin, SingleObjectMixin, View):
 
         if form.is_valid():
             comment = form.save(commit=False)
-            if user.is_authenticated():
+            if user.is_authenticated:
                 comment.user = user
             comment.save()
             return HttpResponseRedirect(self.get_object().get_absolute_url())

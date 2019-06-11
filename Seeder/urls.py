@@ -1,73 +1,51 @@
-from django.conf.urls import include
+from django.urls import path, re_path, include
 from django.contrib import admin
 from django.conf import settings
 from django.conf.urls.static import static
-from django.contrib.auth import views as auth_views
-from django.conf.urls.i18n import i18n_patterns
 from django.urls.base import reverse_lazy
 from django.views.generic import RedirectView
-from django.utils.translation import ugettext_lazy as _
+from django.conf.urls.i18n import i18n_patterns
+
+from www import news_admin_views as naw
+from www import views_non_localized as vnl
 
 from rest_framework.authtoken import views as token_views
-from urljects import U, url, view_include
-
-from core import views as core_views
-from source import views as source_views
-from publishers import views as publisher_views
-from voting import views as voting_views
-from contracts import views as contracts_views
-from harvests import views as harvests_views
-from blacklists import views as blacklists_views
-from search_blob import views as search_views
-
-from qa import views as qa_views
-from www import views as www_views
-from www import views_non_localized
-from www import news_admin_views
-
 from api import api_router
-
 
 admin.site.index_title = admin.site.site_header = admin.site.site_title = 'Administrace WWW'  # noqa
 
-auth_urlpatterns = [
-    url(r'^login/$', auth_views.login, name='login'),
-    url(r'^logout/$', auth_views.logout, name='logout'),
-    url(r'^password_change/$', auth_views.password_change,
-        name='password_change'),
-    url(r'^password_change/done/$', core_views.PasswordChangeDone.as_view(),
-        name='password_change_done'),
-    url(r'^password_reset/$', auth_views.password_reset,
-        name='password_reset'),
-    url(r'^password_reset/done/$', auth_views.password_reset_done,
-        name='password_reset_done'),
-    url(r'^reset/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/$',  # noqa
-        auth_views.password_reset_confirm,
-        name='password_reset_confirm'),
-    url(r'^reset/done/$', core_views.PasswordChangeDone.as_view(),
-        name='password_reset_complete'),
+urlpatterns_news_admin = [
+    path('add', naw.AddNews.as_view(), name='add'),
+    path('<int:pk>/publish', naw.Publish.as_view(), name='publish'),
+    path('<int:pk>/detail', naw.Detail.as_view(), name='detail'),
+    path('<int:pk>/edit', naw.Edit.as_view(), name='edit'),
+    path('<int:pk>/history', naw.History.as_view(), name='history'),
+    path('', naw.ListView.as_view(), name='list'),
 ]
 
 seeder_urlpatterns = [
-    url(U / 'ckeditor', include('ckeditor_uploader.urls')),
-    url(U / 'api' / 'auth', include(
-        'rest_framework.urls', namespace='rest_framework')),
-    url(U / 'api' / 'token', token_views.obtain_auth_token),
-    url(U / 'search', view_include(search_views, namespace='search')),
+    path('ckeditor/', include('ckeditor_uploader.urls')),
+    path('api/auth/', include(('rest_framework.urls', 'rest_framework'),
+        namespace='rest_framework')),
+    path('api/token/', token_views.obtain_auth_token),
+    path('search/', include(('search_blob.urls', 'search_blob'),
+        namespace='search')),
 
-    url(U / 'api', include(api_router.urls)),
-    url(U / 'source', view_include(source_views, namespace='source')),
-    url(U / 'publisher', view_include(publisher_views, namespace='publishers')),    # noqa
-    url(U / 'voting', view_include(voting_views, namespace='voting')),
-    url(U / 'contracts', view_include(contracts_views, namespace='contracts')),
-    url(U / 'harvests', view_include(harvests_views, namespace='harvests')),
-    url(U / 'blacklists', view_include(blacklists_views, namespace='blacklists')),  # noqa
-    url(U / 'qa', view_include(qa_views, namespace='qa')),
+    path('api/', include(api_router.urls)),
+    path('source/', include(('source.urls', 'source'), namespace='source')),
+    path('publisher/', include(('publishers.urls', 'publishers'),
+        namespace='publishers')),    # noqa
+    path('voting/', include(('voting.urls', 'voting'), namespace='voting')),
+    path('contracts/', include(('contracts.urls', 'contracts'),
+        namespace='contracts')),
+    path('harvests/', include(('harvests.urls', 'harvests'),
+        namespace='harvests')),
+    path('blacklists/', include(('blacklists.urls', 'blacklists'),
+        namespace='blacklists')),  # noqa
+    path('qa/', include(('qa.urls', 'qa'), namespace='qa')),
+    path('news/', include((urlpatterns_news_admin, 'www'), namespace='news')),
 
-    url(U / 'news', view_include(news_admin_views, namespace='news')),
-
-    # beware: wild card regexp!
-    url('', view_include(core_views, namespace='core'))
+    path('', include(('core.urls', 'core'), namespace='core'))
 ]
 
 disclaimer_redirect = RedirectView.as_view(
@@ -75,95 +53,28 @@ disclaimer_redirect = RedirectView.as_view(
     permanent=True
 )
 
-www_urls = [
-    url(r'^$', www_views.Index.as_view(), name='index'),
-    url(_('^topic_collections_url$'), www_views.TopicCollections.as_view(),
-        name='topic_collections'),
-    url(_('^topic_collections_url/(?P<slug>[\w-]+)$'),
-        www_views.CollectionDetail.as_view(),
-        name='collection_detail'),
-
-    url(_('^about_url$'), www_views.About.as_view(), name='about'),
-    url(_('^more_about_url$'), www_views.MoreAbout.as_view(), name='more_about'),
-    url(_('^about_harvests_url$'), www_views.AboutHarvest.as_view(), name='about_harvests'),
-    url(_('^about_terminology_url$'), www_views.AboutTerminology.as_view(), name='about_terminology'),
-    url(_('^about_documents_url$'), www_views.AboutDocuments.as_view(), name='about_documents'),
-    url(_('^about_graphics_url$'), www_views.AboutGraphics.as_view(), name='about_graphics'),
-    url(_('^about_contact_url$'), www_views.AboutContact.as_view(), name='about_contact'),
-    url(_('^about_faq_url$'), www_views.AboutFAQ.as_view(), name='about_faq'),
-
-    url(_('^categories_url$'), www_views.Categories.as_view(), name='categories'),
-    url(_('^categories_url/(?P<slug>[\w-]+)$'),
-        www_views.CategoryDetail.as_view(),
-        name='category_detail'),
-    url(_('^categories_url/(?P<category_slug>[\w-]+)/(?P<slug>[\w-]+)$'),
-        www_views.SubCategoryDetail.as_view(),
-        name='sub_category_detail'),
-
-    url(_('^change_list_view/(?P<list_type>visual|text)$'),
-        www_views.ChangeListView.as_view(),
-        name='change_list_view'),
-
-    url(_('^keyword_url/(?P<slug>[\w-]+)$'),
-        www_views.KeywordViews.as_view(),
-        name='keyword'),
-
-    url(_('^search_url$'), www_views.SearchRedirectView.as_view(),
-        name='search_redirect'),
-    url(_('^search_url/(?P<query>.*)'), www_views.SearchView.as_view(),
-        name='search'),
-
-    url(_('^www_source_url/(?P<slug>[\w-]+)$'),
-        www_views.SourceDetail.as_view(),
-        name='source_detail'),
-
-    url(_('^www_nominate_url$'), www_views.Nominate.as_view(), name='nominate'),
-    url(_('^www_nominate_success_url$'), www_views.NominateSuccess.as_view(),
-        name='nominate_success'),
-    url(_('^www_nominate_url/contract_url$'),
-        www_views.NominateContractView.as_view(),
-        name='nominate_contract'),
-    url(_('^www_nominate_url/cooperation_url$'),
-        www_views.NominateCooperationView.as_view(),
-        name='nominate_cooperation'),
-    url(_('^www_nominate_url/creative_commons_url$'),
-        www_views.NominateCreativeCommonsView.as_view(),
-        name='nominate_creative_commons'),
-    url(_('^www_nominate_url/error_url$'),
-        www_views.NominateErrorView.as_view(),
-        name='nominate_error'),
-    url(_('^www_nominate_url/feedback_url$'),
-        www_views.NominateFeedbackView.as_view(),
-        name='nominate_feedback'),
-    url(_('^www_nominate_url/source_selection_url$'),
-        www_views.NominateSourceSelectionView.as_view(),
-        name='nominate_source_selection'),
-
-    url(_('^disclaimer_url$'),
-        www_views.DisclaimerView.as_view(),
-        name='disclaimer'),
-
-    url(_('^embed_url$'),
-        www_views.EmbedView.as_view(),
-        name='embed'),
+urlpatterns_non_localized = [
+    path('<str:code>', vnl.ChangeLanguage.as_view(),
+         name='change_language'),
 ]
-
 
 urlpatterns = [
     # Legacy redirects:
-    url(r'^certifikat/$', RedirectView.as_view(
-        url=reverse_lazy('www:about_graphics'), permanent=True)
-        ),
-    url(r'^cs/certifikovano/$', disclaimer_redirect),
-    url(r'^en/disclaimer/$', disclaimer_redirect),
-    url(r'^files/vydavatele/certifikat.html$', disclaimer_redirect),
+    path('certifikat', RedirectView.as_view(
+        url=reverse_lazy('www:about_graphics'), permanent=True),
+        name='certifikat'),
+    path('cs/certifikovano/', disclaimer_redirect, name='disclaimer_cs'),
+    path('en/disclaimer/', disclaimer_redirect, name='disclaimer_en'),
+    path('files/vydavatele/certifikat.html', disclaimer_redirect,
+         name='disclaimer_file'),
 
-    url(U / 'seeder' / 'admin', include(admin.site.urls)),
-    url(U / 'seeder' / 'auth', include(auth_urlpatterns)),
-    url(U / 'seeder', include(seeder_urlpatterns)),
-    url(U / 'lang', view_include(views_non_localized, namespace='www_no_lang')),
+    path('seeder/admin/', admin.site.urls),
+    path('seeder/auth/', include('django.contrib.auth.urls')),
+    path('seeder/', include(seeder_urlpatterns)),
+    path('lang/', include((urlpatterns_non_localized, 'www'),
+                          namespace='www_no_lang')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 urlpatterns += i18n_patterns(
-    url('^', include(www_urls, namespace='www')),
+    path('', include(('www.urls', 'www'), namespace='www')),
 )

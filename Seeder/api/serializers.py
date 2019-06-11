@@ -32,6 +32,7 @@ class PublisherSerializer(ModelSerializer):
 
     class Meta:
         model = publishers.models.Publisher
+        fields = '__all__'
 
 
 class SeedSerializer(ModelSerializer):

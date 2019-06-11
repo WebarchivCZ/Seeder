@@ -4,21 +4,23 @@ from django.db import models
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 from django.utils.text import slugify
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 
+from reversion import revisions
 from ckeditor.fields import RichTextField
 
 from core.models import BaseModel, DatePickerField
 from source.models import Source
 
 
+@revisions.register(exclude=('last_changed',))
 class NewsObject(BaseModel):
     title = models.CharField(max_length=150)
     annotation = RichTextField(config_name='mini')
-    image = models.ImageField(upload_to='photos', null=True, blank=True)    
+    image = models.ImageField(upload_to='photos', null=True, blank=True)
 
     source_1 = models.ForeignKey(
-        Source, 
+        Source,
         verbose_name=_('First source'),
         on_delete=models.DO_NOTHING,
         null=True, blank=True,
@@ -26,9 +28,9 @@ class NewsObject(BaseModel):
     )
 
     source_2 = models.ForeignKey(
-        Source, 
-        verbose_name=_('second source'),    
-        on_delete=models.DO_NOTHING, 
+        Source,
+        verbose_name=_('second source'),
+        on_delete=models.DO_NOTHING,
         null=True, blank=True,
         related_name='news_b'
     )
@@ -36,14 +38,14 @@ class NewsObject(BaseModel):
     annotation_source_1 = RichTextField(
         verbose_name=_('annotation for first source'),
         config_name='mini',
-        null=True, blank=True, 
+        null=True, blank=True,
         help_text="Leave empty to use source annotation"
     )
 
     annotation_source_2 = RichTextField(
         verbose_name=_('annotation for second source'),
         config_name='mini',
-        null=True, blank=True, 
+        null=True, blank=True,
         help_text="Leave empty to use source annotation"
     )
 
@@ -65,8 +67,7 @@ class NewsObject(BaseModel):
     def __str__(self):
         sign = '✔' if self.active else '✗'
         return '{0} {1}'.format(sign, self.title)
-        
-        
+
     class Meta:
         verbose_name = _('News article')
         verbose_name_plural = _('News articles')

@@ -1,9 +1,11 @@
 from . import models
 
-from core.custom_filters import EmptyFilter
+from core.custom_filters import BaseFilterSet
 
 
-class NewsFilter(EmptyFilter):
+class NewsFilter(BaseFilterSet):
     class Meta:
         model = models.NewsObject
-        fields = ('title',)
+        fields = {
+            'title': ('icontains',),
+        }

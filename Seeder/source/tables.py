@@ -20,9 +20,9 @@ class SourceTable(tables.Table):
 
     class Meta:
         model = models.Source
-        fields = ('name', 'owner', 'created', 'last_changed', 'state',
-                  'publisher', 'category', 'sub_category', 'suggested_by',
-                  'dead_source')
+        fields = ('name', 'owner', 'state', 'publisher', 'category',
+                  'sub_category', 'suggested_by', 'dead_source',
+                  'created', 'last_changed')
         attrs = {
             'class': 'table table-striped table-hover'
         }

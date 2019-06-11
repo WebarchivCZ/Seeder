@@ -1,12 +1,15 @@
 import time
+import re
 from datetime import date
 from itertools import chain
 
 import datetime
 from django.urls import reverse
 from django.utils import dateparse
+from django.http import Http404
+from django.contrib import messages
 
-from source.constants import SOURCE_FREQUENCY_PER_YEAR
+from source import constants as source_constants
 from . import models
 from . import forms
 from . import tables
@@ -18,7 +21,6 @@ from django.views.generic.base import TemplateView
 from django.views.generic import DetailView, FormView
 from django.conf import settings
 
-from urljects import U, URLView, pk
 from core import generic_views
 from comments.views import CommentViewGeneric
 from core.generic_views import EditView
@@ -51,10 +53,8 @@ class HarvestView(generic_views.LoginMixin):
     title = _('Harvests')
 
 
-class CalendarView(HarvestView, URLView, TemplateView):
+class CalendarView(HarvestView, TemplateView):
     template_name = 'calendar.html'
-    url = U
-    url_name = 'calendar'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -67,10 +67,7 @@ class CalendarView(HarvestView, URLView, TemplateView):
         return context
 
 
-class CalendarJsonView(generic_views.JSONView, URLView):
-    url = U / 'json'
-    url_name = 'json_calendar'
-
+class CalendarJsonView(generic_views.JSONView):
     def get_data(self, context):
         date_from = timestamp_to_datetime(self.request.GET.get('from', ''))
         date_to = timestamp_to_datetime(self.request.GET.get('to', ''))
@@ -98,9 +95,7 @@ class CalendarJsonView(generic_views.JSONView, URLView):
         }
 
 
-class AddView(HarvestView, FormView, URLView):
-    url = U / 'add'
-    url_name = 'add'
+class AddView(HarvestView, FormView):
     form_class = forms.HarvestCreateForm
     template_name = 'add_form.html'
 
@@ -110,21 +105,15 @@ class AddView(HarvestView, FormView, URLView):
         return HttpResponseRedirect(harvest.get_absolute_url())
 
 
-class Detail(HarvestView, DetailView, CommentViewGeneric, URLView):
+class Detail(HarvestView, DetailView, CommentViewGeneric):
     template_name = 'harvest.html'
-    url = U / pk / 'detail'
-    url_name = 'detail'
 
 
-class Edit(HarvestView, EditView, URLView):
-    url = U / pk / 'edit'
-    url_name = 'edit'
+class Edit(HarvestView, EditView):
     form_class = forms.HarvestEditForm
 
 
-class ListUrls(HarvestView, DetailView, TemplateView, URLView):
-    url = U / pk / 'urls'
-    url_name = 'urls'
+class ListUrls(HarvestView, DetailView, TemplateView):
     template_name = 'urls.html'
 
     def get_context_data(self, **kwargs):
@@ -134,49 +123,187 @@ class ListUrls(HarvestView, DetailView, TemplateView, URLView):
         return context
 
 
-class ListUrlsByTimeAndType(HarvestView, TemplateView, URLView):
-    url = U / '(?P<h_date>\d{4}-\d{2}-\d{2})' / '(?P<h_type>\w+)' / 'urls'
-    url_name = 'urls_by_time'
+class ListUrlsByDate(HarvestView, TemplateView):
     template_name = 'urls.html'
 
-    def get_context_data(self, h_date, h_type, **kwargs):
+    def get_context_data(self, h_date, **kwargs):
         context = super().get_context_data(**kwargs)
-        dt = dateparse.parse_date(h_date)
 
+        harvests = models.Harvest.objects.filter(scheduled_on=h_date)
+        if harvests.count() == 0:
+            context['urls'] = []
+            return context
 
-        harvests = models.Harvest.objects.filter(
-            scheduled_on=dt,
-            target_frequency__contains=h_type
-        )
-
-        urls = []
+        # Gather all the possible frequencies and topic collections available
+        frequencies = set()
+        tt_slugs = set()
+        archive_it = False
+        vnc = False
+        tests = False
         for h in harvests:
-            urls.extend(list(h.get_seeds()))
+            if h.target_frequency is not None:
+                for f in h.target_frequency:
+                    frequencies.add(int(f))
+            if h.archive_it:
+                archive_it = True
+            if h.custom_seeds or h.custom_sources.count() > 0:
+                vnc = True
+            if h.tests:
+                tests = True
+            for tc in h.topic_collections.all():
+                tt_slugs.add(tc.slug)
+            for tc in h.get_topic_collections_by_frequency():
+                tt_slugs.add(tc.slug)
+        # Gather all formatted shortcuts
+        shortcuts = []
+        for freq in sorted(frequencies - set([0])):
+            shortcuts.append('V{}'.format(freq))
+        for slug in tt_slugs:
+            shortcuts.append('TT-{}'.format(slug))
+        if 0 in frequencies:
+            shortcuts.append('OneShot')
+        if archive_it:
+            shortcuts.append('ArchiveIt')
+        if vnc:
+            shortcuts.append('VNC')
+        if tests:
+            shortcuts.append('Tests')
+        shortcuts.append('Totals')
+        # Reverse the urls for all shortcuts
+        urls = []
+        for shortcut in shortcuts:
+            urls.append(reverse('harvests:urls_by_date_and_type', kwargs={
+                'h_date': h_date,
+                'h_date2': h_date,
+                'shortcut': shortcut,
+            }))
 
         context['urls'] = urls
         return context
 
 
-class HarvestUrlCatalogue(TemplateView, URLView):
-    url = U / 'catalogue'
-    url_name = 'catalogue'
+class ListUrlsByTimeAndType(HarvestView, TemplateView):
+    """
+    Allowed shortcuts:
+        'V1', 'V2', 'V4', 'V6', 'V12', 'V52', 'V365',
+        'TT-<str>',
+        'ArchiveIt', 'OneShot', 'VNC', 'Tests', 'Totals'
+    """
+    template_name = 'urls.html'
+
+    def get_context_data(self, h_date, h_date2=None, shortcut=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        TT_PREFIX = 'TT-'
+        ALLOWED_FREQUENCIES = [
+            str(f) for (f, _) in source_constants.SOURCE_FREQUENCY_PER_YEAR
+            if str(f) != '0']
+
+        # Must be different variables due to Django URLConf, but should match
+        if (h_date != h_date2):
+            raise Http404("Harvest dates must match.")
+
+        match_frequency = re.match(r'^V(?P<freq>\d+)$', shortcut)
+        match_tt = re.match(
+            r'^{}(?P<slug>[a-zA-Z0-9_-]+)$'.format(TT_PREFIX), shortcut)
+        harvests = None
+        urls = set()
+
+        # Vx
+        if match_frequency is not None:
+            frequency = match_frequency.group('freq')
+            if frequency not in ALLOWED_FREQUENCIES:
+                raise Http404(
+                    "Invalid frequency: '{}'. Only {} allowed.".format(
+                        frequency, ALLOWED_FREQUENCIES))
+            harvests = models.Harvest.get_harvests_by_frequency(
+                frequency,
+                scheduled_on=h_date,
+            )
+            for h in harvests:
+                urls.update(h.get_seeds_by_frequency())
+        # TT-
+        elif match_tt is not None:
+            slug = match_tt.group('slug')
+            harvests = models.Harvest.objects.filter(scheduled_on=h_date)
+            # No harvests have the selected topic collection
+            no_slug = harvests.filter(
+                topic_collections__slug=slug).count() == 0
+            in_freq = any([h.get_topic_collections_by_frequency().filter(
+                slug=slug).count() > 0 for h in harvests])
+            if no_slug and not in_freq:
+                raise Http404("No harvests with TT '{}'".format(slug))
+            for h in harvests:
+                urls.update(h.get_topic_collection_seeds(slug))
+        # ArchiveIt, OneShot, VNC, Tests, Totals
+        elif shortcut == 'ArchiveIt':
+            harvests = models.Harvest.objects.filter(
+                scheduled_on=h_date,
+                archive_it=True,
+            )
+            for h in harvests:
+                urls.update(h.get_archiveit_seeds())
+        elif shortcut == 'OneShot':
+            harvests = models.Harvest.get_harvests_by_frequency(
+                '0',
+                scheduled_on=h_date,
+            )
+            for h in harvests:
+                urls.update(h.get_oneshot_seeds())
+        elif shortcut == 'VNC':
+            harvests = models.Harvest.objects.filter(scheduled_on=h_date)
+            for h in harvests:
+                urls.update(h.get_custom_seeds())
+                urls.update(h.get_custom_sources_seeds())
+        elif shortcut == 'Tests':
+            harvests = models.Harvest.objects.filter(scheduled_on=h_date)
+            for h in harvests:
+                urls.update(h.get_tests_seeds())
+        elif shortcut == 'Totals':
+            harvests = models.Harvest.objects.filter(scheduled_on=h_date)
+            for h in harvests:
+                urls.update(h.get_seeds())
+        # Invalid shortcut
+        else:
+            raise Http404("Invalid shortcut: '{}'".format(shortcut))
+
+        # 'harvests' should be filled in by one of the rules
+        if harvests is None:
+            raise Exception("Server error: No harvests were gathered")
+
+        context['urls'] = list(urls)
+        context['harvest_ids'] = [h.pk for h in harvests]
+        return context
+
+
+class HarvestUrlCatalogue(TemplateView):
     template_name = 'harvest_catalogue.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         dt = date.today()
 
-        url_by_type = lambda key: reverse(
-            'harvests:urls_by_time',
-            kwargs={
-                'h_date': dt.isoformat(),
-                'h_type': str(key)}
-        )
+        def url_by_shortcut(shortcut):
+            return reverse('harvests:urls_by_date_and_type', kwargs={
+                'h_date': dt,
+                'h_date2': dt,
+                'shortcut': shortcut,
+            })
 
         urls = {
-            url_by_type(key): title
-            for key, title in SOURCE_FREQUENCY_PER_YEAR
+            url_by_shortcut('V{}'.format(key)): title
+            for key, title in source_constants.SOURCE_FREQUENCY_PER_YEAR
+            if str(key) != '0'
         }
+        urls[url_by_shortcut(
+            'OneShot')] = source_constants.SOURCE_FREQUENCY_PER_YEAR[0][1]
+        urls[url_by_shortcut('ArchiveIt')] = _('ArchiveIt')
+        urls[url_by_shortcut('VNC')] = _('VNC')
+        urls[url_by_shortcut('Tests')] = _('Tests')
+        urls[url_by_shortcut('Totals')] = _('Totals')
+        urls[reverse('harvests:urls_by_date', kwargs={
+            'h_date': dt
+        })] = _('Available URLs for date')
         context['harvest_urls'] = urls
         return context
 
@@ -186,30 +313,26 @@ class TCView(generic_views.LoginMixin):
     model = models.TopicCollection
 
 
-class AddTopicCollection(TCView, FormView, URLView):
+class AddTopicCollection(TCView, FormView):
     form_class = forms.TopicCollectionForm
     template_name = 'add_form.html'
     title = _('Add TopicCollection')
 
-    url = U / 'add_topic_collection'
-    url_name = 'topic_collection_add'
-
     def form_valid(self, form):
+        # Set the order manually to max + 1
+        form.instance.order = models.TopicCollection.objects.max_order + 1
         topic = form.save()
-        
+
         for each in form.cleaned_data["attachments"]:
             models.Attachment.objects.create(
-                file=each, 
+                file=each,
                 topic_collection=topic
             )
         return HttpResponseRedirect(topic.get_absolute_url())
 
 
-class EditCollection(TCView, generic_views.EditView, URLView):
+class EditCollection(TCView, generic_views.EditView):
     form_class = forms.TopicCollectionEditForm
-
-    url = U / pk / 'collection_edit'
-    url_name = 'topic_collection_edit'
 
     def get_form(self, form_class=None):
         if not form_class:
@@ -218,43 +341,60 @@ class EditCollection(TCView, generic_views.EditView, URLView):
         return form_class(files, **self.get_form_kwargs())
 
     def form_valid(self, form):
+        original_order = models.TopicCollection.objects.get(
+            pk=form.instance.pk).order
+        new_order = form.cleaned_data['order']
+        # Keep original order for save so that it's not messed up
+        form.instance.order = original_order
         topic = form.save()
+        # Change order using the manager 'move' function (re-orders other)
+        models.TopicCollection.objects.move(form.instance, new_order)
 
-        ids_to_delete = form.cleaned_data['files_to_delete']        
+        ids_to_delete = form.cleaned_data['files_to_delete']
         for att in models.Attachment.objects.filter(id__in=ids_to_delete):
             att.file.delete()
             att.delete()
 
         for each in form.cleaned_data["attachments"]:
             models.Attachment.objects.create(
-                file=each, 
+                file=each,
                 topic_collection=topic
             )
         return HttpResponseRedirect(topic.get_absolute_url())
 
 
-class CollectionDetail(TCView, DetailView, CommentViewGeneric, URLView):
+class CollectionDetail(TCView, DetailView, CommentViewGeneric):
     template_name = 'topic_collection.html'
 
-    url = U / pk / 'collection_detail'
-    url_name = 'topic_collection_detail'
 
-
-class CollectionHistory(TCView, generic_views.HistoryView, URLView):
+class CollectionHistory(TCView, generic_views.HistoryView):
     """
         History of changes to TopicCollections
     """
-
-    url = U / pk / 'collection_history'
-    url_name = 'topic_collection_history'
+    pass
 
 
-class CollectionListView(TCView, generic_views.FilteredListView, URLView):
+class CollectionTogglePublish(TCView, DetailView, generic_views.MessageView):
+    """
+    Toggles the publish status of a collection
+    """
+    model = models.TopicCollection
+
+    def post(self, request, *args, **kwargs):
+        obj = self.get_object()
+        obj.active = not obj.active
+        obj.save()
+        if obj.active:
+            self.add_message(_('Topic collection published'), messages.SUCCESS)
+        else:
+            self.add_message(_('Topic collection unpublished'),
+                             messages.SUCCESS)
+        return HttpResponseRedirect(obj.get_absolute_url())
+
+
+class CollectionListView(TCView, generic_views.FilteredListView):
     title = _('TopicCollections')
     table_class = tables.TopicCollectionTable
-    filter_class = field_filters.TopicCollectionFilter
+    filterset_class = field_filters.TopicCollectionFilter
 
-    url = U / 'collections'
-    url_name = 'topic_collection_list'
-
-    add_link = 'harvests:topic_collection_add' 
+    add_link = 'harvests:topic_collection_add'

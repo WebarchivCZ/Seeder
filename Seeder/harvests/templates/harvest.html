@@ -14,6 +14,9 @@
           <li class="list-group-item">{% trans 'Status' %}: <span class="pull-right">{{ object.get_status_display }}</span></li>
           <li class="list-group-item">{% trans 'Scheduled on' %}: <span class="pull-right">{{ object.scheduled_on }}</span></li>
           <li class="list-group-item">{% trans 'Sources by frequency' %}: <span class="pull-right">{{ object.get_target_frequency_display }}</span></li>
+          <li class="list-group-item">{% trans 'Topic collections by frequency' %}: <span class="pull-right">{{ object.get_topic_collection_frequency_display }}</span></li>
+          <li class="list-group-item">{% trans 'Include ArchiveIt seeds' %}: <span class="pull-right">{{ object.archive_it }}</span></li>
+          <li class="list-group-item">{% trans 'Include Tests seeds' %}: <span class="pull-right">{{ object.tests }}</span></li>
           <li class="list-group-item">{% trans 'Created' %}: <span class="pull-right">{{ object.created }}</span></li>
           <li class="list-group-item">{% trans 'Last changed' %}: <span class="pull-right">{{ object.last_changed }}</span></li>
           <li class="list-group-item"><a href="{% url 'harvests:urls' object.id %}">{% trans 'List of urls' %}</a></li>

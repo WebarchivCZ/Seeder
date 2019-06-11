@@ -1,14 +1,12 @@
 import django_filters
 
 from dal import autocomplete
-from core.custom_filters import EmptyFilter, DateRangeFilter
+from core.custom_filters import BaseFilterSet, DateRangeFilter
 from publishers.models import Publisher
 from .import models
 
 
-class SourceFilter(EmptyFilter):
-    seed__url = django_filters.CharFilter(lookup_type='icontains')
-
+class SourceFilter(BaseFilterSet):
     publisher = django_filters.ModelChoiceFilter(
         queryset=Publisher.objects.all(),
         widget=autocomplete.ModelSelect2(url='publishers:autocomplete')
@@ -32,6 +30,15 @@ class SourceFilter(EmptyFilter):
 
     class Meta:
         model = models.Source
-        fields = ('name', 'owner', 'seed__url', 'publisher', 'state',
-                  'category', 'sub_category', 'suggested_by', 'created',
-                  'last_changed', 'dead_source',)
+        fields = {
+            'name': ('icontains',),
+            'owner': ('exact',),
+            'state': ('exact',),
+            'publisher': ('exact',),
+            'category': ('exact',),
+            'sub_category': ('exact',),
+            'suggested_by': ('exact',),
+            'dead_source': ('exact',),
+            'created': ('exact',),
+            'last_changed': ('exact',),
+        }

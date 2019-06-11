@@ -12,7 +12,9 @@ from django.views.generic import DetailView
 from django.views.generic.edit import UpdateView
 from django.views.generic.detail import SingleObjectMixin
 
-from django_tables2 import SingleTableView
+from django_filters.views import FilterView
+from django_tables2.views import SingleTableMixin
+
 from reversion.models import Version
 
 from .utils import dict_diff
@@ -95,6 +97,7 @@ class ObjectMixinFixed(SingleObjectMixin):
     """
     This mixin can be used with login and form mixin
     """
+
     def dispatch(self, *args, **kwargs):
         self.object = self.get_object()
         return super().dispatch(*args, **kwargs)
@@ -127,7 +130,7 @@ class HistoryView(DetailView):
         return context
 
 
-class FilteredListView(SingleTableView):
+class FilteredListView(SingleTableMixin, FilterView):
     """
         Abstract view class for list views with filters
     """
@@ -136,19 +139,14 @@ class FilteredListView(SingleTableView):
     table_pagination = {"per_page": 20}
 
     table_class = NotImplemented
-    filter_class = NotImplemented
+    filterset_class = NotImplemented
 
     add_link = None
     add_link_title = _('Add')
 
-
-    def get_table_data(self):
-        queryset = super().get_table_data()
-        return self.filter_class(self.request.GET, queryset=queryset)
-
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['filter'] = self.filter_class(data=self.request.GET)
+        context['filter'] = self.filterset_class(data=self.request.GET)
         context['filter_active'] = bool(self.request.GET)
         context['add_link'] = self.add_link
         context['add_link_title'] = self.add_link_title
