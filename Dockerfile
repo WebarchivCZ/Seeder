@@ -18,4 +18,7 @@ ADD . /code
 WORKDIR /code
 
 RUN pip3 install -r requirements.txt --upgrade
+
+ENV DJANGO_SETTINGS_MODULE=settings.env
 RUN python3 /code/Seeder/manage.py collectstatic --noinput
+RUN unset DJANGO_SETTINGS_MODULE
