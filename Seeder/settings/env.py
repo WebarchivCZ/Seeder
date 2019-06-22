@@ -7,10 +7,10 @@ print('Loading ./settings/env.py')
 SECRET_KEY = os.environ.get('SECRET_KEY', 'sdfvsdfvsdfvsdfv')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get('DEBUG', 'False') == 'False'
+DEBUG = os.environ.get('DEBUG', 'False')
 TEMPLATES[0]['OPTIONS']['debug'] = DEBUG
 
-THUMBNAIL_DEBUG = os.environ.get('THUMBNAIL_DEBUG', 'False') == 'False'
+THUMBNAIL_DEBUG = os.environ.get('THUMBNAIL_DEBUG', 'False')
 
 ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '127.0.0.1').split(' ')
 
@@ -45,7 +45,7 @@ CACHES = {
 
 EMAIL_BACKEND = os.environ.get('EMAIL_BACKEND', 'django.core.mail.backends.console.EmailBackend')
 EMAIL_HOST = os.environ.get('EMAIL_HOST', 'localhost')
-EMAIL_USE_TLS = os.environ.get('EMAIL_USE_TLS', 'False') == 'False'
+EMAIL_USE_TLS = os.environ.get('EMAIL_USE_TLS', 'False')
 DEFAULT_FROM_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL', 'webarchiv@nkp.cz')
 SERVER_EMAIL= os.environ.get('SERVER_EMAIL', 'webarchiv@nkp.cz')
 
