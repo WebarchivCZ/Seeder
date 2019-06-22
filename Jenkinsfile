@@ -1,9 +1,13 @@
 pipeline {
      agent any
      stages {
-          stage('First Stage') {
+          stage('Build images and push them to Dockerhub') {
                steps {
-                    echo 'Step 1. Hello World'
+                    sh '''#!/usr/bin/env bash
+                      docker build -t webarchiv/seeder:develop -t webarchiv/seeder:$(git rev-parse HEAD) .
+                      docker push webarchiv/seeder:develop
+                      docker push webarchiv/seeder:$(git rev-parse HEAD)
+                    '''
                }
           }
           stage('Second Stage') {
