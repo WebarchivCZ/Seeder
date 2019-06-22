@@ -10,6 +10,7 @@ RUN apt-get update && apt-get install -y \
     git-core \
     python3-pip\
     gettext \
+    cron \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
