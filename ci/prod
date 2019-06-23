@@ -1,0 +1,7 @@
+---
+all:
+  hosts:
+    localhost:
+  vars:
+    env: prod
+    seeder_tag: latest

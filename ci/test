@@ -1,0 +1,7 @@
+---
+all:
+  hosts:
+    localhost:
+  vars:
+    env: test
+    seeder_tag: develop
