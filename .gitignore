@@ -92,3 +92,6 @@ legacy_dumps/*
 
 # Other
 .vscode
+
+# Minimize chance docker-compose files with env will end up in repository
+ci/docker-compose*

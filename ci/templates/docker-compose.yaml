@@ -7,6 +7,8 @@ services:
     working_dir: /code/Seeder
     environment:
       DJANGO_SETTINGS_MODULE: settings.env
+      DEBUG: 'True'
+      THUMBNAIL_DEBUG: 'True'
     depends_on:
       - postgres
       - elastic
