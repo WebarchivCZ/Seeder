@@ -9,6 +9,11 @@
   - TODO: před nasazením je potřeba v Jenkins ruční potvrzení
 - profit
 
-## Přístup
-TODO: Dořešit frontend -> traefik + static files
-TODO: Dořešit certifikáty
+# Přístup
+- TODO: Dořešit frontend -> traefik + static files
+- TODO: Dořešit certifikáty
+
+# Dockerhub
+- webarchiv/seeder:latest - produkční image
+- webarchiv/seeder:develop - vývojový image na test
+- webarchiv/seeder:{{ git zkrácený commit hash }} - kvůli zachování artefaktu
