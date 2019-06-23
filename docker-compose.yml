@@ -12,7 +12,6 @@ services:
     environment:
       DEBUG: 'True'
       THUMBNAIL_DEBUG: 'True'
-      ALLOWED_HOSTS: 127.0.0.1 localhost
       DJANGO_SETTINGS_MODULE: settings.env
     depends_on:
       - postgres
