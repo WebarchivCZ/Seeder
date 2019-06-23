@@ -11,3 +11,4 @@
 
 ## Přístup
 TODO: Dořešit frontend -> traefik + static files
+TODO: Dořešit certifikáty
