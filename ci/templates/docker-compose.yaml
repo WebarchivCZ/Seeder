@@ -5,10 +5,16 @@ services:
     image: webarchiv/seeder:develop
     command: bash run.sh
     working_dir: /code/Seeder
+    ports:
+      80:8080
     environment:
       DJANGO_SETTINGS_MODULE: settings.env
+      ALLOWED_HOSTS: app.webarchiv.cz
       DEBUG: 'True'
-      THUMBNAIL_DEBUG: 'True'
+      # DB_HOST:
+      # DB_NAME:
+      # DB_USER:
+      # DB_PASS:
     depends_on:
       - postgres
       - elastic
