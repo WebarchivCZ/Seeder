@@ -2,7 +2,9 @@ pipeline {
   agent any
     stages {
       stage('Build images and push them to Dockerhub') {
-        anyOf { branch 'master'; branch 'production'; branch 'jenkins'}
+        when {
+          anyOf { branch 'master'; branch 'production'; branch 'jenkins'}
+        }
         steps {
           sh '''#!/usr/bin/env bash
             docker build -t webarchiv/seeder:develop -t webarchiv/seeder:latest -t webarchiv/seeder:$(git rev-parse --short HEAD) .
