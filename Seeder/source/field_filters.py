@@ -1,9 +1,23 @@
 import django_filters
 
+from django.utils.translation import ugettext_lazy as _
 from dal import autocomplete
 from core.custom_filters import BaseFilterSet, DateRangeFilter
 from publishers.models import Publisher
 from .import models
+
+
+def filter_not_empty(queryset, name, value):
+    lookup_isnull = '__'.join([name, 'isnull'])
+    lookup_empty = '__'.join([name, 'exact'])
+    q = queryset.filter(**{lookup_isnull: not value})
+    if value:
+        return q.exclude(**{lookup_empty: ''})
+    else:
+        empty = queryset.filter(
+            aleph_id__exact='').values_list('pk', flat=True)
+        null = q.values_list('pk', flat=True)
+        return queryset.filter(pk__in=list(empty) + list(null))
 
 
 class SourceFilter(BaseFilterSet):
@@ -25,6 +39,13 @@ class SourceFilter(BaseFilterSet):
         )
     )
 
+    has_alephid = django_filters.BooleanFilter(label=_('Source is catalogized'),
+                                               field_name='aleph_id',
+                                               method=filter_not_empty)
+    has_issn = django_filters.BooleanFilter(label=_('Source is periodic'),
+                                            field_name='issn',
+                                            method=filter_not_empty)
+
     created = DateRangeFilter()
     last_changed = DateRangeFilter()
 
@@ -41,4 +62,6 @@ class SourceFilter(BaseFilterSet):
             'dead_source': ('exact',),
             'created': ('exact',),
             'last_changed': ('exact',),
+            'has_alephid': ('exact',),
+            'has_issn': ('exact',),
         }
