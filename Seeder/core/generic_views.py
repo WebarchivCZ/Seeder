@@ -14,6 +14,7 @@ from django.views.generic.detail import SingleObjectMixin
 
 from django_filters.views import FilterView
 from django_tables2.views import SingleTableMixin
+from django_tables2.export.views import ExportMixin
 
 from reversion.models import Version
 
@@ -130,7 +131,7 @@ class HistoryView(DetailView):
         return context
 
 
-class FilteredListView(SingleTableMixin, FilterView):
+class FilteredListView(ExportMixin, SingleTableMixin, FilterView):
     """
         Abstract view class for list views with filters
     """
@@ -146,6 +147,7 @@ class FilteredListView(SingleTableMixin, FilterView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        context['export_formats'] = ['csv', 'xls']
         context['filter'] = self.filterset_class(data=self.request.GET)
         context['filter_active'] = bool(self.request.GET)
         context['add_link'] = self.add_link
