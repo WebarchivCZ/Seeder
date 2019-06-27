@@ -20,6 +20,10 @@ def filter_not_empty(queryset, name, value):
         return queryset.filter(pk__in=list(empty) + list(null))
 
 
+def filter_has_cc(queryset, name, value):
+    return models.Source.objects.has_cc(value)
+
+
 class SourceFilter(BaseFilterSet):
     publisher = django_filters.ModelChoiceFilter(
         queryset=Publisher.objects.all(),
@@ -45,6 +49,8 @@ class SourceFilter(BaseFilterSet):
     has_issn = django_filters.BooleanFilter(label=_('Source is periodic'),
                                             field_name='issn',
                                             method=filter_not_empty)
+    has_cc = django_filters.BooleanFilter(label=_('Source has CC'),
+                                          method=filter_has_cc)
 
     created = DateRangeFilter()
     last_changed = DateRangeFilter()

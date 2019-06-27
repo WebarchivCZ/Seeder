@@ -61,10 +61,9 @@ class SlugOrCreateModel(object):
 
     """
 
-    from_field = NotImplemented 
+    from_field = NotImplemented
     slug_field = NotImplemented
     slug_max_length = 49
-
 
     def get_value_for_slug(self):
         from_val = getattr(self, self.from_field)
@@ -133,9 +132,9 @@ class SubCategory(models.Model, SlugOrCreateModel):
     slug = models.SlugField(unique=True, blank=True, null=True)
 
     category = models.ForeignKey(Category, on_delete=models.DO_NOTHING)
-    
+
     subcategory_id = models.CharField(max_length=40, blank=True, null=True)
-    
+
     from_field = 'name'
     slug_field = 'slug'
 
@@ -149,7 +148,6 @@ class SubCategory(models.Model, SlugOrCreateModel):
 
     class Meta:
         ordering = ['name']
-
 
 
 class SourceManager(models.Manager):
@@ -182,6 +180,17 @@ class SourceManager(models.Manager):
             ~Q(qualityassurancecheck__last_changed__gte=qa_limit)
         )
 
+    def has_cc(self, value=True):
+        with_contract = self.get_queryset().exclude(contract=None)
+        pks = [s.pk for s in with_contract
+               if s.contract_set.valid().filter(
+                   creative_commons=True).count() > 0]
+        # Can search for non-CC Sources as well
+        if value:
+            return self.get_queryset().filter(pk__in=pks)
+        else:
+            return self.get_queryset().exclude(pk__in=pks)
+
 
 class KeyWord(SlugOrCreateModel, models.Model):
     """
@@ -192,7 +201,7 @@ class KeyWord(SlugOrCreateModel, models.Model):
     """
     word = models.CharField(max_length=255, unique=True)
     slug = models.SlugField(unique=True, blank=True, null=True)
-    
+
     from_field = 'word'
     slug_field = 'slug'
 
@@ -348,7 +357,6 @@ class Source(SearchModel, SlugOrCreateModel, BaseModel):
     def wayback_url(self):
         return settings.WAYBACK_URL.format(url=self.url)
 
-
     @main_seed.setter
     def main_seed(self, value):
         """
@@ -380,13 +388,13 @@ class Source(SearchModel, SlugOrCreateModel, BaseModel):
 
         if record:
             return settings.LEGACY_URL.format(pk=record.original_id)
-    
+
     @property
     def legacy_screenshot(self):
         """
         Returns url to legacy system with this source
         """
-        return 
+        return
 
     def css_class(self):
         """
@@ -400,9 +408,8 @@ class Source(SearchModel, SlugOrCreateModel, BaseModel):
     def get_absolute_url(self):
         return reverse('source:detail', args=[str(self.id)])
 
-    def get_public_url(self): 
+    def get_public_url(self):
         return reverse('www:source_detail', args=[str(self.slug_safe)])
-
 
     def wakat_url(self):
         """
