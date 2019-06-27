@@ -26,6 +26,9 @@ class VotingView(LoginMixin):
     view_name = 'sources'
     model = models.VotingRound
 
+    def get_queryset(self):
+        return super().get_queryset().exclude(source__active=False)
+
 
 class Create(VotingView, DetailView, MessageView):
     model = Source
