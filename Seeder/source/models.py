@@ -191,6 +191,17 @@ class SourceManager(models.Manager):
         else:
             return self.get_queryset().exclude(pk__in=pks)
 
+    def contains_contract_number(self, value):
+        try:
+            contract_number, year = [int(s.strip()) for s in value.split('/')]
+            with_contract = self.get_queryset().exclude(contract=None)
+            pks = [s.pk for s in with_contract
+                if s.contract_set.valid().filter(
+                    contract_number=contract_number, year=year).count() > 0]
+            return self.get_queryset().filter(pk__in=pks)
+        except Exception:
+            return self.get_queryset().none()
+
 
 class KeyWord(SlugOrCreateModel, models.Model):
     """

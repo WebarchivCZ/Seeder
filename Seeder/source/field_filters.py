@@ -23,6 +23,9 @@ def filter_not_empty(queryset, name, value):
 def filter_has_cc(queryset, name, value):
     return models.Source.objects.has_cc(value)
 
+def filter_contract_number(queryset, name, value):
+    # value in format e.g. '64 / 2017'
+    return models.Source.objects.contains_contract_number(value)
 
 class SourceFilter(BaseFilterSet):
     publisher = django_filters.ModelChoiceFilter(
@@ -51,6 +54,8 @@ class SourceFilter(BaseFilterSet):
                                             method=filter_not_empty)
     has_cc = django_filters.BooleanFilter(label=_('Source has CC'),
                                           method=filter_has_cc)
+    contract_number = django_filters.CharFilter(label=_('Contract number'),
+                                                method=filter_contract_number)
 
     created = DateRangeFilter()
     last_changed = DateRangeFilter()
@@ -70,4 +75,6 @@ class SourceFilter(BaseFilterSet):
             'last_changed': ('exact',),
             'has_alephid': ('exact',),
             'has_issn': ('exact',),
+            'has_cc': ('exact',),
+            'contract_number': ('exact',),
         }
