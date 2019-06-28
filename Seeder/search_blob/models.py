@@ -107,6 +107,14 @@ class SearchModel:
                     "blob": blob_all
                 }
             )
+        # When the model is not public anymore, delete the public search blobs
+        else:
+            Blob.objects.filter(
+                record_type=ContentType.objects.get_for_model(self),
+                record_id=self.id,
+                is_public=True,
+            ).delete()
+
 
 
 def update_search(instance, **kwargs):
