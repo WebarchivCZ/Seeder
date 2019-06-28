@@ -5,7 +5,7 @@ from django.contrib.contenttypes.models import ContentType
 
 class TransferRecord(models.Model):
     original_type = models.ForeignKey(
-            ContentType, related_name='transfer', on_delete=models.DO_NOTHING)
+        ContentType, related_name='transfer', on_delete=models.DO_NOTHING)
     original_id = models.PositiveIntegerField()
     original_object = GenericForeignKey('original_type', 'original_id')
 
@@ -54,7 +54,7 @@ class Publishers(models.Model):
 
 
 class Contacts(models.Model):
-    publisher = models.ForeignKey(Publishers)
+    publisher = models.ForeignKey(Publishers, on_delete=models.CASCADE)
     name = models.CharField(max_length=150, blank=True, null=True)
     email = models.CharField(max_length=150)
     phone = models.CharField(max_length=20, blank=True, null=True)
@@ -89,7 +89,7 @@ class ConspectusEn(models.Model):
 
 
 class ConspectusSubcategories(models.Model):
-    conspectus = models.ForeignKey(Conspectus)
+    conspectus = models.ForeignKey(Conspectus, on_delete=models.CASCADE)
     subcategory_id = models.CharField(max_length=40, blank=True, null=True)
     subcategory = models.CharField(max_length=255)
     comments = models.TextField(blank=True, null=True)
@@ -100,7 +100,7 @@ class ConspectusSubcategories(models.Model):
 
 
 class ConspectusSubcategoriesEn(models.Model):
-    conspectus = models.ForeignKey(Conspectus)
+    conspectus = models.ForeignKey(Conspectus, on_delete=models.CASCADE)
     subcategory_id = models.CharField(max_length=40, blank=True, null=True)
     subcategory = models.CharField(max_length=255)
     comments = models.TextField(blank=True, null=True)
@@ -115,18 +115,24 @@ class Resources(models.Model):
     title = models.CharField(max_length=200, blank=True, null=True)
     url = models.CharField(max_length=255, blank=True, null=True)
     curator = models.ForeignKey(Curators, blank=True, null=True,
-                                related_name='sources_curating')
+                                related_name='sources_curating',
+                                on_delete=models.SET_NULL)
 
     creator = models.ForeignKey(Curators, blank=True, null=True,
-                                related_name='created_sources')
-    contact = models.ForeignKey(Contacts, blank=True, null=True)
-    publisher = models.ForeignKey(Publishers, blank=True, null=True)
+                                related_name='created_sources',
+                                on_delete=models.SET_NULL)
+    contact = models.ForeignKey(Contacts, blank=True, null=True,
+                                on_delete=models.SET_NULL)
+    publisher = models.ForeignKey(Publishers, blank=True, null=True,
+                                  on_delete=models.SET_NULL)
 
     contract_id = models.IntegerField(blank=True, null=True)
 
-    conspectus = models.ForeignKey(Conspectus, blank=True, null=True)
+    conspectus = models.ForeignKey(Conspectus, blank=True, null=True,
+                                   on_delete=models.SET_NULL)
     conspectus_subcategory = models.ForeignKey(ConspectusSubcategories,
-                                               blank=True, null=True)
+                                               blank=True, null=True,
+                                               on_delete=models.SET_NULL)
 
     crawl_freq_id = models.IntegerField(blank=True, null=True)
     resource_status_id = models.IntegerField(blank=True, null=True)
@@ -156,12 +162,13 @@ class Resources(models.Model):
 
 
 class RatingRounds(models.Model):
-    resource = models.ForeignKey('Resources')
+    resource = models.ForeignKey('Resources', on_delete=models.CASCADE)
     round = models.IntegerField()
     rating_result = models.IntegerField(blank=True, null=True)
     date_created = models.DateTimeField()
     date_closed = models.DateTimeField(blank=True, null=True)
-    curator = models.ForeignKey(Curators, blank=True, null=True)
+    curator = models.ForeignKey(Curators, blank=True, null=True,
+                                on_delete=models.SET_NULL)
 
     class Meta:
         managed = False
@@ -169,12 +176,15 @@ class RatingRounds(models.Model):
 
 
 class Ratings(models.Model):
-    curator = models.ForeignKey(Curators, blank=True, null=True)
-    resource = models.ForeignKey(Resources, blank=True, null=True)
+    curator = models.ForeignKey(Curators, blank=True, null=True,
+                                on_delete=models.SET_NULL)
+    resource = models.ForeignKey(Resources, blank=True, null=True,
+                                 on_delete=models.SET_NULL)
     rating = models.SmallIntegerField()
     tech_problems = models.IntegerField()
     date = models.DateTimeField()
-    round = models.ForeignKey(RatingRounds, blank=True, null=True)
+    round = models.ForeignKey(RatingRounds, blank=True, null=True,
+                              on_delete=models.SET_NULL)
     comments = models.TextField(blank=True, null=True)
 
     class Meta:
@@ -183,7 +193,8 @@ class Ratings(models.Model):
 
 
 class Seeds(models.Model):
-    resource = models.ForeignKey(Resources, blank=True, null=True)
+    resource = models.ForeignKey(Resources, blank=True, null=True,
+                                 on_delete=models.SET_NULL)
     url = models.CharField(max_length=255)
     seed_status_id = models.IntegerField(blank=True, null=True)
     redirect = models.NullBooleanField(blank=True, null=True)
@@ -198,7 +209,8 @@ class Seeds(models.Model):
 
 
 class Contracts(models.Model):
-    parent = models.ForeignKey('self', blank=True, null=True)
+    parent = models.ForeignKey('self', blank=True, null=True,
+                               on_delete=models.SET_NULL)
     contract_no = models.IntegerField()
     active = models.IntegerField(blank=True, null=True)
     date_signed = models.DateField(blank=True, null=True)
@@ -216,8 +228,8 @@ class Contracts(models.Model):
 
 
 class QaChecks(models.Model):
-    resource = models.ForeignKey('Resources')
-    curator = models.ForeignKey(Curators)
+    resource = models.ForeignKey('Resources', on_delete=models.CASCADE)
+    curator = models.ForeignKey(Curators, null=True, on_delete=models.SET_NULL)
     date_checked = models.DateTimeField()
     date_crawled = models.DateField(blank=True, null=True)
     result = models.SmallIntegerField(blank=True, null=True)
@@ -235,8 +247,8 @@ class QaChecks(models.Model):
 
 
 class QaChecksQaProblems(models.Model):
-    qa_check = models.ForeignKey(QaChecks)
-    qa_problem = models.ForeignKey('QaProblems')
+    qa_check = models.ForeignKey(QaChecks, on_delete=models.CASCADE)
+    qa_problem = models.ForeignKey('QaProblems', on_delete=models.CASCADE)
     url = models.CharField(max_length=255, blank=True, null=True)
     comments = models.TextField(blank=True, null=True)
 
@@ -258,7 +270,7 @@ class QaProblems(models.Model):
 
 class Subcontracts(models.Model):
     id = models.IntegerField(primary_key=True)
-    parent = models.ForeignKey(Contracts)
+    parent = models.ForeignKey(Contracts, on_delete=models.CASCADE)
     date_signed = models.DateTimeField()
     blanco = models.IntegerField(blank=True, null=True)
     addendum = models.IntegerField(blank=True, null=True)
@@ -281,7 +293,7 @@ class Keywords(models.Model):
 
 class KeywordsResources(models.Model):
     resource_id = models.IntegerField()
-    keyword = models.ForeignKey(Keywords)
+    keyword = models.ForeignKey(Keywords, on_delete=models.CASCADE)
 
     class Meta:
         managed = False

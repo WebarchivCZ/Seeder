@@ -1,14 +1,15 @@
 from . import models
 
-from core.custom_filters import EmptyFilter
+from core.custom_filters import BaseFilterSet
 
 
-class QAFilter(EmptyFilter):
+class QAFilter(BaseFilterSet):
     class Meta:
         model = models.QualityAssuranceCheck
-        fields = [
-            'checked_by',
-            'content_changed',
-            'technical_quality_changed',
-            'source_action',
-        ]
+        fields = {
+            'source__name': ('icontains',),
+            'checked_by': ('exact',),
+            'content_changed': ('exact',),
+            'technical_quality_changed': ('exact',),
+            'source_action': ('exact',),
+        }

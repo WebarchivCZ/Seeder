@@ -78,4 +78,4 @@ class NaturalDatetimeColumn(Column):
 
 
 def show_toolbar(request):
-    return not request.is_ajax() and not request.user.is_anonymous()
+    return not request.is_ajax() and not request.user.is_anonymous

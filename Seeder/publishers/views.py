@@ -1,9 +1,7 @@
-
 from django.views.generic import DetailView, FormView
 from django.utils.translation import ugettext_lazy as _
 from django.http.response import HttpResponseRedirect
 
-from urljects import U, URLView, pk
 from dal import autocomplete
 
 from core import generic_views
@@ -16,59 +14,43 @@ class PublisherView(generic_views.LoginMixin):
     model = models.Publisher
 
 
-class AddPublisher(PublisherView, FormView, URLView):
+class AddPublisher(PublisherView, FormView):
     form_class = forms.PublisherForm
     template_name = 'add_form.html'
     title = _('Add publisher')
-
-    url = U / 'add'
-    url_name = 'add'
 
     def form_valid(self, form):
         publisher, contact = form.save()
         return HttpResponseRedirect(publisher.get_absolute_url())
 
 
-class Detail(PublisherView, DetailView, CommentViewGeneric, URLView):
+class Detail(PublisherView, DetailView, CommentViewGeneric):
     template_name = 'publisher.html'
 
-    url = U / pk / 'detail'
-    url_name = 'detail'
 
-
-class Edit(PublisherView, generic_views.EditView, URLView):
+class Edit(PublisherView, generic_views.EditView):
     form_class = forms.PublisherEditForm
 
-    url = U / pk / 'edit'
-    url_name = 'edit'
 
-
-class History(PublisherView, generic_views.HistoryView, URLView):
+class History(PublisherView, generic_views.HistoryView):
     """
         History of changes to publishers
     """
-
-    url = U / pk / 'history'
-    url_name = 'history'
+    pass
 
 
-class ListView(PublisherView, generic_views.FilteredListView, URLView):
+class ListView(PublisherView, generic_views.FilteredListView):
     title = _('Publishers')
     table_class = tables.PublisherTable
-    filter_class = field_filters.PublisherFilter
+    filterset_class = field_filters.PublisherFilter
 
-    url = U
-    url_name = 'list'
     add_link = 'publishers:add'
 
 
-class EditContacts(PublisherView, FormView, generic_views.ObjectMixinFixed, URLView):  # noqa
+class EditContacts(PublisherView, FormView, generic_views.ObjectMixinFixed):  # noqa
     form_class = forms.ContactFormset
     template_name = 'formset_verbose.html'
     title = _('Edit contacts')
-
-    url = U / pk / 'contacts'
-    url_name = 'edit_contacts'
 
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
@@ -86,12 +68,10 @@ class EditContacts(PublisherView, FormView, generic_views.ObjectMixinFixed, URLV
         return HttpResponseRedirect(self.object.get_absolute_url())
 
 
-class PublisherAutocomplete(autocomplete.Select2QuerySetView, URLView):
-    url_name = 'autocomplete'
-    url = U / 'autocomplete'
+class PublisherAutocomplete(autocomplete.Select2QuerySetView):
 
     def get_queryset(self):
-        if not self.request.user.is_authenticated():
+        if not self.request.user.is_authenticated:
             return models.Publisher.objects.none()
         qs = models.Publisher.objects.all()
         if self.q:
@@ -99,12 +79,10 @@ class PublisherAutocomplete(autocomplete.Select2QuerySetView, URLView):
         return qs
 
 
-class PublisherContactAutocomplete(autocomplete.Select2QuerySetView, URLView):
-    url_name = 'contact_autocomplete'
-    url = U / 'contact_autocomplete'
+class PublisherContactAutocomplete(autocomplete.Select2QuerySetView):
 
     def get_queryset(self):
-        if not self.request.user.is_authenticated():
+        if not self.request.user.is_authenticated:
             return models.ContactPerson.objects.none()
         qs = models.ContactPerson.objects.all()
         publisher = self.forwarded.get('publisher', None)

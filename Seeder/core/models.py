@@ -1,7 +1,10 @@
 from django.db import models
+from django.dispatch import receiver
+from django.db.models.signals import post_save, post_delete
 from django.utils import timezone
 
 from core import widgets
+from core.managers import OrderedManager
 
 
 class DatePickerField(models.DateField):
@@ -22,3 +25,22 @@ class BaseModel(models.Model):
     class Meta:
         abstract = True
         ordering = ('-last_changed', )
+
+
+class OrderedModel(models.Model):
+    order = models.IntegerField(default=1)
+
+    objects = OrderedManager()
+
+    class Meta:
+        abstract = True
+        ordering = ('order',)
+
+
+@receiver(post_save, sender=OrderedModel)
+@receiver(post_delete, sender=OrderedModel)
+def reorder_by_order(sender, instance, **kwargs):
+    """
+    Re-orders objects 'by order': normalizes the order
+    """
+    instance.model.objects.reorder_by('order')

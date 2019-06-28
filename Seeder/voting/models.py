@@ -3,7 +3,7 @@ from . import constants
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import User
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 
 from reversion import revisions
 
@@ -18,7 +18,8 @@ class VotingRound(BaseModel):
         Voting round about source.
     """
     source = models.ForeignKey(Source, on_delete=models.DO_NOTHING)
-    resolved_by = models.ForeignKey(User, blank=True, null=True)
+    resolved_by = models.ForeignKey(User, blank=True, null=True,
+                                    on_delete=models.SET_NULL)
     date_resolved = models.DateTimeField(blank=True, null=True)
     postponed_until = DatePickerField(blank=True, null=True)
 
@@ -82,7 +83,6 @@ class VotingRound(BaseModel):
     def can_manage(self, user):
         manager = user.has_perm('sources.manage_sources')
         return manager or self.source.owner == user
-
 
 
 @revisions.register(exclude=('last_changed',))

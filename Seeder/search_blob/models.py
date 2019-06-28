@@ -2,7 +2,6 @@ from django.db import models
 from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.core.paginator import EmptyPage, PageNotAnInteger
-from django.contrib.contenttypes.models import ContentType
 from django.db.models import Q
 
 from paginator.paginator import CustomPaginator
@@ -17,9 +16,9 @@ class Blob(models.Model):
     is_public = models.BooleanField(default=False)
 
     record_type = models.ForeignKey(
-        ContentType, 
-        related_name='search_blob', 
-        # on_delete=models.DELETE
+        ContentType,
+        related_name='search_blob',
+        on_delete=models.CASCADE
     )
     record_id = models.PositiveIntegerField()
     record_object = GenericForeignKey('record_type', 'record_id')
@@ -83,7 +82,6 @@ class SearchModel:
                 record_id=self.id,
             ).delete()
             return
-
 
         Blob.objects.update_or_create(
             record_type=ContentType.objects.get_for_model(self),

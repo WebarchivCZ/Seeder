@@ -29,7 +29,7 @@ class TopicCollectionTable(tables.Table):
 
     class Meta:
         model = models.TopicCollection
-        fields = ('title', 'status')
+        fields = ('order', 'title', 'status')
 
         attrs = {
             'class': 'table table-striped table-hover'
