@@ -178,7 +178,7 @@ class WithoutAleph(SourceCard):
 
     def get_queryset(self):
         return self.get_basic_queryset().filter(
-            state__in=source_models.constants.ARCHIVING_STATES,
+            state=source_models.constants.STATE_RUNNING,
             aleph_id__exact=''
         )
 
