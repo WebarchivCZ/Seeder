@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Seeder\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-06-28 09:44+0000\n"
+"POT-Creation-Date: 2019-06-30 10:23+0000\n"
 "PO-Revision-Date: 2018-04-16 13:40+0200\n"
 "Last-Translator: mariehaskovcova <marie.haskovcova@nkp.cz>, 2017\n"
 "Language-Team: Czech (https://www.transifex.com/webarchivecz/teams/43032/"
@@ -54,8 +54,8 @@ msgstr "Přidat"
 #: contracts/templates/contract.html:108 harvests/templates/harvest.html:7
 #: harvests/templates/topic_collection.html:118
 #: publishers/templates/publisher.html:36 source/templates/edit_source.html:7
-#: source/templates/edit_source.html:11 source/templates/source.html:139
-#: source/templates/source.html:148 templates/edit_form.html:6
+#: source/templates/edit_source.html:11 source/templates/source.html:153
+#: source/templates/source.html:162 templates/edit_form.html:6
 #: templates/edit_form.html:10 www/templates/news_admin_detail.html:84
 msgid "Edit"
 msgstr "Upravit"
@@ -63,7 +63,7 @@ msgstr "Upravit"
 #: blacklists/templates/blacklists.html:14
 #: contracts/templates/contract.html:107
 #: harvests/templates/topic_collection.html:119
-#: publishers/templates/publisher.html:35 source/templates/source.html:150
+#: publishers/templates/publisher.html:35 source/templates/source.html:164
 #: www/templates/news_admin_detail.html:86
 msgid "History"
 msgstr "Historie"
@@ -139,7 +139,7 @@ msgid "This comment has been removed"
 msgstr "Komentář byl odstraněn"
 
 #: comments/models.py:168 qa/models.py:40 qa/templates/detail.html:15
-#: source/models.py:254 source/models.py:468 source/templates/source.html:79
+#: source/models.py:255 source/models.py:502 source/templates/source.html:83
 #: templates/history.html:15
 msgid "Comment"
 msgstr "Komentář"
@@ -148,7 +148,7 @@ msgstr "Komentář"
 #: harvests/templates/harvest.html:52
 #: harvests/templates/topic_collection.html:128
 #: publishers/templates/publisher.html:39 qa/templates/detail.html:22
-#: source/templates/source.html:182 voting/templates/voting_round.html:118
+#: source/templates/source.html:196 voting/templates/voting_round.html:118
 #: www/templates/news_admin_detail.html:90
 msgid "Comments"
 msgstr "Komentáře"
@@ -202,7 +202,7 @@ msgid "Narodni knihovna CR - archivace Vasich webovych stranek"
 msgstr "Narodni knihovna CR - archivace Vasich webovych stranek"
 
 #: contracts/models.py:46 contracts/templates/contract.html:20
-#: harvests/models.py:155 harvests/models.py:352 source/models.py:268
+#: harvests/models.py:155 harvests/models.py:352 source/models.py:269
 #: voting/models.py:27
 msgid "State"
 msgstr "Stav"
@@ -293,13 +293,13 @@ msgstr "Číslo"
 msgid "Creative commons"
 msgstr "Creative Commons"
 
-#: contracts/templates/contract.html:32
+#: contracts/templates/contract.html:32 source/templates/source.html:139
 msgid "No"
 msgstr "Ne"
 
 #: contracts/templates/contract.html:36 publishers/models.py:30
-#: source/constants.py:124 source/models.py:243 source/tables.py:11
-#: source/templates/duplicity_check.html:20 source/templates/source.html:68
+#: source/constants.py:124 source/models.py:244 source/tables.py:11
+#: source/templates/duplicity_check.html:20 source/templates/source.html:72
 msgid "Publisher"
 msgstr "Vydavatel"
 
@@ -337,7 +337,7 @@ msgstr "Přiřazené zdroje"
 
 #: contracts/templates/contract.html:106
 #: harvests/templates/topic_collection.html:117
-#: publishers/templates/publisher.html:34 source/templates/source.html:147
+#: publishers/templates/publisher.html:34 source/templates/source.html:161
 #: www/templates/news_admin_detail.html:83
 msgid "Links"
 msgstr "Odkazy"
@@ -346,12 +346,12 @@ msgstr "Odkazy"
 msgid "Delete"
 msgstr "Smazat"
 
-#: contracts/templates/contract.html:124 source/templates/source.html:192
+#: contracts/templates/contract.html:124 source/templates/source.html:206
 msgid "Proceed with deletion?"
 msgstr "Pokračovat se smazáním?"
 
 #: contracts/templates/contract.html:133 harvests/templates/calendar.html:48
-#: source/templates/source.html:203
+#: source/templates/source.html:217
 msgid "Close"
 msgstr "Zavřít"
 
@@ -406,7 +406,7 @@ msgstr "Přiřadit smlouvu"
 msgid "Contract number assigned."
 msgstr "Smlouvě bylo přiřazeno číslo."
 
-#: contracts/views.py:106 source/templates/source.html:171
+#: contracts/views.py:106 source/templates/source.html:185
 #: templates/base.html:94
 msgid "Contracts"
 msgstr "Smlouvy"
@@ -542,7 +542,7 @@ msgid "title"
 msgstr "Název"
 
 #: harvests/models.py:164 harvests/templates/harvest.html:13
-#: source/models.py:255 source/templates/source.html:83
+#: source/models.py:256 source/templates/source.html:87
 msgid "Annotation"
 msgstr "Anotace"
 
@@ -578,11 +578,11 @@ msgstr "Aktualita"
 msgid "Finished"
 msgstr "Hotovo"
 
-#: harvests/models.py:360 source/constants.py:127 source/models.py:239
+#: harvests/models.py:360 source/constants.py:127 source/models.py:240
 msgid "Curator"
 msgstr "Kurátor"
 
-#: harvests/models.py:364 source/templates/source.html:87
+#: harvests/models.py:364 source/templates/source.html:91
 msgid "keywords"
 msgstr "Klíčová slova"
 
@@ -746,17 +746,17 @@ msgstr "Sklízeno od"
 msgid "Harvested till"
 msgstr "Sklízeno do"
 
-#: harvests/templates/topic_collection.html:60 source/models.py:289
+#: harvests/templates/topic_collection.html:60 source/models.py:290
 #: source/templates/source.html:32
 msgid "Screenshot"
 msgstr "Screenshot"
 
-#: harvests/templates/topic_collection.html:72 source/templates/source.html:60
+#: harvests/templates/topic_collection.html:72 source/templates/source.html:64
 #: www/templates/news_admin_detail.html:76
 msgid "Created at"
 msgstr "Vytvořeno"
 
-#: harvests/templates/topic_collection.html:76 source/templates/source.html:48
+#: harvests/templates/topic_collection.html:76 source/templates/source.html:52
 msgid "Owner"
 msgstr "Kurátor"
 
@@ -772,12 +772,12 @@ msgstr "Přílohy"
 msgid "All sources are open?"
 msgstr "Všechny zdroje jsou otevřené?"
 
-#: harvests/templates/topic_collection.html:98 source/templates/source.html:126
+#: harvests/templates/topic_collection.html:98 source/templates/source.html:130
 msgid "WWW link"
 msgstr "Link na web"
 
 #: harvests/templates/topic_collection.html:106 qa/templates/qa_form.html:20
-#: source/models.py:498 source/templates/source.html:134
+#: source/models.py:532 source/templates/source.html:148
 msgid "Seeds"
 msgstr "Semínka"
 
@@ -843,7 +843,7 @@ msgid "Position"
 msgstr "Pozice"
 
 #: publishers/forms.py:57 publishers/models.py:24 publishers/models.py:57
-#: publishers/tables.py:9 source/models.py:253 source/tables.py:9
+#: publishers/tables.py:9 source/models.py:254 source/tables.py:9
 #: www/models.py:79
 msgid "Name"
 msgstr "Jméno"
@@ -876,7 +876,7 @@ msgstr "Telefon"
 msgid "Address"
 msgstr "Adresa"
 
-#: publishers/models.py:65 source/templates/source.html:72
+#: publishers/models.py:65 source/templates/source.html:76
 msgid "Publisher contact"
 msgstr "Kontakt na vydavatele"
 
@@ -892,7 +892,7 @@ msgstr "Kontakty:"
 msgid "Edit contacts"
 msgstr "Editovat kontakty"
 
-#: publishers/templates/publisher.html:24 source/models.py:306
+#: publishers/templates/publisher.html:24 source/models.py:307
 #: source/views.py:228 templates/base.html:85
 msgid "Sources"
 msgstr "Zdroje"
@@ -901,7 +901,7 @@ msgstr "Zdroje"
 msgid "Add publisher"
 msgstr "Přidat vydavatele"
 
-#: qa/models.py:18 qa/templates/detail.html:11 source/models.py:305
+#: qa/models.py:18 qa/templates/detail.html:11 source/models.py:306
 msgid "Source"
 msgstr "Zdroj"
 
@@ -1057,7 +1057,7 @@ msgstr "Ukončeno vydávání"
 msgid "Visitor"
 msgstr "Návstěvník"
 
-#: source/constants.py:126 source/templates/source.html:106
+#: source/constants.py:126 source/templates/source.html:110
 msgid "ISSN"
 msgstr "ISSN"
 
@@ -1091,79 +1091,79 @@ msgstr "Hlavní URL"
 msgid "Check if this is really unique source."
 msgstr "Zaškrtněte, pokud jde skutečně o nový zdroj."
 
-#: source/models.py:258 source/templates/source.html:64
+#: source/models.py:259 source/templates/source.html:68
 msgid "Suggested by"
 msgstr "Navrženo"
 
-#: source/models.py:274 source/templates/source.html:52 templates/api.html:18
+#: source/models.py:275 source/templates/source.html:56 templates/api.html:18
 msgid "Frequency"
 msgstr "Frekvence"
 
-#: source/models.py:279 source/templates/source.html:94
+#: source/models.py:280 source/templates/source.html:98
 msgid "Category"
 msgstr "Kategorie"
 
-#: source/models.py:284 source/templates/source.html:98
+#: source/models.py:285 source/templates/source.html:102
 msgid "Sub category"
 msgstr "Podkategorie"
 
-#: source/models.py:296
+#: source/models.py:297
 msgid "Source is dead"
 msgstr "Mrtvý web"
 
-#: source/models.py:450
+#: source/models.py:484
 msgid "default"
 msgstr "výchozí"
 
-#: source/models.py:451
+#: source/models.py:485
 msgid "low"
 msgstr "low"
 
-#: source/models.py:452
+#: source/models.py:486
 msgid "very_low"
 msgstr "very low"
 
-#: source/models.py:463
+#: source/models.py:497
 msgid "Seed url"
 msgstr "URL semínko"
 
-#: source/models.py:469
+#: source/models.py:503
 msgid "From"
 msgstr "Z"
 
-#: source/models.py:470
+#: source/models.py:504
 msgid "To"
 msgstr "Do"
 
-#: source/models.py:473
+#: source/models.py:507
 msgid "Javascript"
 msgstr "Javascript"
 
-#: source/models.py:474
+#: source/models.py:508
 msgid "Global reject"
 msgstr "Odmítnuto"
 
-#: source/models.py:475
+#: source/models.py:509
 msgid "Youtube"
 msgstr "Youtube"
 
-#: source/models.py:476
+#: source/models.py:510
 msgid "Calendars"
 msgstr "Kalendáře"
 
-#: source/models.py:477
+#: source/models.py:511
 msgid "Local traps"
 msgstr "Local traps"
 
-#: source/models.py:478
+#: source/models.py:512
 msgid "Redirect on seed"
 msgstr "Přesměrováno na semínko"
 
-#: source/models.py:479
+#: source/models.py:513
 msgid "Robots.txt active"
 msgstr "aktivní Robots.txt"
 
-#: source/models.py:497
+#: source/models.py:531
 msgid "Seed"
 msgstr "Semínko"
 
@@ -1179,67 +1179,73 @@ msgstr "Možné duplicity"
 msgid "Sorry, we could not find any duplicities"
 msgstr "Duplicity nenalezeny"
 
-#: source/templates/source.html:44
+#: source/templates/source.html:41
+msgid ""
+"There is a screenshot associated with this source but the file does not "
+"exist."
+msgstr "K tomuto zdroji je přiřazen screenshot, ale jeho soubor neexistuje"
+
+#: source/templates/source.html:48
 msgid "Dead"
 msgstr "Mrtvý"
 
-#: source/templates/source.html:56
+#: source/templates/source.html:60
 msgid "Created by"
 msgstr "Vytvořil"
 
-#: source/templates/source.html:102
+#: source/templates/source.html:106
 msgid "Aleph id"
 msgstr "Aleph id"
 
-#: source/templates/source.html:110
+#: source/templates/source.html:114
 msgid "QA checks"
 msgstr "Provedení kontroly kvality"
 
-#: source/templates/source.html:120
+#: source/templates/source.html:124
 msgid "WA-admin link"
 msgstr "WA Admin link"
 
-#: source/templates/source.html:121
+#: source/templates/source.html:125
 msgid "Legacy url"
 msgstr "Stará URL"
 
-#: source/templates/source.html:143
+#: source/templates/source.html:157
 msgid "Add seeds"
 msgstr "Přidat semínka"
 
-#: source/templates/source.html:149
+#: source/templates/source.html:163
 msgid "WA-KAT"
 msgstr "WA-KAT"
 
-#: source/templates/source.html:151
+#: source/templates/source.html:165
 msgid "QA check"
 msgstr "Provedení kontroly kvality"
 
-#: source/templates/source.html:156 source/templates/source.html:199
+#: source/templates/source.html:170 source/templates/source.html:213
 msgid "Deactivate"
 msgstr "Deaktivovat"
 
-#: source/templates/source.html:161
+#: source/templates/source.html:175
 msgid "Voting rounds"
 msgstr "Hodnocení"
 
-#: source/templates/source.html:164
+#: source/templates/source.html:178
 msgid "Create voting round"
 msgstr "Vytvoření hodnocení"
 
-#: source/templates/source.html:175
+#: source/templates/source.html:189
 msgid "Sorry no contracts yet."
 msgstr "Zatím bez smlouvy."
 
-#: source/templates/source.html:177
+#: source/templates/source.html:191
 msgid "Create"
 msgstr "Vytvořit"
 
-#: source/templates/source.html:178
+#: source/templates/source.html:192
 msgid "Assign"
 msgstr "Přiřadit"
 
-#: source/templates/source.html:195
+#: source/templates/source.html:209
 msgid "If you proceed it will be very hard to reactivate this source."
 msgstr "Pokud budete pokračovat, bude velmi těžké zdroj znovu aktivovat."
 

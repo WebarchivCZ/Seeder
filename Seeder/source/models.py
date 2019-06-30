@@ -408,6 +408,14 @@ class Source(SearchModel, SlugOrCreateModel, BaseModel):
         """
         return
 
+    @property
+    def screenshot_file_exists(self):
+        try:
+            self.screenshot.file
+        except Exception:
+            return False
+        return True
+
     def css_class(self):
         """
             Get css class based on status
