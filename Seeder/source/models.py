@@ -388,9 +388,9 @@ class Source(SearchModel, SlugOrCreateModel, BaseModel):
         """
         url = self.url
         if url.startswith("http://"):
-            return url.lstrip("http://")
+            return url[7:]
         elif url.startswith("https://"):
-            return url.lstrip("https://")
+            return url[8:]
         return url
 
     def get_legacy_url(self):
