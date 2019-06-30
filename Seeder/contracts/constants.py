@@ -41,3 +41,161 @@ OPEN_SOURCES_TYPES = (
 )
 
 EMAILS_TITLE = _('Narodni knihovna CR - archivace Vasich webovych stranek')
+
+
+CREATIVE_COMMONS_TYPES = (
+    {
+        "type": "CC BY 4.0",
+        "description": "Attribution 4.0 International (CC BY 4.0)",
+        "url": "https://creativecommons.org/licenses/by/4.0/",
+    },
+    {
+        "type": "CC BY-SA 4.0",
+        "description": "Attribution-ShareAlike 4.0 International (CC BY-SA 4.0)",
+        "url": "https://creativecommons.org/licenses/by-sa/4.0/",
+    },
+    {
+        "type": "CC BY-ND 4.0",
+        "description": "Attribution-NoDerivatives 4.0 International (CC BY-ND 4.0)",
+        "url": "https://creativecommons.org/licenses/by-nd/4.0/",
+    },
+    {
+        "type": "CC BY-NC 4.0",
+        "description": "Attribution-NonCommercial 4.0 International (CC BY-NC 4.0)",
+        "url": "https://creativecommons.org/licenses/by-nc/4.0/",
+    },
+    {
+        "type": "CC BY-NC-SA 4.0",
+        "description": "Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)",
+        "url": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+    },
+    {
+        "type": "CC BY-NC-ND 4.0",
+        "description": "Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0)",
+        "url": "https://creativecommons.org/licenses/by-nc-nd/4.0/",
+    },
+    {
+        "type": "CC BY 3.0 CZ",
+        "description": "Uveďte původ 3.0 Česká republika (CC BY 3.0 CZ)",
+        "url": "https://creativecommons.org/licenses/by/3.0/cz/",
+    },
+    {
+        "type": "CC BY-NC 3.0 CZ",
+        "description": "Uveďte původ-Neužívejte komerčně 3.0 Česká republika (CC BY-NC 3.0 CZ)",
+        "url": "https://creativecommons.org/licenses/by-nc/3.0/cz/",
+    },
+    {
+        "type": "CC BY-SA 3.0 CZ",
+        "description": "Uveďte původ-Zachovejte licenci 3.0 Česká republika (CC BY-SA 3.0 CZ)",
+        "url": "https://creativecommons.org/licenses/by-sa/3.0/cz/",
+    },
+    {
+        "type": "CC BY-ND 3.0 CZ",
+        "description": "Uveďte původ-Nezpracovávejte 3.0 Česká republika (CC BY-ND 3.0 CZ)",
+        "url": "https://creativecommons.org/licenses/by-nd/3.0/cz/",
+    },
+    {
+        "type": "CC BY-NC-SA 3.0 CZ",
+        "description": "Uveďte původ-Neužívejte dílo komerčně-Zachovejte licenci 3.0 Česká republika (CC BY-NC-SA 3.0 CZ)",
+        "url": "https://creativecommons.org/licenses/by-nc-sa/3.0/cz/",
+    },
+    {
+        "type": "CC BY-NC-ND 3.0 CZ",
+        "description": "Uveďte původ-Neužívejte komerčně-Nezpracovávejte 3.0 Česká republika (CC BY-NC-ND 3.0 CZ)",
+        "url": "https://creativecommons.org/licenses/by-nc-nd/3.0/cz/",
+    },
+    {
+        "type": "CC BY 3.0",
+        "description": "Attribution 3.0 Unported (CC BY 3.0)",
+        "url": "https://creativecommons.org/licenses/by/3.0/",
+    },
+    {
+        "type": "CC BY-NC 3.0",
+        "description": "Attribution-NonCommercial 3.0 Unported (CC BY-NC 3.0)",
+        "url": "https://creativecommons.org/licenses/by-nc/3.0/",
+    },
+    {
+        "type": "CC BY-SA 3.0",
+        "description": "Attribution-ShareAlike 3.0 Unported (CC BY-SA 3.0)",
+        "url": "https://creativecommons.org/licenses/by-sa/3.0/",
+    },
+    {
+        "type": "CC BY-ND 3.0",
+        "description": "Attribution-NoDerivs 3.0 Unported (CC BY-ND 3.0)",
+        "url": "https://creativecommons.org/licenses/by-nd/3.0/",
+    },
+    {
+        "type": "CC BY-NC-SA 3.0",
+        "description": "Attribution-NonCommercial-ShareAlike 3.0 Unported (CC BY-NC-SA 3.0)",
+        "url": "https://creativecommons.org/licenses/by-nc-sa/3.0/",
+    },
+    {
+        "type": "CC BY-NC-ND 3.0",
+        "description": "Attribution-NonCommercial-NoDerivs 3.0 Unported (CC BY-NC-ND 3.0)",
+        "url": "https://creativecommons.org/licenses/by-nc-nd/3.0/",
+    },
+    {
+        "type": "CC BY 2.0",
+        "description": "Uveďte původ 2.0 Generic (CC BY 2.0)",
+        "url": "https://creativecommons.org/licenses/by/2.0/deed.cs",
+    },
+    {
+        "type": "CC BY-NC 2.0",
+        "description": "Uveďte původ-Neužívejte komerčně 2.0 Generic (CC BY-NC 2.0)",
+        "url": "https://creativecommons.org/licenses/by-nc/2.0/deed.cs",
+    },
+    {
+        "type": "CC BY-SA 2.0",
+        "description": "Uveďte původ-Zachovejte licenci 2.0 Generic (CC BY-SA 2.0)",
+        "url": "https://creativecommons.org/licenses/by-sa/2.0/deed.cs",
+    },
+    {
+        "type": "CC BY-ND 2.0",
+        "description": "Uveďte původ-Nezpracovávejte 2.0 Generic (CC BY-ND 2.0)",
+        "url": "https://creativecommons.org/licenses/by-nd/2.0/deed.cs",
+    },
+    {
+        "type": "CC BY-NC-SA 2.0",
+        "description": "Uveďte původ-Neužívejte dílo komerčně-Zachovejte licenci 2.0 Generic (CC BY-NC-SA 2.0)",
+        "url": "https://creativecommons.org/licenses/by-nc-sa/2.0/deed.cs",
+    },
+    {
+        "type": "CC BY-NC-ND 2.0",
+        "description": "Uveďte původ-Neužívejte komerčně-Nezpracovávejte 2.0 Generic (CC BY-NC-ND 2.0)",
+        "url": "https://creativecommons.org/licenses/by-nc-nd/2.0/deed.cs",
+    },
+    {
+        "type": "CC BY 1.0",
+        "description": "Uveďte původ 1.0 Generic (CC BY 1.0)",
+        "url": "https://creativecommons.org/licenses/by/1.0/deed.cs",
+    },
+    {
+        "type": "CC BY-NC 1.0",
+        "description": "Uveďte původ-Neužívejte komerčně 1.0 Generic (CC BY-NC 1.0)",
+        "url": "https://creativecommons.org/licenses/by-nc/1.0/deed.cs",
+    },
+    {
+        "type": "CC BY-SA 1.0",
+        "description": "Uveďte původ-Zachovejte licenci 1.0 Generic (CC BY-SA 1.0)",
+        "url": "https://creativecommons.org/licenses/by-sa/1.0/deed.cs",
+    },
+    {
+        "type": "CC BY-ND 1.0",
+        "description": "Uveďte původ-Nezpracovávejte 1.0 Generic (CC BY-ND 1.0)",
+        "url": "https://creativecommons.org/licenses/by-nd/1.0/deed.cs",
+    },
+    {
+        "type": "CC BY-NC-SA 1.0",
+        "description": "Uveďte původ-Neužívejte dílo komerčně-Zachovejte licenci 1.0 Generic (CC BY-NC-SA 1.0)",
+        "url": "https://creativecommons.org/licenses/by-nc-sa/1.0/deed.cs",
+    },
+    {
+        "type": "CC BY-NC-ND 1.0",
+        "description": "Uveďte původ-Nezpracovávejte-Neužívejte komerčně 1.0 Generic (CC BY-ND-NC 1.0)",
+        "url": "https://creativecommons.org/licenses/by-nc-nd/1.0/deed.cs",
+    },
+)
+
+CREATIVE_COMMONS_TYPES_CHOICES = ((None, "--------"),) + tuple(
+    (choice['type'], choice['description']) for choice in CREATIVE_COMMONS_TYPES
+)
