@@ -27,7 +27,7 @@
                 <tr>
                     <td>{% trans 'Creative commons' %}</td>
                     {% if object.creative_commons %}
-                        <td>{{ contract.get_creative_commons_type_display}}</td>
+                        <td>{{ object.creative_commons_type }}</td>
                     {% else %}
                         <td>{% trans 'No' %}</td>
                     {% endif %}
