@@ -126,6 +126,16 @@
                     <td>{% trans 'WWW link' %}</td>
                     <td><a href="{{ source.get_public_url }}" target="_blank">{{ source.get_public_url }}</a></td>
                 </tr>
+                <tr>
+                    <td>CC Licence</td>
+                    <td>
+                    {% if source.get_creative_commons %}
+                        <a href="{{source.get_creative_commons_url}}">{{source.get_creative_commons_type}}</a>
+                    {% else %}
+                        {% trans 'No' %}
+                    {% endif %}
+                    </td>
+                </tr>
             </tbody>
         </table>
     </div>
