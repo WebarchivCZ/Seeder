@@ -28,6 +28,9 @@
 						{% endfor %}
 					</ul>
 				{% endif %}
+                {% if source.get_creative_commons %}
+                    Licence <a href="{{source.get_creative_commons_url}}">{{source.get_creative_commons_type}}</a>
+                {% endif %}
 			</div>
 		</div>
 	{% endfor %}

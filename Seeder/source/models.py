@@ -17,6 +17,7 @@ from tld.exceptions import TldDomainNotFound
 from reversion import revisions
 
 from . import constants
+from contracts.constants import CREATIVE_COMMONS_TYPES
 from core.models import BaseModel, DatePickerField
 from publishers.models import Publisher, ContactPerson
 from legacy_db.models import TransferRecord
@@ -196,8 +197,8 @@ class SourceManager(models.Manager):
             contract_number, year = [int(s.strip()) for s in value.split('/')]
             with_contract = self.get_queryset().exclude(contract=None)
             pks = [s.pk for s in with_contract
-                if s.contract_set.valid().filter(
-                    contract_number=contract_number, year=year).count() > 0]
+                   if s.contract_set.valid().filter(
+                       contract_number=contract_number, year=year).count() > 0]
             return self.get_queryset().filter(pk__in=pks)
         except Exception:
             return self.get_queryset().none()
@@ -439,6 +440,31 @@ class Source(SearchModel, SlugOrCreateModel, BaseModel):
         if self.suggested_by:
             return self.get_suggested_by_display()
         return self.created_by
+
+    @property
+    def has_creative_commons(self):
+        return self.contract_set.valid().filter(
+            creative_commons=True).count() > 0
+
+    def get_creative_commons(self):
+        if not self.has_creative_commons:
+            return None
+        cc_type = self.contract_set.valid().filter(
+            creative_commons=True).first().creative_commons_type
+        cc = CREATIVE_COMMONS_TYPES.get(cc_type)
+        if cc:
+            return (cc_type, cc.get('url'))
+        return None
+
+    def get_creative_commons_type(self):
+        cc = self.get_creative_commons()
+        if cc:
+            return cc[0]
+
+    def get_creative_commons_url(self):
+        cc = self.get_creative_commons()
+        if cc:
+            return cc[1]
 
 
 @revisions.register(exclude=('last_changed',))
