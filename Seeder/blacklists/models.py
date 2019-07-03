@@ -50,6 +50,10 @@ class Blacklist(BaseModel):
         return reduce(operator.add, urls_parsed, [])
 
     @classmethod
+    def last_change(cls):
+        return max(cls.objects.all().values_list('last_changed', flat=True))
+
+    @classmethod
     def dump(cls):
         blacklist_urls = cls.objects.all().values_list('url_list', flat=True)
         urls_parsed = map(str.splitlines, blacklist_urls)

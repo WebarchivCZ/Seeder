@@ -1,6 +1,7 @@
 from django.urls import reverse
 from django.db import transaction
 from django.http.response import HttpResponseRedirect
+from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 from django.views.generic.base import TemplateView
 from django.views.generic.edit import FormView
@@ -22,6 +23,10 @@ class ListView(BlacklistView, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        last_change = timezone.now().replace(microsecond=0) -\
+            models.Blacklist.last_change().replace(microsecond=0)
+
+        context['last_change'] = last_change
         context['blacklists'] = models.Blacklist.objects.all()
         return context
 
