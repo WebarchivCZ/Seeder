@@ -45,6 +45,15 @@ class EditView(BlacklistView, generic_views.EditView):
             revisions.set_comment(form.cleaned_data['comment'])
         return HttpResponseRedirect(reverse('blacklists:list'))
 
+class BlacklistDump(TemplateView):
+    template_name = 'dump.txt'
+    content_type = 'text/text'
+
+    def get_context_data(self, **kwargs):
+        c = super().get_context_data(**kwargs)
+        c['urls'] = models.Blacklist.dump()
+        return c
+
 
 class History(BlacklistView, generic_views.HistoryView):
     """

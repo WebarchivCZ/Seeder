@@ -1,2 +1,0 @@
-{% for url in seed_urls %}{{ url|safe }}
-{% endfor %}

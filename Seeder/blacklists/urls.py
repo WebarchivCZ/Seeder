@@ -6,4 +6,5 @@ urlpatterns = [
     path('add', AddView.as_view(), name='add'),
     path('<int:pk>/edit', EditView.as_view(), name='edit'),
     path('history/<int:pk>', History.as_view(), name='history'),
+    path('dump', BlacklistDump.as_view(), name='dump'),
 ]
