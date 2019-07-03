@@ -6,16 +6,23 @@
 {% endblock %}
 
 {% block content %}
+    <script>
+        // "Select all" link selects all links in blacklist
+        $(document).on('click', '.select_all', (e) => {
+            e.preventDefault();
+            selectText($(e.currentTarget).closest('.panel').find('.panel-body pre')[0]);
+        })
+    </script>
     {% for blacklist in blacklists %}
         <div class="panel panel-default">
           <div class="panel-heading">
               {{ blacklist.title }} |
               <a href="{% url 'blacklists:edit' blacklist.pk %}">{% trans 'Edit' %}</a> |
-              <a href="{% url 'blacklists:history' blacklist.pk %}">{% trans 'History' %}</a>
+              <a href="{% url 'blacklists:history' blacklist.pk %}">{% trans 'History' %}</a> |
+              <a href="#" class="select_all">{% trans 'Select all' %}</a>
           </div>
           <div class="panel-body">
-              <pre>{{ blacklist.url_list }}</pre>
-
+              <pre style="max-height: 500px; overflow-y: scroll;">{{ blacklist.url_list }}</pre>
           </div>
         </div>
     {% endfor %}
