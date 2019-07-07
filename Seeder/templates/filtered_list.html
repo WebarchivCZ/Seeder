@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% load i18n %}
 {% load render_table from django_tables2 %}
+{% load export_url from django_tables2 %}
 {% load bootstrap3 %}
 
 {% block extrahead %}
@@ -18,6 +19,17 @@
                 {{ add_link_title }}
             </a>
         {% endif %}
+        <div class="btn dropdown pull-right" style="padding: 0 !important;">
+            <button class="btn btn-info dropdown-toggle" type="button" id="exportDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                Export
+                <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="exportDropdown">
+                {% for format in export_formats %}
+                <li><a href="{% export_url format %}">.{{format}}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
         </h1>
         <div class="collapse" id="filter-collapse">
           <div class="well">
