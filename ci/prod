@@ -1,5 +1,5 @@
 ---
-all:
+prod:
   hosts:
     localhost:
   vars:
