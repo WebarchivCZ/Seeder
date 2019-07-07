@@ -11,10 +11,10 @@ services:
       DJANGO_SETTINGS_MODULE: settings.env
       ALLOWED_HOSTS: app.webarchiv.cz
       DEBUG: 'True'
-      # DB_HOST:
-      # DB_NAME:
-      # DB_USER:
-      # DB_PASS:
+      DB_HOST: {{ seeder_db_host }}
+      DB_NAME: {{ seeder_db_name }}
+      DB_USER: {{ seeder_db_user }}
+      DB_PASS: {{ seeder_db_pass }}
     depends_on:
       - postgres
       - elastic
