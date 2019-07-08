@@ -5,6 +5,7 @@ from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 from django.views.generic.base import TemplateView
 from django.views.generic.edit import FormView
+from django.core.mail import mail_admins
 
 from reversion import revisions
 
@@ -37,6 +38,11 @@ class AddView(BlacklistView, FormView):
 
     def form_valid(self, form):
         form.save()
+        mail_admins(subject="New Blacklist",
+                    message="Title: {}\nType: {}".format(
+                        form.cleaned_data.get('title'),
+                        form.cleaned_data.get('blacklist_type'),
+                    ))
         return HttpResponseRedirect(reverse('blacklists:list'))
 
 
@@ -48,7 +54,13 @@ class EditView(BlacklistView, generic_views.EditView):
         with transaction.atomic(), revisions.create_revision():
             form.save()
             revisions.set_comment(form.cleaned_data['comment'])
+        mail_admins(subject="Blacklist Updated",
+                    message="Title: {}\nType: {}".format(
+                        form.cleaned_data.get('title'),
+                        form.cleaned_data.get('blacklist_type'),
+                    ))
         return HttpResponseRedirect(reverse('blacklists:list'))
+
 
 class BlacklistDump(TemplateView):
     template_name = 'dump.txt'
