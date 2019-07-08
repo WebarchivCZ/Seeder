@@ -128,6 +128,10 @@ class Contract(BaseModel):
             return self.creative_commons_type
         return _('Contract with {0}'.format(self.publisher))
 
+    def get_creative_commons_url(self):
+        cc = constants.CREATIVE_COMMONS_TYPES.get(self.creative_commons_type)
+        return cc.get('url') if cc else None
+
     def publisher_responds(self):
         return (self.in_communication or
                 self.state != constants.CONTRACT_STATE_NEGOTIATION)

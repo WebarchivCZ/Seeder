@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Seeder\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-06-28 09:44+0000\n"
+"POT-Creation-Date: 2019-06-30 10:23+0000\n"
 "PO-Revision-Date: 2017-11-07 12:38+0100\n"
 "Last-Translator: Visgean Skeloru <visgean@gmail.com>, 2017\n"
 "Language-Team: English (United States) (https://www.transifex.com/"
@@ -53,8 +53,8 @@ msgstr "Add"
 #: contracts/templates/contract.html:108 harvests/templates/harvest.html:7
 #: harvests/templates/topic_collection.html:118
 #: publishers/templates/publisher.html:36 source/templates/edit_source.html:7
-#: source/templates/edit_source.html:11 source/templates/source.html:139
-#: source/templates/source.html:148 templates/edit_form.html:6
+#: source/templates/edit_source.html:11 source/templates/source.html:153
+#: source/templates/source.html:162 templates/edit_form.html:6
 #: templates/edit_form.html:10 www/templates/news_admin_detail.html:84
 msgid "Edit"
 msgstr "Edit"
@@ -62,7 +62,7 @@ msgstr "Edit"
 #: blacklists/templates/blacklists.html:14
 #: contracts/templates/contract.html:107
 #: harvests/templates/topic_collection.html:119
-#: publishers/templates/publisher.html:35 source/templates/source.html:150
+#: publishers/templates/publisher.html:35 source/templates/source.html:164
 #: www/templates/news_admin_detail.html:86
 msgid "History"
 msgstr "History"
@@ -140,7 +140,7 @@ msgid "This comment has been removed"
 msgstr "This comment has been removed"
 
 #: comments/models.py:168 qa/models.py:40 qa/templates/detail.html:15
-#: source/models.py:254 source/models.py:468 source/templates/source.html:79
+#: source/models.py:255 source/models.py:502 source/templates/source.html:83
 #: templates/history.html:15
 msgid "Comment"
 msgstr "Comment"
@@ -149,7 +149,7 @@ msgstr "Comment"
 #: harvests/templates/harvest.html:52
 #: harvests/templates/topic_collection.html:128
 #: publishers/templates/publisher.html:39 qa/templates/detail.html:22
-#: source/templates/source.html:182 voting/templates/voting_round.html:118
+#: source/templates/source.html:196 voting/templates/voting_round.html:118
 #: www/templates/news_admin_detail.html:90
 msgid "Comments"
 msgstr "Comments"
@@ -203,7 +203,7 @@ msgid "Narodni knihovna CR - archivace Vasich webovych stranek"
 msgstr "National library of the CR - archiving your web sites"
 
 #: contracts/models.py:46 contracts/templates/contract.html:20
-#: harvests/models.py:155 harvests/models.py:352 source/models.py:268
+#: harvests/models.py:155 harvests/models.py:352 source/models.py:269
 #: voting/models.py:27
 msgid "State"
 msgstr "State"
@@ -294,13 +294,13 @@ msgstr "Number"
 msgid "Creative commons"
 msgstr "Creative Commons"
 
-#: contracts/templates/contract.html:32
+#: contracts/templates/contract.html:32 source/templates/source.html:139
 msgid "No"
 msgstr "No"
 
 #: contracts/templates/contract.html:36 publishers/models.py:30
-#: source/constants.py:124 source/models.py:243 source/tables.py:11
-#: source/templates/duplicity_check.html:20 source/templates/source.html:68
+#: source/constants.py:124 source/models.py:244 source/tables.py:11
+#: source/templates/duplicity_check.html:20 source/templates/source.html:72
 msgid "Publisher"
 msgstr "Publisher"
 
@@ -338,7 +338,7 @@ msgstr "Assigned sources"
 
 #: contracts/templates/contract.html:106
 #: harvests/templates/topic_collection.html:117
-#: publishers/templates/publisher.html:34 source/templates/source.html:147
+#: publishers/templates/publisher.html:34 source/templates/source.html:161
 #: www/templates/news_admin_detail.html:83
 msgid "Links"
 msgstr "Links"
@@ -347,12 +347,12 @@ msgstr "Links"
 msgid "Delete"
 msgstr "Delete"
 
-#: contracts/templates/contract.html:124 source/templates/source.html:192
+#: contracts/templates/contract.html:124 source/templates/source.html:206
 msgid "Proceed with deletion?"
 msgstr "Proceed with deletion?"
 
 #: contracts/templates/contract.html:133 harvests/templates/calendar.html:48
-#: source/templates/source.html:203
+#: source/templates/source.html:217
 msgid "Close"
 msgstr "Close"
 
@@ -409,7 +409,7 @@ msgstr "Assign contract"
 msgid "Contract number assigned."
 msgstr "Contract number assigned."
 
-#: contracts/views.py:106 source/templates/source.html:171
+#: contracts/views.py:106 source/templates/source.html:185
 #: templates/base.html:94
 msgid "Contracts"
 msgstr "Contracts"
@@ -545,7 +545,7 @@ msgid "title"
 msgstr "Title"
 
 #: harvests/models.py:164 harvests/templates/harvest.html:13
-#: source/models.py:255 source/templates/source.html:83
+#: source/models.py:256 source/templates/source.html:87
 msgid "Annotation"
 msgstr "Annotation"
 
@@ -581,11 +581,11 @@ msgstr "New"
 msgid "Finished"
 msgstr "Finished"
 
-#: harvests/models.py:360 source/constants.py:127 source/models.py:239
+#: harvests/models.py:360 source/constants.py:127 source/models.py:240
 msgid "Curator"
 msgstr "Curator"
 
-#: harvests/models.py:364 source/templates/source.html:87
+#: harvests/models.py:364 source/templates/source.html:91
 msgid "keywords"
 msgstr "Keywords"
 
@@ -749,17 +749,17 @@ msgstr "Harvested from"
 msgid "Harvested till"
 msgstr "Harvested till"
 
-#: harvests/templates/topic_collection.html:60 source/models.py:289
+#: harvests/templates/topic_collection.html:60 source/models.py:290
 #: source/templates/source.html:32
 msgid "Screenshot"
 msgstr "Screenshot"
 
-#: harvests/templates/topic_collection.html:72 source/templates/source.html:60
+#: harvests/templates/topic_collection.html:72 source/templates/source.html:64
 #: www/templates/news_admin_detail.html:76
 msgid "Created at"
 msgstr "Created at"
 
-#: harvests/templates/topic_collection.html:76 source/templates/source.html:48
+#: harvests/templates/topic_collection.html:76 source/templates/source.html:52
 msgid "Owner"
 msgstr "Owner"
 
@@ -775,12 +775,12 @@ msgstr "Attachments"
 msgid "All sources are open?"
 msgstr "All sources are open?"
 
-#: harvests/templates/topic_collection.html:98 source/templates/source.html:126
+#: harvests/templates/topic_collection.html:98 source/templates/source.html:130
 msgid "WWW link"
 msgstr "WWW link"
 
 #: harvests/templates/topic_collection.html:106 qa/templates/qa_form.html:20
-#: source/models.py:498 source/templates/source.html:134
+#: source/models.py:532 source/templates/source.html:148
 msgid "Seeds"
 msgstr "Seeds"
 
@@ -846,7 +846,7 @@ msgid "Position"
 msgstr "Position"
 
 #: publishers/forms.py:57 publishers/models.py:24 publishers/models.py:57
-#: publishers/tables.py:9 source/models.py:253 source/tables.py:9
+#: publishers/tables.py:9 source/models.py:254 source/tables.py:9
 #: www/models.py:79
 msgid "Name"
 msgstr "Name"
@@ -879,7 +879,7 @@ msgstr "Phone"
 msgid "Address"
 msgstr "Address"
 
-#: publishers/models.py:65 source/templates/source.html:72
+#: publishers/models.py:65 source/templates/source.html:76
 msgid "Publisher contact"
 msgstr "Publisher contact"
 
@@ -895,7 +895,7 @@ msgstr "Contacts:"
 msgid "Edit contacts"
 msgstr "Edit contacts"
 
-#: publishers/templates/publisher.html:24 source/models.py:306
+#: publishers/templates/publisher.html:24 source/models.py:307
 #: source/views.py:228 templates/base.html:85
 msgid "Sources"
 msgstr "Sources"
@@ -904,7 +904,7 @@ msgstr "Sources"
 msgid "Add publisher"
 msgstr "Add publisher"
 
-#: qa/models.py:18 qa/templates/detail.html:11 source/models.py:305
+#: qa/models.py:18 qa/templates/detail.html:11 source/models.py:306
 msgid "Source"
 msgstr "Source"
 
@@ -1060,7 +1060,7 @@ msgstr "Seed is no longer published"
 msgid "Visitor"
 msgstr "Visitor"
 
-#: source/constants.py:126 source/templates/source.html:106
+#: source/constants.py:126 source/templates/source.html:110
 msgid "ISSN"
 msgstr "ISSN"
 
@@ -1094,79 +1094,79 @@ msgstr "Main URL"
 msgid "Check if this is really unique source."
 msgstr "Check if this is really unique source."
 
-#: source/models.py:258 source/templates/source.html:64
+#: source/models.py:259 source/templates/source.html:68
 msgid "Suggested by"
 msgstr "Suggested by"
 
-#: source/models.py:274 source/templates/source.html:52 templates/api.html:18
+#: source/models.py:275 source/templates/source.html:56 templates/api.html:18
 msgid "Frequency"
 msgstr "Frequency"
 
-#: source/models.py:279 source/templates/source.html:94
+#: source/models.py:280 source/templates/source.html:98
 msgid "Category"
 msgstr "Category"
 
-#: source/models.py:284 source/templates/source.html:98
+#: source/models.py:285 source/templates/source.html:102
 msgid "Sub category"
 msgstr "Sub category"
 
-#: source/models.py:296
+#: source/models.py:297
 msgid "Source is dead"
 msgstr "Source is dead"
 
-#: source/models.py:450
+#: source/models.py:484
 msgid "default"
 msgstr "default"
 
-#: source/models.py:451
+#: source/models.py:485
 msgid "low"
 msgstr "low"
 
-#: source/models.py:452
+#: source/models.py:486
 msgid "very_low"
 msgstr "very_low"
 
-#: source/models.py:463
+#: source/models.py:497
 msgid "Seed url"
 msgstr "Seed URL"
 
-#: source/models.py:469
+#: source/models.py:503
 msgid "From"
 msgstr "From"
 
-#: source/models.py:470
+#: source/models.py:504
 msgid "To"
 msgstr "To"
 
-#: source/models.py:473
+#: source/models.py:507
 msgid "Javascript"
 msgstr "Javascript"
 
-#: source/models.py:474
+#: source/models.py:508
 msgid "Global reject"
 msgstr "Global reject"
 
-#: source/models.py:475
+#: source/models.py:509
 msgid "Youtube"
 msgstr "YouTube"
 
-#: source/models.py:476
+#: source/models.py:510
 msgid "Calendars"
 msgstr "Calendars"
 
-#: source/models.py:477
+#: source/models.py:511
 msgid "Local traps"
 msgstr "Local traps"
 
-#: source/models.py:478
+#: source/models.py:512
 msgid "Redirect on seed"
 msgstr "Redirect on seed"
 
-#: source/models.py:479
+#: source/models.py:513
 msgid "Robots.txt active"
 msgstr "Robots.txt active"
 
-#: source/models.py:497
+#: source/models.py:531
 msgid "Seed"
 msgstr "Seed"
 
@@ -1182,67 +1182,75 @@ msgstr "Potential duplicities"
 msgid "Sorry, we could not find any duplicities"
 msgstr "Sorry, we could not find any duplicities"
 
-#: source/templates/source.html:44
+#: source/templates/source.html:41
+msgid ""
+"There is a screenshot associated with this source but the file does not "
+"exist."
+msgstr ""
+"There is a screenshot associated with this source but the file does not "
+"exist."
+
+#: source/templates/source.html:48
 msgid "Dead"
 msgstr "Dead"
 
-#: source/templates/source.html:56
+#: source/templates/source.html:60
 msgid "Created by"
 msgstr "Created by"
 
-#: source/templates/source.html:102
+#: source/templates/source.html:106
 msgid "Aleph id"
 msgstr "Aleph ID"
 
-#: source/templates/source.html:110
+#: source/templates/source.html:114
 msgid "QA checks"
 msgstr "QA checks"
 
-#: source/templates/source.html:120
+#: source/templates/source.html:124
 msgid "WA-admin link"
 msgstr "WA-admin link"
 
-#: source/templates/source.html:121
+#: source/templates/source.html:125
 msgid "Legacy url"
 msgstr "Legacy URL"
 
-#: source/templates/source.html:143
+#: source/templates/source.html:157
 msgid "Add seeds"
 msgstr "Add seeds"
 
-#: source/templates/source.html:149
+#: source/templates/source.html:163
 msgid "WA-KAT"
 msgstr "WA-KAT"
 
-#: source/templates/source.html:151
+#: source/templates/source.html:165
 msgid "QA check"
 msgstr "QA check"
 
-#: source/templates/source.html:156 source/templates/source.html:199
+#: source/templates/source.html:170 source/templates/source.html:213
 msgid "Deactivate"
 msgstr "Deactivate"
 
-#: source/templates/source.html:161
+#: source/templates/source.html:175
 msgid "Voting rounds"
 msgstr "Voting rounds"
 
-#: source/templates/source.html:164
+#: source/templates/source.html:178
 msgid "Create voting round"
 msgstr "Create voting round"
 
-#: source/templates/source.html:175
+#: source/templates/source.html:189
 msgid "Sorry no contracts yet."
 msgstr "Sorry no contracts yet."
 
-#: source/templates/source.html:177
+#: source/templates/source.html:191
 msgid "Create"
 msgstr "Create"
 
-#: source/templates/source.html:178
+#: source/templates/source.html:192
 msgid "Assign"
 msgstr "Assign"
 
-#: source/templates/source.html:195
+#: source/templates/source.html:209
 msgid "If you proceed it will be very hard to reactivate this source."
 msgstr "If you proceed it will be very hard to reactivate this source."
 
