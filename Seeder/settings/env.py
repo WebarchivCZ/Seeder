@@ -28,14 +28,6 @@ DATABASES = {
     }
 }
 
-HAYSTACK_CONNECTIONS = {
-    'default': {
-        'ENGINE': 'elasticstack.backends.ConfigurableElasticSearchEngine',
-        'URL': 'http://elastic:9200/',
-        'INDEX_NAME': 'haystack',
-    },
-}
-
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
@@ -56,5 +48,5 @@ RECAPTCHA_PUBLIC_KEY = os.environ.get('RECAPTCHA_PUBLIC_KEY')
 RECAPTCHA_PRIVATE_KEY = os.environ.get('RECAPTCHA_PRIVATE_KEY')
 
 RAVEN_CONFIG = {
-    'dsn': os.environ.get('RAVEN_DSN'),
+    'dsn': os.environ.get('SENTRY_DSN'),
 }

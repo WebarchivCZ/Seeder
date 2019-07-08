@@ -15,6 +15,10 @@ services:
       DB_NAME: {{ seeder_db_name }}
       DB_USER: {{ seeder_db_user }}
       DB_PASS: {{ seeder_db_pass }}
+      SENTRY_DSN: {{ sentry_dsn_vault }}
+    logging:
+      options:
+        max-size: "1GB"
     depends_on:
       - postgres
       - elastic
@@ -23,12 +27,18 @@ services:
 
   postgres:
     image: postgres
+    logging:
+      options:
+        max-size: "1GB"
 
   memcached:
     image: memcached:latest
+    logging:
+      options:
+        max-size: "100M"
 
   manet:
     image: bobey/manet:latest
-
-  elastic:
-    image: webarchiv/elasticsearch:latest
+    logging:
+      options:
+        max-size: "100M"

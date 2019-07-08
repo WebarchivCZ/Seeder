@@ -15,7 +15,6 @@ services:
       DJANGO_SETTINGS_MODULE: settings.env
     depends_on:
       - postgres
-      - elastic
       - manet
       - memcached
 
@@ -27,6 +26,3 @@ services:
 
   manet:
     image: bobey/manet:latest
-
-  elastic:
-    image: webarchiv/elasticsearch:latest
