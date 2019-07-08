@@ -3,7 +3,7 @@
 
 {% block extra_header %}
 <a href="{% url 'blacklists:add' %}" class="pull-right btn btn-success">{% trans 'Add' %}</a>
-<a href="{% url 'blacklists:dump' %}" class="pull-right btn btn-primary">{% trans 'Dump' %}</a>
+<a href="{% url 'blacklists:dump' %}" class="pull-right btn btn-primary" target='_blank'>{% trans 'Dump' %}</a>
 <span class="label label-default pull-right" style="font-size: 0.4em;margin-top: 0.6rem;">
     Last update: {{last_change}} ago
 </span>
