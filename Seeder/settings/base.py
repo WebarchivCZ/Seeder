@@ -44,7 +44,8 @@ DATABASES = {
 }
 
 ADMINS = (
-    ('Visgean Skeloru', 'visgean@gmail.com')
+    ('Visgean Skeloru', 'visgean@gmail.com'),
+    ('Petr Manas', 'peter@petermanas.com'),
 )
 
 IGNORABLE_404_URLS = (
