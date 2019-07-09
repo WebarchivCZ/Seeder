@@ -9,7 +9,16 @@ Seeder
 [![Requirements Status](https://requires.io/github/WebArchivCZ/Seeder/requirements.svg?branch=master)](https://requires.io/github/WebArchivCZ/Seeder/requirements/?branch=master)
 
 
-Web archivists tool for moderating what parts of Czech Internet will be 
+Web archivists tool for moderating what parts of Czech Internet will be
 archived and what parts should die in the shadows of unarchived wasteland.
 
 Documentation is available at [Read the docs](http://seeder.readthedocs.org/en/latest/).
+
+Docker compose should work out of box after cloning. Run: ```docker-compose up```.
+
+[Webarchiv.cz deployment instructions](ci/README.md)
+
+## Important branches
+
+- master - development branch
+- production - production-ready branch

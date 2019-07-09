@@ -17,7 +17,6 @@ django-formtools==2.1
 django-reversion==3.0.2
 PyMySQL==0.7.4
 django-ckeditor==5.7.1
-transifex-client==0.12.4
 django-debug-toolbar==1.4
 tld==0.7.6
 django-autocomplete-light==3.3.4

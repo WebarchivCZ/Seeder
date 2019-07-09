@@ -1,0 +1,11 @@
+---
+test:
+  hosts:
+    localhost:
+  vars:
+    env: test
+    seeder_tag: develop
+    seeder_db_host: 10.3.0.130
+    seeder_db_name: seeder
+    seeder_db_user: seeder
+    seeder_db_pass: "{{ seeder_db_pass_vault }}"

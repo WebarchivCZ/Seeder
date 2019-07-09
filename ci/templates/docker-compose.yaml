@@ -1,18 +1,21 @@
+---
 version: "3"
 services:
   web:
-    build:
-      context: .
-    ports:
-     - "80:8000"
-    volumes:
-     - .:/code
+    image: webarchiv/seeder:develop
     command: bash run.sh
     working_dir: /code/Seeder
+    ports:
+      - 80:8000
     environment:
-      DEBUG: 'True'
-      THUMBNAIL_DEBUG: 'True'
       DJANGO_SETTINGS_MODULE: settings.env
+      ALLOWED_HOSTS: app.webarchiv.cz
+      DEBUG: 'True'
+      DB_HOST: {{ seeder_db_host }}
+      DB_NAME: {{ seeder_db_name }}
+      DB_USER: {{ seeder_db_user }}
+      DB_PASS: {{ seeder_db_pass }}
+      SENTRY_DSN: {{ sentry_dsn_vault }}
     depends_on:
       - postgres
       - manet

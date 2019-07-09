@@ -1,0 +1,10 @@
+---
+- name: "Prepare configuration template"
+  hosts: all
+  connection: local
+  tasks:
+
+    - name: "Prepare Seeder compose file."
+      template:
+        src: docker-compose.yaml
+        dest: docker-compose-{{ env }}.yml
