@@ -1,0 +1,28 @@
+---
+version: "3"
+
+services:
+  web:
+    image: webarchiv/seeder:develop
+    command: bash run.sh
+    working_dir: /code/Seeder
+    volumes:
+      - "static:/code/Seeder/static"
+      - "media:/code/Seeder/media"
+    ports:
+      - 80:8000
+    environment:
+      DJANGO_SETTINGS_MODULE: settings.env
+      ALLOWED_HOSTS: localhost
+      DEBUG: 'True'
+      DB_HOST: postgres
+      DB_NAME: postgres
+      DB_USER: postgres
+      DB_PASS: postgres
+    depends_on:
+      - postgres
+      - manet
+      - memcached
+
+  postgres:
+    image: postgres
