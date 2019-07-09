@@ -16,9 +16,6 @@ services:
       DB_USER: {{ seeder_db_user }}
       DB_PASS: {{ seeder_db_pass }}
       SENTRY_DSN: {{ sentry_dsn_vault }}
-    logging:
-      options:
-        max-size: "1GB"
     depends_on:
       - postgres
       - manet
@@ -26,18 +23,9 @@ services:
 
   postgres:
     image: postgres
-    logging:
-      options:
-        max-size: "1GB"
 
   memcached:
     image: memcached:latest
-    logging:
-      options:
-        max-size: "100M"
 
   manet:
     image: bobey/manet:latest
-    logging:
-      options:
-        max-size: "100M"
