@@ -1,10 +1,18 @@
 ---
 version: "3"
+
+volumes:
+  static:
+  media:
+
 services:
   web:
     image: webarchiv/seeder:develop
     command: bash run.sh
     working_dir: /code/Seeder
+    volumes:
+      - "static:/code/Seeder/static"
+      - "media:/code/Seeder/media"
     ports:
       - 80:8000
     environment:
@@ -17,12 +25,8 @@ services:
       DB_PASS: {{ seeder_db_pass }}
       SENTRY_DSN: {{ sentry_dsn_vault }}
     depends_on:
-      - postgres
       - manet
       - memcached
-
-  postgres:
-    image: postgres
 
   memcached:
     image: memcached:latest
