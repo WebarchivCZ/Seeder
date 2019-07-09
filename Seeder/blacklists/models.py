@@ -51,7 +51,8 @@ class Blacklist(BaseModel):
 
     @classmethod
     def last_change(cls):
-        return max(cls.objects.all().values_list('last_changed', flat=True))
+        agg = Blacklist.objects.all().aggregate(models.Max('last_changed'))
+        return agg.get('last_changed__max')
 
     @classmethod
     def dump(cls):
