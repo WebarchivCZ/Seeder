@@ -21,7 +21,6 @@ services:
         max-size: "1GB"
     depends_on:
       - postgres
-      - elastic
       - manet
       - memcached
 
