@@ -33,7 +33,7 @@ pipeline {
 
             cd ci
             ansible-playbook -i test prepare-configuration.yml
-            docker-compose -f docker-compose-test.yml -p seeder up -d
+            docker-compose -f docker-compose-test.yml -p seeder up -d --remove-orphans
           '''
         }
       }

@@ -1,10 +1,6 @@
 ---
 version: "3"
 
-volumes:
-  static:
-  media:
-
 services:
   web:
     image: webarchiv/seeder:develop
@@ -17,19 +13,16 @@ services:
       - 80:8000
     environment:
       DJANGO_SETTINGS_MODULE: settings.env
-      ALLOWED_HOSTS: app.webarchiv.cz
+      ALLOWED_HOSTS: localhost
       DEBUG: 'True'
-      DB_HOST: {{ seeder_db_host }}
-      DB_NAME: {{ seeder_db_name }}
-      DB_USER: {{ seeder_db_user }}
-      DB_PASS: {{ seeder_db_pass }}
-      SENTRY_DSN: {{ sentry_dsn_vault }}
+      DB_HOST: postgres
+      DB_NAME: postgres
+      DB_USER: postgres
+      DB_PASS: postgres
     depends_on:
+      - postgres
       - manet
       - memcached
 
-  memcached:
-    image: memcached:latest
-
-  manet:
-    image: bobey/manet:latest
+  postgres:
+    image: postgres
