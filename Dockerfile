@@ -1,11 +1,10 @@
-FROM ubuntu:16.04
+FROM python:3.7.3
 
 RUN apt-get update && apt-get install -y \
     libjpeg-dev \
     libpq-dev \
     memcachedb \
     python3-dev \
-    libmysqlclient-dev \
     python-psycopg2 \
     git-core \
     python3-pip\
