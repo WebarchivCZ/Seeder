@@ -1,5 +1,6 @@
 import source
 import publishers
+import blacklists
 
 from rest_framework.serializers import ModelSerializer
 from rest_framework.fields import CharField
@@ -50,3 +51,9 @@ class SourceSerializer(ModelSerializer):
     class Meta:
         model = source.models.Source
         exclude = ['created_by', 'owner']
+
+
+class BlacklistSerializer(ModelSerializer):
+    class Meta:
+        model = blacklists.models.Blacklist
+        fields = '__all__'

@@ -1,6 +1,6 @@
 from django.db import models
 from django.dispatch import receiver
-from django.db.models.signals import post_save, post_delete
+from django.db.models.signals import post_save, post_delete, post_migrate
 from django.utils import timezone
 
 from core import widgets
@@ -39,6 +39,7 @@ class OrderedModel(models.Model):
 
 @receiver(post_save, sender=OrderedModel)
 @receiver(post_delete, sender=OrderedModel)
+@receiver(post_migrate, sender=OrderedModel)
 def reorder_by_order(sender, instance, **kwargs):
     """
     Re-orders objects 'by order': normalizes the order

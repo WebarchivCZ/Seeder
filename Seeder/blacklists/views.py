@@ -1,9 +1,11 @@
 from django.urls import reverse
 from django.db import transaction
 from django.http.response import HttpResponseRedirect
+from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 from django.views.generic.base import TemplateView
 from django.views.generic.edit import FormView
+from django.core.mail import mail_admins
 
 from reversion import revisions
 
@@ -22,6 +24,10 @@ class ListView(BlacklistView, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        last_change = timezone.now().replace(microsecond=0) -\
+            models.Blacklist.last_change().replace(microsecond=0)
+
+        context['last_change'] = last_change
         context['blacklists'] = models.Blacklist.objects.all()
         return context
 
@@ -32,6 +38,11 @@ class AddView(BlacklistView, FormView):
 
     def form_valid(self, form):
         form.save()
+        mail_admins(subject="New Blacklist",
+                    message="Title: {}\nType: {}".format(
+                        form.cleaned_data.get('title'),
+                        form.cleaned_data.get('blacklist_type'),
+                    ))
         return HttpResponseRedirect(reverse('blacklists:list'))
 
 
@@ -43,7 +54,22 @@ class EditView(BlacklistView, generic_views.EditView):
         with transaction.atomic(), revisions.create_revision():
             form.save()
             revisions.set_comment(form.cleaned_data['comment'])
+        mail_admins(subject="Blacklist Updated",
+                    message="Title: {}\nType: {}".format(
+                        form.cleaned_data.get('title'),
+                        form.cleaned_data.get('blacklist_type'),
+                    ))
         return HttpResponseRedirect(reverse('blacklists:list'))
+
+
+class BlacklistDump(TemplateView):
+    template_name = 'dump.txt'
+    content_type = 'text/text'
+
+    def get_context_data(self, **kwargs):
+        c = super().get_context_data(**kwargs)
+        c['urls'] = models.Blacklist.dump()
+        return c
 
 
 class History(BlacklistView, generic_views.HistoryView):

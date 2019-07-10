@@ -304,6 +304,6 @@ class SourceDump(TemplateView):
 
     def get_context_data(self, **kwargs):
         c = super().get_context_data(**kwargs)
-        c['seed_urls'] = models.Seed.archiving.public_seeds().all()\
+        c['urls'] = models.Seed.archiving.public_seeds().all()\
             .values_list('url', flat=True)
         return c
