@@ -7,4 +7,4 @@ set -o pipefail # catch non-zero exit code in pipes
 # set -o xtrace # uncomment for bug hunting
 
 ansible-playbook -i test prepare-configuration.yml
-docker-compose -f docker-compose-test.yml -f docker-compose.override.yml -p seeder up --remove-orphans
+docker-compose -f docker-compose-test.yml -f docker-compose.override.yml -p seeder up --remove-orphans --build
