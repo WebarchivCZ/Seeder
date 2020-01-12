@@ -12,6 +12,9 @@ services:
     environment:
       DEBUG: 'True'
       THUMBNAIL_DEBUG: 'True'
+      DB_NAME: seeder
+      DB_USER: seeder
+      DB_PASS: prase
       DJANGO_SETTINGS_MODULE: settings.env
     depends_on:
       - postgres
@@ -19,7 +22,7 @@ services:
       - memcached
 
   postgres:
-    image: postgres
+    image: postgres:12
 
   memcached:
     image: memcached:latest
