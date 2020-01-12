@@ -19,7 +19,7 @@ services:
       - memcached
 
   postgres:
-    image: postgres
+    image: postgres:12
 
   memcached:
     image: memcached:latest

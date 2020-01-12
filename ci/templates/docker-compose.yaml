@@ -4,10 +4,11 @@ version: "3"
 volumes:
   static:
   media:
+  seeder_db_data:
 
 services:
   web:
-    image: webarchiv/seeder:develop
+    image: webarchiv/seeder:{{ seeder_docker_tag }}
     command: bash run.sh
     working_dir: /code/Seeder
     volumes:
@@ -17,8 +18,8 @@ services:
       - 80:8000
     environment:
       DJANGO_SETTINGS_MODULE: settings.env
-      ALLOWED_HOSTS: app.webarchiv.cz
-      DEBUG: 'True'
+      ALLOWED_HOSTS: {{ seeder_django_allowed_hosts }}
+      DEBUG: '{{ seeder_django_debug }}'
       DB_HOST: {{ seeder_db_host }}
       DB_NAME: {{ seeder_db_name }}
       DB_USER: {{ seeder_db_user }}
@@ -27,6 +28,13 @@ services:
     depends_on:
       - manet
       - memcached
+      - seeder_db
+
+  seeder_db:
+    image: postgres:12
+    volumes:
+      - "seeder_db_data:/var/lib/postgresql/data"
+
 
   memcached:
     image: memcached:latest

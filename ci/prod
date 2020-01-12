@@ -4,4 +4,4 @@ prod:
     localhost:
   vars:
     env: prod
-    seeder_tag: latest
+    seeder_docker_tag: latest
