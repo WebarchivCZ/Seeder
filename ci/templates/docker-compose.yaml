@@ -18,7 +18,7 @@ services:
       - 80:8000
     environment:
       DJANGO_SETTINGS_MODULE: settings.env
-      ALLOWED_HOSTS: {{ seeder_allowed_hosts }}
+      ALLOWED_HOSTS: {{ seeder_django_allowed_hosts }}
       DEBUG: '{{ seeder_django_debug }}'
       DB_HOST: {{ seeder_db_host }}
       DB_NAME: {{ seeder_db_name }}
