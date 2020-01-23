@@ -31,7 +31,7 @@ services:
       - seeder_db
 
   seeder_db:
-    image: postgres:12
+    image: postgres:9.6
     volumes:
       - "seeder_db_data:/var/lib/postgresql/data"
 
