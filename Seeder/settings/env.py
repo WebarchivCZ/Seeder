@@ -1,4 +1,5 @@
 from .base import *
+import os
 
 # Enviromental based configuration.
 
@@ -8,6 +9,23 @@ SECRET_KEY = os.environ.get('SECRET_KEY', 'sdfvsdfvsdfvsdfv')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DEBUG', 'False')
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console'],
+            'level': os.environ.get('DJANGO_LOG_LEVEL', 'INFO'),
+        },
+    },
+}
+
 TEMPLATES[0]['OPTIONS']['debug'] = DEBUG
 
 THUMBNAIL_DEBUG = os.environ.get('THUMBNAIL_DEBUG', 'False')

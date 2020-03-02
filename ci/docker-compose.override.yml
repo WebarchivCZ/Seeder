@@ -25,4 +25,4 @@ services:
       - memcached
 
   postgres:
-    image: postgres
+    image: postgres:9.6
