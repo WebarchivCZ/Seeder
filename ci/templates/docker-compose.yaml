@@ -2,7 +2,6 @@
 version: "3"
 
 volumes:
-  static:
   media:
   seeder_db_data:
 
@@ -12,7 +11,6 @@ services:
     command: bash run.sh
     working_dir: /code/Seeder
     volumes:
-      - "static:/code/Seeder/static"
       - "media:/code/Seeder/media"
     ports:
       - 80:8000
