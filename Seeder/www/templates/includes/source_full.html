@@ -31,10 +31,14 @@
 			{% if lang == "cs" %}Vydavatel:{% else %}Publisher:{% endif %} 
 			{{ source.publisher }}
 		</p>
-		<ul class="inline-list">
-			{% for keyword in source.keywords.all %}
-				<li><a href="{{ keyword.www_url }}">{{ keyword }}</a>{% include "includes/comma.html" %}</li>
-			{% endfor %}
-		</ul>
-
+        {% if source.keywords.exists %}
+            <ul class="inline-list">
+                {% for keyword in source.keywords.all %}
+                    <li><a href="{{ keyword.www_url }}">{{ keyword }}</a>{% include "includes/comma.html" %}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+        {% if source.get_creative_commons %}
+            Licence <a href="{{source.get_creative_commons_url}}">{{source.get_creative_commons_type}}</a>
+        {% endif %}
 </div>
