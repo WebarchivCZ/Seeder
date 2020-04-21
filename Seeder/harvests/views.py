@@ -113,7 +113,24 @@ class Edit(HarvestView, EditView):
     form_class = forms.HarvestEditForm
 
 
+class ListHarvestUrls(HarvestView, TemplateView):
+    """
+    List seed urls to the harvests happening on the date.
+    """
+    template_name = 'urls.html'
+
+    def get_context_data(self, h_date, **kwargs):
+        context = super().get_context_data(**kwargs)
+        harvests = models.Harvest.objects.filter(scheduled_on=h_date)
+        context['urls'] = [reverse('harvests:urls', kwargs={'pk': h.pk})
+                           for h in harvests]
+        return context
+
+
 class ListUrls(HarvestView, DetailView, TemplateView):
+    """
+    List all seeds for a specific harvest.
+    """
     template_name = 'urls.html'
 
     def get_context_data(self, **kwargs):
@@ -123,7 +140,11 @@ class ListUrls(HarvestView, DetailView, TemplateView):
         return context
 
 
-class ListUrlsByDate(HarvestView, TemplateView):
+class ListShortcutUrlsByDate(HarvestView, TemplateView):
+    """
+    List seed urls for available shortcuts for the harvests happening
+    on the date.
+    """
     template_name = 'urls.html'
 
     def get_context_data(self, h_date, **kwargs):
@@ -172,7 +193,7 @@ class ListUrlsByDate(HarvestView, TemplateView):
         # Reverse the urls for all shortcuts
         urls = []
         for shortcut in shortcuts:
-            urls.append(reverse('harvests:urls_by_date_and_type', kwargs={
+            urls.append(reverse('harvests:shortcut_urls_by_date_and_type', kwargs={
                 'h_date': h_date,
                 'h_date2': h_date,
                 'shortcut': shortcut,
@@ -182,8 +203,11 @@ class ListUrlsByDate(HarvestView, TemplateView):
         return context
 
 
-class ListUrlsByTimeAndType(HarvestView, TemplateView):
+class ListUrlsByDateAndShortcut(HarvestView, TemplateView):
     """
+    List seeds for the selected date and shortcut. Seeds from all harvests
+    scheduled on the date and matching the shortcut are listed.
+
     Allowed shortcuts:
         'V1', 'V2', 'V4', 'V6', 'V12', 'V52', 'V365',
         'TT-<str>',
@@ -284,7 +308,7 @@ class HarvestUrlCatalogue(TemplateView):
         dt = date.today()
 
         def url_by_shortcut(shortcut):
-            return reverse('harvests:urls_by_date_and_type', kwargs={
+            return reverse('harvests:shortcut_urls_by_date_and_type', kwargs={
                 'h_date': dt,
                 'h_date2': dt,
                 'shortcut': shortcut,
@@ -301,7 +325,7 @@ class HarvestUrlCatalogue(TemplateView):
         urls[url_by_shortcut('VNC')] = _('VNC')
         urls[url_by_shortcut('Tests')] = _('Tests')
         urls[url_by_shortcut('Totals')] = _('Totals')
-        urls[reverse('harvests:urls_by_date', kwargs={
+        urls[reverse('harvests:shortcut_urls_by_date', kwargs={
             'h_date': dt
         })] = _('Available URLs for date')
         context['harvest_urls'] = urls
