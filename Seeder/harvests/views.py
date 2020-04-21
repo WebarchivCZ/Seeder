@@ -307,6 +307,19 @@ class HarvestUrlCatalogue(TemplateView):
         context = super().get_context_data(**kwargs)
         dt = date.today()
 
+        # Harvest URLs by date and harvest id
+        harvest_urls = []
+        harvest_urls.append((
+            reverse('harvests:harvest_urls', kwargs={'h_date': dt}),
+            _('Available URLs for date')
+        ))
+        harvest_urls.append((
+            reverse('harvests:urls', kwargs={'pk': 1234}),
+            _("All seeds for Harvest")
+        ))
+        context['harvest_urls'] = harvest_urls
+
+        # Harvest URLs by date and shortcut
         def url_by_shortcut(shortcut):
             return reverse('harvests:shortcut_urls_by_date_and_type', kwargs={
                 'h_date': dt,
@@ -314,21 +327,25 @@ class HarvestUrlCatalogue(TemplateView):
                 'shortcut': shortcut,
             })
 
-        urls = {
-            url_by_shortcut('V{}'.format(key)): title
+        shortcut_urls = []
+        shortcut_urls.append((
+            reverse('harvests:shortcut_urls_by_date', kwargs={'h_date': dt}),
+            _('Available URLs for date')
+        ))
+        shortcut_urls.extend([
+            (url_by_shortcut('V{}'.format(key)), title)
             for key, title in source_constants.SOURCE_FREQUENCY_PER_YEAR
             if str(key) != '0'
-        }
-        urls[url_by_shortcut(
-            'OneShot')] = source_constants.SOURCE_FREQUENCY_PER_YEAR[0][1]
-        urls[url_by_shortcut('ArchiveIt')] = _('ArchiveIt')
-        urls[url_by_shortcut('VNC')] = _('VNC')
-        urls[url_by_shortcut('Tests')] = _('Tests')
-        urls[url_by_shortcut('Totals')] = _('Totals')
-        urls[reverse('harvests:shortcut_urls_by_date', kwargs={
-            'h_date': dt
-        })] = _('Available URLs for date')
-        context['harvest_urls'] = urls
+        ])
+        shortcut_urls.append((
+            url_by_shortcut('OneShot'),
+            source_constants.SOURCE_FREQUENCY_PER_YEAR[0][1]
+        ))
+        shortcut_urls.append((url_by_shortcut('ArchiveIt'), _('ArchiveIt')))
+        shortcut_urls.append((url_by_shortcut('VNC'), _('VNC')))
+        shortcut_urls.append((url_by_shortcut('Tests'), _('Tests')))
+        shortcut_urls.append((url_by_shortcut('Totals'), _('Totals')))
+        context['shortcut_urls'] = shortcut_urls
         return context
 
 
