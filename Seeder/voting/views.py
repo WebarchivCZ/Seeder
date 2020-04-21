@@ -30,8 +30,11 @@ class VotingView(LoginMixin):
         return super().get_queryset().exclude(source__active=False)
 
 
-class Create(VotingView, DetailView, MessageView):
+class Create(LoginMixin, DetailView, MessageView):
     model = Source
+
+    def get_queryset(self):
+        return super().get_queryset().exclude(active=False)
 
     def post(self, request, *args, **kwargs):
         open_rounds = models.VotingRound.objects.filter(
@@ -58,11 +61,10 @@ class VotingDetail(VotingView, DetailView, CommentViewGeneric):
         return context
 
 
-class CastVote(LoginMixin, SingleObjectMixin, ActionView):
+class CastVote(VotingView, SingleObjectMixin, ActionView):
     """
     View for casting votes
     """
-    model = models.VotingRound
     allowed_actions = constants.VOTE_DICT.keys()
 
     def process_action(self, action):
@@ -103,11 +105,10 @@ class Postpone(VotingView, ObjectMixinFixed, FormView):
         return HttpResponseRedirect(voting_round.get_absolute_url())
 
 
-class Resolve(LoginMixin, SingleObjectMixin, ActionView):
+class Resolve(VotingView, SingleObjectMixin, ActionView):
     """
     View for resolving the round
     """
-    model = models.VotingRound
     allowed_actions = constants.VOTE_DICT.keys()
 
     def check_permissions(self, user):
