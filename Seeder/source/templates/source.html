@@ -133,8 +133,12 @@
                 <tr>
                     <td>CC Licence</td>
                     <td>
-                    {% if source.get_creative_commons %}
-                        <a href="{{source.get_creative_commons_url}}">{{source.get_creative_commons_type}}</a>
+                    {% if source.has_creative_commons %}
+                        {% if source.get_creative_commons_url %}
+                            <a href="{{source.get_creative_commons_url}}">{{source.get_creative_commons_type}}</a>
+                        {% else %}
+                            {{source.get_creative_commons_type}}
+                        {% endif %}
                     {% else %}
                         {% trans 'No' %}
                     {% endif %}
