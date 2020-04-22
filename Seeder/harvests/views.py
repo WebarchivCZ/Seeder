@@ -136,6 +136,7 @@ class ListUrls(HarvestView, DetailView, TemplateView):
     def get_context_data(self, **kwargs):
         self.object = self.get_object()
         context = super().get_context_data(**kwargs)
+        context['head_lines'] = [f"# {self.object.title}"]
         context['urls'] = self.object.get_seeds()
         return context
 
