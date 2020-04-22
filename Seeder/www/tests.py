@@ -181,8 +181,8 @@ class SeederUrlsTest(TestCase):
         self.url_names.remove('harvests:topic_collection_toggle_publish')
         self.url_kwargs = {
             'harvests:json_calendar': [{}, '?from=1000&to=10000'],
-            'harvests:urls_by_date': {'h_date': DATE},
-            'harvests:urls_by_date_and_type': {
+            'harvests:shortcut_urls_by_date': {'h_date': DATE},
+            'harvests:shortcut_urls_by_date_and_type': {
                 'h_date': DATE,
                 'h_date2': DATE,
                 'shortcut': 'V1',

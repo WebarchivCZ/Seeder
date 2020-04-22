@@ -27,8 +27,6 @@ urlpatterns = [
     path('add', AddView.as_view(), name='add'),
     path('<int:pk>/detail', Detail.as_view(), name='detail'),
     path('<int:pk>/edit', Edit.as_view(), name='edit'),
-    path('<int:pk>/urls', ListUrls.as_view(), name='urls'),
-    path('catalogue', HarvestUrlCatalogue.as_view(), name='catalogue'),
     path('add_topic_collection', AddTopicCollection.as_view(),
          name='topic_collection_add'),
     path('<int:pk>/collection_edit', EditCollection.as_view(),
@@ -41,8 +39,16 @@ urlpatterns = [
          name='topic_collection_toggle_publish'),
     path('collections', CollectionListView.as_view(),
          name='topic_collection_list'),
-    path('<date:h_date>/urls',
-         ListUrlsByDate.as_view(), name='urls_by_date'),
+    # Harvest URLs
+    path('catalogue', HarvestUrlCatalogue.as_view(), name='catalogue'),
+    # Harvest URLs based on date and harvest id
+    path('<date:h_date>/harvests', ListHarvestUrls.as_view(),
+         name='harvest_urls'),
+    path('<int:pk>/urls', ListUrls.as_view(), name='urls'),
+    # Harvest URLs based on type
+    path('<date:h_date>/shortcut_urls',
+         ListShortcutUrlsByDate.as_view(), name='shortcut_urls_by_date'),
     path('<date:h_date>/seeds-<date:h_date2>-<str:shortcut>.txt',
-         ListUrlsByTimeAndType.as_view(), name='urls_by_date_and_type'),
+         ListUrlsByDateAndShortcut.as_view(),
+         name='shortcut_urls_by_date_and_type'),
 ]

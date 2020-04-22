@@ -29,7 +29,7 @@ class TopicCollectionTests(TestCase):
                 scheduled_on=TODAY, topic_collection_frequency=['4']).save()
 
     def test_topic_collections_appear_in_harvest_urls(self):
-        url = reverse('harvests:urls_by_date', kwargs={'h_date': TODAY})
+        url = reverse('harvests:shortcut_urls_by_date', kwargs={'h_date': TODAY})
         res = self.c.get(url)
         content = res.content.decode('utf-8')
         self.assertIn("TT-cs-tc-2", content)
@@ -38,7 +38,7 @@ class TopicCollectionTests(TestCase):
         self.assertNotIn("TT-cs-tc-3", content)
     
     def test_topic_collections_accessible_from_harvest_urls(self):
-        url = reverse('harvests:urls_by_date', kwargs={'h_date': TODAY})
+        url = reverse('harvests:shortcut_urls_by_date', kwargs={'h_date': TODAY})
         res = self.c.get(url)
         urls = [u.rstrip('<br>') 
                 for u in res.content.decode('utf-8').splitlines()
@@ -114,7 +114,7 @@ class HarvestUrlTest(TestCase):
             h.save()
 
     def test_url_dates_do_match(self):
-        get_url = reverse('harvests:urls_by_date_and_type', kwargs={
+        get_url = reverse('harvests:shortcut_urls_by_date_and_type', kwargs={
             'h_date': self.DATE,
             'h_date2': self.DATE,
             'shortcut': 'V1',
@@ -124,7 +124,7 @@ class HarvestUrlTest(TestCase):
         self.assertEqual(200, res.status_code)
 
     def test_url_dates_do_not_match(self):
-        get_url = reverse('harvests:urls_by_date_and_type', kwargs={
+        get_url = reverse('harvests:shortcut_urls_by_date_and_type', kwargs={
             'h_date': self.DATE,
             'h_date2': self.DATE + timedelta(days=1),
             'shortcut': 'V1',
@@ -138,7 +138,7 @@ class HarvestUrlTest(TestCase):
             'ArchiveIt', 'VNC', 'Tests', 'Totals', 'OneShot')
         # TODO + TT-...
         for shortcut in shortcuts:
-            get_url = reverse('harvests:urls_by_date_and_type', kwargs={
+            get_url = reverse('harvests:shortcut_urls_by_date_and_type', kwargs={
                 'h_date': self.DATE,
                 'h_date2': self.DATE,
                 'shortcut': shortcut,
@@ -151,7 +151,7 @@ class HarvestUrlTest(TestCase):
             'V0M', 'V1M', 'V12M', 'V3', 'V11', 'Archiveit', 'archiveit', 'vnc',
             'tests', 'totals', 'oneshot', 'TT', 'tt', 'TT-', 'tt-', '12345')
         for shortcut in shortcuts:
-            get_url = reverse('harvests:urls_by_date_and_type', kwargs={
+            get_url = reverse('harvests:shortcut_urls_by_date_and_type', kwargs={
                 'h_date': self.DATE,
                 'h_date2': self.DATE,
                 'shortcut': shortcut,
@@ -160,7 +160,7 @@ class HarvestUrlTest(TestCase):
             self.assertEqual(404, res.status_code)
 
     def test_harvest_urls(self, h_date=DATE):
-        get_url = reverse('harvests:urls_by_date', kwargs={
+        get_url = reverse('harvests:shortcut_urls_by_date', kwargs={
             'h_date': h_date,
         })
         res = self.c.get(get_url)
@@ -199,7 +199,7 @@ class HarvestUrlTest(TestCase):
             if freq == 0:
                 continue
             shortcut = 'V{:d}'.format(freq)
-            get_url = reverse('harvests:urls_by_date_and_type', kwargs={
+            get_url = reverse('harvests:shortcut_urls_by_date_and_type', kwargs={
                 'h_date': self.DATE,
                 'h_date2': self.DATE,
                 'shortcut': shortcut,
@@ -215,7 +215,7 @@ class HarvestUrlTest(TestCase):
     def test_harvests_with_tts(self):
         for h in self.tt_harvests:
             shortcut = 'TT-{}'.format(h.topic_collections.all()[0].slug)
-            get_url = reverse('harvests:urls_by_date_and_type', kwargs={
+            get_url = reverse('harvests:shortcut_urls_by_date_and_type', kwargs={
                 'h_date': h.scheduled_on,
                 'h_date2': h.scheduled_on,
                 'shortcut': shortcut,
@@ -226,7 +226,7 @@ class HarvestUrlTest(TestCase):
             self.assertIn(h.pk, harvest_ids)
 
     def test_harvests_totals(self):
-        get_url = reverse('harvests:urls_by_date_and_type', kwargs={
+        get_url = reverse('harvests:shortcut_urls_by_date_and_type', kwargs={
             'h_date': self.DATE,
             'h_date2': self.DATE,
             'shortcut': 'Totals',
@@ -240,7 +240,7 @@ class HarvestUrlTest(TestCase):
         self.assertListEqual(correct_harvest_ids, harvest_ids)
 
     def test_harvests_totals_no_harvests(self):
-        get_url = reverse('harvests:urls_by_date_and_type', kwargs={
+        get_url = reverse('harvests:shortcut_urls_by_date_and_type', kwargs={
             'h_date': self.DATE + timedelta(days=-365),
             'h_date2': self.DATE + timedelta(days=-365),
             'shortcut': 'Totals',
@@ -251,7 +251,7 @@ class HarvestUrlTest(TestCase):
         self.assertListEqual([], res.context['urls'])
 
     def test_harvests_oneshot(self):
-        get_url = reverse('harvests:urls_by_date_and_type', kwargs={
+        get_url = reverse('harvests:shortcut_urls_by_date_and_type', kwargs={
             'h_date': self.DATE,
             'h_date2': self.DATE,
             'shortcut': 'OneShot',

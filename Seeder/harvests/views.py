@@ -113,17 +113,39 @@ class Edit(HarvestView, EditView):
     form_class = forms.HarvestEditForm
 
 
+class ListHarvestUrls(HarvestView, TemplateView):
+    """
+    List seed urls to the harvests happening on the date.
+    """
+    template_name = 'urls.html'
+
+    def get_context_data(self, h_date, **kwargs):
+        context = super().get_context_data(**kwargs)
+        harvests = models.Harvest.objects.filter(scheduled_on=h_date)
+        context['urls'] = [reverse('harvests:urls', kwargs={'pk': h.pk})
+                           for h in harvests]
+        return context
+
+
 class ListUrls(HarvestView, DetailView, TemplateView):
+    """
+    List all seeds for a specific harvest.
+    """
     template_name = 'urls.html'
 
     def get_context_data(self, **kwargs):
         self.object = self.get_object()
         context = super().get_context_data(**kwargs)
+        context['head_lines'] = [f"# {self.object.title}"]
         context['urls'] = self.object.get_seeds()
         return context
 
 
-class ListUrlsByDate(HarvestView, TemplateView):
+class ListShortcutUrlsByDate(HarvestView, TemplateView):
+    """
+    List seed urls for available shortcuts for the harvests happening
+    on the date.
+    """
     template_name = 'urls.html'
 
     def get_context_data(self, h_date, **kwargs):
@@ -172,7 +194,7 @@ class ListUrlsByDate(HarvestView, TemplateView):
         # Reverse the urls for all shortcuts
         urls = []
         for shortcut in shortcuts:
-            urls.append(reverse('harvests:urls_by_date_and_type', kwargs={
+            urls.append(reverse('harvests:shortcut_urls_by_date_and_type', kwargs={
                 'h_date': h_date,
                 'h_date2': h_date,
                 'shortcut': shortcut,
@@ -182,8 +204,11 @@ class ListUrlsByDate(HarvestView, TemplateView):
         return context
 
 
-class ListUrlsByTimeAndType(HarvestView, TemplateView):
+class ListUrlsByDateAndShortcut(HarvestView, TemplateView):
     """
+    List seeds for the selected date and shortcut. Seeds from all harvests
+    scheduled on the date and matching the shortcut are listed.
+
     Allowed shortcuts:
         'V1', 'V2', 'V4', 'V6', 'V12', 'V52', 'V365',
         'TT-<str>',
@@ -283,28 +308,45 @@ class HarvestUrlCatalogue(TemplateView):
         context = super().get_context_data(**kwargs)
         dt = date.today()
 
+        # Harvest URLs by date and harvest id
+        harvest_urls = []
+        harvest_urls.append((
+            reverse('harvests:harvest_urls', kwargs={'h_date': dt}),
+            _('Available URLs for date')
+        ))
+        harvest_urls.append((
+            reverse('harvests:urls', kwargs={'pk': 1234}),
+            _("All seeds for Harvest")
+        ))
+        context['harvest_urls'] = harvest_urls
+
+        # Harvest URLs by date and shortcut
         def url_by_shortcut(shortcut):
-            return reverse('harvests:urls_by_date_and_type', kwargs={
+            return reverse('harvests:shortcut_urls_by_date_and_type', kwargs={
                 'h_date': dt,
                 'h_date2': dt,
                 'shortcut': shortcut,
             })
 
-        urls = {
-            url_by_shortcut('V{}'.format(key)): title
+        shortcut_urls = []
+        shortcut_urls.append((
+            reverse('harvests:shortcut_urls_by_date', kwargs={'h_date': dt}),
+            _('Available URLs for date')
+        ))
+        shortcut_urls.extend([
+            (url_by_shortcut('V{}'.format(key)), title)
             for key, title in source_constants.SOURCE_FREQUENCY_PER_YEAR
             if str(key) != '0'
-        }
-        urls[url_by_shortcut(
-            'OneShot')] = source_constants.SOURCE_FREQUENCY_PER_YEAR[0][1]
-        urls[url_by_shortcut('ArchiveIt')] = _('ArchiveIt')
-        urls[url_by_shortcut('VNC')] = _('VNC')
-        urls[url_by_shortcut('Tests')] = _('Tests')
-        urls[url_by_shortcut('Totals')] = _('Totals')
-        urls[reverse('harvests:urls_by_date', kwargs={
-            'h_date': dt
-        })] = _('Available URLs for date')
-        context['harvest_urls'] = urls
+        ])
+        shortcut_urls.append((
+            url_by_shortcut('OneShot'),
+            source_constants.SOURCE_FREQUENCY_PER_YEAR[0][1]
+        ))
+        shortcut_urls.append((url_by_shortcut('ArchiveIt'), _('ArchiveIt')))
+        shortcut_urls.append((url_by_shortcut('VNC'), _('VNC')))
+        shortcut_urls.append((url_by_shortcut('Tests'), _('Tests')))
+        shortcut_urls.append((url_by_shortcut('Totals'), _('Totals')))
+        context['shortcut_urls'] = shortcut_urls
         return context
 
 

@@ -457,12 +457,13 @@ class Source(SearchModel, SlugOrCreateModel, BaseModel):
     def get_creative_commons(self):
         if not self.has_creative_commons:
             return None
-        cc_type = self.contract_set.valid().filter(
-            creative_commons=True).first().creative_commons_type
-        cc = CREATIVE_COMMONS_TYPES.get(cc_type)
-        if cc:
-            return (cc_type, cc.get('url'))
-        return None
+        # Get the first CC contract's type
+        cc_contract = self.contract_set.valid().filter(
+            creative_commons=True).first()
+        cc_type = cc_contract.creative_commons_type
+        # URL can be None if CC type is incorrect
+        cc_url = cc_contract.get_creative_commons_url()
+        return (cc_type, cc_url)
 
     def get_creative_commons_type(self):
         cc = self.get_creative_commons()

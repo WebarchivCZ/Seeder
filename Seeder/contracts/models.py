@@ -130,7 +130,15 @@ class Contract(BaseModel):
 
     def get_creative_commons_url(self):
         cc = constants.CREATIVE_COMMONS_TYPES.get(self.creative_commons_type)
-        return cc.get('url') if cc else None
+        # Happens when CC type is set to full description or just wrong format
+        if cc is None:
+            keys = [key for key, val in constants.CREATIVE_COMMONS_TYPES.items()
+                    if key in self.creative_commons_type]
+            # Exactly one correct CC type was matched
+            if len(keys) == 1:
+                return constants.CREATIVE_COMMONS_TYPES[keys[0]].get('url')
+        else:
+            return cc.get('url')
 
     def publisher_responds(self):
         return (self.in_communication or
