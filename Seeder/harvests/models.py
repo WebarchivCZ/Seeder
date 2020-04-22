@@ -102,7 +102,7 @@ class HarvestAbstractModel(BaseModel):
         """
         :return: set of urls
         """
-        if self.seeds_frozen:
+        if self.seeds_frozen and self.seeds_frozen != '':
             return set(self.seeds_frozen.splitlines())
 
         seeds = set(
@@ -258,6 +258,9 @@ class Harvest(HarvestAbstractModel):
         return seeds - self.get_blacklisted()
 
     def get_seeds(self):
+        if self.seeds_frozen and self.seeds_frozen != '':
+            return set(self.seeds_frozen.splitlines())
+
         base_set = super(Harvest, self).get_seeds()
         # Add seeds from all selected topic collections
         for tc in self.topic_collections.all():
