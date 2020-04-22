@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load humanize %}
+{% load bootstrap3 %}
+
+{% block title %}{% endblock %}
+{% block page_header %}{% trans 'List of crawl jobs' %}{% endblock %}
+{% block content %}
+    <table class="table">
+    <thead>
+    <th scope="col">id</th>
+    <th scope="col">{% trans 'Title' %}</th>
+    <th scope="col">{% trans 'Crawler / Job Type' %}</th>
+    <th scope="col">{% trans 'State' %}</th>
+    <th scope="col">{% trans 'Crawl state (last known)' %}</th>
+    <th scope="col">{% trans 'URI budget' %}</th>
+    </thead>
+        <tbody>
+
+        {% for job in object_list %}
+            {% if job.job %}
+        <tr>
+            <th>{{ job.id }}</a></th>
+            <th><a href="{{ job.get_absolute_url }}">{{ job.title }}</a></th>
+            <th><a href="{{ job.get_job_url }}">{{ job.crawler }}/{{ job.job }}</a></th>
+            <th>{{ job.status }}</th>
+            <th><a href="{% url 'harvests:state' job.id %}">{{ job.crawl_status }}</a></th>
+            <th>{{ job.uri_budget }}</th>
+        </tr>
+            {% endif %}
+        {% endfor %}
+        </tbody>
+    </table>
+
+{% endblock %}

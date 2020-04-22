@@ -26,6 +26,16 @@
             {% trans 'Poznámka: Po přepnutí sklizně do stavu running dojde ke zmražení semínek a nelze je měnit.' %}
         </p>
 
+        <h3>{% trans 'Crawl configuration:' %}</h3>
+            <div class="col-xs-12 col-md-12">
+                <ul class="list-group">
+                    <li class="list-group-item">{% trans 'Job type' %}:<a href="{{ object.get_job_url }}"><span class="pull-right">{{ object.job }}</span></a></li>
+                    <li class="list-group-item">{% trans 'Crawler' %}: <a href="{{ object.get_crawler_url }}"><span class="pull-right">{{ object.crawler }}</span></a></li>
+                    <li class="list-group-item">{% trans 'URI budget per domain' %}: <span class="pull-right">{{ object.uri_budget }}</span></li>
+                </ul>
+            </div>
+
+
         {% if object.topic_collections.exists %}
             <h3>{% trans 'Included topic collections' %}</h3>
             <ul class="list-group">
@@ -33,7 +43,7 @@
                 <li class="list-group-item"><a href="{{ topic_collection.get_absolute_url }}">{{ topic_collection }}</a></li>
             {% endfor %}
         {% endif %}
-    
+
         {% if object.custom_seeds %}
             <h3>{% trans 'Custom seeds' %}:</h3>
             <textarea class="form-control" rows="3">{{ object.custom_seeds }}</textarea>

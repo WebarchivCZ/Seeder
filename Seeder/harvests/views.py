@@ -1,5 +1,11 @@
 import time
 import re
+
+import requests
+from requests.auth import HTTPDigestAuth
+from requests.exceptions import Timeout
+import xmltodict
+
 from datetime import date
 from itertools import chain
 
@@ -18,13 +24,12 @@ from . import field_filters
 from django.http.response import Http404, HttpResponseRedirect
 from django.utils.translation import ugettext_lazy as _
 from django.views.generic.base import TemplateView
-from django.views.generic import DetailView, FormView, View
+from django.views.generic import DetailView, FormView, ListView, View
 from django.conf import settings
 
 from core import generic_views
 from comments.views import CommentViewGeneric
 from core.generic_views import EditView
-
 
 def timestamp_to_datetime(ms_string):
     """
@@ -38,7 +43,6 @@ def timestamp_to_datetime(ms_string):
     except ValueError:
         return None
 
-
 def timestamp(dtm_object):
     """
     :param dtm_object: datetime
@@ -46,12 +50,10 @@ def timestamp(dtm_object):
     """
     return time.mktime(dtm_object.timetuple()) * 1000
 
-
 class HarvestView(generic_views.LoginMixin):
     view_name = 'harvests'
     model = models.Harvest
     title = _('Harvests')
-
 
 class CalendarView(HarvestView, TemplateView):
     template_name = 'calendar.html'
@@ -104,15 +106,146 @@ class AddView(HarvestView, FormView):
         harvest.pair_custom_seeds()
         return HttpResponseRedirect(harvest.get_absolute_url())
 
-
 class Detail(HarvestView, DetailView, CommentViewGeneric):
     template_name = 'harvest.html'
-
 
 class Edit(HarvestView, EditView):
     form_class = forms.HarvestEditForm
 
+class List(HarvestView, ListView):
+    template_name = 'harvest_list.html'
 
+class TeardownJob(HarvestView, DetailView):
+    template_name = 'harvest_state.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        if self.object.job and self.object.crawler:
+            try:
+                headers = {'accept': 'application/xml'}
+                action = {'action': 'teardown'}
+                response = requests.post(self.object.get_job_url(), action, verify=False, auth=HTTPDigestAuth('admin', 'travian'), headers=headers, timeout=(5,30))
+            except Timeout:
+                # TODO: Display actual error message to Curators or deal with it in Sentry?
+                context['job_state'] = 'Connection to Crawler failed.'
+                return context
+            else:
+                info = xmltodict.parse(response.content)
+                context['job_state'] = info['job']['statusDescription']
+                if context['job_state'] != 'Unbuilt' and context['job_state'] != 'Ready':
+                    context['job_started'] = info['job']['lastLaunch']
+                    context['job_duration'] = info['job']['elapsedReport']['elapsedPretty']
+                    context['job_duplicated_bytes'] = info['job']['sizeTotalsReport']['dupByHash']
+                    context['job_duplicated_count'] = info['job']['sizeTotalsReport']['dupByHashCount']
+                    context['job_novel_bytes'] = info['job']['sizeTotalsReport']['novel']
+                    context['job_novel_count'] = info['job']['sizeTotalsReport']['novelCount']
+                    context['job_warc_bytes'] = info['job']['sizeTotalsReport']['warcNovelContentBytes']
+                    context['job_warc_count'] = info['job']['sizeTotalsReport']['warcNovelUrls']
+                return context
+        else:
+            return context
+
+
+class State(HarvestView, DetailView):
+    template_name = 'harvest_state.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        if self.object.job and self.object.crawler:
+            try:
+                headers = {'accept': 'application/xml'}
+                response = requests.get(self.object.get_job_url() + '/status', verify=False, auth=HTTPDigestAuth('admin', 'travian'), headers=headers, timeout=(5,30))
+            except Timeout:
+                # TODO: Display actual error message to Curators or deal with it in Sentry?
+                context['job_state'] = 'Connection to Crawler failed.'
+                return context
+            else:
+                info = xmltodict.parse(response.content)
+                context['job_state'] = info['job']['statusDescription']
+                if context['job_state'] != 'Unbuilt' and context['job_state'] != 'Ready':
+                    context['job_started'] = info['job']['lastLaunch']
+                    context['job_duration'] = info['job']['elapsedReport']['elapsedPretty']
+                    context['job_duplicated_bytes'] = info['job']['sizeTotalsReport']['dupByHash']
+                    context['job_duplicated_count'] = info['job']['sizeTotalsReport']['dupByHashCount']
+                    context['job_novel_bytes'] = info['job']['sizeTotalsReport']['novel']
+                    context['job_novel_count'] = info['job']['sizeTotalsReport']['novelCount']
+                    context['job_warc_bytes'] = info['job']['sizeTotalsReport']['warcNovelContentBytes']
+                    context['job_warc_count'] = info['job']['sizeTotalsReport']['warcNovelUrls']
+                return context
+        else:
+            return context
+
+class Run(HarvestView, DetailView):
+    template_name = 'harvest_state.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        if self.object.job and self.object.crawler:
+            try:
+                headers = {'accept': 'application/xml'}
+                response = requests.get(self.object.get_job_url() + '/status', verify=False,
+                                        auth=HTTPDigestAuth('admin', 'travian'), headers=headers, timeout=(5, 30))
+                state = xmltodict.parse(response.content)
+                if state['job']['statusDescription'] == 'Active: PAUSED':
+                    action = {'action': 'unpause'}
+                    response = requests.get(self.object.get_job_url(), action, verify=False,
+                                            auth=HTTPDigestAuth('admin', 'travian'), headers=headers, timeout=(5, 30))
+                else:
+                    action = {'action': 'resume'}
+                    response = requests.post(self.object.get_job_url(), action, verify=False, auth=HTTPDigestAuth('admin', 'travian'), headers=headers, timeout=(5,30))
+            except Timeout:
+                # TODO: Display actual error message to Curators or deal with it in Sentry?
+                context['job_state'] = 'Connection to Crawler failed.'
+                return context
+            else:
+                info = xmltodict.parse(response.content)
+                context['job_state'] = info['job']['statusDescription']
+                if context['job_state'] != 'Unbuilt' and context['job_state'] != 'Ready':
+                    context['job_started'] = info['job']['lastLaunch']
+                    context['job_duration'] = info['job']['elapsedReport']['elapsedPretty']
+                    context['job_duplicated_bytes'] = info['job']['sizeTotalsReport']['dupByHash']
+                    context['job_duplicated_count'] = info['job']['sizeTotalsReport']['dupByHashCount']
+                    context['job_novel_bytes'] = info['job']['sizeTotalsReport']['novel']
+                    context['job_novel_count'] = info['job']['sizeTotalsReport']['novelCount']
+                    context['job_warc_bytes'] = info['job']['sizeTotalsReport']['warcNovelContentBytes']
+                    context['job_warc_count'] = info['job']['sizeTotalsReport']['warcNovelUrls']
+                return context
+        else:
+            return context
+
+class Pause(HarvestView, DetailView):
+    template_name = 'harvest_state.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        if self.object.job and self.object.crawler:
+            try:
+                headers = {'accept': 'application/xml'}
+                action = {'action': 'pause'}
+                response = requests.post(self.object.get_job_url(), action, verify=False, auth=HTTPDigestAuth('admin', 'travian'), headers=headers, timeout=(5,30))
+            except Timeout:
+                # TODO: Display actual error message to Curators or deal with it in Sentry?
+                context['job_state'] = 'Connection to Crawler failed.'
+                return context
+            else:
+                info = xmltodict.parse(response.content)
+                context['job_state'] = info['job']['statusDescription']
+                if context['job_state'] != 'Unbuilt' and context['job_state'] != 'Ready':
+                    context['job_started'] = info['job']['lastLaunch']
+                    context['job_duration'] = info['job']['elapsedReport']['elapsedPretty']
+                    context['job_duplicated_bytes'] = info['job']['sizeTotalsReport']['dupByHash']
+                    context['job_duplicated_count'] = info['job']['sizeTotalsReport']['dupByHashCount']
+                    context['job_novel_bytes'] = info['job']['sizeTotalsReport']['novel']
+                    context['job_novel_count'] = info['job']['sizeTotalsReport']['novelCount']
+                    context['job_warc_bytes'] = info['job']['sizeTotalsReport']['warcNovelContentBytes']
+                    context['job_warc_count'] = info['job']['sizeTotalsReport']['warcNovelUrls']
+                return context
+        else:
+            return context
 class ListHarvestUrls(HarvestView, TemplateView):
     """
     List seed urls to the harvests happening on the date.

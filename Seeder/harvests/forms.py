@@ -3,6 +3,11 @@ from django import forms
 from dal import autocomplete
 from . import models
 
+import requests
+from requests.auth import HTTPDigestAuth
+from requests.exceptions import Timeout
+
+
 # Django 2 fix (https://github.com/Chive/django-multiupload/issues/31)
 
 
@@ -27,6 +32,30 @@ autocomplete_widgets = {
 }
 
 
+# class JobCreateForm(forms.ModelForm):
+#     class Meta:
+#         model = models.Heritrix3Job
+#         fields = [
+#             'job',
+#             'crawler',
+#             'uri_budget',
+#         ]
+#         widgets = autocomplete_widgets
+#
+#     def build_job(self):
+#         try:
+#             headers = {'accept': 'application/xml'}
+#             payload = {'action': 'build'}
+#             response = requests.post(
+#                 'https://' + crawler + '/engine/job/' + job,
+#                 verify=False, auth=HTTPDigestAuth('admin', 'travian'), headers=headers, data=payload,
+#                 timeout=(5, 30))
+#             pass
+#         except Timeout:
+#             # TODO: Display actual error message to Curators or deal with it in Sentry?
+#             context['job_state'] = 'Connection to Crawler failed.'
+
+
 class HarvestCreateForm(forms.ModelForm):
     class Meta:
         model = models.Harvest
@@ -41,6 +70,9 @@ class HarvestCreateForm(forms.ModelForm):
             'custom_sources',
             'topic_collections',
             'topic_collection_frequency',
+            'job',
+            'crawler',
+            'uri_budget',
         ]
         widgets = autocomplete_widgets
 
@@ -60,9 +92,11 @@ class HarvestEditForm(forms.ModelForm):
             'custom_sources',
             'topic_collections',
             'topic_collection_frequency',
+            'job',
+            'crawler',
+            'uri_budget',
         ]
         widgets = autocomplete_widgets
-
 
 class TopicCollectionForm(forms.ModelForm):
     attachments = PatchedMultiFileField(min_num=0, required=False)

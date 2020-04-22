@@ -8,6 +8,8 @@ from django.utils.translation import ugettext_lazy as _
 from django.urls import reverse
 from django.dispatch import receiver
 from django.db.models.signals import pre_save
+from django.core.validators import MaxValueValidator, MinValueValidator
+from django.shortcuts import redirect
 
 from reversion import revisions
 from ckeditor.fields import RichTextField
@@ -161,10 +163,47 @@ class Harvest(HarvestAbstractModel):
         STATE_RUNNING, STATE_SUCCESS, STATE_SUCCESS_WITH_FAILURES
     )
 
+    """
+        Crawlers available for harvesting jobs.
+    """
+    CRAWLER00 = '10.10.0.200:7778'
+    CRAWLER01 = '10.10.0.201:7778'
+    CRAWLER02 = '10.10.0.202:7778'
+    CRAWLER03 = '10.10.0.203:7778'
+
+    CRAWLER = [
+        (CRAWLER00, _('Crawler00')),
+        (CRAWLER01, _('Crawler01')),
+        (CRAWLER02, _('Crawler02')),
+        (CRAWLER03, _('Crawler03')),
+    ]
+
+    JOBTEST = 'Automated-crawl-test'
+    JOB = [
+        (JOBTEST, _('Automated crawl test'))
+    ]
+
     status = models.IntegerField(
         choices=STATES,
         verbose_name=_('State'),
         default=STATE_PLANNED
+    )
+
+    crawler = models.CharField(
+        choices = CRAWLER,
+        verbose_name=_('Crawler hostname + port'),
+        default=CRAWLER00,
+        null = True,
+        max_length=100,
+
+    )
+
+    job = models.CharField(
+        choices=JOB,
+        default=JOBTEST,
+        null = True,
+        verbose_name=_('Job type'),
+        max_length=200,
     )
 
     title = models.CharField(
@@ -207,6 +246,16 @@ class Harvest(HarvestAbstractModel):
     tests = models.BooleanField(
         verbose_name=_('Tests'),
         default=False,
+    )
+
+    crawl_status = models.CharField(
+        verbose_name=_('Last know crawl state'),
+        max_length=100,
+        null=True,
+    )
+    uri_budget = models.IntegerField(
+        default=15000,
+        verbose_name='URI Budget per domain'
     )
 
     def get_topic_collections_by_frequency(self):
@@ -330,6 +379,15 @@ class Harvest(HarvestAbstractModel):
             })
         return None
 
+    def get_job_url(self):
+        return 'https://' + self.crawler + '/engine/job/' + self.job
+
+    def get_crawler_url(self):
+        return 'https://' + self.crawler + '/engine/job/'
+
+    def get_job_detail_url(self):
+        return reverse('harvests:state', args=[str(self.id)])
+
     def freeze_seeds(self):
         """
         Freezes the seeds to preserve them for later use
@@ -379,6 +437,29 @@ class Harvest(HarvestAbstractModel):
                     target_frequency=freq,
                 ).save()
 
+    # shortname = models.CharField('Heritrix Job Name', max_length=100)
+    # statusDescription = models.CharField(max_length=100)
+    # launchCount = models.IntegerField
+    # isProfile = models.BooleanField
+    # primaryConfig = models.CharField('Path to Crawler configuration', max_length=200)
+    # primaryConfigUrl = models.URLField('URL of primary configuration')
+    # url = models.URLField('Job URL')
+    # sizeTotalReport_dupByHash = models.IntegerField('Bytes of duplicated content')
+    # sizeTotalReport_dupByHashCount = models.IntegerField('Count of duplicated content')
+    # sizeTotalReport_novel = models.IntegerField('Bytes of new content')
+    # sizeTotalReport_novelCount = models.IntegerField('Count of new content')
+    # sizeTotalReport_notModified = models.IntegerField('Bytes of unmodified content')
+    # sizeTotalReport_notModifiedCount = models.IntegerField('Count of unmodified content')
+    # sizeTotalReport_total = models.IntegerField('Bytes total')
+    # sizeTotalReport_totalCount = models.IntegerField('URIs total')
+    # isLaunchInfoPartial = models.BooleanField
+    # isRunning = models.BooleanField
+    # isLaunchable = models.BooleanField
+    # hasApplicationContext = models.BooleanField
+    # alertCount = models.IntegerField('Count of alerts')
+    # heapReport_usedBytes = models.IntegerField('Used Heap in Bytes')
+    # heapReport_totalBytes = models.IntegerField('Current Heap in Bytes')
+    # heapReport_maxBytes = models.IntegerField('Maximum Heap in Bytes')
 
 @revisions.register(exclude=('last_changed',))
 class TopicCollection(HarvestAbstractModel, OrderedModel):

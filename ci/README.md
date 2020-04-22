@@ -32,3 +32,6 @@ sudo docker cp seeder-prod.gz seeder_seeder_db_1:/
 sudo docker exec -u postgres seeder_seeder_db_1 pg_restore -d seeder --clean seeder-prod.gz
 sudo docker-compose -f docker-compose-prod.yml -p seeder start web
 ```
+Oneliner pro zálohování databáze na produkci
+```bash
+sudo docker exec -t -u postgres seeder_seeder_db_1 pg_dump --format c --compress 9 --no-owner seeder > seeder-prod.gz```

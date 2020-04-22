@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load humanize %}
+{% load bootstrap3 %}
+
+{% block title %}{% endblock %}
+{% block page_header %}{{ object.title }} | {{ job_state }}
+    <a href="{% url 'harvests:teardown' pk=object.pk %}" class="btn btn-primary btn-danger pull-right">{% trans 'Teardown' %}</a>
+    <a href="{% url 'harvests:stop' pk=object.pk %}" class="btn btn-primary btn-warning pull-right">{% trans 'Stop' %}</a>
+    <a href="{% url 'harvests:pause' pk=object.pk %}" class="btn btn-primary btn-info pull-right">{% trans 'Pause' %}</a>
+    <a href="{% url 'harvests:run' pk=object.pk %}" class="btn btn-primary btn-success pull-right">{% trans 'Launch' %}</a>
+
+{% endblock %}
+{% block content %}
+    {% if object.job.exists %}
+        <h3>{% trans 'Crawler' %}: {{ job_state }}</h3>
+        <ul class="list-group">
+          <li class="list-group-item">{% trans 'Crawl Job Name' %}: <span class="pull-right"><a href="{{ job_url }}">{{ object.job }}</a></span></li>
+          <li class="list-group-item">{% trans 'Crawl Job State' %}: <span class="pull-right"><a href="{{ job_url }}">{{ job_state }}</a></span></li>
+          <li class="list-group-item">{% trans 'Crawl Job Launched' %}: <span class="pull-right">{{ job_started }}</span></li>
+          <li class="list-group-item">{% trans 'Crawl Job Duration' %}: <span class="pull-right">{{ job_duration }}</span></li>
+          <li class="list-group-item">{% trans 'Crawl Job Duplicated Bytes' %}: <span class="pull-right">{{ job_duplicated_bytes }}</span></li>
+          <li class="list-group-item">{% trans 'Crawl Job Duplicated URLs' %}: <span class="pull-right">{{ job_duplicated_count }}</span></li>
+          <li class="list-group-item">{% trans 'Crawl Job Novel Bytes' %}: <span class="pull-right">{{ job_novel_bytes }}</span></li>
+          <li class="list-group-item">{% trans 'Crawl Job Novel URLs' %}: <span class="pull-right">{{ job_novel_count }}</span></li>
+          <li class="list-group-item">{% trans 'Crawl Job WARC Bytes' %}: <span class="pull-right">{{ job_warc_bytes }}</span></li>
+          <li class="list-group-item">{% trans 'Crawl Job WARC URLs' %}: <span class="pull-right">{{ job_warc_count }}</span></li>
+        </ul>
+    {% endif %}
+
+{% endblock %}
