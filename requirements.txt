@@ -1,7 +1,7 @@
 coverage
 odictliteral==1.0.0
-django==2.2
-Pillow==5.2.0
+django==2.2.12
+Pillow==6.2.0
 sorl-thumbnail==12.5.0
 psycopg2==2.7.3.1
 djangorestframework==3.9.4
