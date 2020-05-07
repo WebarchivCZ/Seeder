@@ -1,3 +1,5 @@
+import re
+
 from django.core.management.base import BaseCommand
 from django.db.models import Q
 
@@ -25,10 +27,8 @@ class Command(BaseCommand):
         wrong_contracts = []
         for contract in cc_contracts:
             # Try to match the CC type by its ID in the full description
-            keys = [
-                key for key, val in constants.CREATIVE_COMMONS_TYPES.items()
-                if key in contract.creative_commons_type
-            ]
+            keys = [key for key in constants.CREATIVE_COMMONS_TYPES.keys()
+                    if re.search(rf"\({key}\)", contract.creative_commons_type)]
             # Exactly one correct CC type was matched
             if len(keys) == 1:
                 # Update the contract's CC type to the key

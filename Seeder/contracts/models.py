@@ -1,4 +1,5 @@
 import uuid
+import re
 
 from datetime import date
 
@@ -135,8 +136,9 @@ class Contract(BaseModel):
         cc = constants.CREATIVE_COMMONS_TYPES.get(self.creative_commons_type)
         # Happens when CC type is set to full description or just wrong format
         if cc is None:
-            keys = [key for key, val in constants.CREATIVE_COMMONS_TYPES.items()
-                    if key in self.creative_commons_type]
+            # Has to match exactly a CC shortcut in parentheses
+            keys = [key for key in constants.CREATIVE_COMMONS_TYPES.keys()
+                    if re.search(rf"\({key}\)", self.creative_commons_type)]
             # Exactly one correct CC type was matched
             if len(keys) == 1:
                 return constants.CREATIVE_COMMONS_TYPES[keys[0]].get('url')
