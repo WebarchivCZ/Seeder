@@ -129,6 +129,9 @@ class Contract(BaseModel):
         return _('Contract with {0}'.format(self.publisher))
 
     def get_creative_commons_url(self):
+        # Possible that creative_commons == True but type not set
+        if self.creative_commons_type is None:
+            return None
         cc = constants.CREATIVE_COMMONS_TYPES.get(self.creative_commons_type)
         # Happens when CC type is set to full description or just wrong format
         if cc is None:

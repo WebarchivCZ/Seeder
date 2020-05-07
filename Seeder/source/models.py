@@ -449,17 +449,18 @@ class Source(SearchModel, SlugOrCreateModel, BaseModel):
             return self.get_suggested_by_display()
         return self.created_by
 
-    @property
-    def has_creative_commons(self):
-        return self.contract_set.valid().filter(
-            creative_commons=True).count() > 0
-
     def get_creative_commons(self):
-        if not self.has_creative_commons:
+        cc_contracts = self.contract_set.valid().filter(
+            creative_commons=True
+        ).exclude(
+            Q(creative_commons_type=None) | Q(creative_commons_type='')
+        )
+        print(cc_contracts.count(), cc_contracts)
+        # Only return something if there's at least one CC contract
+        if cc_contracts.count() == 0:
             return None
         # Get the first CC contract's type
-        cc_contract = self.contract_set.valid().filter(
-            creative_commons=True).first()
+        cc_contract = cc_contracts.first()
         cc_type = cc_contract.creative_commons_type
         # URL can be None if CC type is incorrect
         cc_url = cc_contract.get_creative_commons_url()
@@ -474,6 +475,10 @@ class Source(SearchModel, SlugOrCreateModel, BaseModel):
         cc = self.get_creative_commons()
         if cc:
             return cc[1]
+
+    @property
+    def has_creative_commons(self):
+        return self.get_creative_commons() is not None
 
 
 @revisions.register(exclude=('last_changed',))
