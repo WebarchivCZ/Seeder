@@ -99,19 +99,16 @@ class TopicCollectionForm(forms.ModelForm):
 
 class TopicCollectionEditForm(TopicCollectionForm):
     files_to_delete = forms.MultipleChoiceField(required=False)
-
-    def clean_order(self):
-        updated_order = self.cleaned_data['order']
-        if updated_order < 1:
-            raise (forms.ValidationError("Order must be >= 1"))
-        return updated_order
+    new_order = forms.IntegerField(min_value=1)
 
     def __init__(self, attachment_list, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        # Set the initial order to the current one
+        self.fields['new_order'].initial = self.instance.order
         self.fields['files_to_delete']._set_choices(
             [(file.id, str(file)) for file in attachment_list]
         )
 
     class Meta(TopicCollectionForm.Meta):
-        fields = ('order',) + TopicCollectionForm.Meta.fields + \
+        fields = ('new_order',) + TopicCollectionForm.Meta.fields + \
             ('files_to_delete',)

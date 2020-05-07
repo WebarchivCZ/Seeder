@@ -29,6 +29,8 @@ urlpatterns = [
     path('<int:pk>/edit', Edit.as_view(), name='edit'),
     path('add_topic_collection', AddTopicCollection.as_view(),
          name='topic_collection_add'),
+    path('<int:pk>/change_order/<str:to>', ChangeOrder.as_view(),
+         name='topic_collection_change_order'),
     path('<int:pk>/collection_edit', EditCollection.as_view(),
          name='topic_collection_edit'),
     path('<int:pk>/collection_detail', CollectionDetail.as_view(),
@@ -39,6 +41,8 @@ urlpatterns = [
          name='topic_collection_toggle_publish'),
     path('collections', CollectionListView.as_view(),
          name='topic_collection_list'),
+    path('collections/reorder', ReorderCollections.as_view(),
+         name='topic_collection_reorder'),
     # Harvest URLs
     path('catalogue', HarvestUrlCatalogue.as_view(), name='catalogue'),
     # Harvest URLs based on date and harvest id

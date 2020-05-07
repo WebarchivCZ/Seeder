@@ -18,7 +18,7 @@ from . import field_filters
 from django.http.response import Http404, HttpResponseRedirect
 from django.utils.translation import ugettext_lazy as _
 from django.views.generic.base import TemplateView
-from django.views.generic import DetailView, FormView
+from django.views.generic import DetailView, FormView, View
 from django.conf import settings
 
 from core import generic_views
@@ -383,14 +383,10 @@ class EditCollection(TCView, generic_views.EditView):
         return form_class(files, **self.get_form_kwargs())
 
     def form_valid(self, form):
-        original_order = models.TopicCollection.objects.get(
-            pk=form.instance.pk).order
-        new_order = form.cleaned_data['order']
-        # Keep original order for save so that it's not messed up
-        form.instance.order = original_order
+        # Update the new order through OrderedModel's "to" method
+        new_order = form.cleaned_data['new_order']
+        form.instance.to(new_order)
         topic = form.save()
-        # Change order using the manager 'move' function (re-orders other)
-        models.TopicCollection.objects.move(form.instance, new_order)
 
         ids_to_delete = form.cleaned_data['files_to_delete']
         for att in models.Attachment.objects.filter(id__in=ids_to_delete):
@@ -403,6 +399,33 @@ class EditCollection(TCView, generic_views.EditView):
                 topic_collection=topic
             )
         return HttpResponseRedirect(topic.get_absolute_url())
+
+
+class ReorderCollections(View):
+    def get(self, request, *args, **kwargs):
+        collections = models.TopicCollection.objects.order_by('order')
+        for i, tc in enumerate(collections):
+            tc.order = i+1
+            tc.save()
+        return HttpResponseRedirect(reverse('harvests:topic_collection_list'))
+
+
+class ChangeOrder(DetailView):
+    model = models.TopicCollection
+
+    # TODO: make generic
+
+    def get(self, request, pk, to, *args, **kwargs):
+        obj = self.get_object()
+        if to == 'down':
+            obj.down()
+        elif to == 'up':
+            obj.up()
+        elif to == 'bottom':
+            obj.bottom()
+        elif to == 'top':
+            obj.top()
+        return HttpResponseRedirect(reverse('harvests:topic_collection_list'))
 
 
 class CollectionDetail(TCView, DetailView, CommentViewGeneric):
