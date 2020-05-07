@@ -12,9 +12,10 @@ from django.db.models.signals import pre_save
 from reversion import revisions
 from ckeditor.fields import RichTextField
 from autoslug import AutoSlugField
+from ordered_model.models import OrderedModel
 
 from blacklists.models import Blacklist
-from core.models import BaseModel, DatePickerField, OrderedModel
+from core.models import BaseModel, DatePickerField
 from harvests.scheduler import get_dates_for_timedelta
 from source import constants as source_constants
 from source.models import Source, Seed, KeyWord
@@ -404,7 +405,7 @@ class TopicCollection(HarvestAbstractModel, OrderedModel):
     def get_absolute_url(self):
         return reverse('harvests:topic_collection_detail', args=[str(self.id)])
 
-    class Meta:
+    class Meta(OrderedModel.Meta):
         verbose_name = _('Topic collection')
         verbose_name_plural = _('Topic collections')
         ordering = ('order',)
