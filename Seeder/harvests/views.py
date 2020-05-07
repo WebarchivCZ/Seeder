@@ -361,8 +361,6 @@ class AddTopicCollection(TCView, FormView):
     title = _('Add TopicCollection')
 
     def form_valid(self, form):
-        # Set the order manually to max + 1
-        form.instance.order = models.TopicCollection.objects.max_order + 1
         topic = form.save()
 
         for each in form.cleaned_data["attachments"]:
