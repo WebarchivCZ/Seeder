@@ -2,17 +2,13 @@ from django.forms import widgets, MultiValueField, DateField
 
 
 class DatePickerWidget(widgets.DateInput):
-    class Media:
-        css = {
-            'all': (
-                'css/bootstrap-datetimepicker.min.css',
-            )
-        }
-        js = (
-            'https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.3/moment-with-locales.min.js',  # noqa
-            'js/bootstrap-datetimepicker.min.js',
-            'datetime_picker.js'
-        )
+    def __init__(self, attrs=None, format=None):
+        # Use the HTML date widget
+        if attrs is not None:
+            attrs.update({'type': 'date'})
+        else:
+            attrs = {'type': 'date'}
+        super().__init__(attrs=attrs, format=format)
 
 
 class DateRangeWidget(widgets.MultiWidget):
