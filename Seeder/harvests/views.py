@@ -362,6 +362,8 @@ class AddTopicCollection(TCView, FormView):
 
     def form_valid(self, form):
         topic = form.save()
+        # Put the new Topic Collection all the way to the top (newest)
+        topic.top()
 
         for each in form.cleaned_data["attachments"]:
             models.Attachment.objects.create(
