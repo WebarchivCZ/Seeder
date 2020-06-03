@@ -1,4 +1,3 @@
-{% load humanize %}
 {% load bootstrap3 %}
 {% load mptt_tags %}
 {% load i18n %}
@@ -11,7 +10,7 @@
         <div class="media-body panel panel-default">
             <div class="panel-heading">
                 <span> {{ node.name }}</span>
-                <span class="pull-right">{{ node.submit_date|naturaltime }} | <a class="respond" data-comment-author="{{ node.name }}" data-comment-id="{{ node.id }}">{% trans 'Respond' %}</a></span>
+                <span class="pull-right">{{ node.submit_date }} | <a class="respond" data-comment-author="{{ node.name }}" data-comment-id="{{ node.id }}">{% trans 'Respond' %}</a></span>
             </div>
             <div class="panel-body">
                 {{ node.text }}

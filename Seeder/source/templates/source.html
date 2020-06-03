@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% load i18n humanize bootstrap3 thumbnail static %}
+{% load i18n bootstrap3 thumbnail static %}
 
 {% block title %} {{ source }} {% endblock %}
 {% block page_header %} {{ source }}{% endblock %}
@@ -62,7 +62,7 @@
                 </tr>
                 <tr>
                     <td>{% trans 'Created at' %}</td>
-                    <td>{{ source.created|naturaltime }}</td>
+                    <td>{{ source.created }}</td>
                 </tr>
                 <tr>
                     <td>{% trans 'Suggested by' %}</td>
@@ -113,7 +113,7 @@
                 <tr>
                     <td>{% trans 'QA checks' %}</td>
                     <td>
-                        {% for qa in source.qualityassurancecheck_set.all %}<a href="{{ qa.get_absolute_url }}">{{ qa.created|naturaltime }}</a>{% if not forloop.last%}, {% endif %}{% endfor %}
+                        {% for qa in source.qualityassurancecheck_set.all %}<a href="{{ qa.get_absolute_url }}">{{ qa.created }}</a>{% if not forloop.last%}, {% endif %}{% endfor %}
                     </td>
                 </tr>
 
