@@ -4,7 +4,7 @@ from django.urls import reverse
 from django.utils.translation import ugettext_lazy as _
 from django.template.loader import render_to_string
 
-from core.utils import AbsoluteURLColumn, NaturalDatetimeColumn
+from core.tables import AbsoluteURLColumn, NaturalDatetimeColumn
 
 
 class ChangeOrderColumn(tables.Column):

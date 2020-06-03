@@ -2,7 +2,7 @@ from . import models
 import django_tables2 as tables
 from django.utils.translation import ugettext_lazy as _
 
-from core.utils import AbsoluteURLColumn, NaturalDatetimeColumn
+from core.tables import AbsoluteURLColumn, NaturalDatetimeColumn
 
 
 class NewsTable(tables.Table):

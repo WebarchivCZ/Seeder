@@ -3,7 +3,7 @@ import django_tables2 as tables
 from . import models
 from django.utils.translation import ugettext_lazy as _
 
-from core.utils import AbsoluteURLColumn, NaturalDatetimeColumn
+from core.tables import AbsoluteURLColumn, NaturalDatetimeColumn
 
 
 class ContractTable(tables.Table):
