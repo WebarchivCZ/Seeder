@@ -1,6 +1,5 @@
 {% extends 'base.html' %}
 {% load i18n %}
-{% load humanize %}
 
 {% block content %}
     <p>
@@ -15,7 +14,7 @@
     <ul class="list-group">
         {% for export in latest_exports %}
             <a href="{{ export.export_file.url }}" class="list-group-item" target="_blank">
-                {% trans 'Frequency' %}: {{ export.get_frequency_display }}, {% trans 'created' %} {{ export.created|naturaltime }}
+                {% trans 'Frequency' %}: {{ export.get_frequency_display }}, {% trans 'created' %} {{ export.created }}
             </a>
         {% endfor %}
     </ul>

@@ -11,7 +11,6 @@ from django.contrib import messages
 from dal import autocomplete
 from formtools.wizard.views import SessionWizardView
 from datetime import datetime
-from urljects import U, URLView, pk
 
 from contracts.models import Contract
 from core.generic_views import ObjectMixinFixed, MessageView
@@ -44,12 +43,9 @@ class SourceView(generic_views.LoginMixin):
     model = models.Source
 
 
-class AddSource(generic_views.LoginMixin, SessionWizardView, URLView):
+class AddSource(generic_views.LoginMixin, SessionWizardView):
     template_name = 'add_source.html'
     # view_name = 'add_source'
-
-    url = U / 'add'
-    url_name = 'add'
 
     form_list = (
         ('source', forms.SourceForm),
@@ -169,28 +165,18 @@ class AddSource(generic_views.LoginMixin, SessionWizardView, URLView):
         return HttpResponseRedirect(source.get_absolute_url())
 
 
-class SourceDetail(SourceView, DetailView, CommentViewGeneric, URLView):
+class SourceDetail(SourceView, DetailView, CommentViewGeneric):
     template_name = 'source.html'
     context_object_name = 'source'
     threaded_comments = True
 
-    url = U / 'detail' / pk
-    url_name = 'detail'
 
-
-class SourceEdit(SourceView, generic_views.EditView, URLView):
+class SourceEdit(SourceView, generic_views.EditView):
     form_class = forms.SourceEditForm
     template_name = 'edit_source.html'
 
-    url = U / 'edit' / pk
-    url_name = 'edit'
 
-
-
-class DeleteView(View, MessageView, SourceView, ObjectMixinFixed,  URLView):
-    url = U / pk / 'delete'
-    url_name = 'delete'
-
+class DeleteView(View, MessageView, SourceView, ObjectMixinFixed):
     def post(self, request, *args, **kwargs):
         s = self.get_object()
 
@@ -206,7 +192,6 @@ class DeleteView(View, MessageView, SourceView, ObjectMixinFixed,  URLView):
 
         s.delete_blob()  # remove from search
 
-
         self.add_message(
             _('Source deactivated, it might still appear in searches.'),
             messages.SUCCESS
@@ -214,11 +199,8 @@ class DeleteView(View, MessageView, SourceView, ObjectMixinFixed,  URLView):
         return HttpResponseRedirect(reverse('source:list'))
 
 
-class SeedAdd(SourceView, generic_views.ObjectMixinFixed, FormView, URLView):
+class SeedAdd(SourceView, generic_views.ObjectMixinFixed, FormView):
     form_class = forms.SeedEdit
-
-    url = U / 'add_seed' / pk
-    url_name = 'add_seed'
 
     title = _('Add seed')
     template_name = 'add_form.html'
@@ -230,39 +212,29 @@ class SeedAdd(SourceView, generic_views.ObjectMixinFixed, FormView, URLView):
         return HttpResponseRedirect(self.get_object().get_absolute_url())
 
 
-class SeedEdit(SourceView, generic_views.EditView, URLView):
+class SeedEdit(SourceView, generic_views.EditView):
     form_class = forms.SeedEdit
     model = models.Seed
 
-    url = U / 'seed' / pk
-    url_name = 'seed_edit'
 
-
-class History(SourceView, generic_views.HistoryView, URLView):
+class History(SourceView, generic_views.HistoryView):
     """
         History log
     """
-    url = U / 'history' / pk
-    url_name = 'history'
+    pass
 
 
-class SourceList(SourceView, generic_views.FilteredListView, URLView):
+class SourceList(SourceView, generic_views.FilteredListView):
     title = _('Sources')
     table_class = tables.SourceTable
-    filter_class = field_filters.SourceFilter
-
-    url = U / 'list'
-    url_name = 'list'
+    filterset_class = field_filters.SourceFilter
 
     add_link = 'source:add'
 
 
-class CategoryAutocomplete(autocomplete.Select2QuerySetView, URLView):
-    url_name = 'category_autocomplete'
-    url = U / 'category_autocomplete'
-
+class CategoryAutocomplete(autocomplete.Select2QuerySetView):
     def get_queryset(self):
-        if not self.request.user.is_authenticated():
+        if not self.request.user.is_authenticated:
             return models.Category.objects.none()
 
         qs = models.Category.objects.all()
@@ -271,12 +243,9 @@ class CategoryAutocomplete(autocomplete.Select2QuerySetView, URLView):
         return qs.distinct()
 
 
-class SubcategoryAutocomplete(autocomplete.Select2QuerySetView, URLView):
-    url_name = 'subcategory_autocomplete'
-    url = U / 'subcategory_autocomplete'
-
+class SubcategoryAutocomplete(autocomplete.Select2QuerySetView):
     def get_queryset(self):
-        if not self.request.user.is_authenticated():
+        if not self.request.user.is_authenticated:
             return models.SubCategory.objects.none()
         qs = models.SubCategory.objects.all()
 
@@ -289,12 +258,9 @@ class SubcategoryAutocomplete(autocomplete.Select2QuerySetView, URLView):
         return qs.distinct()
 
 
-class SourceAutocomplete(autocomplete.Select2QuerySetView, URLView):
-    url_name = 'source_autocomplete'
-    url = U / 'source_autocomplete'
-
+class SourceAutocomplete(autocomplete.Select2QuerySetView):
     def get_queryset(self):
-        if not self.request.user.is_authenticated():
+        if not self.request.user.is_authenticated:
             return models.Source.objects.none()
 
         qs = models.Source.objects.all()
@@ -306,12 +272,9 @@ class SourceAutocomplete(autocomplete.Select2QuerySetView, URLView):
         return qs.distinct()
 
 
-class SourcePublicAutocomplete(autocomplete.Select2QuerySetView, URLView):
-    url_name = 'source_public_autocomplete'
-    url = U / 'source_public_autocomplete'
-
+class SourcePublicAutocomplete(autocomplete.Select2QuerySetView):
     def get_queryset(self):
-        if not self.request.user.is_authenticated():
+        if not self.request.user.is_authenticated:
             return models.Source.objects.none()
 
         qs = models.Source.objects.archiving()
@@ -323,12 +286,9 @@ class SourcePublicAutocomplete(autocomplete.Select2QuerySetView, URLView):
         return qs.distinct()
 
 
-class KeywordAutocomplete(autocomplete.Select2QuerySetView, URLView):
-    url_name = 'keyword_autocomplete'
-    url = U / 'keyword_autocomplete'
-
+class KeywordAutocomplete(autocomplete.Select2QuerySetView):
     def get_queryset(self):
-        if not self.request.user.is_authenticated():
+        if not self.request.user.is_authenticated:
             return models.KeyWord.objects.none()
 
         qs = models.KeyWord.objects.all()
@@ -337,15 +297,13 @@ class KeywordAutocomplete(autocomplete.Select2QuerySetView, URLView):
         return qs.distinct()
 
 
-class SourceDump(URLView, TemplateView):
-    url_name = 'dump'
-    url = U / 'dump'
+class SourceDump(TemplateView):
     template_name = 'dump.txt'
 
     content_type = 'text/text'
 
     def get_context_data(self, **kwargs):
         c = super().get_context_data(**kwargs)
-        c['seed_urls'] = models.Seed.archiving.public_seeds().all()\
+        c['urls'] = models.Seed.archiving.public_seeds().all()\
             .values_list('url', flat=True)
         return c

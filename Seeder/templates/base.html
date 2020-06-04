@@ -1,4 +1,4 @@
-{% load bootstrap3 i18n raven %}
+{% load bootstrap3 i18n raven core %}
 <!DOCTYPE html>
 <html lang="{{ LANGUAGE_CODE }}" data-date-format="{{ js_format }}">
 <head>
@@ -13,8 +13,9 @@
 
     {% bootstrap_css %}
     {% bootstrap_javascript %}
-    <!-- Custom styles for this template -->
+    <!-- Custom styles and scritps for this template -->
     <link href="{{ STATIC_URL }}main.css" rel="stylesheet">
+    <script src="{{ STATIC_URL }}main.js"></script>
     {% block extrahead %}{% endblock %}
 
 </head>
@@ -30,6 +31,7 @@
                 <span class="icon-bar"></span>
             </button>
             <a class="navbar-brand" href="{% url 'core:dashboard' %}">{% trans 'Seeder' %}</a>
+            <span class="navbar-brand" style="color:#777;font-size:1em;">{% version %}</span>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
             <form class="navbar-form navbar-right" action="{% url 'search:search' %}" method="get">
@@ -84,18 +86,13 @@
                 <li id="sources">
                     <a href="{% url 'source:list' %}">{% trans 'Sources' %}</a>
                 </li>
-                <li id="harvests">
-                    <a href="{% url 'harvests:calendar' %}">{% trans 'Harvests' %}</a>
-                </li>
                 <li id="publishers">
                     <a href="{% url 'publishers:list' %}">{% trans 'Publishers' %}</a>
                 </li>
                 <li id="contracts">
                     <a href="{% url 'contracts:list' %}">{% trans 'Contracts' %}</a>
                 </li>
-                <li id="blacklists">
-                    <a href="{% url 'blacklists:list' %}">{% trans 'Blacklists' %}</a>
-                </li>
+                
                 <li id="qa">
                     <a href="{% url 'qa:list' %}">{% trans 'Quality assurance' %}</a>
                 </li>
@@ -111,6 +108,16 @@
 
                 <hr>
 
+                <li id="harvests">
+                    <a href="{% url 'harvests:calendar' %}">{% trans 'Harvests' %}</a>
+                </li>
+                <li><a href="{% url 'source:dump' %}" target="_blank">{% trans 'Seed DB dump' %}</a></li>
+                <li id="blacklists">
+                    <a href="{% url 'blacklists:list' %}">{% trans 'Blacklists' %}</a>
+                </li>
+
+                <hr>
+
                 <li id="searchlog">
                     <a href="{% url 'search:list' %}">{% trans 'Search logs' %}</a>
                 </li>
@@ -120,7 +127,6 @@
                 <li><a href="https://github.com/WebArchivCZ/Seeder">Github</a></li>
                 <li><a href="https://github.com/WebArchivCZ/Seeder/issues/new">{% trans 'Bug report' %}</a></li>
                 <li><a href="https://seeder.readthedocs.org/en/latest/">{% trans 'Read the docs' %}</a></li>
-                <li><a href="{% url 'source:dump' %}">{% trans 'Seed DB dump' %}</a></li>
                 <li id="harvest_catalogue"><a href="{% url 'harvests:catalogue' %}">{% trans 'Harvests urls' %}</a></li>
 
 

@@ -1,0 +1,13 @@
+---
+test:
+  hosts:
+    localhost:
+  vars:
+    env: test
+    seeder_docker_tag: develop
+    seeder_db_host: seeder_db
+    seeder_db_name: seeder
+    seeder_db_user: seeder
+    seeder_db_pass: "{{ seeder_db_pass_vault }}"
+    seeder_django_allowed_hosts: app.webarchiv.cz
+    seeder_django_debug: 'True'

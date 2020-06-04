@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% load i18n humanize bootstrap3 thumbnail static %}
+{% load i18n bootstrap3 thumbnail static %}
 
 {% block title %} {{ object }} {% endblock %}
 {% block page_header %} {{ object }}{% endblock %}
@@ -12,6 +12,11 @@
                 <tr>
                     <td>{% trans 'Status' %}</td>
                     <td>{{ object.get_status_display }}</td>
+                </tr>
+                
+                <tr>
+                    <td>{% trans 'Order' %}</td>
+                    <td>{{ object.order }}</td>
                 </tr>
 
                 <tr>
@@ -65,7 +70,7 @@
 
                 <tr>
                     <td>{% trans 'Created at' %}</td>
-                    <td>{{ object.created|naturaltime }}</td>
+                    <td>{{ object.created }}</td>
                 </tr>
                 <tr>
                     <td>{% trans 'Owner' %}</td>
@@ -112,6 +117,11 @@
         <h4>{% trans 'Links' %}:</h4>
             <a href="{% url 'harvests:topic_collection_edit' pk=object.pk %}" class="btn btn-primary btn-warning btn-block">{% trans 'Edit' %}</a>
             <a href="{% url 'harvests:topic_collection_history' pk=object.pk %}" class="btn btn-primary btn-info btn-block">{% trans 'History' %}</a>
+            <br />
+            <form action='{% url 'harvests:topic_collection_toggle_publish' pk=object.pk %}' method='post'>
+                {% csrf_token %}
+                <button class="btn {% if object.active %} btn-danger {% else %} btn-success {% endif %} btn-block">{% if object.active %} {% trans 'Unpublish' %} {% else %} {% trans 'Publish' %} {% endif %}</button>
+            </form>
     </div>
 
     <div class="col-xs-12 col-md-12">

@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% load i18n humanize bootstrap3 thumbnail static %}
+{% load i18n bootstrap3 thumbnail static %}
 
 {% block title %} {{ object }} {% endblock %}
 {% block page_header %} {{ object }}{% endblock %}
@@ -74,7 +74,7 @@
 
                 <tr>
                     <td>{% trans 'Created at' %}</td>
-                    <td>{{ object.created|naturaltime }}</td>
+                    <td>{{ object.created }}</td>
                 </tr>
             </tbody>
         </table>

@@ -1,6 +1,5 @@
 {% extends 'base.html' %}
 {% load i18n %}
-{% load humanize %}
 {% load bootstrap3 %}
 
 {% block title %}{% trans 'History of' %} {{ object}}{% endblock %}
@@ -14,7 +13,7 @@
                 {% if diff.comment %}
                 | {% trans 'Comment' %}: {{ diff.comment }}
                 {% endif %}
-                <span class="pull-right">{{ diff.date|naturaltime }}</span>
+                <span class="pull-right">{{ diff.date }}</span>
             </div>
             <div class="panel-body">
                 <table class="table table-condensed table-hover">

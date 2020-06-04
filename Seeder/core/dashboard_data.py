@@ -1,4 +1,4 @@
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.utils.translation import ugettext_lazy as _
 from django.db.models import Count, Q
 from django.core.paginator import Paginator
@@ -21,7 +21,6 @@ class DashboardCard(object):
     get_color = NotImplemented
     get_title = NotImplemented
     empty = False
-
 
     def __init__(self, user, url_name, page=1):
         """
@@ -116,6 +115,7 @@ class ManagedVotingRounds(VoteCard):
 
     def get_queryset(self):
         return voting_models.VotingRound.objects.filter(
+            source__active=True,
             source__owner=self.user,
             state=voting_models.constants.VOTE_INITIAL
         ).annotate(Count('vote')).order_by('vote__count')
@@ -132,6 +132,7 @@ class OpenToVoteRounds(VoteCard):
         return voting_models.VotingRound.objects.filter(
             ~Q(source__owner=self.user) &
             ~Q(vote__author=self.user) &
+            Q(source__active=True) &
             Q(state=voting_models.constants.VOTE_INITIAL) &
             Q(source__state__in=source_models.constants.VOTE_STATES)
         ).annotate(Count('vote')).order_by('vote__count')
@@ -145,7 +146,7 @@ class SourceCard(DashboardCard):
         return element.name
 
     def get_basic_queryset(self):
-        return source_models.Source.objects.filter(owner=self.user)
+        return source_models.Source.objects.filter(owner=self.user, active=True)
 
 
 class SourceOwned(SourceCard):
@@ -177,7 +178,7 @@ class WithoutAleph(SourceCard):
 
     def get_queryset(self):
         return self.get_basic_queryset().filter(
-            state__in=source_models.constants.ARCHIVING_STATES,
+            state=source_models.constants.STATE_RUNNING,
             aleph_id__exact=''
         )
 

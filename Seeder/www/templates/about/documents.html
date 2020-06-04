@@ -6,75 +6,148 @@
 
 {% block content %}
 
-	{% include "about/menu.html" %}
+{% include "about/menu.html" %}
 
-	<section>
-		<div class="container">
+<section>
+	<div class="container">
 
-			{% if lang == "cs" %}
+		{% if lang == "cs" %}
 
-				<h2>Dokumenty</h2>
+		<h2>Dokumenty</h2>
 
-				<h3>Metodiky</h3>
-				<ul class="normal">
-					<li>Strategie budování sbírky Webarchivu (Collection policy) <a href="{{ STATIC_URL }}www/download/collection-policy-2017.pdf">[PDF]</a></li>
-				</ul>
+		<h3>Metodiky</h3>
+		<ul class="normal">
+			<li>Strategie budování sbírky Webarchivu (Collection policy) <a
+					href="{{ STATIC_URL }}www/download/collection-policy.pdf">[PDF]</a></li>
+			<li>Katalogizační manuál pro popis elektronických online zdrojů ve formátu MARC 21 <a
+					href="https://webarchivcz.github.io/katalogizacni-manual/">[online]</a></li>
+		</ul>
 
-				<h3>Publikační činnost</h3>
+		<h3>Publikační činnost</h3>
 
-				<ul class="normal">
-					<li>KVASNICA, Jaroslav; BJAČKOVÁ, Barbora. Profilování kolekce a stanovení určené skupiny WebArchivu Národní knihovny ČR. <i>ProInflow</i> [online]. 29.6.2017. Dostupný z WWW: <a href="http://www.phil.muni.cz/journals/index.php/proinflow/article/view/942">http://www.phil.muni.cz/journals/index.php/proinflow/article/view/942</a>. ISSN 1804–2406.</li>
-					<li>KVASNICA, Jaroslav; KREIBICH, Rudolf. Formátová analýza sklizených dat v rámci projektu WebArchiv NK ČR. <i>ProInflow</i> [online]. 29.6.2017. Dostupný z WWW: <a href="hhttp://www.phil.muni.cz/journals/index.php/proinflow/article/view/779">hhttp://www.phil.muni.cz/journals/index.php/proinflow/article/view/779</a>. ISSN 1804–2406.</li>
-					<li>KVASNICA, Jaroslav. Budoucnost českého webového archivu. In: <i>INFORUM 2015: 21. ročník konference o profesionálních informačních zdrojích, Praha 26.-27. května 2015</i> [online]. Praha: Albertina icome Praha, 2015. ISSN 1801–2213. Dostupné z: <a href="http://www.inforum.cz/pdf/2015/kvasnica-jaroslav.pdf">http://www.inforum.cz/pdf/2015/kvasnica-jaroslav.pdf</a></li>
-					<li>RUDIŠINOVÁ, Barbora a Jaroslav KVASNICA. Webarchiv v roce 2015. <i>ITLib</i> [online]. 2015, 2015(3): 22-25. Dostupný z <a href="http://itlib.cvtisr.sk/buxus/docs/22_Cesky%20webovy.pdf">http://itlib.cvtisr.sk/buxus/docs/22_Cesky%20webovy.pdf</a>. ISSN 1336-0779</li>
-					<li>RUDIŠINOVÁ, Barbora a Markéta HRDLIČKOVÁ. Akvizice v Národní knihovně - část pátá Akvizice ve Webarchivu. <i>E-Zpravodaj Národní knihovny</i> [online]. 2015, 2(6): 7. Dostupný z <a href="http://www.nkp.cz/o-knihovne/zakladni-informace/vydane-publikace/soubory/ostatni/ez_2015_6.pdf">http://www.nkp.cz/o-knihovne/zakladni-informace/vydane-publikace/soubory/ostatni/ez_2015_6.pdf</a>.</li>
-				</ul>
+		<ul class="normal">
+			<li>
+				KVASNICA, Jaroslav, Andrea PROKOPOVÁ, Zdenko VOZÁR a Zuzana KVAŠOVÁ. Analýza českého webového archivu:
+				Provenience,
+				autenticita a technické parametry. <i>ProInflow</i> [online]. 2019, Vol 11(No 1.), 3-21. ISSN
+				1804–2406. Dostupné z: <a
+					href="http://www.phil.muni.cz/journals/index.php/proinflow/article/view/2019-1-2">
+					http://www.phil.muni.cz/journals/index.php/proinflow/article/view/2019-1-2</a>
+			</li>
+			<li>
+				HAŠKOVCOVÁ, Marie, Monika HOLOUBKOVÁ, Jaroslav KVASNICA a Markéta HRDLIČKOVÁ, 2017. Akvizice českých
+				webových zdrojů. <i>Acta Musei Nationalis Pragae (Historia)</i> [online]. 71(3–4), 41–46.
+				ISSN 2570-6853.
+				Dostupné z: <a
+					href="http://publikace.nm.cz/publikace/publikace-download.php?name=File1&dir=archiv&table=tabPublikaceArchiv&id=5176">
+					http://publikace.nm.cz/publikace/publikace-download.php?name=File1&dir=archiv&table=tabPublikaceArchiv&id=5176</a>
 
-				<h3>Prezentace</h3>
+			</li>
+			<li>
+				KVASNICA, Jaroslav a Barbora RUDIŠINOVÁ. Český webový archiv v novém kabátku. <i>Čtenář: měsíčník pro
+					knihovny</i> [online]. Kladno:
+				Středočeská vědecká knihovna v Kladně, 2016, 68(6). ISSN 1805-4064. Dostupné z: <a
+					href="https://www.svkkl.cz/en/ctenar/clanek/460">https://www.svkkl.cz/en/ctenar/clanek/460</a>
+			</li>
+			<li>
+				KVASNICA, Jaroslav. Vědecké využití dat z webových archivů. <i>Knihovna: knihovnická revue</i>[online].
+				2016,
+				27(2), 23–34. ISSN 1802-8772. Dostupné z:
+				<a
+					href="https://knihovnarevue.nkp.cz/archiv/2016-2/recenzovane-prispevky/vedecke-vyuziti-dat-z-webovych-archivu">
+					https://knihovnarevue.nkp.cz/archiv/2016-2/recenzovane-prispevky/vedecke-vyuziti-dat-z-webovych-archivu</a>
+			</li>
+			<li>RUDIŠINOVÁ, Barbora a Jaroslav KVASNICA. Webarchiv v roce 2015. <i>ITLib</i>[online]. 2015, 2015(3):
+				22-25. ISSN 1336-0779. Dostupný z <a
+					href="http://itlib.cvtisr.sk/buxus/docs/22_Cesky%20webovy.pdf">http://itlib.cvtisr.sk/buxus/docs/22_Cesky%20webovy.pdf</a>
+			</li>
+			<li>KVASNICA, Jaroslav, RUDIŠINOVÁ, Barbora a KREIBICH, Rudolf. Budoucnost českého webového archivu. In:
+				<i>INFORUM 2015: 21. ročník konference o
+					profesionálních informačních zdrojích, Praha 26.-27. května 2015</i>[online]. Praha: Albertina
+				icome Praha, 2015. ISSN 1801–2213. Dostupné z: <a
+					href="http://www.inforum.cz/pdf/2015/kvasnica-jaroslav.pdf">http://www.inforum.cz/pdf/2015/kvasnica-jaroslav.pdf</a>
+			</li>
+			<li>KVASNICA, Jaroslav; BJAČKOVÁ, Barbora. Profilování kolekce a stanovení určené skupiny WebArchivu Národní
+				knihovny ČR. <i>ProInflow</i> [online]. 2014, 6. ročník, 1. číslo. ISSN 1804–2406. Dostupné z: <a
+					href="http://www.phil.muni.cz/journals/index.php/proinflow/article/view/942">http://www.phil.muni.cz/journals/index.php/proinflow/article/view/942</a>
 
-				<iframe src="//www.slideshare.net/slideshow/embed_code/key/A6nf28D8K8FUPI" width="425" height="355" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;" allowfullscreen> </iframe>
-				<iframe src="//www.slideshare.net/slideshow/embed_code/key/3Vai4jamZjEp2x" width="425" height="355" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;" allowfullscreen> </iframe>
+			</li>
+			<li>KVASNICA, Jaroslav a Rudolf KREIBICH. Formátová analýza sklizených dat v rámci projektu WebArchiv NK ČR.
+				<i>ProInflow</i> [online]. 2013, 5. ročník, 2. číslo. ISSN 1804–2406. Dostupné z: <a
+					href="http://www.phil.muni.cz/journals/index.php/proinflow/article/view/779">http://www.phil.muni.cz/journals/index.php/proinflow/article/view/779</a>
+			</li>
+		</ul>
+		<p>Webarchiv také pravidelně publikuje články v <a
+				href="https://text.nkp.cz/o-knihovne/zakladni-informace/vydane-publikace/e-zpravodaj?fbclid=IwAR3cZ9IaKqt8pVcNHHJj_EV6X6HqMl7--jtNu3aeqkxOF_Z4Ckm3MtlZQIM">e-zpravodaji</a>
+			Národní knihovny ČR.</p>
+		<h3>Prezentace</h3>
+
+		<iframe src="//www.slideshare.net/slideshow/embed_code/key/CT7h2WLMEvNN3P" width="425" height="355"
+			frameborder="0" marginwidth="0" marginheight="0" scrolling="no"
+			style="border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;" allowfullscreen>
+		</iframe>
+		<iframe src="//www.slideshare.net/slideshow/embed_code/key/HSm4v64PY0Fmrx" width="425" height="355"
+			frameborder="0" marginwidth="0" marginheight="0" scrolling="no"
+			style="border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;" allowfullscreen>
+		</iframe>
 
 
-				<h3>Referenční zdroje</h3>
 
-				<ul class="normal">
-					<li>Autorský zákon <a href="http://ipk.nkp.cz/legislativa/01_LegPod/autorske-pravo">ipk.nkp.cz/autorske-pravo</a></li>
-					<li>Federation of European Publishers (CENL/FEP): International declaration on the deposit of electronic publications : Conference of European National Librarians, překlad do češtiny <a href="http://full.nkp.cz/nkkr/NKKR0104/0104289.html">nkp.cz/deklarace</a></li>
-					<li>Dublin Core Czech : soubor metadatových prvků Dublin Core, český překlad <a href="http://www.ics.muni.cz/dublin_core">ics.muni.cz/dublin_core</a></li>
-					<li>Creative Commons Česká republika <a href="http://www.creativecommons.cz">creativecommons.cz</a></li>
-					<li>Internet Archive <a href="http://www.archive.org">archive.org</a></li>
-				</ul>
 
-			{% else %}
+		<h3>Referenční zdroje</h3>
 
-				<h2>Documents</h2>
+		<ul class="normal">
+			<li>Autorské právo <a
+					href="http://ipk.nkp.cz/legislativa/01_LegPod/autorske-pravo">ipk.nkp.cz/autorske-pravo</a></li>
+			<li>Dublin Core Czech : soubor metadatových prvků Dublin Core, český překlad <a
+					href="http://www.ics.muni.cz/dublin_core">ics.muni.cz/dublin_core</a></li>
+			<li>Creative Commons Česká republika <a href="https://www.creativecommons.cz">creativecommons.cz</a></li>
+			<li>Internet Archive <a href="https://www.archive.org">archive.org</a></li>
+			<li>International Internet Preservation Consortium <a href="https://netpreserve.org">netpreseve.org</a></li>
+		</ul>
 
-				<h3>Publications</h3>
-				<ul class="normal">
-					<li>KVASNICA, Jaroslav; KREIBICH, Rudolf. Research use of web archived data. Knihovna [online]. 29.6.2017. Dostupný z WWW: <a href="http://knihovnarevue-en.nkp.cz/archives/2016-2/reviewed-articles/research-use-of-web-archived-data">http://knihovnarevue-en.nkp.cz/archives/2016-2/reviewed-articles/research-use-of-web-archived-data<a>. ISSN 1802-8772.</li>
-				</ul>
+		{% else %}
 
-				<h3>Presentation</h3>
-				<iframe src="//www.slideshare.net/slideshow/embed_code/key/E1TBvYp0GQUCN8" width="425" height="355" frameborder="0" marginwidth="0" marginheight="0" scrolling="no" style="border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;" allowfullscreen> </iframe>
+		<h2>Documents</h2>
 
-				<h3>References</h3>
-				<ul class="normal">
-					<li>Copyright <a href="https://www.mkcr.cz/copyright-15.html?lang=en">mkcr.cz/copyright</a></li>
-					<li>Federation of European Publishers (CENL/FEP): International declaration on the deposit of electronic publications : Conference of European National Librarians <a href="https://web.archive.org/web/20010509183201/http://www.ddb.de/news/epubstat.htm">ddb.de/international_declaration</a></li>
-					<li>Dublin Core <a href="http://dublincore.org/">dublincore.org</a></li>
-					<li>Creative Commons <a href="https://creativecommons.org/">creativecommons.org</a></li>
-					<li>Internet Archive <a href="http://www.archive.org">archive.org</a></li>
-				</ul>
+		<h3>Publications</h3>
 
-				<h3>Methodics</h3>
-				<ul class="normal">
-					<li>Collection policy (czech only) <a href="{{ STATIC_URL }}www/download/collection-policy-2017.pdf">[PDF]</a></li>
-				</ul>
+		<ul class="normal">
+			<li>
+				KVASNICA, Jaroslav, RUDIŠINOVÁ, Barbora a KREIBICH, Rudolf. Research use of web archived data.
+				<i>Knihovna: knihovnická revue</i>[online].
+				2016, 27(2), 23–34. ISSN 1802-8772.
+				<a
+					href="https://knihovnarevue-en.nkp.cz/archives/2016-2/reviewed-articles/research-use-of-web-archived-data">
+					https://knihovnarevue-en.nkp.cz/archives/2016-2/reviewed-articles/research-use-of-web-archived-data</a>
+			</li>
+		</ul>
 
-			{% endif %}
+		<h3>Presentations</h3>
+		<iframe src="//www.slideshare.net/slideshow/embed_code/key/E1TBvYp0GQUCN8" width="425" height="355"
+			frameborder="0" marginwidth="0" marginheight="0" scrolling="no"
+			style="border:1px solid #CCC; border-width:1px; margin-bottom:5px; max-width: 100%;" allowfullscreen>
+		</iframe>
 
-		</div>
-	</section>
+
+		<h3>References</h3>
+		<ul class="normal">
+			<li>Copyright <a href="https://www.mkcr.cz/copyright-15.html?lang=en">mkcr.cz/copyright</a></li>
+			<li>Dublin Core <a href="http://dublincore.org/">dublincore.org</a></li>
+			<li>Creative Commons <a href="https://creativecommons.org/">creativecommons.org</a></li>
+			<li>Internet Archive <a href="http://www.archive.org">archive.org</a></li>
+			<li>International Internet Preservation Consortium <a href="https://netpreserve.org">netpreseve.org</a></li>
+		</ul>
+
+		<h3>Methodics</h3>
+		<ul class="normal">
+			<li>Collection policy (czech only) <a
+					href="{{ STATIC_URL }}www/download/collection-policy.pdf">[PDF]</a></li>
+		</ul>
+
+		{% endif %}
+
+	</div>
+</section>
 
 {% endblock %}

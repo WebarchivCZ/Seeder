@@ -2,20 +2,31 @@
 {% load i18n %}
 
 {% block extra_header %}
-<a href="{% url 'blacklists:add' %}" class="pull-right btn btn-primary btn-success">{% trans 'Add' %}</a>
+<a href="{% url 'blacklists:add' %}" class="pull-right btn btn-success">{% trans 'Add' %}</a>
+<a href="{% url 'blacklists:dump' %}" class="pull-right btn btn-primary" target='_blank'>{% trans 'Dump' %}</a>
+<span class="label label-default pull-right" style="font-size: 0.4em;margin-top: 0.6rem;">
+    Last update: {{last_change}} ago
+</span>
 {% endblock %}
 
 {% block content %}
+    <script>
+        // "Select all" link selects all links in blacklist
+        $(document).on('click', '.select_all', (e) => {
+            e.preventDefault();
+            selectText($(e.currentTarget).closest('.panel').find('.panel-body pre')[0]);
+        })
+    </script>
     {% for blacklist in blacklists %}
         <div class="panel panel-default">
           <div class="panel-heading">
               {{ blacklist.title }} |
               <a href="{% url 'blacklists:edit' blacklist.pk %}">{% trans 'Edit' %}</a> |
-              <a href="{% url 'blacklists:history' blacklist.pk %}">{% trans 'History' %}</a>
+              <a href="{% url 'blacklists:history' blacklist.pk %}">{% trans 'History' %}</a> |
+              <a href="#" class="select_all">{% trans 'Select all' %}</a>
           </div>
           <div class="panel-body">
-              <pre>{{ blacklist.url_list }}</pre>
-
+              <pre style="max-height: 500px; overflow-y: scroll;">{{ blacklist.url_list }}</pre>
           </div>
         </div>
     {% endfor %}

@@ -1,14 +1,33 @@
 import django_filters
 
+from django.utils.translation import ugettext_lazy as _
 from dal import autocomplete
-from core.custom_filters import EmptyFilter, DateRangeFilter
+from core.custom_filters import BaseFilterSet, DateRangeFilter
 from publishers.models import Publisher
 from .import models
 
 
-class SourceFilter(EmptyFilter):
-    seed__url = django_filters.CharFilter(lookup_type='icontains')
+def filter_not_empty(queryset, name, value):
+    lookup_isnull = '__'.join([name, 'isnull'])
+    lookup_empty = '__'.join([name, 'exact'])
+    q = queryset.filter(**{lookup_isnull: not value})
+    if value:
+        return q.exclude(**{lookup_empty: ''})
+    else:
+        empty = queryset.filter(
+            aleph_id__exact='').values_list('pk', flat=True)
+        null = q.values_list('pk', flat=True)
+        return queryset.filter(pk__in=list(empty) + list(null))
 
+
+def filter_has_cc(queryset, name, value):
+    return models.Source.objects.has_cc(value)
+
+def filter_contract_number(queryset, name, value):
+    # value in format e.g. '64 / 2017'
+    return models.Source.objects.contains_contract_number(value)
+
+class SourceFilter(BaseFilterSet):
     publisher = django_filters.ModelChoiceFilter(
         queryset=Publisher.objects.all(),
         widget=autocomplete.ModelSelect2(url='publishers:autocomplete')
@@ -27,11 +46,35 @@ class SourceFilter(EmptyFilter):
         )
     )
 
+    has_alephid = django_filters.BooleanFilter(label=_('Source is catalogized'),
+                                               field_name='aleph_id',
+                                               method=filter_not_empty)
+    has_issn = django_filters.BooleanFilter(label=_('Source is periodic'),
+                                            field_name='issn',
+                                            method=filter_not_empty)
+    has_cc = django_filters.BooleanFilter(label=_('Source has CC'),
+                                          method=filter_has_cc)
+    contract_number = django_filters.CharFilter(label=_('Contract number'),
+                                                method=filter_contract_number)
+
     created = DateRangeFilter()
     last_changed = DateRangeFilter()
 
     class Meta:
         model = models.Source
-        fields = ('name', 'owner', 'seed__url', 'publisher', 'state',
-                  'category', 'sub_category', 'suggested_by', 'created',
-                  'last_changed', 'dead_source',)
+        fields = {
+            'name': ('icontains',),
+            'owner': ('exact',),
+            'state': ('exact',),
+            'publisher': ('exact',),
+            'category': ('exact',),
+            'sub_category': ('exact',),
+            'suggested_by': ('exact',),
+            'dead_source': ('exact',),
+            'created': ('exact',),
+            'last_changed': ('exact',),
+            'has_alephid': ('exact',),
+            'has_issn': ('exact',),
+            'has_cc': ('exact',),
+            'contract_number': ('exact',),
+        }

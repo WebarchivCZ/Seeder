@@ -5,7 +5,7 @@ from django.conf import settings
 from django.db.models import Q
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import User
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.core.exceptions import ValidationError
 from django.contrib.contenttypes.models import ContentType
 from django.utils import timezone
@@ -17,6 +17,7 @@ from tld.exceptions import TldDomainNotFound
 from reversion import revisions
 
 from . import constants
+from contracts.constants import CREATIVE_COMMONS_TYPES
 from core.models import BaseModel, DatePickerField
 from publishers.models import Publisher, ContactPerson
 from legacy_db.models import TransferRecord
@@ -61,10 +62,9 @@ class SlugOrCreateModel(object):
 
     """
 
-    from_field = NotImplemented 
+    from_field = NotImplemented
     slug_field = NotImplemented
     slug_max_length = 49
-
 
     def get_value_for_slug(self):
         from_val = getattr(self, self.from_field)
@@ -107,7 +107,7 @@ class SeedManager(models.Manager):
 
     def public_seeds(self):
         return self.valid_seeds().filter(
-            source__state=constants.STATE_RUNNING
+            source__state__in=constants.PUBLIC_STATES
         )
 
 
@@ -133,9 +133,9 @@ class SubCategory(models.Model, SlugOrCreateModel):
     slug = models.SlugField(unique=True, blank=True, null=True)
 
     category = models.ForeignKey(Category, on_delete=models.DO_NOTHING)
-    
+
     subcategory_id = models.CharField(max_length=40, blank=True, null=True)
-    
+
     from_field = 'name'
     slug_field = 'slug'
 
@@ -149,7 +149,6 @@ class SubCategory(models.Model, SlugOrCreateModel):
 
     class Meta:
         ordering = ['name']
-
 
 
 class SourceManager(models.Manager):
@@ -167,7 +166,7 @@ class SourceManager(models.Manager):
 
     def public(self):
         return self.get_queryset().filter(
-            state=constants.STATE_RUNNING
+            state__in=constants.PUBLIC_STATES
         )
 
     def needs_qa(self):
@@ -182,6 +181,28 @@ class SourceManager(models.Manager):
             ~Q(qualityassurancecheck__last_changed__gte=qa_limit)
         )
 
+    def has_cc(self, value=True):
+        with_contract = self.get_queryset().exclude(contract=None)
+        pks = [s.pk for s in with_contract
+               if s.contract_set.valid().filter(
+                   creative_commons=True).count() > 0]
+        # Can search for non-CC Sources as well
+        if value:
+            return self.get_queryset().filter(pk__in=pks)
+        else:
+            return self.get_queryset().exclude(pk__in=pks)
+
+    def contains_contract_number(self, value):
+        try:
+            contract_number, year = [int(s.strip()) for s in value.split('/')]
+            with_contract = self.get_queryset().exclude(contract=None)
+            pks = [s.pk for s in with_contract
+                   if s.contract_set.valid().filter(
+                       contract_number=contract_number, year=year).count() > 0]
+            return self.get_queryset().filter(pk__in=pks)
+        except Exception:
+            return self.get_queryset().none()
+
 
 class KeyWord(SlugOrCreateModel, models.Model):
     """
@@ -192,7 +213,7 @@ class KeyWord(SlugOrCreateModel, models.Model):
     """
     word = models.CharField(max_length=255, unique=True)
     slug = models.SlugField(unique=True, blank=True, null=True)
-    
+
     from_field = 'word'
     slug_field = 'slug'
 
@@ -348,7 +369,6 @@ class Source(SearchModel, SlugOrCreateModel, BaseModel):
     def wayback_url(self):
         return settings.WAYBACK_URL.format(url=self.url)
 
-
     @main_seed.setter
     def main_seed(self, value):
         """
@@ -368,9 +388,9 @@ class Source(SearchModel, SlugOrCreateModel, BaseModel):
         """
         url = self.url
         if url.startswith("http://"):
-            return url.lstrip("http://")
+            return url[7:]
         elif url.startswith("https://"):
-            return url.lstrip("https://")
+            return url[8:]
         return url
 
     def get_legacy_url(self):
@@ -380,13 +400,21 @@ class Source(SearchModel, SlugOrCreateModel, BaseModel):
 
         if record:
             return settings.LEGACY_URL.format(pk=record.original_id)
-    
+
     @property
     def legacy_screenshot(self):
         """
         Returns url to legacy system with this source
         """
-        return 
+        return
+
+    @property
+    def screenshot_file_exists(self):
+        try:
+            self.screenshot.file
+        except Exception:
+            return False
+        return True
 
     def css_class(self):
         """
@@ -400,9 +428,8 @@ class Source(SearchModel, SlugOrCreateModel, BaseModel):
     def get_absolute_url(self):
         return reverse('source:detail', args=[str(self.id)])
 
-    def get_public_url(self): 
+    def get_public_url(self):
         return reverse('www:source_detail', args=[str(self.slug_safe)])
-
 
     def wakat_url(self):
         """
@@ -421,6 +448,37 @@ class Source(SearchModel, SlugOrCreateModel, BaseModel):
         if self.suggested_by:
             return self.get_suggested_by_display()
         return self.created_by
+
+    def get_creative_commons(self):
+        cc_contracts = self.contract_set.valid().filter(
+            creative_commons=True
+        ).exclude(
+            Q(creative_commons_type=None) | Q(creative_commons_type='')
+        )
+        print(cc_contracts.count(), cc_contracts)
+        # Only return something if there's at least one CC contract
+        if cc_contracts.count() == 0:
+            return None
+        # Get the first CC contract's type
+        cc_contract = cc_contracts.first()
+        cc_type = cc_contract.creative_commons_type
+        # URL can be None if CC type is incorrect
+        cc_url = cc_contract.get_creative_commons_url()
+        return (cc_type, cc_url)
+
+    def get_creative_commons_type(self):
+        cc = self.get_creative_commons()
+        if cc:
+            return cc[0]
+
+    def get_creative_commons_url(self):
+        cc = self.get_creative_commons()
+        if cc:
+            return cc[1]
+
+    @property
+    def has_creative_commons(self):
+        return self.get_creative_commons() is not None
 
 
 @revisions.register(exclude=('last_changed',))

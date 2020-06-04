@@ -1,11 +1,12 @@
 import uuid
+import re
 
 from datetime import date
 
 from django.db import models
 from django.db.models.query_utils import Q
 from django.utils.translation import ugettext_lazy as _
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 
 from ckeditor.fields import RichTextField
 from reversion import revisions
@@ -127,6 +128,22 @@ class Contract(BaseModel):
         if self.creative_commons:
             return self.creative_commons_type
         return _('Contract with {0}'.format(self.publisher))
+
+    def get_creative_commons_url(self):
+        # Possible that creative_commons == True but type not set
+        if self.creative_commons_type is None:
+            return None
+        cc = constants.CREATIVE_COMMONS_TYPES.get(self.creative_commons_type)
+        # Happens when CC type is set to full description or just wrong format
+        if cc is None:
+            # Has to match exactly a CC shortcut in parentheses
+            keys = [key for key in constants.CREATIVE_COMMONS_TYPES.keys()
+                    if re.search(rf"\({key}\)", self.creative_commons_type)]
+            # Exactly one correct CC type was matched
+            if len(keys) == 1:
+                return constants.CREATIVE_COMMONS_TYPES[keys[0]].get('url')
+        else:
+            return cc.get('url')
 
     def publisher_responds(self):
         return (self.in_communication or

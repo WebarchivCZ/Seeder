@@ -1,0 +1,41 @@
+---
+version: "3"
+
+volumes:
+  media:
+  seeder_db_data:
+
+services:
+  web:
+    image: webarchiv/seeder:{{ seeder_docker_tag }}
+    command: bash run.sh
+    working_dir: /code/Seeder
+    volumes:
+      - "media:/code/Seeder/media"
+    ports:
+      - 80:8000
+    environment:
+      DJANGO_SETTINGS_MODULE: settings.env
+      ALLOWED_HOSTS: {{ seeder_django_allowed_hosts }}
+      DEBUG: '{{ seeder_django_debug }}'
+      DB_HOST: {{ seeder_db_host }}
+      DB_NAME: {{ seeder_db_name }}
+      DB_USER: {{ seeder_db_user }}
+      DB_PASS: {{ seeder_db_pass }}
+      SENTRY_DSN: {{ sentry_dsn_vault }}
+    depends_on:
+      - manet
+      - memcached
+      - seeder_db
+
+  seeder_db:
+    image: postgres:9.6
+    volumes:
+      - "seeder_db_data:/var/lib/postgresql/data"
+
+
+  memcached:
+    image: memcached:latest
+
+  manet:
+    image: bobey/manet:latest

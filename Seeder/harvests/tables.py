@@ -1,8 +1,35 @@
 from . import models
 import django_tables2 as tables
+from django.urls import reverse
 from django.utils.translation import ugettext_lazy as _
+from django.template.loader import render_to_string
 
-from core.utils import AbsoluteURLColumn, NaturalDatetimeColumn
+from core.tables import AbsoluteURLColumn, NaturalDatetimeColumn
+
+
+class ChangeOrderColumn(tables.Column):
+    verbose_name = ""
+
+    def header(self):
+        return ""
+
+    def render(self, value, *args, **kwargs):
+        return render_to_string(
+            "ordered_model/admin/order_controls.html",
+            {
+                "urls": {
+                    "up": reverse("harvests:topic_collection_change_order",
+                                  args=[value, "up"]),
+                    "down": reverse("harvests:topic_collection_change_order",
+                                    args=[value, "down"]),
+                    "top": reverse("harvests:topic_collection_change_order",
+                                   args=[value, "top"]),
+                    "bottom": reverse("harvests:topic_collection_change_order",
+                                      args=[value, "bottom"]),
+                },
+                "query_string": "",
+            },
+        )
 
 
 class HarvestTable(tables.Table):
@@ -25,14 +52,12 @@ class TopicCollectionTable(tables.Table):
         accessor='__str__',
         verbose_name=_('title')
     )
-
+    change_order = ChangeOrderColumn(accessor='pk')
 
     class Meta:
         model = models.TopicCollection
-        fields = ('title', 'status')
+        fields = ('order', 'change_order', 'title', 'status')
 
         attrs = {
             'class': 'table table-striped table-hover'
         }
-
-

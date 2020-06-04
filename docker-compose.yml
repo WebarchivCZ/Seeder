@@ -1,52 +1,31 @@
-version: '2'
+version: "3"
 services:
   web:
     build:
       context: .
-      dockerfile: Dockerfile
     ports:
-     - "8000:8000"
-    links:
-      - postgres
-      - mysql
-      - memcached
-      - manet
+     - "80:8000"
     volumes:
      - .:/code
     command: bash run.sh
     working_dir: /code/Seeder
+    environment:
+      DEBUG: 'True'
+      THUMBNAIL_DEBUG: 'True'
+      DJANGO_SETTINGS_MODULE: settings.env
     depends_on:
-       - postgres
+      - postgres
+      - manet
+      - memcached
 
   postgres:
-    image: postgres
-
-  mysql:
-    image: mysql:latest
-    ports:
-     - "3306:3306"
-    volumes:
-     - ./legacy_dumps:/docker-entrypoint-initdb.d/
+    image: postgres:9.6
     environment:
-     - MYSQL_ROOT_PASSWORD=legacy
-     - MYSQL_USER=legacy
-     - MYSQL_PASSWORD=legacy
-     - MYSQL_DATABASE=legacy_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
 
   memcached:
     image: memcached:latest
 
   manet:
     image: bobey/manet:latest
-
-  #myadmin:
-  #  image: phpmyadmin/phpmyadmin:latest
-  #  environment:
-  #    - MYSQL_ROOT_PASSWORD=legacy
-  #    - PMA_ARBITRARY=1
-  #    - PMA_HOST=mysql
-  #  ports:
-  #    - "8080:8080"
-  #    - "80:80"
-  #  links:
-  #    - mysql

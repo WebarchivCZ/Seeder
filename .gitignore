@@ -21,6 +21,7 @@ __pycache__/
 
 # Distribution / packaging
 env/
+venv/
 build/
 develop-eggs/
 dist/
@@ -88,3 +89,9 @@ legacy_dumps/*
 
 # OSX creates .DS_Store files, purging this madness from repotracking
 .DS_Store
+
+# Other
+.vscode
+
+# Minimize chance docker-compose files with env will end up in repository
+ci/docker-compose-*

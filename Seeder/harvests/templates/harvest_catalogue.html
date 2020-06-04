@@ -2,29 +2,46 @@
 {% load i18n %}
 
 {% block title %}
-	{% trans 'Harvest catalogue' %}
+{% trans 'Harvest catalogue' %}
 {% endblock %}
 
 {% block page_header %}
-	{% trans 'Harvest catalogue' %}
+{% trans 'Harvest catalogue' %}
 {% endblock %}
 
 {% block content %}
-	<p>
-		Below you will urls that give you harvests for each day for each type.
-	</p>
-	<table class="table">
-		<tr>
-			<th>URL</th>
-			<th>Description</th>
-		</tr>
+<p>
+    These are the available URLs for retrieving seeds for specific harvests,
+    shortcuts, or for listing the available harvest URLs for a specific date.
+</p>
+<p>
+    All URLs should only serve as examples. For date, today was used, and for
+    primary keys, 1234 was used.
+</p>
+<table class="table">
+    <tr>
+        <th colspan="2">
+            Harvest URLs by date and harvest ID
+        </th>
+    </tr>
+    {% for url, title in harvest_urls %}
+    <tr>
+        <td><code>{{url}}</code></td>
+        <td><a href="{{ url }}">{{ title }}</a></td>
+    </tr>
+    {% endfor %}
 
-	{% for harvest_url, title in harvest_urls.items %}
-		<tr>
-			<td><code>{{harvest_url}}</code></td>
-			<td><a href="{{ harvest_url }}">{{ title }}</a></td>
-		</tr>
-	{% endfor %}
-	</table>
+    <tr>
+        <th colspan="2">
+            Harvest URLs by date and shortcut
+        </th>
+    </tr>
+    {% for url, title in shortcut_urls %}
+    <tr>
+        <td><code>{{url}}</code></td>
+        <td><a href="{{ url }}">{{ title }}</a></td>
+    </tr>
+    {% endfor %}
+</table>
 
 {% endblock %}

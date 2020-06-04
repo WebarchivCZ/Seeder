@@ -1,7 +1,7 @@
 {% extends "base_www.html" %}
 {% load i18n thumbnail %}
 
-{% block title %}{{collection}}{% endblock title %}
+{% block title %}{{collection.title}}{% endblock title %}
 
 {% block extrahead %}
     <style>
@@ -15,7 +15,7 @@
 {% block content %}
 	<section class="collection collection-detail">
 		<div class="container">
-			<h1>{{ collection }}</h1>
+			<h1>{{ collection.title }}</h1>
 
 			<br>
 			{% trans "Klíčová slova sklizně" %}:

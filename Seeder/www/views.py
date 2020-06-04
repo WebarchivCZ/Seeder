@@ -11,7 +11,7 @@ from django.http.response import HttpResponseRedirect, Http404
 from django.utils.translation import ugettext as _
 from django.db.models import Sum, When, Case, IntegerField, Q
 from django.core.paginator import EmptyPage
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.conf import settings
 
 from contracts.models import Contract
@@ -50,7 +50,6 @@ class PaginatedView:
             sources = paginator.page(1)
         return sources
 
-
     def get_paginator_queryset(self):
         raise NotImplementedError
 
@@ -76,6 +75,10 @@ class TopicCollections(PaginatedView, TemplateView):
     view_name = 'topic_collections'
     sub_view_name = 'topic_collections'
 
+    def get_queryset(self):
+        qs = super(TopicCollections, self).get_queryset()
+        return qs.filter(active=True)
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['collections'] = self.get_paginator()
@@ -92,6 +95,10 @@ class CollectionDetail(PaginatedView, DetailView):
     model = TopicCollection
     context_object_name = 'collection'
     per_page = 6
+
+    def get_queryset(self):
+        qs = super(CollectionDetail, self).get_queryset()
+        return qs.filter(active=True)
 
     def get_paginator_queryset(self):
         return self.get_object().custom_sources.all()
@@ -325,18 +332,18 @@ class SearchRedirectView(View):
 
         regex_is_url = (
             # SCHEME:
-            r"((https?|ftp)\:\/\/)?"                                     
-            # User and Pass: 
-            "([a-z0-9+!*(),;?&=\$_.-]+(\:[a-z0-9+!*(),;?&=\$_.-]+)?@)?"  
-            # Host or IP: 
-            "([a-z0-9-.]*)\.([a-z]{2,4})"                                
-            # Port: 
-            "(\:[0-9]{2,5})?"                                            
-            # Path: 
-            "(\/([a-z0-9+\$_-]\.?)+)*\/?"                                
-            # GET Query: 
-            "(\?[a-z+&\$_.-][a-z0-9;:@&%=+\/\$_.-]*)?"                   
-            # Anchor: 
+            r"((https?|ftp)\:\/\/)?"
+            # User and Pass:
+            "([a-z0-9+!*(),;?&=\$_.-]+(\:[a-z0-9+!*(),;?&=\$_.-]+)?@)?"
+            # Host or IP:
+            "([a-z0-9-.]*)\.([a-z]{2,4})"
+            # Port:
+            "(\:[0-9]{2,5})?"
+            # Path:
+            "(\/([a-z0-9+\$_-]\.?)+)*\/?"
+            # GET Query:
+            "(\?[a-z+&\$_.-][a-z0-9;:@&%=+\/\$_.-]*)?"
+            # Anchor:
             "(#[a-z_.-][a-z0-9+\$_.-]*)?"
         )
 
@@ -416,10 +423,12 @@ class Nominate(FormView):
     def form_valid(self, form):
         nomination = form.save()
         if nomination.submitted_by_author:
-            title = _('Webarchiv.cz - archivace vasich webovych stranek %(url)s') % {"url": nomination.url}
+            title = _(
+                'Webarchiv.cz - archivace vasich webovych stranek %(url)s') % {"url": nomination.url}
             email_template = 'nominate/emails/nomination_confirmation_owner.html'
         else:
-            title = _('Webarchiv.cz - archivace webovych stranek %(url)s') % {"url": nomination.url}
+            title = _(
+                'Webarchiv.cz - archivace webovych stranek %(url)s') % {"url": nomination.url}
             email_template = 'nominate/emails/nomination_confirmation.html'
 
         content = render_to_string(email_template)
@@ -477,16 +486,6 @@ class NominateCooperationView(TemplateView):
 
 class NominateCreativeCommonsView(TemplateView):
     template_name = 'nominate/creative_commons.html'
-    view_name = 'nominate'
-
-
-class NominateErrorView(TemplateView):
-    template_name = 'nominate/error.html'
-    view_name = 'nominate'
-
-
-class NominateFeedbackView(TemplateView):
-    template_name = 'nominate/feedback.html'
     view_name = 'nominate'
 
 

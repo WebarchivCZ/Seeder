@@ -26,11 +26,17 @@
                 </tr>
                 <tr>
                     <td>{% trans 'Creative commons' %}</td>
+                    <td>
                     {% if object.creative_commons %}
-                        <td>{{ contract.get_creative_commons_type_display}}</td>
+                        {% if object.get_creative_commons_url %}
+                            <a href="{{object.get_creative_commons_url}}">{{ object.creative_commons_type }}</a>
+                        {% else %}
+                            {{object.creative_commons_type}}
+                        {% endif %}
                     {% else %}
-                        <td>{% trans 'No' %}</td>
+                        {% trans 'No' %}
                     {% endif %}
+                    </td>
                 </tr>
                 <tr>
                     <td>{% trans 'Publisher' %}</td>

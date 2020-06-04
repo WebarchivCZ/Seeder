@@ -3,7 +3,7 @@ import django_tables2 as tables
 from . import models
 from django.utils.translation import ugettext_lazy as _
 
-from core.utils import AbsoluteURLColumn, NaturalDatetimeColumn
+from core.tables import AbsoluteURLColumn, NaturalDatetimeColumn
 
 
 class ContractTable(tables.Table):
@@ -20,8 +20,8 @@ class ContractTable(tables.Table):
 
     class Meta:
         model = models.Contract
-        fields = ('link', 'publisher', 'state', 'valid_to',
-                  'valid_from', 'creative_commons', 'in_communication', 'created',
+        fields = ('link', 'publisher', 'state', 'valid_from',
+                  'valid_to', 'creative_commons', 'in_communication', 'created',
                   'last_changed')
 
         attrs = {

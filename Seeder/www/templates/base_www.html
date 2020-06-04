@@ -2,6 +2,7 @@
 {% get_current_language as lang %}
 <!DOCTYPE html>
 <html lang="{{ lang }}">
+
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -12,14 +13,17 @@
 	<meta property="fb:app_id" content="768657893222364" />
 	<meta property="og:type" content="website" />
 	<meta property="og:site_name" content="Webarchiv" />
-	<meta property="og:description" content="Úlohou Webarchivu shromažďovat webové zdroje, archivovat je a zajišťovat k nim dlouhodobý přístup." />
-	<meta property="og:image" content="{% block ogImage %}{{ STATIC_URL }}www//images/design/social/facebook.gif{% endblock %}" />
+	<meta property="og:description"
+		content="Úlohou Webarchivu shromažďovat webové zdroje, archivovat je a zajišťovat k nim dlouhodobý přístup." />
+	<meta property="og:image"
+		content="{% block ogImage %}{{ STATIC_URL }}www//images/design/social/facebook.gif{% endblock %}" />
 
 	<link href="{{ STATIC_URL }}www/favicon.ico?v=1.1" rel="shortcut icon" type="image/x-icon" />
 
-	<link rel="stylesheet" href="{{ STATIC_URL }}www/css/bootstrap/bootstrap.min.css" type='text/css' media='all' >
+	<link rel="stylesheet" href="{{ STATIC_URL }}www/css/bootstrap/bootstrap.min.css" type='text/css' media='all'>
 	<link rel="stylesheet" href="{{ STATIC_URL }}www/css/screen.css?v=1.6" type='text/css' media='all' />
-	<link rel="stylesheet" href="{{ STATIC_URL }}www/css/jquery-ui/jquery-ui.min.css?v=1.0" type='text/css' media='all' />
+	<link rel="stylesheet" href="{{ STATIC_URL }}www/css/jquery-ui/jquery-ui.min.css?v=1.0" type='text/css'
+		media='all' />
 
 	<script type="text/javascript" src="{{ STATIC_URL }}www/js/jquery/jquery-1.11.1.min.js?v=1.1"></script>
 	<script type="text/javascript" src="{{ STATIC_URL }}www/js/jquery/jquery-ui-1.11.2.min.js?v=1.1"></script>
@@ -33,7 +37,7 @@
 		<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 	<![endif]-->
 
-    {% block extrahead %}{% endblock extrahead %}
+	{% block extrahead %}{% endblock extrahead %}
 
 
 </head>
@@ -44,7 +48,8 @@
 		<div class="container">
 
 			<div class="navbar-header">
-				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-navbar-collapse">
+				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+					data-target="#bs-navbar-collapse">
 					<span class="sr-only">Toggle navigation</span>
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
@@ -56,20 +61,25 @@
 				</a>
 
 				<div class="langs">
-					<a href="{% url "www_no_lang:change_language" code="cs" %}"{% if lang == "cs" %} class="current"{% endif %}>CZ</a>
-					<a href="{% url "www_no_lang:change_language" code="en" %}"{% if lang == "en" %} class="current"{% endif %}>EN</a>
+					<a href="{% url "www_no_lang:change_language" code="cs" %}" {% if lang == "cs" %} class="current"
+						{% endif %}>CZ</a>
+					<a href="{% url "www_no_lang:change_language" code="en" %}" {% if lang == "en" %} class="current"
+						{% endif %}>EN</a>
 				</div>
 
 				{% if not hide_search_box %}
-					<a href="#" class="search-icon"></a>
-					<div class="small-searchbox-wrapper">
-						<form action="{% url "www:search_redirect" %}" method="GET" id="frm-smallSearchBox">
-						<input type="text" name="query" size="32" id="frm-smallSearchBox-query" value="{{ query }}" required value="" class="text">
+				<a href="#" class="search-icon"></a>
+				<div class="small-searchbox-wrapper">
+					<form action="{% url "www:search_redirect" %}" method="GET" id="frm-smallSearchBox">
+						<input type="text" name="query" size="32" id="frm-smallSearchBox-query" value="{{ query }}"
+							required value="" class="text">
 						<input type="submit" id="frm-smallSearchBox-submit" value="Enter" class="submit">
-						<div><!--[if IE]><input type=IEbug disabled style="display:none"><![endif]--></div>
+						<div>
+							<!--[if IE]><input type=IEbug disabled style="display:none"><![endif]-->
+						</div>
 
-                        </form>
-					</div>
+					</form>
+				</div>
 
 				{% endif %}
 
@@ -78,11 +88,17 @@
 			<div class="collapse navbar-collapse" id="bs-navbar-collapse">
 
 				<ul class="nav navbar-nav">
-					<li class="url_index"><a href="{% url "www:index" %}">{% if lang == "cs" %}úvod{% else %}home{% endif %}</a></li>
-					<li class="url_about"><a href="{% url "www:about" %}">{% if lang == "cs" %}o Webarchivu{% else %}about Webarchiv{% endif %}</a></li>
-					<li class="url_categories"><a href="{% url "www:categories" %}">{% if lang == "cs" %}katalog stránek{% else %}browse{% endif %}</a></li>
-					<li class="url_topic_collections"><a href="{% url "www:topic_collections" %}">{% if lang == "cs" %}tematické sbírky{% else %}topic collections{% endif %}</a></li>
-					<li class="url_nominate"><a href="{% url "www:nominate" %}">{% if lang == "cs" %}přidat web{% else %}nominate a site{% endif %}</a></li>
+					<li class="url_index"><a
+							href="{% url "www:index" %}">{% if lang == "cs" %}úvod{% else %}home{% endif %}</a></li>
+					<li class="url_about"><a href="{% url "www:about" %}">{% if lang == "cs" %}o
+							Webarchivu{% else %}about Webarchiv{% endif %}</a></li>
+					<li class="url_categories"><a href="{% url "www:categories" %}">{% if lang == "cs" %}katalog
+							stránek{% else %}browse{% endif %}</a></li>
+					<li class="url_topic_collections"><a
+							href="{% url "www:topic_collections" %}">{% if lang == "cs" %}tematické
+							sbírky{% else %}topic collections{% endif %}</a></li>
+					<li class="url_nominate"><a href="{% url "www:nominate" %}">{% if lang == "cs" %}přidat
+							web{% else %}nominate a site{% endif %}</a></li>
 				</ul>
 
 			</div><!-- /.navbar-collapse -->
@@ -94,13 +110,13 @@
 
 	<footer>
 		{% if footerFullBorder %}
-			<hr>
+		<hr>
 		{% endif %}
 
 		<div class="container">
 
 			{% if not footerFullBorder %}
-				<hr>
+			<hr>
 			{% endif %}
 
 			<div class="row">
@@ -108,28 +124,31 @@
 				<div class="col-sm-6 info">
 					<ul>
 						{% if lang == "cs" %}
-							<li>
-								<a href="{% url "www:index" %}">Webarchiv</a> je pod licencí:<br>
-								<a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" class="cc-link"><strong>CC</strong> BY/NC/ND</a>
-							</li>
-							<li>
-								<br>Koncept a grafickou podobu připravili<br>
-								<a href="http://www.kofila.com/" target="_blank">Bohdan Heblík</a> & <a href="http://zlodejpapiru.cz/" target="_blank">Luboš Svoboda</a>
-								<br>Do chodu vše uvedl <a href="http://www.tomaskorinek.com/" target="_blank">Tomáš Kořínek</a>
-							</li>
+						<li>
+							<a href="{% url "www:index" %}">Webarchiv</a> je součástí<br>
+							<a href="https://nkp.cz">Národní knihovny ČR</a>
+						</li>
+						<li>
+							<br>Koncept a grafickou podobu připravili<br>
+							<a href="http://www.kofila.com/" target="_blank">Bohdan Heblík</a> & <a
+								href="http://zlodejpapiru.cz/" target="_blank">Luboš Svoboda</a>
+							<br>Do chodu vše uvedl <a href="http://www.tomaskorinek.com/" target="_blank">Tomáš
+								Kořínek</a>
+						</li>
 
 
 						{% else %}
-							<li>
-								<a href="{% url "www:index" %}">Webarchiv</a> is licensed under:<br>
-								<a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" class="cc-link"><strong>CC</strong> BY/NC/ND</a>
-							</li>
-							<li>
-								<br>Webdesign:
-								<br>
-								<a href="http://www.kofila.com/" target="_blank">Bohdan Heblík</a> & <a href="http://zlodejpapiru.cz/" target="_blank">Luboš Svoboda</a>
-								<br>Programming: <a href="http://www.tomaskorinek.com/" target="_blank">Tomáš Kořínek</a>
-							</li>
+						<li>
+							<a href="{% url "www:index" %}">Webarchiv</a> is part of<br>
+							<a href="https://nkp.cz">National Library of the CR</a>
+						</li>
+						<li>
+							<br>Webdesign:
+							<br>
+							<a href="http://www.kofila.com/" target="_blank">Bohdan Heblík</a> & <a
+								href="http://zlodejpapiru.cz/" target="_blank">Luboš Svoboda</a>
+							<br>Programming: <a href="http://www.tomaskorinek.com/" target="_blank">Tomáš Kořínek</a>
+						</li>
 						{% endif %}
 					</ul>
 				</div>
@@ -137,9 +156,12 @@
 				<div class="col-sm-2 col-sm-offset-4 external-links">
 					<h2><a href="{% url "www:index" %}">WWW</a></h2>
 					<ul>
-						<li><a href="{% url "www:about_contact" %}">{% if lang == "cs" %}kontakt{% else %}contact{% endif %}</a></li>
+						<li><a
+								href="{% url "www:about_contact" %}">{% if lang == "cs" %}kontakt{% else %}contact{% endif %}</a>
+						</li>
 						<li><a href="https://www.facebook.com/webarchivcz">facebook</a></li>
-						<li><a href="{% url 'www:nominate' %}">{% if lang == "cs" %}přidat web{% else %}nominate a site{% endif %}</a></li>
+						<li><a href="{% url 'www:nominate' %}">{% if lang == "cs" %}přidat web{% else %}nominate a
+								site{% endif %}</a></li>
 						<li><a href="{% url "www:about_graphics" %}">logo</a></li>
 					</ul>
 				</div>
@@ -153,15 +175,16 @@
 	<script>Raven.config('{% sentry_public_dsn %}').install()</script>
 
 	<script>
-	    // dynamically activate menu link, yes this seem like a barbaric think to do, but think of all the if conditions in django that does not need to exist!
-	    var view_name = ".url_{{ view.view_name }}";
-	    $(view_name).addClass('active');
+		// dynamically activate menu link, yes this seem like a barbaric think to do, but think of all the if conditions in django that does not need to exist!
+		var view_name = ".url_{{ view.view_name }}";
+		$(view_name).addClass('active');
 	</script>
 
 	{% if not debug %}
-		{% include "includes/googleAnalytics.html" %}
+	{% include "includes/googleAnalytics.html" %}
 	{% endif %}
 
 
 </body>
+
 </html>

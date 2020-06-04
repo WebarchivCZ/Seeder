@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% load i18n humanize bootstrap3 thumbnail static %}
+{% load i18n bootstrap3 thumbnail static %}
 
 {% block title %} {{ source }} {% endblock %}
 {% block page_header %} {{ source }}{% endblock %}
@@ -31,11 +31,15 @@
                     <tr>
                         <td>{% trans 'Screenshot' %}</td>
                         <td>
-                            {% thumbnail source.screenshot "100x100" crop="center" as im %}
-                                <a href="{{ source.screenshot.url }}" target="_blank">
-                                    <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}">
-                                </a>
-                            {% endthumbnail %}
+                            {% if source.screenshot_file_exists %}
+                                {% thumbnail source.screenshot "100x100" crop="center" as im %}
+                                    <a href="{{ source.screenshot.url }}" target="_blank">
+                                        <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}">
+                                    </a>
+                                {% endthumbnail %}
+                            {% else %}
+                                {% trans 'There is a screenshot associated with this source but the file does not exist.' %}
+                            {% endif %}
                         </td>
                     </tr>
                 {% endif %}
@@ -58,7 +62,7 @@
                 </tr>
                 <tr>
                     <td>{% trans 'Created at' %}</td>
-                    <td>{{ source.created|naturaltime }}</td>
+                    <td>{{ source.created }}</td>
                 </tr>
                 <tr>
                     <td>{% trans 'Suggested by' %}</td>
@@ -109,7 +113,7 @@
                 <tr>
                     <td>{% trans 'QA checks' %}</td>
                     <td>
-                        {% for qa in source.qualityassurancecheck_set.all %}<a href="{{ qa.get_absolute_url }}">{{ qa.created|naturaltime }}</a>{% if not forloop.last%}, {% endif %}{% endfor %}
+                        {% for qa in source.qualityassurancecheck_set.all %}<a href="{{ qa.get_absolute_url }}">{{ qa.created }}</a>{% if not forloop.last%}, {% endif %}{% endfor %}
                     </td>
                 </tr>
 
@@ -125,6 +129,20 @@
                 <tr>
                     <td>{% trans 'WWW link' %}</td>
                     <td><a href="{{ source.get_public_url }}" target="_blank">{{ source.get_public_url }}</a></td>
+                </tr>
+                <tr>
+                    <td>CC Licence</td>
+                    <td>
+                    {% if source.has_creative_commons %}
+                        {% if source.get_creative_commons_url %}
+                            <a href="{{source.get_creative_commons_url}}">{{source.get_creative_commons_type}}</a>
+                        {% else %}
+                            {{source.get_creative_commons_type}}
+                        {% endif %}
+                    {% else %}
+                        {% trans 'No' %}
+                    {% endif %}
+                    </td>
                 </tr>
             </tbody>
         </table>
