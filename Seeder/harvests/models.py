@@ -151,6 +151,12 @@ class Harvest(HarvestAbstractModel):
         (STATE_FAILED, _('Failed')),
     )
 
+    # Only Harvests with these states will be checked in prev_harv_seeds
+    # TODO: make sure these harvest states make sense
+    PREVIOUSLY_HARVESTED_STATES = (
+        STATE_RUNNING, STATE_SUCCESS, STATE_SUCCESS_WITH_FAILURES
+    )
+
     status = models.IntegerField(
         choices=STATES,
         verbose_name=_('State'),
@@ -208,7 +214,10 @@ class Harvest(HarvestAbstractModel):
 
     def get_previously_harvested_seeds(self):
         seeds = set()
-        for h in Harvest.objects.filter(scheduled_on__lt=self.scheduled_on):
+        for h in Harvest.objects.filter(
+            scheduled_on__lt=self.scheduled_on,
+            status__in=Harvest.PREVIOUSLY_HARVESTED_STATES
+        ):
             seeds.update(h.get_seeds())
         return seeds
 
