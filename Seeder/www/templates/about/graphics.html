@@ -82,9 +82,9 @@
                 {% spaceless %}
                 <textarea style="width:100%;min-height:200px" id="certificate-html" oninput="updateCertificateHtmlPreview()">
                 {% if lang == "cs" %}
-                <font face="Times" size="5"; style="color: blue"> <a href="http://www.webarchiv.cz/cs/certifikovano">Webarchiv</a>ováno <br>Národní knihovnou <br>ČR</font>
+                <font face="Times" size="5"; style="color: blue"> <a href="http://www.webarchiv.cz/cs/certifikovano">Webarchiv</a>ováno <br/>Národní knihovnou<br/>ČR</font>
                 {% else %}
-                <font face="Times" size="5"; style="color: blue"> <a href="http://www.webarchiv.cz/en/disclaimer">Webarchive</a>d by<br>NKČR</font>
+                <font face="Times" size="5"; style="color: blue"> <a href="http://www.webarchiv.cz/en/disclaimer">Webarchived</a> <br/>by National Library<br/>of the Czech Republic</font>
                 {% endif %}
                 </textarea>
                 {% endspaceless %}
@@ -93,12 +93,9 @@
             <div class="col-lg-4">
                 <div id="certificate-html-preview">
                     {% if lang == "cs" %}
-                    <font face="Times" size="5" ; style="color: blue"> <a
-                            href="http://www.webarchiv.cz/cs/certifikovano">Webarchiv</a>ováno <br>Národní knihovnou <br>ČR
-                    </font>
+                    <font face="Times" size="5"; style="color: blue"> <a href="http://www.webarchiv.cz/cs/certifikovano">Webarchiv</a>ováno <br/>Národní knihovnou<br/>ČR</font>
                     {% else %}
-                    <font face="Times" size="5" ; style="color: blue"> <a
-                            href="http://www.webarchiv.cz/en/disclaimer">Webarchive</a>d by<br>NKČR</font>
+                    <font face="Times" size="5"; style="color: blue"> <a href="http://www.webarchiv.cz/en/disclaimer">Webarchived</a> <br/>by National Library<br/>of the Czech Republic</font>
                     {% endif %}
                 </div>
                 <button class="btn btn-default" onclick="copyCertificateHtml()">
