@@ -227,7 +227,12 @@ class Harvest(HarvestAbstractModel):
         return set(seeds.values_list('url', flat=True)) - self.get_blacklisted()
 
     def get_oneshot_seeds(self):
-        if self.target_frequency and '0' not in self.target_frequency:
+        # Return empty if not OneShot
+        if (
+            self.target_frequency is None or  # empty frequency
+            (self.target_frequency is not None and  # can be an empty list
+             '0' not in self.target_frequency)
+        ):
             return set()
         # Get all potential OneShot seeds
         oneshot = Seed.archiving.filter(source__frequency=0)
