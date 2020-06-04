@@ -118,9 +118,9 @@
 				</div>
 			</div>
 
-			<div class="row">
+			<!--  <div class="row">
 				<div class="col-lg-2">
-					<p>{% if lang == "cs" %}starší verze<br>certifikátu{% else %}old version of<br>certificate{% endif %}</p>
+						<p>{% if lang == "cs" %}zastaralá verze<br>certifikátu{% else %}obsolete version of<br>certificate{% endif %}</p>
 				</div>
 				<div class="col-lg-4">
 					<br><br>
@@ -130,23 +130,25 @@
 						<br><a onclick="return !window.open(this, 'kod', 'toolbar=no, menubar=no, directories=no, resizable=yes, status=no, width=600, height=210, top=200, left=50')" href="{% url 'www:embed' %}?img=http://webarchiv.cz{{ STATIC_URL }}www/images/webarchiv_certifikat_c.gif">Zdrojový kód obrázku</a>
 					{% else %}
 						<br><a onclick="return !window.open(this, 'kod', 'toolbar=no, menubar=no, directories=no, resizable=yes, status=no, width=600, height=210, top=200, left=50')" href="{% url 'www:embed' %}?img=http://webarchiv.cz{{ STATIC_URL }}www/images/webarchiv_certifikat_c.gif">embed code</a>
-					{% endif %}
+					{% endif %} 
 				</div>
-				<div class="col-lg-4">
+				<div class="col-lg-4"> 
 					<br><br>
 					<img src="{{ STATIC_URL }}www/images/webarchiv_certifikat_cb.gif" alt="{% trans "Webarchiv certificate" %}">
-					<br>
+					<br> 
 					{% if lang == "cs" %}
 						<br><a onclick="return !window.open(this, 'kod', 'toolbar=no, menubar=no, directories=no, resizable=yes, status=no, width=600, height=210, top=200, left=50')" href="{% url 'www:embed' %}?img=http://webarchiv.cz{{ STATIC_URL }}www/images/webarchiv_certifikat_cb.gif">Zdrojový kód obrázku</a>
 					{% else %}
 						<br><a onclick="return !window.open(this, 'kod', 'toolbar=no, menubar=no, directories=no, resizable=yes, status=no, width=600, height=210, top=200, left=50')" href="{% url 'www:embed' %}?img=http://webarchiv.cz{{ STATIC_URL }}www/images/webarchiv_certifikat_cb.gif">embed code</a>
-					{% endif %}
+					{% endif %} 
 				</div>
-			</div>
-
+			</div> -->
 			<br><br>
 
+
+
 		</div>
+
 	</section>
 
 {% endblock %}
