@@ -22,7 +22,7 @@
 
     <div class="col-md-3 col-sm-6">
         <h3>{% trans 'Info' %}</h3>
-        {% blocktrans with source=voting_round.source source_created=voting_round.source.created|naturaltime %}
+        {% blocktrans with source=voting_round.source source_created=voting_round.source.created %}
             <p>
                 <b>{{ source }}</b> was added to system
                 <b>{{ source_created }}</b>. This voting round determines
@@ -31,7 +31,7 @@
             </p>
         {% endblocktrans %}
         {% if voting_round.round_open %}
-            {% blocktrans with round_created=voting_round.created|naturaltime %}
+            {% blocktrans with round_created=voting_round.created %}
                 <p>
                     This voting round opened <b>{{ round_created }}</b>.
                     Remember you have the power to change how future
@@ -39,7 +39,7 @@
                 </p>
             {% endblocktrans %}
         {% else %}
-            {% blocktrans with resolved_by=voting_round.resolved_by status=voting_round.get_state_display round_closed=voting_round.date_resolved|naturaltime %}
+            {% blocktrans with resolved_by=voting_round.resolved_by status=voting_round.get_state_display round_closed=voting_round.date_resolved %}
                 <p>
                     Our hero <b>{{ resolved_by }}</b> resolved this
                     <b>{{ round_closed }}</b>.
@@ -61,7 +61,7 @@
         <ul class="list-group">
             {% for vote in voting_round.vote_set.all %}
                 <li class="list-group-item list-group-item-{{ vote.get_css_class }}">{{ vote.author }}
-                    <span class="pull-right">{{ vote.created|naturaltime }}</span>
+                    <span class="pull-right">{{ vote.created }}</span>
                 </li>
             {% empty %}
                 <li class="list-group-item list-group-item-info">{% trans 'No votes yet :(' %}</li>

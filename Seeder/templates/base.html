@@ -1,4 +1,4 @@
-{% load bootstrap3 i18n raven %}
+{% load bootstrap3 i18n raven core %}
 <!DOCTYPE html>
 <html lang="{{ LANGUAGE_CODE }}" data-date-format="{{ js_format }}">
 <head>
@@ -31,6 +31,7 @@
                 <span class="icon-bar"></span>
             </button>
             <a class="navbar-brand" href="{% url 'core:dashboard' %}">{% trans 'Seeder' %}</a>
+            <span class="navbar-brand" style="color:#777;font-size:1em;">{% version %}</span>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
             <form class="navbar-form navbar-right" action="{% url 'search:search' %}" method="get">

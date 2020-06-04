@@ -74,6 +74,53 @@
 			</div>
 		</div>
 
+        <div class="row">
+            <div class="col-lg-2">
+                <p>{% if lang == "cs" %}certifikát v HTML{% else %}certificate in HTML{% endif %}</p>
+            </div>
+            <div class="col-lg-4">
+                {% spaceless %}
+                <textarea style="width:100%;min-height:200px" id="certificate-html" oninput="updateCertificateHtmlPreview()">
+                {% if lang == "cs" %}
+                <font face="Times" size="5"; style="color: blue"> <a href="http://www.webarchiv.cz/cs/certifikovano">Webarchiv</a>ováno <br/>Národní knihovnou<br/>ČR</font>
+                {% else %}
+                <font face="Times" size="5"; style="color: blue"> <a href="http://www.webarchiv.cz/en/disclaimer">Webarchived</a> <br/>by National Library<br/>of the Czech Republic</font>
+                {% endif %}
+                </textarea>
+                {% endspaceless %}
+
+            </div>
+            <div class="col-lg-4">
+                <div id="certificate-html-preview">
+                    {% if lang == "cs" %}
+                    <font face="Times" size="5"; style="color: blue"> <a href="http://www.webarchiv.cz/cs/certifikovano">Webarchiv</a>ováno <br/>Národní knihovnou<br/>ČR</font>
+                    {% else %}
+                    <font face="Times" size="5"; style="color: blue"> <a href="http://www.webarchiv.cz/en/disclaimer">Webarchived</a> <br/>by National Library<br/>of the Czech Republic</font>
+                    {% endif %}
+                </div>
+                <button class="btn btn-default" onclick="copyCertificateHtml()">
+                    {% if lang == "cs" %}Zkopírovat HTML{% else %}Copy HTML{% endif %}
+                </button>
+                <p id="certificate-copied-status" style="margin-top:1em"></p>
+            </div>
+            <script>
+                function copyCertificateHtml() {
+                    const copyText = document.getElementById("certificate-html");
+                    copyText.select();
+                    copyText.setSelectionRange(0, 99999); /*For mobile devices*/
+                    document.execCommand("copy");
+                    const copiedStatus = document.getElementById("certificate-copied-status");
+                    copiedStatus.innerText = {% if lang == "cs" %}"HTML zkopírováno"{% else %}"HTML copied"{% endif %};
+                }
+
+                function updateCertificateHtmlPreview() {
+                    const html = document.getElementById("certificate-html");
+                    const htmlPreview = document.getElementById("certificate-html-preview");
+                    htmlPreview.innerHTML = html.value;
+                }
+            </script>
+        </div>
+
 		<div class="row">
 			<div class="col-lg-2">
 				<p>{% if lang == "cs" %}naše logo<br>v křivkách{% else %}our vector<br>logo{% endif %}</p>
