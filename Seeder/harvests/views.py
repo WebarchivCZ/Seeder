@@ -364,6 +364,7 @@ class AddTopicCollection(TCView, FormView):
         topic = form.save()
         # Put the new Topic Collection all the way to the top (newest)
         topic.top()
+        topic.pair_custom_seeds()
 
         for each in form.cleaned_data["attachments"]:
             models.Attachment.objects.create(
@@ -387,6 +388,7 @@ class EditCollection(TCView, generic_views.EditView):
         new_order = form.cleaned_data['new_order']
         form.instance.to(new_order)
         topic = form.save()
+        topic.pair_custom_seeds()
 
         ids_to_delete = form.cleaned_data['files_to_delete']
         for att in models.Attachment.objects.filter(id__in=ids_to_delete):
