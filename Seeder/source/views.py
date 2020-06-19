@@ -147,16 +147,6 @@ class AddSource(generic_views.LoginMixin, SessionWizardView):
             source.publisher_contact = contact
         source.save()
 
-        if source_form.cleaned_data['open_license']:
-            contract = Contract(
-                publisher=source.publisher,
-                valid_from=datetime.now(),
-                creative_commons=True,
-                state=contract_constants.CONTRACT_STATE_VALID
-            )
-            contract.save()
-            contract.sources.add(source)
-
         models.Seed(
             url=source_form.cleaned_data['main_url'],
             source=source
