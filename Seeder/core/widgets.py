@@ -2,7 +2,7 @@ from django.forms import widgets, MultiValueField, DateField
 
 
 class DatePickerWidget(widgets.DateInput):
-    def __init__(self, attrs=None, format=None):
+    def __init__(self, attrs=None, format='%Y-%m-%d'):
         # Use the HTML date widget
         if attrs is not None:
             attrs.update({'type': 'date'})
@@ -15,7 +15,6 @@ class DateRangeWidget(widgets.MultiWidget):
     def __init__(self, **kwargs):
         super().__init__(
             widgets=[DatePickerWidget, DatePickerWidget],
-            attrs={'class': 'date_picker'},
         )
 
     def decompress(self, value):

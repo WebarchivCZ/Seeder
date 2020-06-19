@@ -12,18 +12,13 @@ class SourceForm(forms.ModelForm):
     """
     Adds new source
     """
-    open_license = forms.BooleanField(
-        required=False,
-        help_text=_('Creative commons content')
-    )
-
     main_url = forms.URLField(label=_('Main URL'))
 
     class Meta:
         model = models.Source
         fields = (
             'name', 'main_url', 'publisher', 'category',
-            'keywords', 'suggested_by', 'open_license'
+            'keywords', 'suggested_by'
         )
 
         widgets = {

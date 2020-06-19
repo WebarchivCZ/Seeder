@@ -1,9 +1,8 @@
 from django.core.management.base import BaseCommand
-from legacy_db.conversion import sync_cc_status
 
 
 class Command(BaseCommand):
-    help = 'Fixes CC status'
+    help = 'DEPRECATED'
 
     def handle(self, *args, **options):
-        sync_cc_status()
+        print("SYNC_CC_STATUS HAS BEEN DEPRECATED")

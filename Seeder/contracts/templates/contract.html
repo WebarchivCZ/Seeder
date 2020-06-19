@@ -27,7 +27,7 @@
                 <tr>
                     <td>{% trans 'Creative commons' %}</td>
                     <td>
-                    {% if object.creative_commons %}
+                    {% if object.is_cc %}
                         {% if object.get_creative_commons_url %}
                             <a href="{{object.get_creative_commons_url}}">{{ object.creative_commons_type }}</a>
                         {% else %}

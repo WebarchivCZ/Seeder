@@ -4,7 +4,7 @@ import re
 from datetime import date
 
 from django.db import models
-from django.db.models.query_utils import Q
+from django.db.models import Q, ExpressionWrapper, BooleanField
 from django.utils.translation import ugettext_lazy as _
 from django.urls import reverse
 
@@ -30,6 +30,14 @@ class ContractManager(models.Manager):
         Custom manager for filtering active contracts
     """
 
+    def get_queryset(self):
+        qs = super().get_queryset()
+        # Add bool whether contract has a CC type or not
+        return qs.annotate(is_cc=ExpressionWrapper(
+            ~Q(creative_commons_type=None) & ~Q(creative_commons_type=''),
+            output_field=BooleanField()
+        ))
+
     def valid(self):
         return self.get_queryset().filter(
             Q(state=constants.CONTRACT_STATE_VALID) &
@@ -48,11 +56,6 @@ class Contract(BaseModel):
                              choices=constants.CONTRACT_STATES,
                              default=constants.CONTRACT_STATE_NEGOTIATION,
                              max_length=15)
-
-    creative_commons = models.BooleanField(
-        _('Creative commons or other OS licence'),
-        default=False
-    )
 
     creative_commons_type = models.CharField(
         _('Creative commons type'),
@@ -125,13 +128,14 @@ class Contract(BaseModel):
         return '{} / {}'.format(self.contract_number or ' - ', self.year)
 
     def get_type(self):
-        if self.creative_commons:
+        if (self.creative_commons_type is not None and
+                self.creative_commons_type != ''):
             return self.creative_commons_type
         return _('Contract with {0}'.format(self.publisher))
 
     def get_creative_commons_url(self):
-        # Possible that creative_commons == True but type not set
-        if self.creative_commons_type is None:
+        if (self.creative_commons_type is None or
+                self.creative_commons_type == ''):
             return None
         cc = constants.CREATIVE_COMMONS_TYPES.get(self.creative_commons_type)
         # Happens when CC type is set to full description or just wrong format

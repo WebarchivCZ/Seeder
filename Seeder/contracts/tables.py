@@ -17,11 +17,12 @@ class ContractTable(tables.Table):
     )
     created = NaturalDatetimeColumn(verbose_name=_('created'))
     last_changed = NaturalDatetimeColumn(verbose_name=_('last_changed'))
+    is_cc = tables.BooleanColumn(verbose_name="CC")
 
     class Meta:
         model = models.Contract
         fields = ('link', 'publisher', 'state', 'valid_from',
-                  'valid_to', 'creative_commons', 'in_communication', 'created',
+                  'valid_to', 'is_cc', 'in_communication', 'created',
                   'last_changed')
 
         attrs = {
