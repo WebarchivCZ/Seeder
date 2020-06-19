@@ -11,7 +11,6 @@ class Command(BaseCommand):
     help = 'Matches Contract CC types to correct shorthands when full description is used instead.'
 
     def handle(self, *args, **options):
-        # Those with creative_commons True and a non-None incorrect type
         cc_contracts = Contract.objects.filter(is_cc=True).exclude(
             # Not interested in already correct CC types
             creative_commons_type__in=constants.CREATIVE_COMMONS_TYPES.keys()

@@ -57,11 +57,6 @@ class Contract(BaseModel):
                              default=constants.CONTRACT_STATE_NEGOTIATION,
                              max_length=15)
 
-    creative_commons = models.BooleanField(
-        _('Creative commons or other OS licence'),
-        default=False
-    )
-
     creative_commons_type = models.CharField(
         _('Creative commons type'),
         null=True,
@@ -133,13 +128,14 @@ class Contract(BaseModel):
         return '{} / {}'.format(self.contract_number or ' - ', self.year)
 
     def get_type(self):
-        if self.creative_commons:
+        if (self.creative_commons_type is not None and
+                self.creative_commons_type != ''):
             return self.creative_commons_type
         return _('Contract with {0}'.format(self.publisher))
 
     def get_creative_commons_url(self):
-        # Possible that creative_commons == True but type not set
-        if self.creative_commons_type is None:
+        if (self.creative_commons_type is None or
+                self.creative_commons_type == ''):
             return None
         cc = constants.CREATIVE_COMMONS_TYPES.get(self.creative_commons_type)
         # Happens when CC type is set to full description or just wrong format

@@ -184,8 +184,7 @@ class SourceManager(models.Manager):
     def has_cc(self, value=True):
         with_contract = self.get_queryset().exclude(contract=None)
         pks = [s.pk for s in with_contract
-               if s.contract_set.valid().filter(
-                   creative_commons=True).count() > 0]
+               if s.contract_set.valid().filter(is_cc=True).count() > 0]
         # Can search for non-CC Sources as well
         if value:
             return self.get_queryset().filter(pk__in=pks)
@@ -450,12 +449,7 @@ class Source(SearchModel, SlugOrCreateModel, BaseModel):
         return self.created_by
 
     def get_creative_commons(self):
-        cc_contracts = self.contract_set.valid().filter(
-            creative_commons=True
-        ).exclude(
-            Q(creative_commons_type=None) | Q(creative_commons_type='')
-        )
-        print(cc_contracts.count(), cc_contracts)
+        cc_contracts = self.contract_set.valid().filter(is_cc=True)
         # Only return something if there's at least one CC contract
         if cc_contracts.count() == 0:
             return None
@@ -478,7 +472,7 @@ class Source(SearchModel, SlugOrCreateModel, BaseModel):
 
     @property
     def has_creative_commons(self):
-        return self.get_creative_commons() is not None
+        return self.contract_set.valid().filter(is_cc=True).count() > 0
 
 
 @revisions.register(exclude=('last_changed',))
