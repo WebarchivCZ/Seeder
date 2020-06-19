@@ -4,7 +4,7 @@ import re
 from datetime import date
 
 from django.db import models
-from django.db.models.query_utils import Q
+from django.db.models import Q, ExpressionWrapper, BooleanField
 from django.utils.translation import ugettext_lazy as _
 from django.urls import reverse
 
@@ -29,6 +29,14 @@ class ContractManager(models.Manager):
     """
         Custom manager for filtering active contracts
     """
+
+    def get_queryset(self):
+        qs = super().get_queryset()
+        # Add bool whether contract has a CC type or not
+        return qs.annotate(is_cc=ExpressionWrapper(
+            ~Q(creative_commons_type=None) & ~Q(creative_commons_type=''),
+            output_field=BooleanField()
+        ))
 
     def valid(self):
         return self.get_queryset().filter(

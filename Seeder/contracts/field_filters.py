@@ -29,8 +29,7 @@ class ContractFilter(BaseFilterSet):
 
     contract_number = django_filters.CharFilter(
         field_name='contract_number', method=filter_contract_number)
-    creative_commons = django_filters.BooleanFilter(
-        method=filter_creative_commons)
+    is_cc = django_filters.BooleanFilter(field_name='is_cc', label='CC')
 
     class Meta:
         model = models.Contract
@@ -40,6 +39,6 @@ class ContractFilter(BaseFilterSet):
             'state': ('exact',),
             'valid_from': ('exact',),
             'valid_to': ('exact',),
-            'creative_commons': ('exact',),
+            'is_cc': ('exact',),
             'in_communication': ('exact',),
         }
