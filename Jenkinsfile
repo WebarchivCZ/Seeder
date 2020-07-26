@@ -56,7 +56,7 @@ pipeline {
             docker push webarchiv/seeder:latest
             cd ci
             ansible-playbook -i prod prepare-configuration.yml
-            ssh -i ${SSH_CREDS} ${SSH_CREDS_USR}@10.3.0.50 hostname
+            ssh -o "StrictHostKeyChecking=no" -i ${SSH_CREDS} ${SSH_CREDS_USR}@10.3.0.50 hostname
           '''
         }
       }
