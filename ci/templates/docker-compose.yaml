@@ -33,7 +33,6 @@ services:
     volumes:
       - "seeder_db_data:/var/lib/postgresql/data"
 
-
   memcached:
     image: memcached:latest
 

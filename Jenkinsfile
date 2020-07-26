@@ -56,9 +56,7 @@ pipeline {
             docker push webarchiv/seeder:latest
             cd ci
             ansible-playbook -i prod prepare-configuration.yml
-            echo "SSH into machine and run compose there."
-            echo ${SSH_CREDS_USR}
-            echo ${SSH_CREDS}
+            ssh -i ${SSH_CREDS} ${SSH_CREDS_USR}@10.3.0.50 hostname
           '''
         }
       }
