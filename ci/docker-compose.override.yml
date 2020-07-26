@@ -7,7 +7,6 @@ services:
     command: bash run.sh
     working_dir: /code/Seeder
     volumes:
-      - "static:/code/Seeder/static"
       - "media:/code/Seeder/media"
     ports:
       - 80:8000
@@ -26,3 +25,6 @@ services:
 
   postgres:
     image: postgres:9.6
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
