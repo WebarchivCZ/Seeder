@@ -3,7 +3,7 @@ pipeline {
     stages {
       stage('Build images and push them to Dockerhub') {
         when {
-          anyOf { branch 'master'; branch 'production'; branch 'jenkins'}
+          anyOf { branch 'master'; branch 'production'; branch 'feature/*' }
         }
         steps {
           sh '''#!/usr/bin/env bash
@@ -21,7 +21,7 @@ pipeline {
       }
       stage('Deploy to test') {
         when {
-          anyOf { branch 'master'; branch 'jenkins'}
+          anyOf { branch 'master'; branch 'production'; branch 'feature/*' }
         }
         steps {
           sh '''#!/usr/bin/env bash
