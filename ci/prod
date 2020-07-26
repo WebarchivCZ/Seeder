@@ -5,3 +5,9 @@ prod:
   vars:
     env: prod
     seeder_docker_tag: latest
+    seeder_db_host: seeder_db
+    seeder_db_name: seeder
+    seeder_db_user: seeder
+    seeder_db_pass: "{{ seeder_db_pass_vault }}"
+    seeder_django_allowed_hosts: webarchiv.cz, www.webarchiv.cz, app.webarchiv.cz
+    seeder_django_debug: 'False'
