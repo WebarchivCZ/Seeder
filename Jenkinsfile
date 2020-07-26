@@ -43,6 +43,7 @@ pipeline {
         }
         environment {
                 SSH_CREDS = credentials('ansible')
+        }
         steps {
           input "Přísáhám před krutým a přísným bohem, že https://app.webarchiv.cz je v perfektním stavu a stvrzuji, že může jít do produkce na https://webarchiv.cz."
           sh '''#!/usr/bin/env bash
