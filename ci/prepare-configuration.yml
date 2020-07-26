@@ -1,7 +1,6 @@
 ---
 - name: "Prepare configuration template"
   hosts: all
-  connection: local
   tasks:
 
     - name: "Prepare Seeder compose file."
