@@ -41,6 +41,8 @@ pipeline {
         when {
           anyOf { branch 'production'}
         }
+        environment {
+                SSH_CREDS = credentials('ansible')
         steps {
           input "Přísáhám před krutým a přísným bohem, že https://app.webarchiv.cz je v perfektním stavu a stvrzuji, že může jít do produkce na https://webarchiv.cz."
           sh '''#!/usr/bin/env bash
@@ -53,7 +55,9 @@ pipeline {
             docker push webarchiv/seeder:latest
             cd ci
             ansible-playbook -i prod prepare-configuration.yml
-            echo SSH into machine and run compose there.
+            echo "SSH into machine and run compose there."
+            echo ${SSH_CREDS_USR}
+            echo ${SSH_CREDS}
           '''
         }
       }
