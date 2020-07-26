@@ -2,6 +2,7 @@
 test:
   hosts:
     localhost:
+      ansible_connection: local
   vars:
     env: test
     seeder_docker_tag: develop

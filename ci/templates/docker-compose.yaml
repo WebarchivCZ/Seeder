@@ -32,6 +32,9 @@ services:
     image: postgres:9.6
     volumes:
       - "seeder_db_data:/var/lib/postgresql/data"
+    environment:
+      POSTGRES_USER: {{ seeder_db_user }}
+      POSTGRES_PASSWORD: {{ seeder_db_pass }}
 
   memcached:
     image: memcached:latest

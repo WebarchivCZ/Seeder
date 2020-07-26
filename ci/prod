@@ -1,7 +1,8 @@
 ---
 prod:
   hosts:
-    localhost:
+    wa-docker00:
+      ansible_host: 10.3.0.50
   vars:
     env: prod
     seeder_docker_tag: latest
