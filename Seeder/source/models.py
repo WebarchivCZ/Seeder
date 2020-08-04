@@ -335,7 +335,7 @@ class Source(SearchModel, SlugOrCreateModel, BaseModel):
             self.annotation,
             self.comment,
         ]
-        if self.publisher: # Possible that Publisher is not set
+        if self.publisher:  # Possible that Publisher is not set
             parts.append(self.publisher.get_search_blob())
         parts.extend([s.url for s in self.seed_set.all()])
         parts.extend([w.word for w in self.keywords.all()])
@@ -499,6 +499,7 @@ class Seed(BaseModel):
     state = models.CharField(choices=constants.SEED_STATES,
                              default=constants.SEED_STATE_INCLUDE,
                              max_length=15)
+    main_seed = models.BooleanField(_('Main seed'), default=False)
 
     comment = models.TextField(_('Comment'), null=True, blank=True)
     from_time = DatePickerField(verbose_name=_('From'), null=True, blank=True)
@@ -531,6 +532,12 @@ class Seed(BaseModel):
     class Meta:
         verbose_name = _('Seed')
         verbose_name_plural = _('Seeds')
+
+    def save(self, *args, **kwargs):
+        # When setting one seed as main, set all other source seeds to False
+        if self.main_seed and self.source:
+            self.source.seed_set.exclude(pk=self.pk).update(main_seed=False)
+        return super().save(*args, **kwargs)
 
     def css_class(self):
         if self.active and self.from_time and self.to_time:
