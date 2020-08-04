@@ -23,6 +23,7 @@ class CategorySerializer(ModelSerializer):
 class ContactPersonSerializer(ModelSerializer):
     class Meta:
         model = publishers.models.ContactPerson
+        fields = '__all__'
 
 
 class PublisherSerializer(ModelSerializer):
