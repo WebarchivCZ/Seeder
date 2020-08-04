@@ -496,11 +496,11 @@ class Seed(BaseModel):
 
     source = models.ForeignKey(Source, on_delete=models.PROTECT)
 
+    main_seed = models.BooleanField(_('Main seed'), default=False)
     url = models.URLField(_('Seed url'), validators=[validate_tld])
     state = models.CharField(choices=constants.SEED_STATES,
                              default=constants.SEED_STATE_INCLUDE,
                              max_length=15)
-    main_seed = models.BooleanField(_('Main seed'), default=False)
 
     comment = models.TextField(_('Comment'), null=True, blank=True)
     from_time = DatePickerField(verbose_name=_('From'), null=True, blank=True)
