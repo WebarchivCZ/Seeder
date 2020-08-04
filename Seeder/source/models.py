@@ -356,7 +356,8 @@ class Source(SearchModel, SlugOrCreateModel, BaseModel):
     @property
     def main_seed(self):
         main_active = self.seed_set.filter(
-            state=constants.SEED_STATE_INCLUDE
+            state=constants.SEED_STATE_INCLUDE,
+            main_seed=True,
         ).first()
 
         return main_active if main_active else self.seed_set.first()
@@ -540,6 +541,8 @@ class Seed(BaseModel):
         return super().save(*args, **kwargs)
 
     def css_class(self):
+        if self.main_seed:
+            return 'light'
         if self.active and self.from_time and self.to_time:
             return 'success'
         return constants.SEED_COLORS[self.state]
