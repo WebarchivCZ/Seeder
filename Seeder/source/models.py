@@ -334,8 +334,9 @@ class Source(SearchModel, SlugOrCreateModel, BaseModel):
             self.name,
             self.annotation,
             self.comment,
-            self.publisher.get_search_blob()
         ]
+        if self.publisher: # Possible that Publisher is not set
+            parts.append(self.publisher.get_search_blob())
         parts.extend([s.url for s in self.seed_set.all()])
         parts.extend([w.word for w in self.keywords.all()])
         return ' '.join(filter(None, parts))
