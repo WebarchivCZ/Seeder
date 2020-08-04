@@ -33,6 +33,7 @@ pipeline {
 
             cd ci
             ansible-playbook -i test prepare-configuration.yml
+            docker-compose pull
             docker-compose -f docker-compose-test.yml -p seeder up -d --remove-orphans
           '''
         }
@@ -57,6 +58,7 @@ pipeline {
             cd ci
             ansible-playbook -i prod --private-key ${SSH_CREDS} -u ${SSH_CREDS_USR} prepare-configuration.yml
             # I had issues witch docker_compose module in ansible. Thus implmentation in ssh as workaround.
+            ssh -o "StrictHostKeyChecking=no" -i ${SSH_CREDS} ${SSH_CREDS_USR}@10.3.0.50 sudo docker-compose pull
             ssh -o "StrictHostKeyChecking=no" -i ${SSH_CREDS} ${SSH_CREDS_USR}@10.3.0.50 sudo docker-compose -f docker-compose-prod.yml -p seeder up -d --remove-orphans
           '''
         }
