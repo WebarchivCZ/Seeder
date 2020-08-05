@@ -11,4 +11,4 @@ prod:
     seeder_db_user: seeder
     seeder_db_pass: "{{ seeder_db_pass_vault }}"
     seeder_django_allowed_hosts: webarchiv.cz www.webarchiv.cz seeder.webarchiv.cz
-    seeder_django_debug: 'False'
+    seeder_django_debug: 'True'
