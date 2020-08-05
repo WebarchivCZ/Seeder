@@ -8,7 +8,7 @@ print('Loading ./settings/env.py')
 SECRET_KEY = os.environ.get('SECRET_KEY', 'sdfvsdfvsdfvsdfv')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get('DEBUG', 'False')
+DEBUG = os.environ.get('DEBUG', 'False').lower() == 'true'
 
 LOGGING = {
     'version': 1,
@@ -28,7 +28,7 @@ LOGGING = {
 
 TEMPLATES[0]['OPTIONS']['debug'] = DEBUG
 
-THUMBNAIL_DEBUG = os.environ.get('THUMBNAIL_DEBUG', 'False')
+THUMBNAIL_DEBUG = os.environ.get('THUMBNAIL_DEBUG', 'False').lower() == 'true'
 
 ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '127.0.0.1').split(' ')
 
