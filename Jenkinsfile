@@ -7,7 +7,7 @@ pipeline {
         }
         steps {
           sh '''#!/usr/bin/env bash
-            # Make Bash Great Again
+            # Make Bash Great Again
             set -o errexit # exit when a command fails.
             set -o nounset # exit when using undeclared variables
             set -o pipefail # catch non-zero exit code in pipes
@@ -25,7 +25,7 @@ pipeline {
         }
         steps {
           sh '''#!/usr/bin/env bash
-            # Make Bash Great Again
+            # Make Bash Great Again
             set -o errexit # exit when a command fails.
             set -o nounset # exit when using undeclared variables
             set -o pipefail # catch non-zero exit code in pipes
@@ -48,7 +48,7 @@ pipeline {
         steps {
           input "Přísáhám před krutým a přísným bohem, že https://app.webarchiv.cz je v perfektním stavu a stvrzuji, že může jít do produkce na https://webarchiv.cz."
           sh '''#!/usr/bin/env bash
-            # Make Bash Great Again
+            # Make Bash Great Again
             set -o errexit # exit when a command fails.
             set -o nounset # exit when using undeclared variables
             set -o pipefail # catch non-zero exit code in pipes
