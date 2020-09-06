@@ -55,7 +55,7 @@ CACHES = {
 
 EMAIL_BACKEND = os.environ.get('EMAIL_BACKEND', 'django.core.mail.backends.console.EmailBackend')
 EMAIL_HOST = os.environ.get('EMAIL_HOST', 'localhost')
-EMAIL_USE_TLS = os.environ.get('EMAIL_USE_TLS', 'False')
+EMAIL_USE_TLS = os.environ.get('EMAIL_USE_TLS', 'False').lower() == 'true'
 DEFAULT_FROM_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL', 'webarchiv@nkp.cz')
 SERVER_EMAIL= os.environ.get('SERVER_EMAIL', 'webarchiv@nkp.cz')
 
