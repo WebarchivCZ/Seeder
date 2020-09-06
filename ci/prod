@@ -13,3 +13,4 @@ prod:
     seeder_django_allowed_hosts: webarchiv.cz www.webarchiv.cz seeder.webarchiv.cz
     seeder_django_debug: 'True'
     seeder_django_email_backend: 'django.core.mail.backends.smtp.EmailBackend'
+    seeder_django_email_host: 10.1.2.183

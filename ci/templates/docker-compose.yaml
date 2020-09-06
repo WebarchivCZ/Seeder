@@ -26,7 +26,7 @@ services:
       RECAPTCHA_PUBLIC_KEY: {{ RECAPTCHA_PUBLIC_KEY }}
       RECAPTCHA_PRIVATE_KEY: {{ RECAPTCHA_PRIVATE_KEY }}
       EMAIL_BACKEND: {{ seeder_django_email_backend | default('django.core.mail.backends.console.EmailBackend') }}
-
+      EMAIL_HOST: {{ seeder_django_email_host | default('localhost') }}
     depends_on:
       - manet
       - memcached
