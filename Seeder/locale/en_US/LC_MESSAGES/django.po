@@ -1834,7 +1834,7 @@ msgstr "^source-selection$"
 
 #: www/urls.py:68
 msgid "^disclaimer_url$"
-msgstr "^disclaimer$"
+msgstr "^disclaimer/$"
 
 #: www/urls.py:72
 msgid "^embed_url$"

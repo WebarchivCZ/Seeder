@@ -1828,7 +1828,7 @@ msgstr "^nominovat/vyber-zdroju$"
 
 #: www/urls.py:68
 msgid "^disclaimer_url$"
-msgstr "^certifikovano$"
+msgstr "^certifikovano/$"
 
 #: www/urls.py:72
 msgid "^embed_url$"
