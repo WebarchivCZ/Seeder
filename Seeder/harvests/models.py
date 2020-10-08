@@ -335,6 +335,7 @@ class Harvest(HarvestAbstractModel):
         Freezes the seeds to preserve them for later use
         """
         self.seeds_frozen = '\n'.join(self.get_seeds())
+        self.save()
 
     @property
     def is_oneshot(self):
