@@ -100,7 +100,7 @@ class SeedManager(models.Manager):
             )
         )
 
-    def get_queryset(self):
+    def archiving(self):
         return self.valid_seeds().filter(
             source__state__in=constants.ARCHIVING_STATES,
         )
@@ -527,8 +527,7 @@ class Seed(BaseModel):
         null=True,
     )
 
-    objects = models.Manager()
-    archiving = SeedManager()
+    objects = SeedManager()
 
     class Meta:
         verbose_name = _('Seed')
