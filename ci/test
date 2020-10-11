@@ -11,4 +11,6 @@ test:
     seeder_db_user: seeder
     seeder_db_pass: "{{ seeder_db_pass_vault }}"
     seeder_django_allowed_hosts: app.webarchiv.cz
-    seeder_django_debug: 'True'
+    seeder_django_debug: 'False'
+    treafik_seeder_rule: "Host(`app.webarchiv.cz`)"
+    treafik_api_rule: "Host(`wa-dev-docker00`) || Host(`10.3.0.110`)"
