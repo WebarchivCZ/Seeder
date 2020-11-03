@@ -423,14 +423,10 @@ msgid "Schedule emails"
 msgstr "Schedule e-mails"
 
 #: contracts/views.py:179
-#, fuzzy
-#| msgid "Contract number"
 msgid "Can't delete contract with number"
 msgstr "Can't delete contract with number"
 
 #: contracts/views.py:187
-#, fuzzy
-#| msgid "Contract file"
 msgid "Contract deleted."
 msgstr "Contract deleted."
 
@@ -554,10 +550,8 @@ msgid "Annotation"
 msgstr "Annotation"
 
 #: harvests/models.py:185
-#, fuzzy
-#| msgid "Date of harvest"
 msgid "Seeds not harvested"
-msgstr "Date of harvest"
+msgstr "Seeds not harvested"
 
 #: harvests/models.py:192 harvests/models.py:430
 msgid "Date of harvest"
@@ -568,8 +562,6 @@ msgid "Topic collections"
 msgstr "Topic collections"
 
 #: harvests/models.py:202 harvests/templates/harvest.html:17
-#, fuzzy
-#| msgid "Topic collections"
 msgid "Topic collections by frequency"
 msgstr "Topic collections by frequency"
 
@@ -578,8 +570,6 @@ msgid "ArchiveIt"
 msgstr "ArchiveIt"
 
 #: harvests/models.py:214 harvests/views.py:347
-#, fuzzy
-#| msgid "Harvests"
 msgid "Tests"
 msgstr "Tests"
 
@@ -670,14 +660,10 @@ msgid "Sources by frequency"
 msgstr "Sources by frequency"
 
 #: harvests/templates/harvest.html:18
-#, fuzzy
-#| msgid "Included sources"
 msgid "Include ArchiveIt seeds"
 msgstr "Include ArchiveIt seeds"
 
 #: harvests/templates/harvest.html:19
-#, fuzzy
-#| msgid "Included sources"
 msgid "Include Tests seeds"
 msgstr "Include Tests seeds"
 
@@ -717,8 +703,6 @@ msgstr "Custom sources"
 
 #: harvests/templates/harvest_catalogue.html:5
 #: harvests/templates/harvest_catalogue.html:9
-#, fuzzy
-#| msgid "Harvested till"
 msgid "Harvest catalogue"
 msgstr "Harvest catalogue"
 
@@ -795,14 +779,10 @@ msgid "Seeds"
 msgstr "Seeds"
 
 #: harvests/templates/topic_collection.html:123
-#, fuzzy
-#| msgid "publisher"
 msgid "Unpublish"
 msgstr "Unpublish"
 
 #: harvests/templates/topic_collection.html:123
-#, fuzzy
-#| msgid "Publisher"
 msgid "Publish"
 msgstr "Publish"
 
@@ -1360,8 +1340,6 @@ msgid "Read the docs"
 msgstr "Read the docs"
 
 #: templates/base.html:130
-#, fuzzy
-#| msgid "Harvests"
 msgid "Harvests urls"
 msgstr "Harvests urls"
 
