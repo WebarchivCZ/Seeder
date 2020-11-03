@@ -440,7 +440,7 @@ class TopicCollection(HarvestAbstractModel, OrderedModel):
     )
 
     date_from = DatePickerField(_('Date from'), null=True)
-    date_to = DatePickerField(_('Date to'), null=True)
+    date_to = DatePickerField(_('Date to'), null=True, blank=True)
 
     def get_www_url(self):
         return reverse('www:collection_detail', kwargs={"slug": self.slug})
