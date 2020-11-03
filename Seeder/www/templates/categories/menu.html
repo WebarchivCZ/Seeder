@@ -1,45 +1,67 @@
-	<section id="catalog-header">
-		<div class="container">
-			{% if lang == "cs" %}
-				<h1><a href="{% url "www:index" %}">Webarchiv<span class="false-link-underline-blue"></span></a> podle oborů</h1><br>
-				<p>Přehled nasmlouvaných webů dle oborového třídění:</p>
-			{% else %}
-				<h1>Browse the <a href="{% url "www:index" %}">Webarchiv<span class="false-link-underline-blue"></span></a> by subject</h1><br>
-				<p>List of a contracted websites by classification system:</p>
-			{% endif %}
+{% load urltags %}
+<section id="catalog-header">
+    <div class="container">
+        {% if lang == "cs" %}
+        <h1><a href="{% url "www:index" %}">Webarchiv<span class="false-link-underline-blue"></span></a> podle oborů
+        </h1><br>
+        <p>Přehled nasmlouvaných webů dle oborového třídění:</p>
+        {% else %}
+        <h1>Browse the <a href="{% url "www:index" %}">Webarchiv<span class="false-link-underline-blue"></span></a> by
+            subject</h1><br>
+        <p>List of a contracted websites by classification system:</p>
+        {% endif %}
 
-			<ul class="inline-list categories">
-				<li>
-					<a href="{% url "www:categories" %}" {% if not current_category %}class="current"{% endif %}>Vše</a>&nbsp;{{ sources_total }}&nbsp;<span class="slash">/</span>&nbsp;
-				</li>
+        <ul class="inline-list categories">
+            <li>
+                <a href="{% url "www:categories" %}" {% if not current_category %}class="current"
+                    {% endif %}>Vše</a>&nbsp;{{ sources_total }}&nbsp;<span class="slash">/</span>&nbsp;
+            </li>
 
-				{% for category in categories %}
-					<li>
-						<a href="{{ category.www_url }}" {% ifequal current_category category %}class="current"{% endifequal %}>{{ category }}</a>&nbsp; {{ category.num_sources }} 
-						{% include "includes/comma.html" with separator='&nbsp;<span class="slash">/</span>&nbsp;' %}
-						</li>
-				{% endfor %}
+            {% for category in categories %}
+            <li>
+                <a href="{{ category.www_url }}" {% ifequal current_category category %}class="current"
+                    {% endifequal %}>{{ category }}</a>&nbsp; {{ category.num_sources }}
+                {% include "includes/comma.html" with separator='&nbsp;<span class="slash">/</span>&nbsp;' %}
+            </li>
+            {% endfor %}
 
-			</ul>
+        </ul>
 
 
-			{% if current_category %}
-				<h2 class="italic">{{ current_category }} / {{ current_sub_category }}</h2>
+        {% if current_category %}
+        <h2 class="italic">{{ current_category }} / {{ current_sub_category }}</h2>
 
-				<ul class="inline-list subcategories">
+        <ul class="inline-list subcategories">
+            <li>
+                <a href="{% url "www:categories" %}" {% if not current_sub_category %}class="current"
+                    {% endif %}>Vše</a>&nbsp;{{ cat_sources_total }}&nbsp;<span class="slash">/</span>&nbsp;
+            </li>
 
-					<li>
-						<a href="{% url "www:categories" %}" {% if not current_sub_category %}class="current"{% endif %}>Vše</a>&nbsp;{{ cat_sources_total }}&nbsp;<span class="slash">/</span>&nbsp;
-					</li>
+            {% for sub_category in sub_categories %}
+            <li>
+                <a href="{{ sub_category.www_url }}" {% ifequal current_sub_category sub_category %}class="current"
+                    {% endifequal %}>{{ sub_category }}</a>&nbsp; {{ sub_category.num_sources }}
+                {% include "includes/comma.html" with separator='&nbsp;<span class="slash">/</span>&nbsp;' %}
+            </li>
+            {% endfor %}
+        </ul>
+        {% else %}
+        <h2 class="italic">Můžete hledat i abecedně</h2>
+        <ul class="inline-list subcategories">
+            <li>
+                <a href="{% url "www:categories" %}" {% if not current_sub_category %}class="current"
+                    {% endif %}>Vše</a>&nbsp;{{ cat_sources_total }}&nbsp;<span class="slash">/</span>&nbsp;
+            </li>
 
-					{% for sub_category in sub_categories %}
-						<li>
-							<a href="{{ sub_category.www_url }}" {% ifequal current_sub_category sub_category %}class="current"{% endifequal %}>{{ sub_category }}</a>&nbsp; {{ sub_category.num_sources }} 
-							{% include "includes/comma.html" with separator='&nbsp;<span class="slash">/</span>&nbsp;' %}
-							</li>
-					{% endfor %}
-
-				</ul>
-			{% endif %}
-		</div>
-	</section>
+            {% for letter in startswith_options %}
+            <li>
+                <a href="?{% url_replace startswith=letter page=None %}"
+                    {% ifequal current_sub_category sub_category %}class="current"
+                    {% endifequal %}>{{ letter }}</a>&nbsp;
+                {% include "includes/comma.html" with separator='&nbsp;<span class="slash">/</span>&nbsp;' %}
+            </li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+    </div>
+</section>
