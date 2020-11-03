@@ -120,6 +120,11 @@ class ManagedVotingRounds(VoteCard):
             state=voting_models.constants.VOTE_INITIAL
         ).annotate(Count('vote')).order_by('vote__count')
 
+    def get_color(self, element):
+        # User has cast a vote in the voting round
+        has_voted = element.vote_set.filter(author=self.user).exists()
+        return 'success' if has_voted else ''
+
 
 class OpenToVoteRounds(VoteCard):
     """
