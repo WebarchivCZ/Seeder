@@ -181,6 +181,11 @@ class Harvest(HarvestAbstractModel):
         null=True
     )
 
+    seeds_not_harvested = models.TextField(
+        _("Seeds not harvested"),
+        blank=True, null=True,
+    )
+
     auto_created = models.BooleanField(default=False)
 
     scheduled_on = DatePickerField(
