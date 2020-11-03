@@ -6,6 +6,7 @@ from datetime import datetime
 
 from django.db.models import Q
 from django.conf import settings
+from django.utils import timezone
 
 from source import constants
 from source.models import Source
@@ -19,7 +20,7 @@ def take_screenshots():
     Downloads all the screenshots
     """
 
-    now = datetime.now()
+    now = timezone.now()
     sources = Source.objects.filter(
         Q(screenshot_date__lte=now - constants.SCREENSHOT_MAX_AGE) |
         Q(screenshot__isnull=True)

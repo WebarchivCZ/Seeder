@@ -3,6 +3,10 @@
 <div class="row">
 	<div class="col-md-12">
 		<div class="paginator">
+                {% if 1 not in paginator.get_current_range %}
+                    <a href="?{% url_replace page=1 %}">1</a>
+                    ...
+                {% endif %}
 				{% for page in paginator.get_current_range %}
 					{% ifequal page paginator.number  %} 
 				        <span class="current">
@@ -12,6 +16,10 @@
 		            	<a href="?{% url_replace page=page %}">{{ page }}</a>
 					{% endifequal %}
 				{% endfor %}
+                {% if paginator.paginator.num_pages not in paginator.get_current_range %}
+                    ...
+                    <a href="?{% url_replace page=paginator.paginator.num_pages %}">{{ paginator.paginator.num_pages }}</a>
+                {% endif %}
 		</div>
 	</div>
 </div>

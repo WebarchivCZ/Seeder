@@ -60,6 +60,7 @@ class HarvestEditForm(forms.ModelForm):
             'custom_sources',
             'topic_collections',
             'topic_collection_frequency',
+            'seeds_not_harvested',
         ]
         widgets = autocomplete_widgets
 

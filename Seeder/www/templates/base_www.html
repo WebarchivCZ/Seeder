@@ -1,4 +1,4 @@
-{% load i18n raven %}
+{% load i18n raven core %}
 {% get_current_language as lang %}
 <!DOCTYPE html>
 <html lang="{{ lang }}">
@@ -8,6 +8,7 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta name="author" content="Webarchiv">
+    <meta name="version" content="{% version %}">
 	<title>{% block title %}{% endblock title %} | Webarchiv.cz</title>
 
 	<meta property="fb:app_id" content="768657893222364" />
