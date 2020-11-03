@@ -1,6 +1,6 @@
 ''' Key is upper letter, value is upper regex to match it + diacritics '''
 ALPHABET_SEARCH_CONVERSION = {
-    '#': r'[^a-zA-Z]',
+    '#': r'[^A-ZÁČĎÉĚÍŇÓŘŠŤÚŮÝŽ]',  # a bit hacky without using Unicode regex
     'A': r'[AÁ]',
     'B': r'B',
     'C': r'[CČ]',
