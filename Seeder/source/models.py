@@ -178,7 +178,7 @@ class SourceManager(models.Manager):
 
         return self.archiving().filter(
             Q(created__lte=qa_limit, qualityassurancecheck=None) |
-            ~Q(qualityassurancecheck__last_changed__gte=qa_limit)
+            Q(qualityassurancecheck__last_changed__lte=qa_limit)
         )
 
     def has_cc(self, value=True):

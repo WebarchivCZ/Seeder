@@ -135,3 +135,8 @@ SCREENSHOT_RECTANGLE = '0,0,1366,768'
 
 SCREENSHOT_MAX_AGE = relativedelta(days=365)
 SCREENSHOT_DIR = 'screenshots'  # relative to media root
+
+
+# Random QA
+RANDOM_QA_MAX_SOURCES = 5
+RANDOM_QA_MAX_TRIES = RANDOM_QA_MAX_SOURCES * 3

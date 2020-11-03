@@ -1,5 +1,6 @@
 from django.urls import reverse
 from django.utils.translation import ugettext_lazy as _
+from django.utils import timezone
 from django.db.models import Count, Q
 from django.core.paginator import Paginator
 
@@ -208,7 +209,29 @@ class NewQA(DashboardCard):
         return reverse('qa:create', args=[str(element.id)])
 
     def get_queryset(self):
-        return source_models.Source.objects.needs_qa().filter(owner=self.user)
+        # Seed to today's date & user: each user has different & persists
+        import random
+        random.seed(str(self.user) + str(timezone.now().date()))
+        # Include all sources, both owned by user and not
+        qa_sources = source_models.Source.objects.needs_qa()
+        # Randomly select up to N sources for QA with at most M tries
+        random_qa = set()  # collect pks
+        tries = 0
+        while (
+            len(random_qa) < source_models.constants.RANDOM_QA_MAX_SOURCES and
+            tries < source_models.constants.RANDOM_QA_MAX_TRIES
+        ):
+            tries += 1
+            s = qa_sources[random.randint(0, qa_sources.count()-1)]
+            random_qa.add(s.pk)
+        # Order these by date so that the first item is the oldest
+        return source_models.Source.objects.filter(
+            pk__in=random_qa).order_by('created')
+
+    def get_count(self):
+        # Return number of performed QAs by the user today
+        return self.user.qualityassurancecheck_set.filter(
+            created__date=timezone.now()).count()
 
     def get_color(self, element):
         return element.css_class()
