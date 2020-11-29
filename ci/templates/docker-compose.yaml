@@ -3,17 +3,42 @@ version: "3"
 
 volumes:
   media:
+  static:
   seeder_db_data:
 
 services:
+  reverse-proxy:
+    # The official v2 Traefik docker image
+    image: traefik:v2.2
+    # Enables the web UI and tells Traefik to listen to docker
+    command:
+      - "--providers.docker"
+      - "--api=true"
+      - "--api.dashboard=true"
+      - "--entrypoints.web"
+      - "--entrypoints.web.address=:8000"
+    ports:
+      # The HTTP port
+      - "80:8000"
+    privileged: true
+    volumes:
+      # So that Traefik can listen to the Docker events
+      - /var/run/docker.sock:/var/run/docker.sock
+    labels:
+      traefik.http.routers.api.rule: "{{ treafik_api_rule }}"
+      traefik.http.routers.api.service: api@internal
+      traefik.http.routers.api.middlewares: allowed-ips@docker
+      traefik.http.middlewares.allowed-ips.ipwhitelist.sourcerange: 172.16.3.65, 172.16.3.66, 172.16.3.67
+
   web:
     image: webarchiv/seeder:{{ seeder_docker_tag }}
     command: bash run.sh
     working_dir: /code/Seeder
     volumes:
       - "media:/code/Seeder/media"
-    ports:
-      - 80:8000
+      - "static:/code/Seeder/static"
+    labels:
+      - "traefik.http.routers.seeder.rule={{ treafik_seeder_rule }}"
     environment:
       DJANGO_SETTINGS_MODULE: settings.env
       ALLOWED_HOSTS: {{ seeder_django_allowed_hosts }}
@@ -31,6 +56,17 @@ services:
       - manet
       - memcached
       - seeder_db
+
+  static:
+    image: nginx:alpine
+    volumes:
+      - static:/seeder/static
+      - media:/seeder/media
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+    labels:
+      traefik.http.routers.static.rule: "{{ treafik_seeder_rule }} && PathPrefix(`/static`) || PathPrefix(`/media`)"
+    depends_on:
+      - web
 
   seeder_db:
     image: postgres:9.6
