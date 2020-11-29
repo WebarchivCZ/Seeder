@@ -100,7 +100,7 @@ class SeedManager(models.Manager):
             )
         )
 
-    def get_queryset(self):
+    def archiving(self):
         return self.valid_seeds().filter(
             source__state__in=constants.ARCHIVING_STATES,
         )
@@ -178,7 +178,7 @@ class SourceManager(models.Manager):
 
         return self.archiving().filter(
             Q(created__lte=qa_limit, qualityassurancecheck=None) |
-            ~Q(qualityassurancecheck__last_changed__gte=qa_limit)
+            Q(qualityassurancecheck__last_changed__lte=qa_limit)
         )
 
     def has_cc(self, value=True):
@@ -334,8 +334,9 @@ class Source(SearchModel, SlugOrCreateModel, BaseModel):
             self.name,
             self.annotation,
             self.comment,
-            self.publisher.get_search_blob()
         ]
+        if self.publisher:  # Possible that Publisher is not set
+            parts.append(self.publisher.get_search_blob())
         parts.extend([s.url for s in self.seed_set.all()])
         parts.extend([w.word for w in self.keywords.all()])
         return ' '.join(filter(None, parts))
@@ -355,7 +356,8 @@ class Source(SearchModel, SlugOrCreateModel, BaseModel):
     @property
     def main_seed(self):
         main_active = self.seed_set.filter(
-            state=constants.SEED_STATE_INCLUDE
+            state=constants.SEED_STATE_INCLUDE,
+            main_seed=True,
         ).first()
 
         return main_active if main_active else self.seed_set.first()
@@ -494,6 +496,7 @@ class Seed(BaseModel):
 
     source = models.ForeignKey(Source, on_delete=models.PROTECT)
 
+    main_seed = models.BooleanField(_('Main seed'), default=False)
     url = models.URLField(_('Seed url'), validators=[validate_tld])
     state = models.CharField(choices=constants.SEED_STATES,
                              default=constants.SEED_STATE_INCLUDE,
@@ -524,14 +527,21 @@ class Seed(BaseModel):
         null=True,
     )
 
-    objects = models.Manager()
-    archiving = SeedManager()
+    objects = SeedManager()
 
     class Meta:
         verbose_name = _('Seed')
         verbose_name_plural = _('Seeds')
 
+    def save(self, *args, **kwargs):
+        # When setting one seed as main, set all other source seeds to False
+        if self.main_seed and self.source:
+            self.source.seed_set.exclude(pk=self.pk).update(main_seed=False)
+        return super().save(*args, **kwargs)
+
     def css_class(self):
+        if self.main_seed:
+            return 'light'
         if self.active and self.from_time and self.to_time:
             return 'success'
         return constants.SEED_COLORS[self.state]

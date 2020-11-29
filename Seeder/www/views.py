@@ -26,6 +26,7 @@ from www.models import Nomination, SearchLog
 
 from . import models
 from . import forms
+from . import constants
 
 ITEMS_PER_PAGE = 12
 
@@ -238,16 +239,34 @@ class CategoryBaseView(PaginatedView):
             ).count(),
         }
 
-
-class Categories(CategoryBaseView, TemplateView):
-    def get_paginator_queryset(self):
-        return Source.objects.public()
-
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context.update(self.get_categories_context())
         context['sources'] = self.get_paginator()
+        context['startswith_options'] = \
+            constants.ALPHABET_SEARCH_CONVERSION.keys()
+        return context
 
+
+class Categories(CategoryBaseView, TemplateView):
+    def get_current_startswith(self):
+        # Get the "startswith" URL parameter if present
+        try:
+            return str(self.request.GET.get('startswith')).strip()
+        except ValueError:
+            return None
+
+    def get_paginator_queryset(self):
+        startswith = self.get_current_startswith()
+        # Filter by "startswith" if exists using a regex conversion chart
+        if startswith is not None:
+            startre = constants.ALPHABET_SEARCH_CONVERSION.get(startswith, '.')
+            return Source.objects.public().filter(
+                name__iregex=rf'^{startre}.*$')
+        return Source.objects.public()
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
         return context
 
 
@@ -263,10 +282,7 @@ class CategoryDetail(CategoryBaseView, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['sources'] = self.get_paginator()
         context['current_category'] = self.get_object()
-
-        context.update(self.get_categories_context())
         context.update(self.get_categories_detail_context(self.get_object()))
         return context
 
@@ -284,9 +300,7 @@ class SubCategoryDetail(CategoryBaseView, DetailView):
         category = self.get_object().category
 
         context = super().get_context_data(**kwargs)
-        context['sources'] = self.get_paginator()
         context['current_category'] = category
-        context.update(self.get_categories_context())
         context.update(self.get_categories_detail_context(category))
         return context
 

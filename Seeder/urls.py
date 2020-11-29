@@ -63,8 +63,6 @@ urlpatterns = [
     path('certifikat', RedirectView.as_view(
         url=reverse_lazy('www:about_graphics'), permanent=True),
         name='certifikat'),
-    path('cs/certifikovano/', disclaimer_redirect, name='disclaimer_cs'),
-    path('en/disclaimer/', disclaimer_redirect, name='disclaimer_en'),
     path('files/vydavatele/certifikat.html', disclaimer_redirect,
          name='disclaimer_file'),
 

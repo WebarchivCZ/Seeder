@@ -52,7 +52,7 @@
 
                 <tr>
                     <td>{% trans 'Harvested till' %}</td>
-                    <td>{{ object.date_to }}</td>
+                    <td>{{ object.date_to|default:"—" }}</td>
                 </tr>
 
                 {% if object.image %}

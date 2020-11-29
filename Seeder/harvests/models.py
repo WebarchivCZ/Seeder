@@ -96,7 +96,8 @@ class HarvestAbstractModel(BaseModel):
         return set(self.custom_seeds.splitlines())
 
     def get_custom_sources_seeds(self):
-        seeds = Seed.archiving.filter(source__in=self.custom_sources.all())
+        seeds = Seed.objects.archiving().filter(
+            source__in=self.custom_sources.all())
         return set(seeds.values_list('url', flat=True)) - self.get_blacklisted()
 
     def get_seeds(self, blacklisted=None):
@@ -180,6 +181,11 @@ class Harvest(HarvestAbstractModel):
         null=True
     )
 
+    seeds_not_harvested = models.TextField(
+        _("Seeds not harvested"),
+        blank=True, null=True,
+    )
+
     auto_created = models.BooleanField(default=False)
 
     scheduled_on = DatePickerField(
@@ -228,7 +234,7 @@ class Harvest(HarvestAbstractModel):
     def get_seeds_by_frequency(self, blacklisted=None):
         if not self.target_frequency:
             return set()
-        seeds = Seed.archiving.filter(
+        seeds = Seed.objects.archiving().filter(
             source__frequency__in=self.target_frequency)
         # Compute blacklisted only if not provided
         if blacklisted is None:
@@ -238,7 +244,7 @@ class Harvest(HarvestAbstractModel):
     def get_tests_seeds(self, blacklisted=None):
         if not self.tests:
             return set()
-        seeds = Seed.archiving.filter(
+        seeds = Seed.objects.filter(
             source__state=source_constants.STATE_TECHNICAL_REVIEW)
         # Compute blacklisted only if not provided
         if blacklisted is None:
@@ -250,7 +256,7 @@ class Harvest(HarvestAbstractModel):
         if not self.is_oneshot:
             return set()
         # Get all potential OneShot seeds
-        oneshot = Seed.archiving.filter(source__frequency=0)
+        oneshot = Seed.objects.archiving().filter(source__frequency=0)
         oneshot = set(oneshot.values_list('url', flat=True))
         # Get all harvested seeds up to this Harvest's scheduled date
         if previously_harvested is None:  # only if not supplied
@@ -265,7 +271,8 @@ class Harvest(HarvestAbstractModel):
         if not self.archive_it:
             return set()
         # Get all potential ArchiveIt seeds
-        archiveit = Seed.archiving.filter(source__frequency__in=[1, 2, 4])
+        archiveit = Seed.objects.archiving().filter(
+            source__frequency__in=[1, 2, 4, 6])
         archiveit = set(archiveit.values_list('url', flat=True))
         # Get all harvested seeds up to this Harvest's scheduled date
         if previously_harvested is None:  # only if not supplied
@@ -335,6 +342,7 @@ class Harvest(HarvestAbstractModel):
         Freezes the seeds to preserve them for later use
         """
         self.seeds_frozen = '\n'.join(self.get_seeds())
+        self.save()
 
     @property
     def is_oneshot(self):
@@ -437,7 +445,7 @@ class TopicCollection(HarvestAbstractModel, OrderedModel):
     )
 
     date_from = DatePickerField(_('Date from'), null=True)
-    date_to = DatePickerField(_('Date to'), null=True)
+    date_to = DatePickerField(_('Date to'), null=True, blank=True)
 
     def get_www_url(self):
         return reverse('www:collection_detail', kwargs={"slug": self.slug})
