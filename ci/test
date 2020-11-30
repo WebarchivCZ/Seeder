@@ -13,4 +13,5 @@ test:
     seeder_django_allowed_hosts: app.webarchiv.cz
     seeder_django_debug: 'False'
     treafik_seeder_rule: "Host(`app.webarchiv.cz`)"
+    treafik_seeder_static_rule: "Host(`app.webarchiv.cz`) && (PathPrefix(`/static`) || PathPrefix(`/media`))"
     treafik_api_rule: "Host(`wa-dev-docker00`) || Host(`10.3.0.110`)"
