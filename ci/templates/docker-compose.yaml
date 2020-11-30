@@ -64,7 +64,7 @@ services:
       - media:/seeder/media
       - ./nginx.conf:/etc/nginx/conf.d/default.conf
     labels:
-      traefik.http.routers.static.rule: "{{ treafik_seeder_rule }} && PathPrefix(`/static`) || PathPrefix(`/media`)"
+      traefik.http.routers.static.rule: "{{ treafik_seeder_static_rule }}"
     depends_on:
       - web
 
