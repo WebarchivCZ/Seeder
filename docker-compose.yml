@@ -1,22 +1,56 @@
 version: "3"
+
+volumes:
+  static:
+  media:
+
 services:
+  reverse-proxy:
+    # The official v2 Traefik docker image
+    image: traefik:v2.2
+    # Enables the web UI and tells Traefik to listen to docker
+    command: --api.insecure=true --providers.docker
+    ports:
+      # The HTTP port
+      - "80:80"
+      # The Web UI (enabled by --api.insecure=true)
+      - "8080:8080"
+    volumes:
+      # So that Traefik can listen to the Docker events
+      - /var/run/docker.sock:/var/run/docker.sock
+
   web:
     build:
       context: .
-    ports:
-     - "80:8000"
     volumes:
      - .:/code
+     - "static:/code/Seeder/static"
+     - "media:/code/Seeder/media"
     command: bash run.sh
     working_dir: /code/Seeder
+    labels:
+      - "traefik.http.routers.seeder.rule=Host(`localhost`) || Host(`127.0.0.1`)"
     environment:
-      DEBUG: 'True'
+      DEBUG: 'False'
       THUMBNAIL_DEBUG: 'True'
       DJANGO_SETTINGS_MODULE: settings.env
+      ALLOWED_HOSTS: 127.0.0.1 localhost
     depends_on:
       - postgres
       - manet
       - memcached
+
+  static:
+    image: nginx:alpine
+    volumes:
+      - static:/seeder/static
+      - media:/seeder/media
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+    labels:
+      traefik.http.routers.static.rule: "PathPrefix(`/static`) || PathPrefix(`/media`)"
+    depends_on:
+      - web
+
 
   postgres:
     image: postgres:9.6
