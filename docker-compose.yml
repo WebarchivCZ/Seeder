@@ -24,7 +24,7 @@ services:
       context: .
     volumes:
      - .:/code
-     - "static:/code/Seeder/static"
+     - "static:/code/Seeder/static_root"
      - "media:/code/Seeder/media"
     command: bash run.sh
     working_dir: /code/Seeder
@@ -43,14 +43,13 @@ services:
   static:
     image: nginx:alpine
     volumes:
-      - static:/seeder/static
-      - media:/seeder/media
-      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+      - static:/seeder/static:ro
+      - media:/seeder/media:ro
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
     labels:
       traefik.http.routers.static.rule: "PathPrefix(`/static`) || PathPrefix(`/media`)"
     depends_on:
       - web
-
 
   postgres:
     image: postgres:9.6

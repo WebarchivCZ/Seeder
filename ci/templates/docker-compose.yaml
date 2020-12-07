@@ -36,7 +36,7 @@ services:
     working_dir: /code/Seeder
     volumes:
       - "media:/code/Seeder/media"
-      - "static:/code/Seeder/static"
+      - "static:/code/Seeder/static_root"
     labels:
       - "traefik.http.routers.seeder.rule={{ treafik_seeder_rule }}"
     environment:
