@@ -77,7 +77,7 @@ class Contract(BaseModel):
 
     year = models.PositiveIntegerField(
         _('Year'),
-        default=this_year()
+        default=this_year
     )
 
     contract_file = models.FileField(
