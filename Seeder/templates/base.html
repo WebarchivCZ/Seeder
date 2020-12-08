@@ -31,7 +31,7 @@
                 <span class="icon-bar"></span>
             </button>
             <a class="navbar-brand" href="{% url 'core:dashboard' %}">{% trans 'Seeder' %}</a>
-            <span class="navbar-brand" style="color:#777;font-size:1em;">{% version %}</span>
+            <span class="navbar-brand" style="color:#777;font-size:1em;">{% version %} ({% version_datetime %})</span>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
             <form class="navbar-form navbar-right" action="{% url 'search:search' %}" method="get">

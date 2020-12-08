@@ -15,7 +15,7 @@ import re
 from django.utils.translation import ugettext_lazy as _
 
 # Import version to be displayed further
-from .version import VERSION
+from .version import VERSION, VERSION_DATETIME
 
 # that double dirname is necessary since setting is in folder...
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))

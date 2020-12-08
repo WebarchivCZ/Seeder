@@ -14,7 +14,15 @@ try:
     NUM_COMMITS = int(subprocess.run(
         ['git', 'rev-list', '--count', 'HEAD'],
         stdout=PIPE, stderr=PIPE).stdout)
-
+    
     VERSION = f"{BRANCH}@{COMMIT_ID}@{NUM_COMMITS}"
+    
+    # git log -1 --date=format:"%Y/%m/%d %T" --format="%ad"
+    VERSION_DATETIME = subprocess.run(
+        ['git', 'log', '-1', '--date=format:"%d. %m. %Y %T"', '--format="%ad"'],
+        stdout=PIPE, stderr=PIPE).stdout.decode('utf-8').strip(
+    ).replace('"', '')
+
 except:
     VERSION = "Version cannot be loaded"
+    VERSION_DATETIME = "Commit datetime cannot be loaded"
