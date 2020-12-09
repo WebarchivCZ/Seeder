@@ -184,8 +184,8 @@ class WithoutAleph(SourceCard):
 
     def get_queryset(self):
         return self.get_basic_queryset().filter(
+            Q(aleph_id='') | Q(aleph_id=None),
             state=source_models.constants.STATE_RUNNING,
-            aleph_id__exact=''
         )
 
 
@@ -222,7 +222,7 @@ class NewQA(DashboardCard):
             tries < source_models.constants.RANDOM_QA_MAX_TRIES
         ):
             tries += 1
-            s = qa_sources[random.randint(0, qa_sources.count()-1)]
+            s = qa_sources[random.randint(0, qa_sources.count() - 1)]
             random_qa.add(s.pk)
         # Order these by date so that the first item is the oldest
         return source_models.Source.objects.filter(

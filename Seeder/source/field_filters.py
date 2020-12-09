@@ -1,5 +1,5 @@
 import django_filters
-
+from django.db.models import Q
 from django.utils.translation import ugettext_lazy as _
 from dal import autocomplete
 from core.custom_filters import BaseFilterSet, DateRangeFilter
@@ -15,7 +15,7 @@ def filter_not_empty(queryset, name, value):
         return q.exclude(**{lookup_empty: ''})
     else:
         empty = queryset.filter(
-            aleph_id__exact='').values_list('pk', flat=True)
+            Q(aleph_id='') | Q(aleph_id=None)).values_list('pk', flat=True)
         null = q.values_list('pk', flat=True)
         return queryset.filter(pk__in=list(empty) + list(null))
 
@@ -23,9 +23,11 @@ def filter_not_empty(queryset, name, value):
 def filter_has_cc(queryset, name, value):
     return models.Source.objects.has_cc(value)
 
+
 def filter_contract_number(queryset, name, value):
     # value in format e.g. '64 / 2017'
     return models.Source.objects.contains_contract_number(value)
+
 
 class SourceFilter(BaseFilterSet):
     publisher = django_filters.ModelChoiceFilter(

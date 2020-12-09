@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Seeder\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-11-03 08:11+0000\n"
+"POT-Creation-Date: 2020-12-07 17:02+0000\n"
 "PO-Revision-Date: 2018-04-16 13:40+0200\n"
 "Last-Translator: mariehaskovcova <marie.haskovcova@nkp.cz>, 2017\n"
 "Language-Team: Czech (https://www.transifex.com/webarchivecz/teams/43032/"
@@ -269,15 +269,15 @@ msgstr "Kdy chcete odeslat tuto zprávu?"
 msgid "link"
 msgstr "Odkaz"
 
-#: contracts/tables.py:16
+#: contracts/tables.py:17
 msgid "publisher"
 msgstr "Vydavatel"
 
-#: contracts/tables.py:18 qa/tables.py:10 templates/api.html:17
+#: contracts/tables.py:19 qa/tables.py:10 templates/api.html:17
 msgid "created"
 msgstr "Vytvořeno"
 
-#: contracts/tables.py:19 qa/tables.py:11
+#: contracts/tables.py:20 qa/tables.py:11
 msgid "last_changed"
 msgstr "Naposledy upraveno"
 
@@ -427,39 +427,39 @@ msgstr "Nelze smazat smlouvu s číslem"
 msgid "Contract deleted."
 msgstr "Smlouva smazána"
 
-#: core/dashboard_data.py:67
+#: core/dashboard_data.py:68
 msgid "Contracts in negotiation"
 msgstr "Smlouvy v jednání"
 
-#: core/dashboard_data.py:87
+#: core/dashboard_data.py:88
 msgid "Contracts without scheduled communication"
 msgstr "Smlouvy bez rozvrhnutého jednání"
 
-#: core/dashboard_data.py:114
+#: core/dashboard_data.py:115
 msgid "Voting rounds you manage"
 msgstr "Hodnocení, která spravujete"
 
-#: core/dashboard_data.py:134
+#: core/dashboard_data.py:135
 msgid "Open voting rounds"
 msgstr "Otevřená hodnocení"
 
-#: core/dashboard_data.py:161
+#: core/dashboard_data.py:162
 msgid "Sources curating"
 msgstr "Zdroje, které spravujete"
 
-#: core/dashboard_data.py:173
+#: core/dashboard_data.py:174
 msgid "Sources that need technical review"
 msgstr "Zdroje, které potřebují technický dohled"
 
-#: core/dashboard_data.py:182
+#: core/dashboard_data.py:183
 msgid "Source without Aleph ID"
 msgstr "Zdroje ke katalogizaci"
 
-#: core/dashboard_data.py:192
+#: core/dashboard_data.py:193
 msgid "Opened QAs"
 msgstr "Rozpracovaná kontrola kvality"
 
-#: core/dashboard_data.py:205
+#: core/dashboard_data.py:206
 msgid "Sources needing QA"
 msgstr "Zdroje ke kontrole"
 
@@ -1664,6 +1664,10 @@ msgstr "aktuality"
 msgid "Webarchiv certificate"
 msgstr "Webarchiv certificate"
 
+#: www/templates/categories/menu.html:50
+msgid "Můžete hledat i abecedně"
+msgstr "Můžete hledat i abecedně"
+
 #: www/templates/news_admin_detail.html:32
 msgid "source 1 "
 msgstr "první zdroj "
@@ -1816,17 +1820,17 @@ msgstr "^certifikovano/$"
 msgid "^embed_url$"
 msgstr "^embed$"
 
-#: www/views.py:427
+#: www/views.py:441
 #, python-format
 msgid "Webarchiv.cz - archivace vasich webovych stranek %(url)s"
 msgstr "Webarchiv.cz - archivace Vašich webových stránek %(url)s"
 
-#: www/views.py:431
+#: www/views.py:445
 #, python-format
 msgid "Webarchiv.cz - archivace webovych stranek %(url)s"
 msgstr "Webarchiv.cz - archivace webových stránek %(url)s"
 
-#: www/views.py:453
+#: www/views.py:467
 #, python-format
 msgid "New nomination %(url)s"
 msgstr "Nový návrh %(url)s"

@@ -9,7 +9,8 @@ from core.tables import AbsoluteURLColumn, NaturalDatetimeColumn
 class ContractTable(tables.Table):
     link = AbsoluteURLColumn(
         accessor='__str__',
-        verbose_name=_('link')
+        verbose_name=_('link'),
+        order_by=('-year', '-contract_number'),
     )
     publisher = AbsoluteURLColumn(
         accessor='publisher',

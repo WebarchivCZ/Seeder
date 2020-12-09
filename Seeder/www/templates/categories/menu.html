@@ -1,3 +1,4 @@
+{% load i18n %}
 {% load urltags %}
 <section id="catalog-header">
     <div class="container">
@@ -46,7 +47,7 @@
             {% endfor %}
         </ul>
         {% else %}
-        <h2 class="italic">Můžete hledat i abecedně</h2>
+        <h2 class="italic">{% trans "Můžete hledat i abecedně" %}</h2>
         <ul class="inline-list subcategories">
             <li>
                 <a href="{% url "www:categories" %}" {% if not current_sub_category %}class="current"
