@@ -153,7 +153,7 @@
         <ul class="list-group">
             {% for seed in source.seed_set.all %}
                 <li class="list-group-item list-group-item-{{ seed.css_class }}"{% if seed.main_seed %} style="font-weight:bold"{% endif %}>
-                    <a href="{{ seed.url }}">{{ seed }}</a>
+                    <a href="{{ seed.url }}" target="_blank">{{ seed }}</a>
                     <a class="pull-right" href="{{ seed.get_edit_url }}">{% trans 'Edit' %}</a>
                 </li>
             {% endfor %}
