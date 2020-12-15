@@ -2,6 +2,7 @@ from django.urls import reverse
 from django.utils.translation import ugettext_lazy as _
 from django.utils import timezone
 from django.db.models import Count, Q
+from django.db.models.functions import Lower
 from django.core.paginator import Paginator
 
 from qa.models import QualityAssuranceCheck
@@ -73,7 +74,8 @@ class ContractsCard(DashboardCard):
     def get_queryset(self):
         return contract_models.Contract.objects.filter(
             sources__owner=self.user,
-            state=contract_models.constants.CONTRACT_STATE_NEGOTIATION)
+            state=contract_models.constants.CONTRACT_STATE_NEGOTIATION
+        ).order_by(Lower('sources__name'))
 
     def get_color(self, element):
         return 'success' if element.publisher_responds else 'info'
@@ -91,7 +93,8 @@ class ContractsWithoutCommunication(ContractsCard):
         basic_qs = contract_models.Contract.objects.filter(
             in_communication=False,
             sources__owner=self.user,
-            state=contract_models.constants.CONTRACT_STATE_NEGOTIATION)
+            state=contract_models.constants.CONTRACT_STATE_NEGOTIATION
+        ).order_by(Lower('sources__name'))
         return basic_qs.annotate(Count('emailnegotiation')).filter(
             emailnegotiation__count=0)
 
@@ -119,7 +122,7 @@ class ManagedVotingRounds(VoteCard):
             source__active=True,
             source__owner=self.user,
             state=voting_models.constants.VOTE_INITIAL
-        ).annotate(Count('vote')).order_by('vote__count')
+        ).annotate(Count('vote')).order_by('vote__count', Lower('source__name'))
 
     def get_color(self, element):
         # User has cast a vote in the voting round
@@ -141,7 +144,7 @@ class OpenToVoteRounds(VoteCard):
             Q(source__active=True) &
             Q(state=voting_models.constants.VOTE_INITIAL) &
             Q(source__state__in=source_models.constants.VOTE_STATES)
-        ).annotate(Count('vote')).order_by('vote__count')
+        ).annotate(Count('vote')).order_by('vote__count', Lower('source__name'))
 
 
 class SourceCard(DashboardCard):
@@ -152,7 +155,8 @@ class SourceCard(DashboardCard):
         return element.name
 
     def get_basic_queryset(self):
-        return source_models.Source.objects.filter(owner=self.user, active=True)
+        return source_models.Source.objects.filter(
+            owner=self.user, active=True).order_by(Lower('name'))
 
 
 class SourceOwned(SourceCard):
@@ -199,7 +203,7 @@ class QAOpened(DashboardCard):
         return QualityAssuranceCheck.objects.filter(
             checked_by=self.user,
             source_action=None
-        )
+        ).order_by(Lower('source__name'))
 
 
 class NewQA(DashboardCard):
