@@ -1,4 +1,4 @@
-{% load bootstrap3 i18n raven core %}
+{% load bootstrap3 i18n raven core static %}
 <!DOCTYPE html>
 <html lang="{{ LANGUAGE_CODE }}" data-date-format="{{ js_format }}">
 <head>
@@ -6,7 +6,12 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="icon" href="http://getbootstrap.com/favicon.ico">
+
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'seeder-assets/apple-touch-icon.png' %}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'seeder-assets/favicon-32x32.png' %}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'seeder-assets/favicon-16x16.png' %}">
+    <link rel="manifest" href="{% static 'seeder-assets/site.webmanifest' %}">
+    <link rel="shortcut icon" href="{% static 'seeder-assets/favicon.ico' %}">
 
     <title>{% block title %}{{ view.title }}{% endblock %} | {% trans 'Seeder' %}</title>
     <script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
