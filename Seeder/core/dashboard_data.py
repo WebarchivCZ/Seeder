@@ -10,11 +10,14 @@ from source import models as source_models
 from contracts import models as contract_models
 from voting import models as voting_models
 
+REVERSE_SESSION = "reverse-{}"
+
 
 class DashboardCard(object):
     """
         Represents dashboard card / list-group
     """
+    id = NotImplemented     # id / originally url_name
     title = NotImplemented  # title of the card
     elements_per_card = 10  # number of objects per card
     table = None
@@ -23,13 +26,14 @@ class DashboardCard(object):
     get_color = NotImplemented
     get_title = NotImplemented
     empty = False
+    reversable = False
 
-    def __init__(self, user, url_name, page=1):
+    def __init__(self, request, page=1):
         """
-        :param url_name: short url slug that identifies the card
+        Request is passed to have access to user and session
         """
-        self.user = user
-        self.url_name = url_name
+        self.request = request
+        self.user = request.user
         self.paginator = Paginator(self.get_queryset(),
                                    self.elements_per_card,
                                    orphans=3)
@@ -47,7 +51,14 @@ class DashboardCard(object):
         return self.get_queryset().count()
 
     def elements(self):
-        for element in self.page.object_list:
+        # Allow on-demand reversing using session
+        reverse_session_name = REVERSE_SESSION.format(self.id)
+        reverse_session = self.request.session.get(reverse_session_name, False)
+        object_list = self.page.object_list
+        if self.reversable and reverse_session:
+            object_list = reversed(object_list)
+
+        for element in object_list:
             context_element = {
                 'instance': element,
                 'url': self.get_url(element)
@@ -66,6 +77,7 @@ class ContractsCard(DashboardCard):
     """
         Cards that displays contracts in negotiation.
     """
+    id = "contracts"
     title = _('Contracts in negotiation')
 
     def get_title(self, element):
@@ -86,7 +98,7 @@ class ContractsWithoutCommunication(ContractsCard):
         Cards with contracts that are in negotiation but don't have scheduled
         email communication.
     """
-
+    id = "no_communication"
     title = _('Contracts without scheduled communication')
 
     def get_queryset(self):
@@ -103,6 +115,7 @@ class VoteCard(DashboardCard):
     """
     Parent class for all voting rounds cards
     """
+    reversable = True
 
     def get_title(self, element):
         return element.source
@@ -115,6 +128,7 @@ class ManagedVotingRounds(VoteCard):
     """
     Cards with voting rounds that user manages
     """
+    id = "voting_rounds"
     title = _('Voting rounds you manage')
 
     def get_queryset(self):
@@ -135,6 +149,7 @@ class OpenToVoteRounds(VoteCard):
     Cards listing all the rounds that are open to vote and where you did
     vote yet...
     """
+    id = "open_votes"
     title = _('Open voting rounds')
 
     def get_queryset(self):
@@ -163,6 +178,7 @@ class SourceOwned(SourceCard):
     """
     Displays sources that you own and are
     """
+    id = "sources_owned"
     title = _('Sources curating')
 
     def get_queryset(self):
@@ -175,6 +191,7 @@ class TechnicalReview(SourceCard):
     """
     Displays sources that you own and are
     """
+    id = "technical"
     title = _('Sources that need technical review')
 
     def get_queryset(self):
@@ -184,6 +201,7 @@ class TechnicalReview(SourceCard):
 
 
 class WithoutAleph(SourceCard):
+    id = "without_aleph"
     title = _('Source without Aleph ID')
 
     def get_queryset(self):
@@ -194,6 +212,7 @@ class WithoutAleph(SourceCard):
 
 
 class QAOpened(DashboardCard):
+    id = "QAopened"
     title = _('Opened QAs')
 
     def get_title(self, element):
@@ -207,6 +226,7 @@ class QAOpened(DashboardCard):
 
 
 class NewQA(DashboardCard):
+    id = "qa_create"
     title = _('Sources needing QA')
 
     def get_url(self, element):
@@ -244,18 +264,19 @@ class NewQA(DashboardCard):
         return element.name
 
 
-cards_registry = {
-    'contracts': ContractsCard,
-    'voting_rounds': ManagedVotingRounds,
-    'open_votes': OpenToVoteRounds,
-    'sources_owned': SourceOwned,
-    'without_aleph': WithoutAleph,
-    'no_communication': ContractsWithoutCommunication,
-    'technical': TechnicalReview,
-    'QAopened': QAOpened,
-    'qa_create': NewQA
-}
+all_cards = [
+    ContractsCard,
+    ManagedVotingRounds,
+    OpenToVoteRounds,
+    SourceOwned,
+    WithoutAleph,
+    ContractsWithoutCommunication,
+    TechnicalReview,
+    QAOpened,
+    NewQA,
+]
+cards_registry = {card.id: card for card in all_cards}
 
 
-def get_cards(user):
-    return [card(user, name) for name, card in cards_registry.items()]
+def get_cards(request):
+    return [card(request) for card in all_cards]
