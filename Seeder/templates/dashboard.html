@@ -16,8 +16,13 @@
                 <div class="col-md-5 col-sm-5 col-l-3 grid-item">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <a href="{% url 'core:card' card=card.url_name %}">{{ card.title }}</a>
-	                        <span class="pull-right">{{ card.get_count }}</span>
+                            <a href="{% url 'core:card' card=card.id %}">{{ card.title }}</a>
+                            <span class="pull-right">
+                                {% if card.reversable %}
+                                <a href="{% url 'core:card_reverse' card=card.id %}?next={{ request.path }}" title="{% trans 'Reverse order' %}"><i class="fas fa-sort"></i></a>
+                                {% endif %}
+                                {{ card.get_count }}
+                            </span>
                         </div>
                         <ul class="list-group">
                             {% for element in card.elements %}

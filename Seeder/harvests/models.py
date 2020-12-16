@@ -450,12 +450,22 @@ class TopicCollection(HarvestAbstractModel, OrderedModel):
     def get_www_url(self):
         return reverse('www:collection_detail', kwargs={"slug": self.slug})
 
+    def get_absolute_url(self):
+        return reverse('harvests:topic_collection_detail', args=[str(self.id)])
+
+    def update_slug(self):
+        from autoslug.utils import slugify, generate_unique_slug
+        field = TopicCollection._meta.get_field('slug')
+        manager = field.manager
+        slug = slugify(self.title_cs)
+        # Generate a unique seed wrt. other instances
+        unique_slug = generate_unique_slug(field, self, slug, manager)
+        self.slug = unique_slug
+        self.save()
+
     def __str__(self):
         sign = '✔' if self.active else '✗'
         return '{0} {1}'.format(sign, self.title)
-
-    def get_absolute_url(self):
-        return reverse('harvests:topic_collection_detail', args=[str(self.id)])
 
     class Meta(OrderedModel.Meta):
         verbose_name = _('Topic collection')

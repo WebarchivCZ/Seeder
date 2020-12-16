@@ -1,4 +1,4 @@
-{% load bootstrap3 i18n raven core %}
+{% load bootstrap3 i18n raven core static %}
 <!DOCTYPE html>
 <html lang="{{ LANGUAGE_CODE }}" data-date-format="{{ js_format }}">
 <head>
@@ -6,13 +6,19 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="icon" href="http://getbootstrap.com/favicon.ico">
+
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'seeder-assets/apple-touch-icon.png' %}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'seeder-assets/favicon-32x32.png' %}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'seeder-assets/favicon-16x16.png' %}">
+    <link rel="manifest" href="{% static 'seeder-assets/site.webmanifest' %}">
+    <link rel="shortcut icon" href="{% static 'seeder-assets/favicon.ico' %}">
 
     <title>{% block title %}{{ view.title }}{% endblock %} | {% trans 'Seeder' %}</title>
     <script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
 
     {% bootstrap_css %}
     {% bootstrap_javascript %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA==" crossorigin="anonymous" />
     <!-- Custom styles and scritps for this template -->
     <link href="{{ STATIC_URL }}main.css" rel="stylesheet">
     <script src="{{ STATIC_URL }}main.js"></script>
@@ -31,7 +37,7 @@
                 <span class="icon-bar"></span>
             </button>
             <a class="navbar-brand" href="{% url 'core:dashboard' %}">{% trans 'Seeder' %}</a>
-            <span class="navbar-brand" style="color:#777;font-size:1em;">{% version %}</span>
+            <span class="navbar-brand" style="color:#777;font-size:1em;">{% version %} ({% version_datetime %})</span>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
             <form class="navbar-form navbar-right" action="{% url 'search:search' %}" method="get">

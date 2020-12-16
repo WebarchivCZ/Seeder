@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Seeder\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-12-07 17:02+0000\n"
+"POT-Creation-Date: 2020-12-16 13:04+0000\n"
 "PO-Revision-Date: 2017-11-07 12:38+0100\n"
 "Last-Translator: Visgean Skeloru <visgean@gmail.com>, 2017\n"
 "Language-Team: English (United States) (https://www.transifex.com/"
@@ -41,7 +41,7 @@ msgstr "List of URLs to block"
 msgid "Blacklist"
 msgstr "Blacklist"
 
-#: blacklists/models.py:40 blacklists/views.py:19 templates/base.html:116
+#: blacklists/models.py:40 blacklists/views.py:19 templates/base.html:122
 msgid "Blacklists"
 msgstr "Blacklists"
 
@@ -155,7 +155,7 @@ msgstr "Comment"
 
 #: comments/models.py:169 contracts/templates/contract.html:122
 #: harvests/templates/harvest.html:52
-#: harvests/templates/topic_collection.html:128
+#: harvests/templates/topic_collection.html:133
 #: publishers/templates/publisher.html:39 qa/templates/detail.html:22
 #: source/templates/source.html:200 voting/templates/voting_round.html:118
 #: www/templates/news_admin_detail.html:90
@@ -236,7 +236,7 @@ msgstr "Year"
 msgid "Contract file"
 msgstr "Contract file"
 
-#: contracts/models.py:91 source/field_filters.py:57
+#: contracts/models.py:91 source/field_filters.py:59
 msgid "Contract number"
 msgstr "Contract number"
 
@@ -414,7 +414,7 @@ msgid "Contract number assigned."
 msgstr "Contract number assigned."
 
 #: contracts/views.py:106 source/templates/source.html:189
-#: templates/base.html:93
+#: templates/base.html:99
 msgid "Contracts"
 msgstr "Contracts"
 
@@ -430,39 +430,39 @@ msgstr "Can't delete contract with number"
 msgid "Contract deleted."
 msgstr "Contract deleted."
 
-#: core/dashboard_data.py:68
+#: core/dashboard_data.py:79
 msgid "Contracts in negotiation"
 msgstr "Contracts in negotiation"
 
-#: core/dashboard_data.py:88
+#: core/dashboard_data.py:100
 msgid "Contracts without scheduled communication"
 msgstr "Contracts without scheduled communication"
 
-#: core/dashboard_data.py:115
+#: core/dashboard_data.py:130
 msgid "Voting rounds you manage"
 msgstr "Voting rounds you manage"
 
-#: core/dashboard_data.py:135
+#: core/dashboard_data.py:151
 msgid "Open voting rounds"
 msgstr "Open voting rounds"
 
-#: core/dashboard_data.py:162
+#: core/dashboard_data.py:180
 msgid "Sources curating"
 msgstr "Sources curating"
 
-#: core/dashboard_data.py:174
+#: core/dashboard_data.py:193
 msgid "Sources that need technical review"
 msgstr "Sources that need technical review"
 
-#: core/dashboard_data.py:183
+#: core/dashboard_data.py:203
 msgid "Source without Aleph ID"
 msgstr "Source without Aleph ID"
 
-#: core/dashboard_data.py:193
+#: core/dashboard_data.py:214
 msgid "Opened QAs"
 msgstr "Opened QAs"
 
-#: core/dashboard_data.py:206
+#: core/dashboard_data.py:228
 msgid "Sources needing QA"
 msgstr "Sources needing QA"
 
@@ -483,19 +483,19 @@ msgstr "Action {0} not allowed."
 msgid "Changes successfully saved."
 msgstr "Changes successfully saved."
 
-#: core/views.py:17 templates/base.html:81 templates/card_detail.html:9
+#: core/views.py:17 templates/base.html:87 templates/card_detail.html:9
 msgid "Dashboard"
 msgstr "Dashboard"
 
-#: core/views.py:63
+#: core/views.py:74
 msgid "Change user information"
 msgstr "Change user information"
 
-#: core/views.py:71
+#: core/views.py:82
 msgid "Profile changed."
 msgstr "Profile changed."
 
-#: core/views.py:81
+#: core/views.py:92
 msgid "Password changed successfully."
 msgstr "Password changed successfully."
 
@@ -557,7 +557,7 @@ msgstr "Seeds not harvested"
 msgid "Date of harvest"
 msgstr "Date of harvest"
 
-#: harvests/models.py:196 harvests/models.py:462 templates/base.html:103
+#: harvests/models.py:196 harvests/models.py:472 templates/base.html:109
 msgid "Topic collections"
 msgstr "Topic collections"
 
@@ -609,11 +609,11 @@ msgstr "Date from"
 msgid "Date to"
 msgstr "Date to"
 
-#: harvests/models.py:461
+#: harvests/models.py:471
 msgid "Topic collection"
 msgstr "Topic collection"
 
-#: harvests/models.py:467
+#: harvests/models.py:477
 msgid "file"
 msgstr "file"
 
@@ -779,14 +779,18 @@ msgid "Seeds"
 msgstr "Seeds"
 
 #: harvests/templates/topic_collection.html:123
+msgid "Update URL"
+msgstr "Update URL"
+
+#: harvests/templates/topic_collection.html:128
 msgid "Unpublish"
 msgstr "Unpublish"
 
-#: harvests/templates/topic_collection.html:123
+#: harvests/templates/topic_collection.html:128
 msgid "Publish"
 msgstr "Publish"
 
-#: harvests/views.py:53 templates/base.html:112
+#: harvests/views.py:53 templates/base.html:118
 msgid "Harvests"
 msgstr "Harvests"
 
@@ -818,7 +822,11 @@ msgstr "Topic collection published"
 msgid "Topic collection unpublished"
 msgstr "Topic collection unpublished"
 
-#: harvests/views.py:463
+#: harvests/views.py:471
+msgid "URL slug successfully updated"
+msgstr "URL slug successfully updated"
+
+#: harvests/views.py:476
 msgid "TopicCollections"
 msgstr "Topic Collections"
 
@@ -853,7 +861,7 @@ msgstr "You can't use old contact and create new at the same time"
 msgid "Please fill-out the email"
 msgstr "Please fill-out the e-mail"
 
-#: publishers/models.py:31 publishers/views.py:43 templates/base.html:90
+#: publishers/models.py:31 publishers/views.py:43 templates/base.html:96
 msgid "Publishers"
 msgstr "Publishers"
 
@@ -886,7 +894,7 @@ msgid "Edit contacts"
 msgstr "Edit contacts"
 
 #: publishers/templates/publisher.html:24 source/models.py:306
-#: source/views.py:218 templates/base.html:87
+#: source/views.py:218 templates/base.html:93
 msgid "Sources"
 msgstr "Sources"
 
@@ -1054,15 +1062,15 @@ msgstr "Visitor"
 msgid "ISSN"
 msgstr "ISSN"
 
-#: source/field_filters.py:49
+#: source/field_filters.py:51
 msgid "Source is catalogized"
 msgstr "Source is catalogized"
 
-#: source/field_filters.py:52
+#: source/field_filters.py:54
 msgid "Source is periodic"
 msgstr "Source is periodic"
 
-#: source/field_filters.py:55
+#: source/field_filters.py:57
 msgid "Source has CC"
 msgstr "Source has CC"
 
@@ -1288,58 +1296,58 @@ msgstr ""
 msgid "Reload files"
 msgstr "Reload files"
 
-#: templates/base.html:11 templates/base.html:33
+#: templates/base.html:16 templates/base.html:39
 msgid "Seeder"
 msgstr "Seeder"
 
-#: templates/base.html:38 templates/base.html:84 templates/search/search.html:7
+#: templates/base.html:44 templates/base.html:90 templates/search/search.html:7
 #: templates/search/search.html:11
 msgid "Search"
 msgstr "Search"
 
-#: templates/base.html:43
+#: templates/base.html:49
 msgid "Languages"
 msgstr "Languages"
 
-#: templates/base.html:58
+#: templates/base.html:64
 msgid "Profile"
 msgstr "Profile"
 
-#: templates/base.html:61 templates/registration/password_change_form.html:6
+#: templates/base.html:67 templates/registration/password_change_form.html:6
 #: templates/registration/password_change_form.html:10
 #: templates/registration/password_reset_confirm.html:16
 msgid "Change password"
 msgstr "Change password"
 
-#: templates/base.html:64
+#: templates/base.html:70
 msgid "Logout"
 msgstr "Logout"
 
-#: templates/base.html:97
+#: templates/base.html:103
 msgid "Quality assurance"
 msgstr "Quality assurance"
 
-#: templates/base.html:106
+#: templates/base.html:112
 msgid "News"
 msgstr "News"
 
-#: templates/base.html:114
+#: templates/base.html:120
 msgid "Seed DB dump"
 msgstr "Whitelist"
 
-#: templates/base.html:122
+#: templates/base.html:128
 msgid "Search logs"
 msgstr "Search logs"
 
-#: templates/base.html:128
+#: templates/base.html:134
 msgid "Bug report"
 msgstr "Bug report"
 
-#: templates/base.html:129
+#: templates/base.html:135
 msgid "Read the docs"
 msgstr "Read the docs"
 
-#: templates/base.html:130
+#: templates/base.html:136
 msgid "Harvests urls"
 msgstr "Harvests urls"
 
@@ -1363,6 +1371,10 @@ msgstr "Previous"
 #: templates/dashboard.html:11
 msgid "You are done, nothing more to do here."
 msgstr "You are done, nothing more to do here."
+
+#: templates/dashboard.html:22
+msgid "Reverse order"
+msgstr "Reverse order"
 
 #: templates/filtered_list.html:13
 msgid "records"

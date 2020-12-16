@@ -1,7 +1,7 @@
 from . import forms
 
 from django.http.response import HttpResponseRedirect
-from django.views.generic.base import TemplateView, View
+from django.views.generic.base import RedirectView, TemplateView, View
 from django.utils.translation import ugettext_lazy as _
 from django.contrib import messages
 from django.views.generic.edit import UpdateView
@@ -9,7 +9,7 @@ from django.utils.http import is_safe_url
 from django.utils import translation
 
 from .generic_views import LoginMixin, MessageView
-from .dashboard_data import get_cards, cards_registry
+from .dashboard_data import get_cards, cards_registry, REVERSE_SESSION
 
 
 class DashboardView(LoginMixin, TemplateView):
@@ -19,7 +19,7 @@ class DashboardView(LoginMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data()
-        cards = get_cards(self.request.user)
+        cards = get_cards(self.request)
         context['cards'] = cards
         context['all_empty'] = all([c.empty for c in cards])
         return context
@@ -33,7 +33,7 @@ class DashboardCard(LoginMixin, TemplateView):
     def get(self, request, *args, **kwargs):
         card = cards_registry[self.kwargs['card']]
         page_number = self.request.GET.get('page', 1)
-        self.card = card(request.user, card, page_number)
+        self.card = card(request, page_number)
         return super().get(request, *args, **kwargs)
 
     def get_context_data(self, **kwargs):
@@ -43,6 +43,17 @@ class DashboardCard(LoginMixin, TemplateView):
 
     def get_queryset(self):
         return self.card.get_queryset()
+
+
+class DashboardCardReverse(LoginMixin, RedirectView):
+    pattern_name = 'core:dashboard'
+
+    def get(self, request, card, **kwargs):
+        # Negate what's in session or set to True
+        reverse_session_name = REVERSE_SESSION.format(card)
+        reverse_session = request.session.get(reverse_session_name, False)
+        request.session[reverse_session_name] = not reverse_session
+        return super().get(request)
 
 
 class ChangeLanguage(View):

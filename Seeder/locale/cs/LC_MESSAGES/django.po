@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Seeder\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-12-07 17:02+0000\n"
+"POT-Creation-Date: 2020-12-16 13:04+0000\n"
 "PO-Revision-Date: 2018-04-16 13:40+0200\n"
 "Last-Translator: mariehaskovcova <marie.haskovcova@nkp.cz>, 2017\n"
 "Language-Team: Czech (https://www.transifex.com/webarchivecz/teams/43032/"
@@ -42,7 +42,7 @@ msgstr "Seznam URL adres k zablokování"
 msgid "Blacklist"
 msgstr "Blacklist"
 
-#: blacklists/models.py:40 blacklists/views.py:19 templates/base.html:116
+#: blacklists/models.py:40 blacklists/views.py:19 templates/base.html:122
 msgid "Blacklists"
 msgstr "Blacklisty"
 
@@ -154,7 +154,7 @@ msgstr "Komentář"
 
 #: comments/models.py:169 contracts/templates/contract.html:122
 #: harvests/templates/harvest.html:52
-#: harvests/templates/topic_collection.html:128
+#: harvests/templates/topic_collection.html:133
 #: publishers/templates/publisher.html:39 qa/templates/detail.html:22
 #: source/templates/source.html:200 voting/templates/voting_round.html:118
 #: www/templates/news_admin_detail.html:90
@@ -235,7 +235,7 @@ msgstr "Rok"
 msgid "Contract file"
 msgstr "Smlouva"
 
-#: contracts/models.py:91 source/field_filters.py:57
+#: contracts/models.py:91 source/field_filters.py:59
 msgid "Contract number"
 msgstr "Číslo smlouvy"
 
@@ -411,7 +411,7 @@ msgid "Contract number assigned."
 msgstr "Smlouvě bylo přiřazeno číslo."
 
 #: contracts/views.py:106 source/templates/source.html:189
-#: templates/base.html:93
+#: templates/base.html:99
 msgid "Contracts"
 msgstr "Smlouvy"
 
@@ -427,39 +427,39 @@ msgstr "Nelze smazat smlouvu s číslem"
 msgid "Contract deleted."
 msgstr "Smlouva smazána"
 
-#: core/dashboard_data.py:68
+#: core/dashboard_data.py:79
 msgid "Contracts in negotiation"
 msgstr "Smlouvy v jednání"
 
-#: core/dashboard_data.py:88
+#: core/dashboard_data.py:100
 msgid "Contracts without scheduled communication"
 msgstr "Smlouvy bez rozvrhnutého jednání"
 
-#: core/dashboard_data.py:115
+#: core/dashboard_data.py:130
 msgid "Voting rounds you manage"
 msgstr "Hodnocení, která spravujete"
 
-#: core/dashboard_data.py:135
+#: core/dashboard_data.py:151
 msgid "Open voting rounds"
 msgstr "Otevřená hodnocení"
 
-#: core/dashboard_data.py:162
+#: core/dashboard_data.py:180
 msgid "Sources curating"
 msgstr "Zdroje, které spravujete"
 
-#: core/dashboard_data.py:174
+#: core/dashboard_data.py:193
 msgid "Sources that need technical review"
 msgstr "Zdroje, které potřebují technický dohled"
 
-#: core/dashboard_data.py:183
+#: core/dashboard_data.py:203
 msgid "Source without Aleph ID"
 msgstr "Zdroje ke katalogizaci"
 
-#: core/dashboard_data.py:193
+#: core/dashboard_data.py:214
 msgid "Opened QAs"
 msgstr "Rozpracovaná kontrola kvality"
 
-#: core/dashboard_data.py:206
+#: core/dashboard_data.py:228
 msgid "Sources needing QA"
 msgstr "Zdroje ke kontrole"
 
@@ -480,19 +480,19 @@ msgstr "Akce {0} nepovolena."
 msgid "Changes successfully saved."
 msgstr "Změny uloženy."
 
-#: core/views.py:17 templates/base.html:81 templates/card_detail.html:9
+#: core/views.py:17 templates/base.html:87 templates/card_detail.html:9
 msgid "Dashboard"
 msgstr "Hlavní stránka"
 
-#: core/views.py:63
+#: core/views.py:74
 msgid "Change user information"
 msgstr "Změnit uživatelské informace"
 
-#: core/views.py:71
+#: core/views.py:82
 msgid "Profile changed."
 msgstr "Profil změněn."
 
-#: core/views.py:81
+#: core/views.py:92
 msgid "Password changed successfully."
 msgstr "Heslo bylo úspěšně změněno."
 
@@ -554,7 +554,7 @@ msgstr "Nesklizená semínka"
 msgid "Date of harvest"
 msgstr "Datum sklizně"
 
-#: harvests/models.py:196 harvests/models.py:462 templates/base.html:103
+#: harvests/models.py:196 harvests/models.py:472 templates/base.html:109
 msgid "Topic collections"
 msgstr "Tematické kolekce"
 
@@ -606,11 +606,11 @@ msgstr "Od"
 msgid "Date to"
 msgstr "Do"
 
-#: harvests/models.py:461
+#: harvests/models.py:471
 msgid "Topic collection"
 msgstr "Tematická sbírka"
 
-#: harvests/models.py:467
+#: harvests/models.py:477
 msgid "file"
 msgstr "pole"
 
@@ -776,14 +776,18 @@ msgid "Seeds"
 msgstr "Semínka"
 
 #: harvests/templates/topic_collection.html:123
+msgid "Update URL"
+msgstr "Aktualizovat URL"
+
+#: harvests/templates/topic_collection.html:128
 msgid "Unpublish"
 msgstr "Nepublikovat"
 
-#: harvests/templates/topic_collection.html:123
+#: harvests/templates/topic_collection.html:128
 msgid "Publish"
 msgstr "Publikovat"
 
-#: harvests/views.py:53 templates/base.html:112
+#: harvests/views.py:53 templates/base.html:118
 msgid "Harvests"
 msgstr "Sklizně"
 
@@ -815,7 +819,11 @@ msgstr "Tematická kolekce publikována"
 msgid "Topic collection unpublished"
 msgstr "Tematická kolekce nepublikována"
 
-#: harvests/views.py:463
+#: harvests/views.py:471
+msgid "URL slug successfully updated"
+msgstr "URL byla úspěšné změněna"
+
+#: harvests/views.py:476
 msgid "TopicCollections"
 msgstr "Tematické kolekce"
 
@@ -850,7 +858,7 @@ msgstr "Nemůžete použít již existující kontakt a zároveň vytvářet nov
 msgid "Please fill-out the email"
 msgstr "Vyplňte email"
 
-#: publishers/models.py:31 publishers/views.py:43 templates/base.html:90
+#: publishers/models.py:31 publishers/views.py:43 templates/base.html:96
 msgid "Publishers"
 msgstr "Vydavatelé"
 
@@ -883,7 +891,7 @@ msgid "Edit contacts"
 msgstr "Editovat kontakty"
 
 #: publishers/templates/publisher.html:24 source/models.py:306
-#: source/views.py:218 templates/base.html:87
+#: source/views.py:218 templates/base.html:93
 msgid "Sources"
 msgstr "Zdroje"
 
@@ -1051,15 +1059,15 @@ msgstr "Návstěvník"
 msgid "ISSN"
 msgstr "ISSN"
 
-#: source/field_filters.py:49
+#: source/field_filters.py:51
 msgid "Source is catalogized"
 msgstr "Zdroj je katalogizován (má AlephID)"
 
-#: source/field_filters.py:52
+#: source/field_filters.py:54
 msgid "Source is periodic"
 msgstr "Zdroj je periodikum (má ISSN)"
 
-#: source/field_filters.py:55
+#: source/field_filters.py:57
 msgid "Source has CC"
 msgstr "Zdroj má CC"
 
@@ -1281,58 +1289,58 @@ msgstr ""
 msgid "Reload files"
 msgstr "Obnovit soubory"
 
-#: templates/base.html:11 templates/base.html:33
+#: templates/base.html:16 templates/base.html:39
 msgid "Seeder"
 msgstr "Seeder"
 
-#: templates/base.html:38 templates/base.html:84 templates/search/search.html:7
+#: templates/base.html:44 templates/base.html:90 templates/search/search.html:7
 #: templates/search/search.html:11
 msgid "Search"
 msgstr "Hledání"
 
-#: templates/base.html:43
+#: templates/base.html:49
 msgid "Languages"
 msgstr "Jazyky"
 
-#: templates/base.html:58
+#: templates/base.html:64
 msgid "Profile"
 msgstr "Profil"
 
-#: templates/base.html:61 templates/registration/password_change_form.html:6
+#: templates/base.html:67 templates/registration/password_change_form.html:6
 #: templates/registration/password_change_form.html:10
 #: templates/registration/password_reset_confirm.html:16
 msgid "Change password"
 msgstr "Změnit heslo"
 
-#: templates/base.html:64
+#: templates/base.html:70
 msgid "Logout"
 msgstr "Odhlásit se"
 
-#: templates/base.html:97
+#: templates/base.html:103
 msgid "Quality assurance"
 msgstr "Kontrola kvality"
 
-#: templates/base.html:106
+#: templates/base.html:112
 msgid "News"
 msgstr "Aktuality"
 
-#: templates/base.html:114
+#: templates/base.html:120
 msgid "Seed DB dump"
 msgstr "Generovat whitelist"
 
-#: templates/base.html:122
+#: templates/base.html:128
 msgid "Search logs"
 msgstr "Historie hledání"
 
-#: templates/base.html:128
+#: templates/base.html:134
 msgid "Bug report"
 msgstr "Nahlásit chybu"
 
-#: templates/base.html:129
+#: templates/base.html:135
 msgid "Read the docs"
 msgstr "Dokumentace"
 
-#: templates/base.html:130
+#: templates/base.html:136
 msgid "Harvests urls"
 msgstr "URL Sklizní"
 
@@ -1356,6 +1364,10 @@ msgstr "Předchozí"
 #: templates/dashboard.html:11
 msgid "You are done, nothing more to do here."
 msgstr "Hotovo, už zde není potřeba nic udělat."
+
+#: templates/dashboard.html:22
+msgid "Reverse order"
+msgstr "Obrátit pořadí"
 
 #: templates/filtered_list.html:13
 msgid "records"
