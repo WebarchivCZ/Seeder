@@ -34,7 +34,12 @@ class DashboardCard(object):
         """
         self.request = request
         self.user = request.user
-        self.paginator = Paginator(self.get_queryset(),
+
+        # Allow on-demand reversing using session
+        reverse_session_name = REVERSE_SESSION.format(self.id)
+        reverse_session = self.request.session.get(reverse_session_name, False)
+        qs = self.get_queryset()
+        self.paginator = Paginator(qs.reverse() if reverse_session else qs,
                                    self.elements_per_card,
                                    orphans=3)
         self.page = self.paginator.page(page)
@@ -51,14 +56,7 @@ class DashboardCard(object):
         return self.get_queryset().count()
 
     def elements(self):
-        # Allow on-demand reversing using session
-        reverse_session_name = REVERSE_SESSION.format(self.id)
-        reverse_session = self.request.session.get(reverse_session_name, False)
-        object_list = self.page.object_list
-        if self.reversable and reverse_session:
-            object_list = reversed(object_list)
-
-        for element in object_list:
+        for element in self.page.object_list:
             context_element = {
                 'instance': element,
                 'url': self.get_url(element)
