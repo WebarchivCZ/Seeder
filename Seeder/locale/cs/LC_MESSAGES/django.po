@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Seeder\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-12-16 12:53+0000\n"
+"POT-Creation-Date: 2020-12-16 13:04+0000\n"
 "PO-Revision-Date: 2018-04-16 13:40+0200\n"
 "Last-Translator: mariehaskovcova <marie.haskovcova@nkp.cz>, 2017\n"
 "Language-Team: Czech (https://www.transifex.com/webarchivecz/teams/43032/"
@@ -154,7 +154,7 @@ msgstr "Komentář"
 
 #: comments/models.py:169 contracts/templates/contract.html:122
 #: harvests/templates/harvest.html:52
-#: harvests/templates/topic_collection.html:128
+#: harvests/templates/topic_collection.html:133
 #: publishers/templates/publisher.html:39 qa/templates/detail.html:22
 #: source/templates/source.html:200 voting/templates/voting_round.html:118
 #: www/templates/news_admin_detail.html:90
@@ -776,10 +776,14 @@ msgid "Seeds"
 msgstr "Semínka"
 
 #: harvests/templates/topic_collection.html:123
+msgid "Update URL"
+msgstr "Aktualizovat URL"
+
+#: harvests/templates/topic_collection.html:128
 msgid "Unpublish"
 msgstr "Nepublikovat"
 
-#: harvests/templates/topic_collection.html:123
+#: harvests/templates/topic_collection.html:128
 msgid "Publish"
 msgstr "Publikovat"
 
@@ -815,7 +819,11 @@ msgstr "Tematická kolekce publikována"
 msgid "Topic collection unpublished"
 msgstr "Tematická kolekce nepublikována"
 
-#: harvests/views.py:463
+#: harvests/views.py:471
+msgid "URL slug successfully updated"
+msgstr "URL byla úspěšné změněna"
+
+#: harvests/views.py:476
 msgid "TopicCollections"
 msgstr "Tematické kolekce"
 

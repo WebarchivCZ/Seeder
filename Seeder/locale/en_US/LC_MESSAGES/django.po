@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Seeder\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-12-16 12:53+0000\n"
+"POT-Creation-Date: 2020-12-16 13:04+0000\n"
 "PO-Revision-Date: 2017-11-07 12:38+0100\n"
 "Last-Translator: Visgean Skeloru <visgean@gmail.com>, 2017\n"
 "Language-Team: English (United States) (https://www.transifex.com/"
@@ -155,7 +155,7 @@ msgstr "Comment"
 
 #: comments/models.py:169 contracts/templates/contract.html:122
 #: harvests/templates/harvest.html:52
-#: harvests/templates/topic_collection.html:128
+#: harvests/templates/topic_collection.html:133
 #: publishers/templates/publisher.html:39 qa/templates/detail.html:22
 #: source/templates/source.html:200 voting/templates/voting_round.html:118
 #: www/templates/news_admin_detail.html:90
@@ -779,10 +779,14 @@ msgid "Seeds"
 msgstr "Seeds"
 
 #: harvests/templates/topic_collection.html:123
+msgid "Update URL"
+msgstr "Update URL"
+
+#: harvests/templates/topic_collection.html:128
 msgid "Unpublish"
 msgstr "Unpublish"
 
-#: harvests/templates/topic_collection.html:123
+#: harvests/templates/topic_collection.html:128
 msgid "Publish"
 msgstr "Publish"
 
@@ -818,7 +822,11 @@ msgstr "Topic collection published"
 msgid "Topic collection unpublished"
 msgstr "Topic collection unpublished"
 
-#: harvests/views.py:463
+#: harvests/views.py:471
+msgid "URL slug successfully updated"
+msgstr "URL slug successfully updated"
+
+#: harvests/views.py:476
 msgid "TopicCollections"
 msgstr "Topic Collections"
 

@@ -459,6 +459,19 @@ class CollectionTogglePublish(TCView, DetailView, generic_views.MessageView):
         return HttpResponseRedirect(obj.get_absolute_url())
 
 
+class CollectionUpdateSlug(TCView, DetailView, generic_views.MessageView):
+    """
+    Re-compute a Topic Collection's URL slug on-demand
+    """
+    model = models.TopicCollection
+
+    def post(self, request, *args, **kwargs):
+        obj = self.get_object()
+        obj.update_slug()
+        self.add_message(_('URL slug successfully updated'), messages.SUCCESS)
+        return HttpResponseRedirect(obj.get_absolute_url())
+
+
 class CollectionListView(TCView, generic_views.FilteredListView):
     title = _('TopicCollections')
     table_class = tables.TopicCollectionTable
