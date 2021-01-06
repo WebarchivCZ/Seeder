@@ -52,7 +52,11 @@
 					{% for source in source_paginator %}
 						<div class="row">
 							<div class="col-md-12 item-textual">
+                                {% if source.is_public %}
 								<h2><a href="{{ source.url }}">{{ source }}</a></h2>
+                                {% else %}
+                                <h2 class="passive_link">{{ source }}</h2>
+                                {% endif %}
 								<p>
 									<span class="italic">{{ source.stripped_main_url }}</span> 
 									<span class="blue">[</span><a href="{{ source.wayback_url }}">{% if lang == "cs" %}archivovaná verze{% else %}current{% endif %}</a><span class="blue">]</span>
