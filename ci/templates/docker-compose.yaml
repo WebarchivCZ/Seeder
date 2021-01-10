@@ -57,9 +57,10 @@ services:
       - memcached
       - seeder_db
 
+  vyvoj:
     image: webarchiv/vyvoj:naki
     labels:
-      - "traefik.http.routers.seeder.rule={{ treafik_seeder_vyvoj_rule }}"
+      - "traefik.http.routers.vyvoj.rule={{ treafik_seeder_vyvoj_rule }}"
 
   static:
     image: nginx:alpine
