@@ -57,6 +57,10 @@ services:
       - memcached
       - seeder_db
 
+    image: webarchiv/vyvoj:naki
+    labels:
+      - "traefik.http.routers.seeder.rule={{ treafik_seeder_vyvoj_rule }}"
+
   static:
     image: nginx:alpine
     volumes:
@@ -81,3 +85,4 @@ services:
 
   manet:
     image: bobey/manet:latest
+  
