@@ -60,7 +60,9 @@ services:
   vyvoj:
     image: webarchiv/vyvoj:naki
     labels:
-      - "traefik.http.routers.vyvoj.rule={{ treafik_seeder_vyvoj_rule }}"
+      traefik.http.routers.vyvoj.rule: "{{ treafik_seeder_vyvoj_rule }}"
+      traefik.http.routers.vyvoj.middlewares: strip-vyvoj@docker
+      traefik.http.middlewares.strip-vyvoj.stripprefix.prefixes: /vyvoj
 
   static:
     image: nginx:alpine
