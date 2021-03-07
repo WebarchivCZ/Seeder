@@ -51,6 +51,11 @@ services:
     depends_on:
       - web
 
+  naki:
+    image: webarchiv/vyvoj:naki
+    labels:
+      traefik.http.routers.vyvoj.rule: Host(`localhost`) && PathPrefix(`/vyvoj`)
+
   postgres:
     image: postgres:9.6
     environment:
