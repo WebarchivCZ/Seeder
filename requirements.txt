@@ -45,7 +45,7 @@ openpyxl==3.0.3
 Pillow==6.2.2
 psycopg2==2.7.3.1
 pycodestyle==2.5.0
-Pygments==2.6.1
+Pygments==2.7.4
 PyMySQL==0.7.4
 python-dateutil==2.8.1
 python-memcached==1.58
