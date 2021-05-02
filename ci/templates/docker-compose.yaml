@@ -24,6 +24,10 @@ services:
     volumes:
       # So that Traefik can listen to the Docker events
       - /var/run/docker.sock:/var/run/docker.sock
+    logging:  
+      options:
+        max-size: "10m"
+        max-file: "3"
     labels:
       traefik.http.routers.api.rule: "{{ treafik_api_rule }}"
       traefik.http.routers.api.service: api@internal
@@ -37,6 +41,10 @@ services:
     volumes:
       - "media:/code/Seeder/media"
       - "static:/code/Seeder/static_root"
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "3"
     labels:
       - "traefik.http.routers.seeder.rule={{ treafik_seeder_rule }}"
     environment:
@@ -59,6 +67,10 @@ services:
 
   vyvoj:
     image: webarchiv/vyvoj:naki
+    logging:  
+      options:
+        max-size: "10m"
+        max-file: "3"
     labels:
       - "traefik.http.routers.vyvoj.rule={{ treafik_seeder_vyvoj_rule }}"
 
@@ -68,6 +80,10 @@ services:
       - static:/seeder/static
       - media:/seeder/media
       - ./nginx.conf:/etc/nginx/conf.d/default.conf
+    logging:  
+      options:
+        max-size: "10m"
+        max-file: "3"
     labels:
       traefik.http.routers.static.rule: "{{ treafik_seeder_static_rule }}"
     depends_on:
@@ -77,13 +93,25 @@ services:
     image: postgres:9.6
     volumes:
       - "seeder_db_data:/var/lib/postgresql/data"
+    logging:  
+      options:
+        max-size: "10m"
+        max-file: "3"
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: {{ postgres_db_pass_vault }}
 
   memcached:
     image: memcached:latest
+    logging:  
+      options:
+        max-size: "10m"
+        max-file: "3"
 
   manet:
     image: bobey/manet:latest
+    logging:  
+      options:
+        max-size: "10m"
+        max-file: "3"
   
