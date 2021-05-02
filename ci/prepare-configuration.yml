@@ -28,6 +28,9 @@
 
     - name: "Deployment script"
       template:
-        src: run.sh
-        dest: /home/ansible/seeder/run.sh
+        src: "{{ item }}"
+        dest: /home/ansible/seeder/
         mode: u+x
+      loop:
+        - run.sh
+        - dump-screenshots.sh

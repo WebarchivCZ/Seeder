@@ -1,0 +1,1 @@
+sudo docker cp seeder_web_1:/code/Seeder/media ./media-{{ env }}-$(date -Iminutes)
