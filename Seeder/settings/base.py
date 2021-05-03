@@ -121,6 +121,11 @@ MIDDLEWARE = (
 )
 
 SESSION_COOKIE_NAME = 'seeder_sessionid'
+# In seconds, 14400 = 4 * 60 * 60 (4 hours)
+try:
+    SESSION_COOKIE_AGE = int(os.environ.get("SESSION_COOKIE_AGE", "14400"))
+except:
+    SESSION_COOKIE_AGE = 14400
 
 ROOT_URLCONF = 'urls'
 
