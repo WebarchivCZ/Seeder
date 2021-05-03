@@ -83,7 +83,7 @@ INSTALLED_APPS = (
     'reversion',
     'ckeditor',
     'ckeditor_uploader',
-    # 'debug_toolbar',
+    'debug_toolbar',
     'django_crontab',
     'sorl.thumbnail',
     'rest_framework',
@@ -116,6 +116,7 @@ MIDDLEWARE = (
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
     'reversion.middleware.RevisionMiddleware',
     'django.middleware.locale.LocaleMiddleware',
 )

@@ -32,6 +32,8 @@ THUMBNAIL_DEBUG = os.environ.get('THUMBNAIL_DEBUG', 'False').lower() == 'true'
 
 ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '127.0.0.1').split(' ')
 
+INTERNAL_IPS = os.environ.get('INTERNAL_IPS', '127.0.0.1').split(' ')
+
 # Database
 # https://docs.djangoproject.com/en/1.7/ref/settings/#databases
 # since we use special PostgresSQL fields we cannot simply use any db.
