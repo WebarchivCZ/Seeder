@@ -2,6 +2,7 @@ import os
 
 from itertools import chain
 from datetime import date
+from django.contrib import messages
 
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
@@ -341,8 +342,12 @@ class Harvest(HarvestAbstractModel):
         """
         Freezes the seeds to preserve them for later use
         """
-        self.seeds_frozen = '\n'.join(self.get_seeds())
-        self.save()
+        seeds = self.get_seeds()
+        if len(seeds) > 0:
+            self.seeds_frozen = '\n'.join(seeds)
+            self.save()
+            return True     # frozen correctly
+        return False        # not frozen
 
     @property
     def is_oneshot(self):
@@ -496,4 +501,6 @@ def freeze_urls(sender, instance, **kwargs):
     :type instance: Harvest
     """
     if instance.status == Harvest.STATE_RUNNING and not instance.seeds_frozen:
-        instance.freeze_seeds()
+        # If cannot freeze correctly, reset Harvest status
+        if not instance.freeze_seeds():
+            instance.status = Harvest.STATE_PLANNED
