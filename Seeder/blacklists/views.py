@@ -24,10 +24,10 @@ class ListView(BlacklistView, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        last_change = timezone.now().replace(microsecond=0) -\
-            models.Blacklist.last_change().replace(microsecond=0)
-
-        context['last_change'] = last_change
+        last_change = models.Blacklist.last_change()
+        if last_change:
+            context['last_change'] = (timezone.now().replace(microsecond=0) -
+                                      last_change.replace(microsecond=0))
         context['blacklists'] = models.Blacklist.objects.all()
         return context
 

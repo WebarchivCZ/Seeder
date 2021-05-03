@@ -236,6 +236,9 @@ class NewQA(DashboardCard):
         random.seed(str(self.user) + str(timezone.now().date()))
         # Include all sources, both owned by user and not
         qa_sources = source_models.Source.objects.needs_qa()
+        # Don't continue if there are no QA sources
+        if qa_sources.count() == 0:
+            return qa_sources
         # Randomly select up to N sources for QA with at most M tries
         random_qa = set()  # collect pks
         tries = 0
