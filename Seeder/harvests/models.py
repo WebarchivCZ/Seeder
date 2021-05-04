@@ -76,6 +76,7 @@ class HarvestAbstractModel(BaseModel):
     def hash_seeds(seeds):
         return md5("\n".join(seeds).encode("utf-8")).hexdigest()
 
+<<<<<<< HEAD
     def construct_collection_json(
             self, seeds, name, collectionAlias, annotation, nameCurator,
             idCollection, aggregationWithSameType, blacklisted=None):
@@ -101,6 +102,8 @@ class HarvestAbstractModel(BaseModel):
             "seeds": seeds,
         }
 
+=======
+>>>>>>> add TopicCollection.[collection_alias, aggregation_with_same_type], implement get_collection_json
     def pair_custom_seeds(self):
         """
         Tries to pair the urls from ``custom_seeds`` with existing sources
@@ -694,6 +697,25 @@ class TopicCollection(HarvestAbstractModel):
             idCollection=self.pk,
             aggregationWithSameType=self.aggregation_with_same_type,
         )
+
+    def get_collection_json(self, blacklisted=None):
+        if blacklisted is None:
+            blacklisted = self.get_blacklisted()
+        seeds = sorted(set(self.get_seeds() - blacklisted))
+        alias = (self.collection_alias if len(self.collection_alias) > 0
+                 else "NoAlias")
+        collection = {
+            "name": f"Topics{alias}_{timezone.now():%Y-%m-%d}",
+            "collectionAlias": alias,
+            "annotation": self.annotation,
+            "nameCurator": self.title,
+            "idCollection": self.pk,
+            "aggregationWithSameType": self.aggregation_with_same_type,
+            "hash": self.hash_seeds(seeds),
+            "seedsNo": len(seeds),
+            "seeds": seeds,
+        }
+        return collection
 
     def __str__(self):
         sign = '✔' if self.active else '✗'
