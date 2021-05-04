@@ -1,8 +1,8 @@
 import os
 
 from itertools import chain
-from datetime import date
-from django.contrib import messages
+from hashlib import md5
+from django.utils import timezone
 
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
@@ -71,6 +71,10 @@ class HarvestAbstractModel(BaseModel):
 
     def __str__(self):
         return self.repr()
+
+    @staticmethod
+    def hash_seeds(seeds):
+        return md5("\n".join(seeds).encode("utf-8")).hexdigest()
 
     def pair_custom_seeds(self):
         """
@@ -452,6 +456,12 @@ class TopicCollection(HarvestAbstractModel, OrderedModel):
     date_from = DatePickerField(_('Date from'), null=True)
     date_to = DatePickerField(_('Date to'), null=True, blank=True)
 
+    # Harvest-specific fields
+    collection_alias = models.CharField(
+        _("Collection alias"), max_length=64, blank=True)
+    aggregation_with_same_type = models.BooleanField(
+        _("Aggregation with same type"), default=True)
+
     def get_www_url(self):
         return reverse('www:collection_detail', kwargs={"slug": self.slug})
 
@@ -467,6 +477,25 @@ class TopicCollection(HarvestAbstractModel, OrderedModel):
         unique_slug = generate_unique_slug(field, self, slug, manager)
         self.slug = unique_slug
         self.save()
+
+    def get_collection_json(self, blacklisted=None):
+        if blacklisted is None:
+            blacklisted = self.get_blacklisted()
+        seeds = sorted(set(self.get_seeds() - blacklisted))
+        alias = (self.collection_alias if len(self.collection_alias) > 0
+                 else "NoAlias")
+        collection = {
+            "name": f"Topics{alias}_{timezone.now():%Y-%m-%d}",
+            "collectionAlias": alias,
+            "annotation": self.annotation,
+            "nameCurator": self.title,
+            "idCollection": self.pk,
+            "aggregationWithSameType": self.aggregation_with_same_type,
+            "hash": self.hash_seeds(seeds),
+            "seedsNo": len(seeds),
+            "seeds": seeds,
+        }
+        return collection
 
     def __str__(self):
         sign = '✔' if self.active else '✗'
