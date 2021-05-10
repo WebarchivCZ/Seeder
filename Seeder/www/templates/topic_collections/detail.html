@@ -43,8 +43,10 @@
 				<br>
 				<h2>
 				{% for attachment in collection.attachment_set.all %}
-					<a href="{{ attachment.file.url }}">{{ attachment.get_extension }}</a>{% include "includes/comma.html" with separator=" /" %}
-                {% endfor %}		
+					<a href="{{ attachment.file.url }}" class="btn btn-primary">{{ attachment.get_extension }}</a>{% include "includes/comma.html" with separator=" /" %}
+                {% endfor %}
+                <br />
+                <a href="" class="mt-3">{% trans "Seznam URL v CSV" %}</a>	
 				</h2>
 
 				</div>
