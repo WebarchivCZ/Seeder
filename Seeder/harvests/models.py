@@ -97,7 +97,7 @@ class HarvestAbstractModel(BaseModel):
         return set(self.custom_seeds.splitlines())
 
     def get_custom_sources_seeds(self):
-        seeds = Seed.objects.archiving().filter(
+        seeds = Seed.objects.filter(
             source__in=self.custom_sources.all())
         return set(seeds.values_list('url', flat=True)) - self.get_blacklisted()
 
