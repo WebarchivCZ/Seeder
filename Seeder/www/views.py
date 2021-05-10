@@ -18,7 +18,7 @@ from contracts.models import Contract
 from search_blob.models import Blob
 from settings.base import WAYBACK_URL
 from source.models import Source, Category, SubCategory, KeyWord
-from source.constants import ARCHIVING_STATES, PUBLIC_STATES
+from source.constants import PUBLIC_STATES
 from harvests.models import TopicCollection
 from paginator.paginator import CustomPaginator
 from www.forms import NominationForm
@@ -223,7 +223,7 @@ class CategoryBaseView(PaginatedView):
             'categories': Category.objects.all().annotate(
                 num_sources=Sum(
                     Case(
-                        When(source__state__in=ARCHIVING_STATES, then=1),
+                        When(source__state__in=PUBLIC_STATES, then=1),
                         default=0, output_field=IntegerField()
                     )
                 )
@@ -235,7 +235,7 @@ class CategoryBaseView(PaginatedView):
             .annotate(
                 num_sources=Sum(
                     Case(
-                        When(source__state__in=ARCHIVING_STATES, then=1),
+                        When(source__state__in=PUBLIC_STATES, then=1),
                         default=0, output_field=IntegerField()
                     )
                 ))\
@@ -244,7 +244,7 @@ class CategoryBaseView(PaginatedView):
         return {
             'sub_categories': sub_categories,
             'cat_sources_total': category.source_set.filter(
-                state__in=ARCHIVING_STATES
+                state__in=PUBLIC_STATES
             ).count(),
         }
 
