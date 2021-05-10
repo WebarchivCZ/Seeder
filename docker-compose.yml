@@ -31,7 +31,7 @@ services:
     labels:
       - "traefik.http.routers.seeder.rule=Host(`localhost`) || Host(`127.0.0.1`)"
     environment:
-      DEBUG: 'False'
+      DEBUG: 'True'
       THUMBNAIL_DEBUG: 'True'
       DJANGO_SETTINGS_MODULE: settings.env
       ALLOWED_HOSTS: 127.0.0.1 localhost

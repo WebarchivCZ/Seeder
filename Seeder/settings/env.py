@@ -48,22 +48,26 @@ DATABASES = {
     }
 }
 
-CACHES = {
-    'default': {
-        'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
-        'LOCATION': os.environ.get('MEMCACHED', 'memcached:11211'),
+# Only cache in production
+if not DEBUG:
+    CACHES = {
+        'default': {
+            'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
+            'LOCATION': os.environ.get('MEMCACHED', 'memcached:11211'),
+        }
     }
-}
 
-EMAIL_BACKEND = os.environ.get('EMAIL_BACKEND', 'django.core.mail.backends.console.EmailBackend')
+EMAIL_BACKEND = os.environ.get(
+    'EMAIL_BACKEND', 'django.core.mail.backends.console.EmailBackend')
 EMAIL_HOST = os.environ.get('EMAIL_HOST', 'localhost')
 EMAIL_USE_TLS = os.environ.get('EMAIL_USE_TLS', 'False').lower() == 'true'
 DEFAULT_FROM_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL', 'webarchiv@nkp.cz')
-SERVER_EMAIL= os.environ.get('SERVER_EMAIL', 'webarchiv@nkp.cz')
+SERVER_EMAIL = os.environ.get('SERVER_EMAIL', 'webarchiv@nkp.cz')
 
 MANET_URL = os.environ.get('MANET', 'http://manet:8891/')
 WAKAT_URL = os.environ.get('WAKAT_URL', 'http://kat.webarchiv.cz/?url_id={id}')
-WAYBACK_URL = os.environ.get('WAYBACK_URL', 'https://wayback.webarchiv.cz/wayback/*/{url}')
+WAYBACK_URL = os.environ.get(
+    'WAYBACK_URL', 'https://wayback.webarchiv.cz/wayback/*/{url}')
 RECAPTCHA_PUBLIC_KEY = os.environ.get('RECAPTCHA_PUBLIC_KEY')
 RECAPTCHA_PRIVATE_KEY = os.environ.get('RECAPTCHA_PRIVATE_KEY')
 
