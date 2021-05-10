@@ -7,7 +7,7 @@ from django.utils.html import strip_tags
 from django.views.generic.edit import FormView
 from django.views.generic.base import TemplateView, View
 from django.views.generic.detail import DetailView
-from django.http.response import HttpResponseRedirect, Http404
+from django.http.response import HttpResponse, HttpResponseRedirect, Http404
 from django.utils.translation import ugettext as _
 from django.db.models import Sum, When, Case, IntegerField, Q
 from django.core.paginator import EmptyPage
@@ -159,6 +159,25 @@ class CollectionDetail(PaginatedView, DetailView):
         context['custom_seeds'] = seed_page
         context['bigger_paginator'] = bigger_paginator
         return context
+
+
+class CollectionUrlsCsv(DetailView):
+    model = TopicCollection
+
+    def get_queryset(self):
+        qs = super().get_queryset()
+        return qs.filter(active=True)
+
+    def get(self, request, *args, **kwargs):
+        import csv
+        self.object = self.get_object()
+        # Create a CSV response and write each seed on a new row
+        res = HttpResponse(content_type="text/csv")
+        res["Content-Disposition"] = 'attachment; filename="urls.csv"'
+        writer = csv.writer(res)
+        for seed in self.object.get_seeds():
+            writer.writerow([seed])
+        return res
 
 
 class About(TemplateView):
