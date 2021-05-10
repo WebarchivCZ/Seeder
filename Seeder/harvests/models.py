@@ -76,6 +76,31 @@ class HarvestAbstractModel(BaseModel):
     def hash_seeds(seeds):
         return md5("\n".join(seeds).encode("utf-8")).hexdigest()
 
+    def construct_collection_json(
+            self, seeds, name, collectionAlias, annotation, nameCurator,
+            idCollection, aggregationWithSameType, blacklisted=None):
+        """
+        seeds: set()
+        blacklisted: set()
+        """
+        if blacklisted is None:
+            blacklisted = self.get_blacklisted()
+        seeds = sorted(seeds - blacklisted)
+        # Collections shouldn't be empty
+        if len(seeds) == 0:
+            return None
+        return {
+            "name": name,
+            "collectionAlias": collectionAlias,
+            "annotation": annotation,
+            "nameCurator": nameCurator,
+            "idCollection": idCollection,
+            "aggregationWithSameType": aggregationWithSameType,
+            "hash": self.hash_seeds(seeds),
+            "seedsNo": len(seeds),
+            "seeds": seeds,
+        }
+
     def pair_custom_seeds(self):
         """
         Tries to pair the urls from ``custom_seeds`` with existing sources
@@ -222,9 +247,10 @@ class Harvest(HarvestAbstractModel):
 
     def get_topic_collections_by_frequency(self):
         pks = []
-        for freq in self.topic_collection_frequency:
-            pks.extend(TopicCollection.get_harvests_by_frequency(
-                freq).values_list('pk', flat=True))
+        if self.topic_collection_frequency:
+            for freq in self.topic_collection_frequency:
+                pks.extend(TopicCollection.get_harvests_by_frequency(
+                    freq).values_list('pk', flat=True))
         return TopicCollection.objects.filter(pk__in=pks)
 
     def get_previously_harvested_seeds(self):
@@ -235,6 +261,122 @@ class Harvest(HarvestAbstractModel):
         ):
             seeds.update(h.get_seeds())
         return seeds
+
+    def get_serials_frequency_json(self, frequency, blacklisted=None):
+        # Disregard OneShot seeds, should be dealt with separately
+        if frequency == 0:
+            return None
+        seeds = set(Seed.objects.archiving().filter(
+            source__frequency=frequency).values_list('url', flat=True))
+        alias = f"M{frequency}"
+        return self.construct_collection_json(
+            seeds, blacklisted=blacklisted,
+            name=f"Serials_{alias}_{timezone.now():%Y-%m-%d}",
+            collectionAlias=alias,
+            annotation=f"Serials sklizeň s frekvencí {frequency}x ročně",
+            nameCurator=None,
+            idCollection=None,  # TODO: no real ID
+            aggregationWithSameType=True,
+        )
+
+    def get_json(self):
+        # TODO: should figure out how to freeze/recognize correctly frozen
+        # if self.seeds_frozen and self.seeds_frozen != '':
+        #     return set(self.seeds_frozen.splitlines())
+
+        # Pre-compute blacklisted and pass down to all functions
+        blacklisted = self.get_blacklisted()
+
+        collections = []
+
+        # TODO: where should I check if there are topics+serials?
+
+        # TODO: sth like Serials_Custom_...?
+        custom_seeds = super(Harvest, self).get_seeds(blacklisted)
+        collections.append(self.construct_collection_json(
+            custom_seeds, blacklisted=blacklisted,
+            name=f"Serials_Custom_{timezone.now():%Y-%m-%d}",
+            collectionAlias="Custom",
+            annotation="Serials sklizeň pro Custom zdroje a semínka",
+            nameCurator=None,
+            idCollection=None,
+            aggregationWithSameType=True,
+        ))
+        # Add selected topic collections
+        for tc in self.topic_collections.all():
+            collections.append(tc.get_collection_json(blacklisted))
+        # Add all topic collections by frequency
+        for tc in self.get_topic_collections_by_frequency():
+            # Ensure topic collection hasn't already been added
+            tc_json = tc.get_collection_json(blacklisted)
+            if tc_json and not any(
+                [tc_json["idCollection"] == c.get("idCollection")
+                 for c in collections]
+            ):
+                collections.append(tc_json)
+        # Add frequency serials, auto-ignores OneShots
+        if self.target_frequency:
+            for freq in self.target_frequency:
+                collections.append(
+                    self.get_serials_frequency_json(freq, blacklisted))
+        # Pre-compute previously harvested seeds if OneShot or ArchiveIt
+        if self.archive_it or self.is_oneshot:
+            previously_harvested = self.get_previously_harvested_seeds()
+            oneshot_seeds = self.get_oneshot_seeds(
+                blacklisted, previously_harvested)
+            collections.append(self.construct_collection_json(
+                oneshot_seeds, blacklisted=blacklisted,
+                name=f"Serials_OneShot_{timezone.now():%Y-%m-%d}",
+                collectionAlias="OneShot",
+                annotation="Serials sklizeň pro OneShot semínka",
+                nameCurator=None,
+                idCollection=None,
+                aggregationWithSameType=True,
+            ))
+            archiveit_seeds = self.get_archiveit_seeds(
+                blacklisted, previously_harvested)
+            collections.append(self.construct_collection_json(
+                archiveit_seeds, blacklisted=blacklisted,
+                name=f"Serials_ArchiveIt_{timezone.now():%Y-%m-%d}",
+                collectionAlias="ArchiveIt",
+                annotation="Výběr ArchiveIt semínek k archivaci",
+                nameCurator=None,
+                idCollection=None,
+                aggregationWithSameType=True,
+            ))
+        if self.tests:
+            tests_seeds = self.get_tests_seeds(blacklisted)
+            collections.append(self.construct_collection_json(
+                tests_seeds, blacklisted=blacklisted,
+                name=f"Serials_Tests_{timezone.now():%Y-%m-%d}",
+                collectionAlias="Tests",
+                annotation="Výběr semínek na testování",
+                nameCurator=None,
+                idCollection=None,
+                aggregationWithSameType=True,
+            ))
+
+        # Filter out any potential None from collections
+        collections = [c for c in collections if c is not None]
+
+        return {
+            "idHarvest": self.pk,
+            "dateGenerated": 1608106203712,  # TODO: now? isoformat?
+            "dateFrozen": 1608106203712,  # TODO: add field
+            "plannedStart": "2020-12-16T08:28:24.551650+00:00",  # TODO field?
+            "type": "serials",  # TODO field?
+            "combined": True,  # TODO field?
+            "name": "Serials_YYYY-MM-DD_M1-ArchiveIt",
+            "anotation": "Anotace 1" + " ~ " + "Anotace X",
+            "hash": None,  # TODO hashSeminekCombined(md5),
+            "seedsNo": 300,
+            # TODO new fields?
+            "duration": 259200,
+            "budget": 10000,
+            "dataLimit": 10000000000,
+            "documentLimit": 0,
+            "collections": collections,
+        }
 
     def get_seeds_by_frequency(self, blacklisted=None):
         if not self.target_frequency:
@@ -479,23 +621,18 @@ class TopicCollection(HarvestAbstractModel, OrderedModel):
         self.save()
 
     def get_collection_json(self, blacklisted=None):
-        if blacklisted is None:
-            blacklisted = self.get_blacklisted()
-        seeds = sorted(set(self.get_seeds() - blacklisted))
+        """ Returns a dict() with topic collection details and seeds """
         alias = (self.collection_alias if len(self.collection_alias) > 0
                  else "NoAlias")
-        collection = {
-            "name": f"Topics{alias}_{timezone.now():%Y-%m-%d}",
-            "collectionAlias": alias,
-            "annotation": self.annotation,
-            "nameCurator": self.title,
-            "idCollection": self.pk,
-            "aggregationWithSameType": self.aggregation_with_same_type,
-            "hash": self.hash_seeds(seeds),
-            "seedsNo": len(seeds),
-            "seeds": seeds,
-        }
-        return collection
+        return self.construct_collection_json(
+            self.get_seeds(), blacklisted=blacklisted,
+            name=f"Topics_{alias}_{timezone.now():%Y-%m-%d}",
+            collectionAlias=alias,
+            annotation=self.annotation,
+            nameCurator=self.title,
+            idCollection=self.pk,
+            aggregationWithSameType=self.aggregation_with_same_type,
+        )
 
     def __str__(self):
         sign = '✔' if self.active else '✗'
