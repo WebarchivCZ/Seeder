@@ -476,6 +476,10 @@ class Source(SearchModel, SlugOrCreateModel, BaseModel):
     def has_creative_commons(self):
         return self.contract_set.valid().filter(is_cc=True).count() > 0
 
+    @property
+    def is_public(self):
+        return self.state in constants.PUBLIC_STATES
+
 
 @revisions.register(exclude=('last_changed',))
 class Seed(BaseModel):

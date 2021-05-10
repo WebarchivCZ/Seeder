@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Seeder\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-12-16 13:04+0000\n"
+"POT-Creation-Date: 2021-05-10 09:51+0000\n"
 "PO-Revision-Date: 2017-11-07 12:38+0100\n"
 "Last-Translator: Visgean Skeloru <visgean@gmail.com>, 2017\n"
 "Language-Team: English (United States) (https://www.transifex.com/"
@@ -148,14 +148,14 @@ msgid "This comment has been removed"
 msgstr "This comment has been removed"
 
 #: comments/models.py:168 qa/models.py:40 qa/templates/detail.html:15
-#: source/models.py:254 source/models.py:505 source/templates/source.html:83
+#: source/models.py:254 source/models.py:509 source/templates/source.html:83
 #: templates/history.html:14
 msgid "Comment"
 msgstr "Comment"
 
 #: comments/models.py:169 contracts/templates/contract.html:122
 #: harvests/templates/harvest.html:52
-#: harvests/templates/topic_collection.html:133
+#: harvests/templates/topic_collection.html:134
 #: publishers/templates/publisher.html:39 qa/templates/detail.html:22
 #: source/templates/source.html:200 voting/templates/voting_round.html:118
 #: www/templates/news_admin_detail.html:90
@@ -211,7 +211,7 @@ msgid "Narodni knihovna CR - archivace Vasich webovych stranek"
 msgstr "National library of the CR - archiving your web sites"
 
 #: contracts/models.py:55 contracts/templates/contract.html:20
-#: harvests/models.py:167 harvests/models.py:408 source/models.py:268
+#: harvests/models.py:168 harvests/models.py:413 source/models.py:268
 #: voting/models.py:27
 msgid "State"
 msgstr "State"
@@ -499,121 +499,121 @@ msgstr "Profile changed."
 msgid "Password changed successfully."
 msgstr "Password changed successfully."
 
-#: harvests/models.py:42 harvests/templates/topic_collection.html:43
+#: harvests/models.py:43 harvests/templates/topic_collection.html:43
 msgid "Seeds by frequency"
 msgstr "Seeds by frequency"
 
-#: harvests/models.py:50
+#: harvests/models.py:51
 msgid "Included sources"
 msgstr "Included sources"
 
-#: harvests/models.py:55
+#: harvests/models.py:56
 msgid "Custom seeds URL"
 msgstr "Custom seeds URL"
 
-#: harvests/models.py:56
+#: harvests/models.py:57
 msgid "One URL per line"
 msgstr "One URL per line"
 
-#: harvests/models.py:151
+#: harvests/models.py:152
 msgid "Planned"
 msgstr "Planned"
 
-#: harvests/models.py:152 harvests/models.py:401
+#: harvests/models.py:153 harvests/models.py:406
 msgid "Running"
 msgstr "Running"
 
-#: harvests/models.py:153
+#: harvests/models.py:154
 msgid "Success"
 msgstr "Success"
 
-#: harvests/models.py:154
+#: harvests/models.py:155
 msgid "Success with failures"
 msgstr "Success with failures"
 
-#: harvests/models.py:155
+#: harvests/models.py:156
 msgid "Cancelled"
 msgstr "Cancelled"
 
-#: harvests/models.py:156
+#: harvests/models.py:157
 msgid "Failed"
 msgstr "Failed"
 
-#: harvests/models.py:172 harvests/models.py:412 harvests/tables.py:53
+#: harvests/models.py:173 harvests/models.py:417 harvests/tables.py:53
 #: www/tables.py:13
 msgid "title"
 msgstr "Title"
 
-#: harvests/models.py:176 harvests/templates/harvest.html:13
+#: harvests/models.py:177 harvests/templates/harvest.html:13
 #: source/models.py:255 source/templates/source.html:87
 msgid "Annotation"
 msgstr "Annotation"
 
-#: harvests/models.py:185
+#: harvests/models.py:186
 msgid "Seeds not harvested"
 msgstr "Seeds not harvested"
 
-#: harvests/models.py:192 harvests/models.py:430
+#: harvests/models.py:193 harvests/models.py:435
 msgid "Date of harvest"
 msgstr "Date of harvest"
 
-#: harvests/models.py:196 harvests/models.py:472 templates/base.html:109
+#: harvests/models.py:197 harvests/models.py:477 templates/base.html:109
 msgid "Topic collections"
 msgstr "Topic collections"
 
-#: harvests/models.py:202 harvests/templates/harvest.html:17
+#: harvests/models.py:203 harvests/templates/harvest.html:17
 msgid "Topic collections by frequency"
 msgstr "Topic collections by frequency"
 
-#: harvests/models.py:209 harvests/views.py:345
+#: harvests/models.py:210 harvests/views.py:345
 msgid "ArchiveIt"
 msgstr "ArchiveIt"
 
-#: harvests/models.py:214 harvests/views.py:347
+#: harvests/models.py:215 harvests/views.py:347
 msgid "Tests"
 msgstr "Tests"
 
-#: harvests/models.py:402
+#: harvests/models.py:407
 msgid "New"
 msgstr "New"
 
-#: harvests/models.py:403
+#: harvests/models.py:408
 msgid "Finished"
 msgstr "Finished"
 
-#: harvests/models.py:416 source/constants.py:127 source/models.py:239
+#: harvests/models.py:421 source/constants.py:127 source/models.py:239
 msgid "Curator"
 msgstr "Curator"
 
-#: harvests/models.py:420 source/templates/source.html:91
+#: harvests/models.py:425 source/templates/source.html:91
 msgid "keywords"
 msgstr "Keywords"
 
-#: harvests/models.py:435
+#: harvests/models.py:440
 msgid "annotation"
 msgstr "annotation"
 
-#: harvests/models.py:438
+#: harvests/models.py:443
 msgid "image"
 msgstr "image"
 
-#: harvests/models.py:444
+#: harvests/models.py:449
 msgid "All sources are under open license or contract"
 msgstr "All sources are under open license or contract"
 
-#: harvests/models.py:447
+#: harvests/models.py:452
 msgid "Date from"
 msgstr "Date from"
 
-#: harvests/models.py:448
+#: harvests/models.py:453
 msgid "Date to"
 msgstr "Date to"
 
-#: harvests/models.py:471
+#: harvests/models.py:476
 msgid "Topic collection"
 msgstr "Topic collection"
 
-#: harvests/models.py:477
+#: harvests/models.py:482
 msgid "file"
 msgstr "file"
 
@@ -774,19 +774,23 @@ msgid "WWW link"
 msgstr "WWW link"
 
 #: harvests/templates/topic_collection.html:106 qa/templates/qa_form.html:20
-#: source/models.py:534 source/templates/source.html:152
+#: source/models.py:538 source/templates/source.html:152
 msgid "Seeds"
 msgstr "Seeds"
 
-#: harvests/templates/topic_collection.html:123
+#: harvests/templates/topic_collection.html:120
+msgid "Seed URLs"
+msgstr "Seed URLs"
+
+#: harvests/templates/topic_collection.html:124
 msgid "Update URL"
 msgstr "Update URL"
 
-#: harvests/templates/topic_collection.html:128
+#: harvests/templates/topic_collection.html:129
 msgid "Unpublish"
 msgstr "Unpublish"
 
-#: harvests/templates/topic_collection.html:128
+#: harvests/templates/topic_collection.html:129
 msgid "Publish"
 msgstr "Publish"
 
@@ -814,19 +818,19 @@ msgstr "Totals: All seeds"
 msgid "Add TopicCollection"
 msgstr "Add Topic Collection"
 
-#: harvests/views.py:455
+#: harvests/views.py:469
 msgid "Topic collection published"
 msgstr "Topic collection published"
 
-#: harvests/views.py:457
+#: harvests/views.py:471
 msgid "Topic collection unpublished"
 msgstr "Topic collection unpublished"
 
-#: harvests/views.py:471
+#: harvests/views.py:485
 msgid "URL slug successfully updated"
 msgstr "URL slug successfully updated"
 
-#: harvests/views.py:476
+#: harvests/views.py:490
 msgid "TopicCollections"
 msgstr "Topic Collections"
 
@@ -954,11 +958,11 @@ msgstr "QA"
 msgid "Quality assurance reports"
 msgstr "Quality assurance reports"
 
-#: settings/base.py:174
+#: settings/base.py:180
 msgid "Czech"
 msgstr "Czech"
 
-#: settings/base.py:175
+#: settings/base.py:181
 msgid "English"
 msgstr "English"
 
@@ -1102,63 +1106,63 @@ msgstr "Sub category"
 msgid "Source is dead"
 msgstr "Source is dead"
 
-#: source/models.py:486
+#: source/models.py:490
 msgid "default"
 msgstr "default"
 
-#: source/models.py:487
+#: source/models.py:491
 msgid "low"
 msgstr "low"
 
-#: source/models.py:488
+#: source/models.py:492
 msgid "very_low"
 msgstr "very_low"
 
-#: source/models.py:499
+#: source/models.py:503
 msgid "Main seed"
 msgstr "Main seed"
 
-#: source/models.py:500
+#: source/models.py:504
 msgid "Seed url"
 msgstr "Seed URL"
 
-#: source/models.py:506
+#: source/models.py:510
 msgid "From"
 msgstr "From"
 
-#: source/models.py:507
+#: source/models.py:511
 msgid "To"
 msgstr "To"
 
-#: source/models.py:510
+#: source/models.py:514
 msgid "Javascript"
 msgstr "Javascript"
 
-#: source/models.py:511
+#: source/models.py:515
 msgid "Global reject"
 msgstr "Global reject"
 
-#: source/models.py:512
+#: source/models.py:516
 msgid "Youtube"
 msgstr "YouTube"
 
-#: source/models.py:513
+#: source/models.py:517
 msgid "Calendars"
 msgstr "Calendars"
 
-#: source/models.py:514
+#: source/models.py:518
 msgid "Local traps"
 msgstr "Local traps"
 
-#: source/models.py:515
+#: source/models.py:519
 msgid "Redirect on seed"
 msgstr "Redirect on seed"
 
-#: source/models.py:516
+#: source/models.py:520
 msgid "Robots.txt active"
 msgstr "Robots.txt active"
 
-#: source/models.py:533
+#: source/models.py:537
 msgid "Seed"
 msgstr "Seed"
 
@@ -1301,7 +1305,7 @@ msgid "Seeder"
 msgstr "Seeder"
 
 #: templates/base.html:44 templates/base.html:90 templates/search/search.html:7
-#: templates/search/search.html:11
+#: templates/search/search.html:11 www/templates/base_www.html:84
 msgid "Search"
 msgstr "Search"
 
@@ -1734,6 +1738,10 @@ msgstr ""
 msgid "Klíčová slova sklizně"
 msgstr "Keywords of harvest"
 
+#: www/templates/topic_collections/detail.html:51
+msgid "Seznam URL v CSV"
+msgstr "List of URLs in CSV"
+
 #: www/urls.py:7
 msgid "^topic_collections_url$"
 msgstr "^topic-collections$"
@@ -1742,113 +1750,117 @@ msgstr "^topic-collections$"
 msgid "^topic_collections_url/(?P<slug>[\\w-]+)$"
 msgstr "^topic-collections/(?P<slug>[\\w-]+)$"
 
-#: www/urls.py:13
+#: www/urls.py:12
+msgid "^topic_collections_url/(?P<slug>[\\w-]+)/urls$"
+msgstr "^topic-collections/(?P<slug>[\\w-]+)/urls.csv$"
+
+#: www/urls.py:16
 msgid "^about_url$"
 msgstr "^about$"
 
-#: www/urls.py:14
+#: www/urls.py:17
 msgid "^more_about_url$"
 msgstr "^more-about$"
 
-#: www/urls.py:15
+#: www/urls.py:18
 msgid "^about_harvests_url$"
 msgstr "^harvests$"
 
-#: www/urls.py:17
+#: www/urls.py:20
 msgid "^about_terminology_url$"
 msgstr "^terminology$"
 
-#: www/urls.py:19
+#: www/urls.py:22
 msgid "^about_documents_url$"
 msgstr "^documents$"
 
-#: www/urls.py:21
+#: www/urls.py:24
 msgid "^about_graphics_url$"
 msgstr "^graphics$"
 
-#: www/urls.py:23
+#: www/urls.py:26
 msgid "^about_contact_url$"
 msgstr "^contact$"
 
-#: www/urls.py:25
+#: www/urls.py:28
 msgid "^about_faq_url$"
 msgstr "^faq$"
 
-#: www/urls.py:27
+#: www/urls.py:30
 msgid "^categories_url$"
 msgstr "^browse$"
 
-#: www/urls.py:28
+#: www/urls.py:31
 msgid "^categories_url/(?P<slug>[\\w-]+)$"
 msgstr "^browse/(?P<slug>[\\w-]+)$"
 
-#: www/urls.py:31
+#: www/urls.py:34
 msgid "^categories_url/(?P<category_slug>[\\w-]+)/(?P<slug>[\\w-]+)$"
 msgstr "^browse/(?P<category_slug>[\\w-]+)/(?P<slug>[\\w-]+)$"
 
-#: www/urls.py:35
+#: www/urls.py:38
 msgid "^change_list_view/(?P<list_type>visual|text)$"
 msgstr "^change-list-view/(?P<list_type>visual|text)$"
 
-#: www/urls.py:39
+#: www/urls.py:42
 msgid "^keyword_url/(?P<slug>[\\w-]+)$"
 msgstr "^keyword/(?P<slug>[\\w-]+)$"
 
-#: www/urls.py:43
+#: www/urls.py:46
 msgid "^search_url$"
 msgstr "^search$"
 
-#: www/urls.py:45
+#: www/urls.py:48
 msgid "^search_url/(?P<query>.*)"
 msgstr "^search/(?P<query>.*)"
 
-#: www/urls.py:48
+#: www/urls.py:51
 msgid "^www_source_url/(?P<slug>[\\w-]+)$"
 msgstr "^source/(?P<slug>[\\w-]+)$"
 
-#: www/urls.py:52
+#: www/urls.py:55
 msgid "^www_nominate_url$"
 msgstr "^add$"
 
-#: www/urls.py:53
+#: www/urls.py:56
 msgid "^www_nominate_success_url$"
 msgstr "^success$"
 
-#: www/urls.py:55
+#: www/urls.py:58
 msgid "^www_nominate_url/contract_url$"
 msgstr "^contract$"
 
-#: www/urls.py:58
+#: www/urls.py:61
 msgid "^www_nominate_url/cooperation_url$"
 msgstr "^cooperation$"
 
-#: www/urls.py:61
+#: www/urls.py:64
 msgid "^www_nominate_url/creative_commons_url$"
 msgstr "^cc$"
 
-#: www/urls.py:64
+#: www/urls.py:67
 msgid "^www_nominate_url/source_selection_url$"
 msgstr "^source-selection$"
 
-#: www/urls.py:68
+#: www/urls.py:71
 msgid "^disclaimer_url$"
 msgstr "^disclaimer/$"
 
-#: www/urls.py:72
+#: www/urls.py:75
 msgid "^embed_url$"
 msgstr "^embed$"
 
-#: www/views.py:441
+#: www/views.py:465
 #, python-format
 msgid "Webarchiv.cz - archivace vasich webovych stranek %(url)s"
 msgstr "Webarchiv.cz - web archiving your pages %(url)s"
 
-#: www/views.py:445
+#: www/views.py:469
 #, python-format
 msgid "Webarchiv.cz - archivace webovych stranek %(url)s"
 msgstr "Webarchiv.cz - web archiving %(url)s"
 
-#: www/views.py:467
+#: www/views.py:491
 #, python-format
 msgid "New nomination %(url)s"
 msgstr "New nomination %(url)s"

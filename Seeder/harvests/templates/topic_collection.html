@@ -117,6 +117,7 @@
         <h4>{% trans 'Links' %}:</h4>
             <a href="{% url 'harvests:topic_collection_edit' pk=object.pk %}" class="btn btn-primary btn-warning btn-block">{% trans 'Edit' %}</a>
             <a href="{% url 'harvests:topic_collection_history' pk=object.pk %}" class="btn btn-primary btn-info btn-block">{% trans 'History' %}</a>
+            <a href="{% url 'harvests:topic_collection_urls' pk=object.pk %}" class="btn btn-primary btn-info btn-block" target="_blank">{% trans 'Seed URLs' %}</a>
             <br />
             <form action='{% url 'harvests:topic_collection_update_slug' pk=object.pk %}' method='post'>
                 {% csrf_token %}

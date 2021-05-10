@@ -9,6 +9,9 @@ urlpatterns = [
     re_path(_('^topic_collections_url/(?P<slug>[\w-]+)$'),
             www.CollectionDetail.as_view(),
             name='collection_detail'),
+    re_path(_('^topic_collections_url/(?P<slug>[\w-]+)/urls$'),
+            www.CollectionUrlsCsv.as_view(),
+            name='collection_csv'),
 
     re_path(_('^about_url$'), www.About.as_view(), name='about'),
     re_path(_('^more_about_url$'), www.MoreAbout.as_view(), name='more_about'),
