@@ -407,7 +407,7 @@ class ReorderCollections(View):
     def get(self, request, *args, **kwargs):
         collections = models.TopicCollection.objects.order_by('order')
         for i, tc in enumerate(collections):
-            tc.order = i+1
+            tc.order = i + 1
             tc.save()
         return HttpResponseRedirect(reverse('harvests:topic_collection_list'))
 
@@ -432,6 +432,20 @@ class ChangeOrder(DetailView):
 
 class CollectionDetail(TCView, DetailView, CommentViewGeneric):
     template_name = 'topic_collection.html'
+
+
+class CollectionListUrls(TCView, DetailView, TemplateView):
+    """
+    List all seeds for a specific topic collection.
+    """
+    template_name = 'urls.html'
+
+    def get_context_data(self, **kwargs):
+        self.object = self.get_object()
+        context = super().get_context_data(**kwargs)
+        context['head_lines'] = [f"# {self.object.title}"]
+        context['urls'] = self.object.get_seeds()
+        return context
 
 
 class CollectionHistory(TCView, generic_views.HistoryView):

@@ -35,6 +35,8 @@ urlpatterns = [
          name='topic_collection_edit'),
     path('<int:pk>/collection_detail', CollectionDetail.as_view(),
          name='topic_collection_detail'),
+    path('<int:pk>/collection_urls', CollectionListUrls.as_view(),
+         name='topic_collection_urls'),
     path('<int:pk>/collection_history', CollectionHistory.as_view(),
          name='topic_collection_history'),
     path('<int:pk>/toggle_publish', CollectionTogglePublish.as_view(),
