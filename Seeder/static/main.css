@@ -142,7 +142,11 @@ table td {
   max-width: 800px;
 }
 
+<<<<<<< HEAD
 /* 
+=======
+/*
+>>>>>>> fix Select2 vs Bootstrap form-control styling – selected option overflow
  * Fix Select2 vs Bootstrap form-control styling
  */
 
