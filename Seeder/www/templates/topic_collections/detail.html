@@ -3,15 +3,6 @@
 
 {% block title %}{{collection.title}}{% endblock title %}
 
-{% block extrahead %}
-<style>
-    .passive_link {
-        color: black;
-        font-style: normal;
-    }
-</style>
-{% endblock %}
-
 {% block content %}
 <section class="collection collection-detail">
     <div class="container">
@@ -48,7 +39,8 @@
                     {% endfor %}
                     <br />
                 </h2>
-                <a href="{% url 'www:collection_csv' object.slug %}" class="mt-3" target="_blank">{% trans "Seznam URL v CSV" %}</a>
+                <a href="{% url 'www:collection_csv' object.slug %}" class="mt-3"
+                    target="_blank">{% trans "Seznam URL v CSV" %}</a>
 
             </div>
             <div class="col-md-8 col-sm-6 col-lg-8 sources">
@@ -56,14 +48,14 @@
                 <div class="row">
                     <div class="col-md-12 item-textual">
                         {% if source.is_public %}
-                        <h2><a href="{{ source.url }}">{{ source }}</a></h2>
+                        <h2><a href="{{ source.wayback_url }}" target="_blank">{{ source }}</a></h2>
                         {% else %}
                         <h2 class="passive_link">{{ source }}</h2>
                         {% endif %}
                         <p>
                             <span class="italic">{{ source.stripped_main_url }}</span>
-                            <span class="blue">[</span><a
-                                href="{{ source.wayback_url }}">{% if lang == "cs" %}archivovaná
+                            <span class="blue">[</span><a href="{{ source.url }}"
+                                target="_blank">{% if lang == "cs" %}aktuální
                                 verze{% else %}current{% endif %}</a><span class="blue">]</span>
                         </p>
                     </div>
@@ -75,8 +67,8 @@
                         <h2 class="passive_link">{{ source.name }}</h2>
                         <p>
                             <span class="italic">{{ source.url }}</span>
-                            <span class="blue">[</span><a
-                                href="{{ source.wayback_url }}">{% if lang == "cs" %}archivovaná
+                            <span class="blue">[</span><a href="{{ source.url }}"
+                                target="_blank">{% if lang == "cs" %}aktuální
                                 verze{% else %}current{% endif %}</a><span class="blue">]</span>
                         </p>
                     </div>
