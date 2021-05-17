@@ -2,31 +2,29 @@
 
 
 <div class="row">
-	{% for collection in collections %}
-		<div class="col-xs-12 col-sm-6 col-md-3 col-lg-4">
-			<div class="item-visual">
-				<a href="{{ collection.get_www_url }} ">
-					<div class="img-wrapper thumb">
-						{% if collection.image %}
-                            {% thumbnail collection.image "206x156" crop="center" as im %}
-                                <img src="{{ im.url }}" class="aspect-ratio" width="{{ im.width }}" height="{{ im.height }}">
-                            {% endthumbnail %}
-						{% else %}
-							<div class="aspect-ratio">
-								<div class="no-image">
-									<span class="small">www</span>
-								</div>
-							</div>
-						{% endif %}
-					</div>
-					<br>
-					<h2>{{ collection.title }}</h2>
-					<br>
-				</a>
-				<p>{{ collection.annotation|safe|striptags|truncatewords:30 }}</p>
-			</div>
-		</div>
-	<div class="{% cycle "" "clearfix visible-sm-block" %} {% cycle "" "" "clearfix visible-lg-block visible-md-block" %} clearfix visible-xs-block"></div>
-
-	{% endfor %}
+    {% for collection in collections %}
+    <div class="col-xs-12 col-sm-6 col-md-3 col-lg-4">
+        <div class="item-visual">
+            <a href="{{ collection.get_www_url }} ">
+                <div class="img-wrapper thumb">
+                    {% if collection.image %}
+                    {% thumbnail collection.image "206x156" crop="center" as im %}
+                    <img src="{{ im.url }}" class="aspect-ratio" width="{{ im.width }}" height="{{ im.height }}">
+                    {% endthumbnail %}
+                    {% else %}
+                    <div class="aspect-ratio">
+                        <div class="no-image">
+                            <span class="small">www</span>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+                <br>
+                <h2>{{ collection.title }}</h2>
+                <br>
+            </a>
+            <p>{{ collection.annotation|safe|striptags|truncatewords:30 }}</p>
+        </div>
+    </div>
+    {% endfor %}
 </div>

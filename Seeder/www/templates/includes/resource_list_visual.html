@@ -1,46 +1,44 @@
 {% load thumbnail %}
 {% if lang == "cs" %}
-	Zobrazení: <a href="" class="current">vizuální</a>, 
-	<a href="{% url "www:change_list_view" list_type='text' %}">textové</a>
+Zobrazení: <a href="" class="current">vizuální</a>,
+<a href="{% url "www:change_list_view" list_type='text' %}">textové</a>
 {% else %}
-	Display: <a href="" class="current">visual</a>, 
-	<a href="{% url "www:change_list_view" list_type='text' %}">text</a>
+Display: <a href="" class="current">visual</a>,
+<a href="{% url "www:change_list_view" list_type='text' %}">text</a>
 {% endif %}
 
 
 <div class="row">
-	{% for source in sources %}
-		<div class="col-xs-12 col-sm-4 col-md-3">
-			<div class="item-visual">
-				<a href="{{ source.wayback_url }} ">
-					<div class="img-wrapper thumb">
-						{% if source.screenshot %}
-                            {% thumbnail source.screenshot "206x156" crop="center" as im %}
-                                <img src="{{ im.url }}" class="aspect-ratio" width="{{ im.width }}" height="{{ im.height }}">
-                            {% endthumbnail %}
-						{% elif source.legacy_screenshot %}
-                            <img src="{{ source.legacy_screenshot }}" class="aspect-ratio">
-						{% else %}
-							<div class="aspect-ratio">
-								<div class="no-image">
-									<span class="small">www</span>
-								</div>
-							</div>
-						{% endif %}
-					</div>
-					<h2>{{ source }}</h2>
-				</a>
+    {% for source in sources %}
+    <div class="col-xs-12 col-sm-4 col-md-3">
+        <div class="item-visual">
+            <a href="{{ source.wayback_url }} ">
+                <div class="img-wrapper thumb">
+                    {% if source.screenshot %}
+                    {% thumbnail source.screenshot "206x156" crop="center" as im %}
+                    <img src="{{ im.url }}" class="aspect-ratio" width="{{ im.width }}" height="{{ im.height }}">
+                    {% endthumbnail %}
+                    {% elif source.legacy_screenshot %}
+                    <img src="{{ source.legacy_screenshot }}" class="aspect-ratio">
+                    {% else %}
+                    <div class="aspect-ratio">
+                        <div class="no-image">
+                            <span class="small">www</span>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+                <h2>{{ source }}</h2>
+            </a>
 
-			</div>
+        </div>
 
-		</div>
-
-		<div class="{% cycle "" "" "clearfix visible-sm-block" %} {% cycle "" "" "" "clearfix visible-lg-block visible-md-block" %} clearfix visible-xs-block"></div>
-{% endfor %}
+    </div>
+    {% endfor %}
 </div>
 
 {% if paginator %}
-    {% include "includes/paginator.html" with paginator=paginator %}
+{% include "includes/paginator.html" with paginator=paginator %}
 {% else %}
-    {% include "includes/paginator.html" with paginator=sources %}
+{% include "includes/paginator.html" with paginator=sources %}
 {% endif %}
