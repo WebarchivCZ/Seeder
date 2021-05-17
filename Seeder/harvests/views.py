@@ -100,6 +100,7 @@ class AddView(HarvestView, FormView):
     template_name = 'add_form.html'
 
     def form_valid(self, form):
+        # TODO: check that serials don't have Topic Collections and the other way around
         harvest = form.save()
         harvest.pair_custom_seeds()
         return HttpResponseRedirect(harvest.get_absolute_url())
@@ -110,6 +111,7 @@ class Detail(HarvestView, DetailView, CommentViewGeneric):
 
 
 class Edit(HarvestView, EditView):
+    # TODO: check that serials don't have Topic Collections and the other way around
     form_class = forms.HarvestEditForm
 
 
