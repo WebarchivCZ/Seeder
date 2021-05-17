@@ -459,6 +459,7 @@ class Nominate(FormView):
     model = Nomination
     form_class = NominationForm
     view_name = 'nominate'
+    sub_view_name = 'nominate'
 
     template_name = 'nominate/nominate.html'
 
@@ -509,6 +510,7 @@ class Nominate(FormView):
 class NominateSuccess(TemplateView):
     template_name = 'nominate/nominate_success.html'
     view_name = 'nominate'
+    sub_view_name = 'nominate_success'
 
 
 class NominateContractView(TemplateView):
@@ -524,16 +526,19 @@ class NominateContractView(TemplateView):
 class NominateCooperationView(TemplateView):
     template_name = 'nominate/cooperation.html'
     view_name = 'nominate'
+    sub_view_name = 'nominate_cooperation'
 
 
 class NominateCreativeCommonsView(TemplateView):
     template_name = 'nominate/creative_commons.html'
     view_name = 'nominate'
+    sub_view_name = 'nominate_creative_commons'
 
 
 class NominateSourceSelectionView(TemplateView):
     template_name = 'nominate/source_selection.html'
     view_name = 'nominate'
+    sub_view_name = 'nominate_source_selection'
 
 
 class DisclaimerView(TemplateView):
