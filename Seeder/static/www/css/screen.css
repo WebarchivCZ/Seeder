@@ -1128,10 +1128,6 @@ footer .cc-link img {
 	margin-bottom: 0;
 }
 
-.collection .sources {
-	
-}
-
 
 .collection-list {
 	margin-left: 20px;
@@ -1158,6 +1154,12 @@ footer .cc-link img {
 
 .collection h2 {
 	margin-top: 25px;
+  font-style: normal;
+}
+
+.collection .passive_link {
+  color: black;
+  font-style: italic;
 }
 
 .switch_style {
