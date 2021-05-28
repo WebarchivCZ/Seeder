@@ -40,4 +40,10 @@ def dict_diff(first, second):
 
 
 def show_toolbar(request):
-    return not request.is_ajax() and not request.user.is_anonymous
+    """
+    Only show Django Toolbar for user "fasand" or "petr"
+    """
+    return (not request.is_ajax() and
+            not request.user.is_anonymous and
+            (request.user.username == "fasand"
+             or request.user.username == "petr"))
