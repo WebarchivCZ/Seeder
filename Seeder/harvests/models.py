@@ -353,23 +353,26 @@ class Harvest(HarvestAbstractModel):
         collections = [c for c in collections if c is not None]
         # Get all seeds combined
         seeds_combined = sum([c.get("seeds") for c in collections], [])
+        aliases = "-".join([c.get("collectionAlias") for c in collections])
+        annotations = " ~ ".join([c.get("annotation") for c in collections])
 
         return {
             "idHarvest": self.pk,
             "dateGenerated": timezone.now().isoformat(),
-            "dateFrozen": "self.date_frozen.isoformat()",  # TODO: add field
-            "plannedStart": "self.planned_start.isoformat()",  # TODO field
+            "dateFrozen": "self.date_frozen.isoformat()",      # TODO field
+            # TODO is this scheduled_on or a new field? scheduled is only date
+            "plannedStart": "self.(planned_start | scheduled_on).isoformat()",
             "type": "serials",  # TODO field
-            "combined": True,  # TODO field or rule?
-            "name": "Serials_YYYY-MM-DD_M1-ArchiveIt",
-            "anotation": " ~ ".join([c.get("annotation") for c in collections]),
+            "combined": True,   # TODO field or rule?
+            # TODO: can get super long if many topic collections / frequencies
+            "name": f"Serials_YYYY-MM-DD_{aliases}",
+            "anotation": annotations,
             "hash": self.hash_seeds(seeds_combined),
             "seedsNo": len(seeds_combined),
-            # TODO new fields?
-            "duration": 259200,
-            "budget": 10000,
-            "dataLimit": 10000000000,
-            "documentLimit": 0,
+            "duration": 259200,         # TODO new field or model?
+            "budget": 10000,            # TODO new field or model?
+            "dataLimit": 10000000000,   # TODO new field or model?
+            "documentLimit": 0,         # TODO new field or model?
             "collections": collections,
         }
 
