@@ -50,7 +50,7 @@
                         {% if source.is_public %}
                         <h2><a href="{{ source.wayback_url }}" target="_blank">{{ source }}</a></h2>
                         {% else %}
-                        <h2 class="passive_link">{{ source }}</h2>
+                        <h2 class="passive_link"><a href="{{ source.wayback_url }}" target="_blank">{{ source }}</a></h2>
                         {% endif %}
                         <p>
                             <span class="italic">{{ source.stripped_main_url }}</span>
@@ -64,7 +64,7 @@
                 {% for source in custom_seeds %}
                 <div class="row">
                     <div class="col-md-12 item-textual">
-                        <h2 class="passive_link">{{ source.name }}</h2>
+                        <h2 class="passive_link"><a href="{{ source.wayback_url }}" target="_blank">{{ source.name }}</a></h2>
                         <p>
                             <span class="italic">{{ source.url }}</span>
                             <span class="blue">[</span><a href="{{ source.url }}"
