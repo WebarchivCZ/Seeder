@@ -53,6 +53,7 @@ urlpatterns = [
     path('<date:h_date>/harvests', ListHarvestUrls.as_view(),
          name='harvest_urls'),
     path('<int:pk>/urls', ListUrls.as_view(), name='urls'),
+    path('<int:pk>/json', JsonUrls.as_view(), name='json'),
     # Harvest URLs based on type
     path('<date:h_date>/shortcut_urls',
          ListShortcutUrlsByDate.as_view(), name='shortcut_urls_by_date'),

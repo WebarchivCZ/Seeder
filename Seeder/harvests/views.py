@@ -15,7 +15,7 @@ from . import forms
 from . import tables
 from . import field_filters
 
-from django.http.response import Http404, HttpResponseRedirect
+from django.http.response import Http404, HttpResponseRedirect, JsonResponse
 from django.utils.translation import ugettext_lazy as _
 from django.views.generic.base import TemplateView
 from django.views.generic import DetailView, FormView, View
@@ -141,6 +141,17 @@ class ListUrls(HarvestView, DetailView, TemplateView):
         context['head_lines'] = [f"# {self.object.title}"]
         context['urls'] = self.object.get_seeds()
         return context
+
+
+class JsonUrls(HarvestView, DetailView):
+    """
+    Return all seeds for a specific harvest as JSON
+    """
+
+    def get(self, *args, **kwargs):
+        self.object = self.get_object()
+        return JsonResponse(
+            self.object.get_json(), json_dumps_params={'ensure_ascii': False})
 
 
 class ListShortcutUrlsByDate(HarvestView, TemplateView):

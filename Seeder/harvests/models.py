@@ -123,7 +123,8 @@ class HarvestAbstractModel(BaseModel):
     def get_custom_seeds(self):
         if not self.custom_seeds:
             return set()
-        return set(self.custom_seeds.splitlines())
+        # Unwanted tabs and newlines can appear when entering as text
+        return set(map(str.strip, self.custom_seeds.splitlines())) - set([""])
 
     def get_custom_sources_seeds(self):
         seeds = Seed.objects.filter(
@@ -187,7 +188,6 @@ class Harvest(HarvestAbstractModel):
     )
 
     # Only Harvests with these states will be checked in prev_harv_seeds
-    # TODO: make sure these harvest states make sense
     PREVIOUSLY_HARVESTED_STATES = (
         STATE_RUNNING, STATE_SUCCESS, STATE_SUCCESS_WITH_FAILURES
     )
@@ -281,6 +281,7 @@ class Harvest(HarvestAbstractModel):
 
     def get_json(self):
         # TODO: should figure out how to freeze/recognize correctly frozen
+        # TODO: could add json_frozen
         # if self.seeds_frozen and self.seeds_frozen != '':
         #     return set(self.seeds_frozen.splitlines())
 
@@ -289,7 +290,7 @@ class Harvest(HarvestAbstractModel):
 
         collections = []
 
-        # TODO: where should I check if there are topics+serials?
+        # TODO: where should I check if there are topics+serials? – in Edit/Create Form, don't allow to create/change Harvest to something unsupported but if it already exists, it's fine
 
         # Add selected topic collections
         for tc in self.topic_collections.all():
@@ -300,7 +301,8 @@ class Harvest(HarvestAbstractModel):
             tc_json = tc.get_collection_json(blacklisted)
             if tc_json and not any(
                 [tc_json["idCollection"] == c.get("idCollection")
-                 for c in collections]
+                 # Collection can be None if it has no seeds
+                 for c in collections if c is not None]
             ):
                 collections.append(tc_json)
         # Add frequency serials, auto-ignores OneShots
@@ -316,10 +318,10 @@ class Harvest(HarvestAbstractModel):
             custom_seeds = super(Harvest, self).get_seeds(blacklisted)
             # OneShot collections contain OneShot and Custom sources/seeds
             collections.append(self.construct_collection_json(
-                oneshot_seeds + custom_seeds, blacklisted=blacklisted,
+                oneshot_seeds | custom_seeds, blacklisted=blacklisted,
                 name=f"Serials_OneShot_{timezone.now():%Y-%m-%d}",
                 collectionAlias="OneShot",
-                annotation="Serials sklizeň pro OneShot+Custom semínka",
+                annotation="Serials sklizen pro OneShot+Custom seminka",
                 nameCurator=None,
                 idCollection=None,
                 aggregationWithSameType=True,
@@ -330,7 +332,7 @@ class Harvest(HarvestAbstractModel):
                 archiveit_seeds, blacklisted=blacklisted,
                 name=f"Serials_ArchiveIt_{timezone.now():%Y-%m-%d}",
                 collectionAlias="ArchiveIt",
-                annotation="Výběr ArchiveIt semínek k archivaci",
+                annotation="Vyber ArchiveIt seminek k archivaci",
                 nameCurator=None,
                 idCollection=None,
                 aggregationWithSameType=True,
@@ -341,7 +343,7 @@ class Harvest(HarvestAbstractModel):
                 tests_seeds, blacklisted=blacklisted,
                 name=f"Serials_Tests_{timezone.now():%Y-%m-%d}",
                 collectionAlias="Tests",
-                annotation="Výběr semínek na testování",
+                annotation="Vyber seminek na testovani",
                 nameCurator=None,
                 idCollection=None,
                 aggregationWithSameType=True,
@@ -349,18 +351,20 @@ class Harvest(HarvestAbstractModel):
 
         # Filter out any potential None from collections
         collections = [c for c in collections if c is not None]
+        # Get all seeds combined
+        seeds_combined = sum([c.get("seeds") for c in collections], [])
 
         return {
             "idHarvest": self.pk,
-            "dateGenerated": 1608106203712,  # TODO: now? isoformat?
-            "dateFrozen": 1608106203712,  # TODO: add field
-            "plannedStart": "2020-12-16T08:28:24.551650+00:00",  # TODO field?
-            "type": "serials",  # TODO field?
-            "combined": True,  # TODO field?
+            "dateGenerated": timezone.now().isoformat(),
+            "dateFrozen": "self.date_frozen.isoformat()",  # TODO: add field
+            "plannedStart": "self.planned_start.isoformat()",  # TODO field
+            "type": "serials",  # TODO field
+            "combined": True,  # TODO field or rule?
             "name": "Serials_YYYY-MM-DD_M1-ArchiveIt",
-            "anotation": "Anotace 1" + " ~ " + "Anotace X",
-            "hash": None,  # TODO hashSeminekCombined(md5),
-            "seedsNo": 300,
+            "anotation": " ~ ".join([c.get("annotation") for c in collections]),
+            "hash": self.hash_seeds(seeds_combined),
+            "seedsNo": len(seeds_combined),
             # TODO new fields?
             "duration": 259200,
             "budget": 10000,
@@ -617,6 +621,7 @@ class TopicCollection(HarvestAbstractModel, OrderedModel):
                  else "NoAlias")
         return self.construct_collection_json(
             self.get_seeds(), blacklisted=blacklisted,
+            # TODO: is this the date of creation or now?
             name=f"Topics_{alias}_{timezone.now():%Y-%m-%d}",
             collectionAlias=alias,
             annotation=self.annotation,
