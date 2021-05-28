@@ -76,7 +76,6 @@ class HarvestAbstractModel(BaseModel):
     def hash_seeds(seeds):
         return md5("\n".join(seeds).encode("utf-8")).hexdigest()
 
-<<<<<<< HEAD
     def construct_collection_json(
             self, seeds, name, collectionAlias, annotation, nameCurator,
             idCollection, aggregationWithSameType, blacklisted=None):
@@ -102,8 +101,6 @@ class HarvestAbstractModel(BaseModel):
             "seeds": seeds,
         }
 
-=======
->>>>>>> add TopicCollection.[collection_alias, aggregation_with_same_type], implement get_collection_json
     def pair_custom_seeds(self):
         """
         Tries to pair the urls from ``custom_seeds`` with existing sources
