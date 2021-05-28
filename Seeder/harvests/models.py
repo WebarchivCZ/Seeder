@@ -291,17 +291,6 @@ class Harvest(HarvestAbstractModel):
 
         # TODO: where should I check if there are topics+serials?
 
-        # TODO: sth like Serials_Custom_...?
-        custom_seeds = super(Harvest, self).get_seeds(blacklisted)
-        collections.append(self.construct_collection_json(
-            custom_seeds, blacklisted=blacklisted,
-            name=f"Serials_Custom_{timezone.now():%Y-%m-%d}",
-            collectionAlias="Custom",
-            annotation="Serials sklizeň pro Custom zdroje a semínka",
-            nameCurator=None,
-            idCollection=None,
-            aggregationWithSameType=True,
-        ))
         # Add selected topic collections
         for tc in self.topic_collections.all():
             collections.append(tc.get_collection_json(blacklisted))
@@ -324,11 +313,13 @@ class Harvest(HarvestAbstractModel):
             previously_harvested = self.get_previously_harvested_seeds()
             oneshot_seeds = self.get_oneshot_seeds(
                 blacklisted, previously_harvested)
+            custom_seeds = super(Harvest, self).get_seeds(blacklisted)
+            # OneShot collections contain OneShot and Custom sources/seeds
             collections.append(self.construct_collection_json(
-                oneshot_seeds, blacklisted=blacklisted,
+                oneshot_seeds + custom_seeds, blacklisted=blacklisted,
                 name=f"Serials_OneShot_{timezone.now():%Y-%m-%d}",
                 collectionAlias="OneShot",
-                annotation="Serials sklizeň pro OneShot semínka",
+                annotation="Serials sklizeň pro OneShot+Custom semínka",
                 nameCurator=None,
                 idCollection=None,
                 aggregationWithSameType=True,
