@@ -6,7 +6,7 @@ chardet==3.0.4
 coverage==5.1
 dateutils==0.6.6
 defusedxml==0.6.0
-Django==2.2.20
+Django==2.2.24
 django-autocomplete-light==3.3.4
 django-autoslug==1.9.4
 django-bootstrap3==11.0.0
