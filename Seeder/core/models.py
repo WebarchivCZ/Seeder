@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils import timezone
+from django.forms.widgets import DateTimeInput
 
 from core import widgets
 
@@ -8,6 +9,16 @@ class DatePickerField(models.DateField):
     def formfield(self, **kwargs):
         defaults = {
             'widget': widgets.DatePickerWidget()
+        }
+
+        defaults.update(kwargs)
+        return super().formfield(**defaults)
+
+
+class DateTimePickerField(models.DateTimeField):
+    def formfield(self, **kwargs):
+        defaults = {
+            'widget': DateTimeInput(format="%d.%m.%Y %H:%M")
         }
 
         defaults.update(kwargs)
