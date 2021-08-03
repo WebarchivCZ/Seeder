@@ -16,7 +16,7 @@ from autoslug import AutoSlugField
 from ordered_model.models import OrderedModel
 
 from blacklists.models import Blacklist
-from core.models import BaseModel, DatePickerField
+from core.models import BaseModel, DatePickerField, DateTimePickerField
 from harvests.scheduler import get_dates_for_timedelta
 from source import constants as source_constants
 from source.models import Source, Seed, KeyWord
@@ -218,7 +218,7 @@ class Harvest(HarvestAbstractModel):
 
     auto_created = models.BooleanField(default=False)
 
-    scheduled_on = DatePickerField(
+    scheduled_on = DateTimePickerField(
         verbose_name=_('Date of harvest')
     )
 
@@ -575,7 +575,7 @@ class TopicCollection(HarvestAbstractModel, OrderedModel):
 
     auto_created = models.BooleanField(default=False)
 
-    scheduled_on = DatePickerField(
+    scheduled_on = DateTimePickerField(
         verbose_name=_('Date of harvest'),
         null=True, blank=True,
     )
