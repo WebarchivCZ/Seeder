@@ -9,4 +9,3 @@ class TopicCollectionTranslationOptions(TranslationOptions):
 @register(models.ExternalTopicCollection)
 class ExternalTopicCollectionTranslationOptions(TranslationOptions):
     fields = ('title', 'annotation',)
-
