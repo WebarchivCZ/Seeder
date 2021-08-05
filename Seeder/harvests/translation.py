@@ -6,3 +6,6 @@ from . import models
 class TopicCollectionTranslationOptions(TranslationOptions):
     fields = ('title', 'annotation',)
 
+@register(models.ExternalTopicCollection)
+class ExternalTopicCollectionTranslationOptions(TranslationOptions):
+    fields = ('title', 'annotation',)
