@@ -19,7 +19,7 @@ from search_blob.models import Blob
 from settings.base import WAYBACK_URL
 from source.models import Source, Category, SubCategory, KeyWord
 from source.constants import PUBLIC_STATES
-from harvests.models import TopicCollection
+from harvests.models import ExternalTopicCollection
 from paginator.paginator import CustomPaginator
 from www.forms import NominationForm
 from www.models import Nomination, SearchLog
@@ -86,19 +86,19 @@ class TopicCollections(PaginatedView, TemplateView):
         return context
 
     def get_paginator_queryset(self):
-        return TopicCollection.objects.filter(active=True)
+        return ExternalTopicCollection.objects.filter(active=True)
 
 
-class CollectionDetail(PaginatedView, DetailView):
+class TopicCollectionDetail(PaginatedView, DetailView):
     template_name = 'topic_collections/detail.html'
     view_name = 'topic_collections'
 
-    model = TopicCollection
+    model = ExternalTopicCollection
     context_object_name = 'collection'
     per_page = 6
 
     def get_queryset(self):
-        qs = super(CollectionDetail, self).get_queryset()
+        qs = super(TopicCollectionDetail, self).get_queryset()
         return qs.filter(active=True)
 
     def get_paginator_queryset(self):
@@ -161,8 +161,8 @@ class CollectionDetail(PaginatedView, DetailView):
         return context
 
 
-class CollectionUrlsCsv(DetailView):
-    model = TopicCollection
+class TopicCollectionUrlsCsv(DetailView):
+    model = ExternalTopicCollection
 
     def get_queryset(self):
         qs = super().get_queryset()

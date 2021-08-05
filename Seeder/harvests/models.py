@@ -564,6 +564,17 @@ class ExternalTopicCollection(BaseModel, OrderedModel):
         null=True, blank=True,
     )
 
+    @property
+    def custom_seeds(self):
+        """ Return custom seeds of all internal collections combined """
+        return "\n".join(self.internal_collections.all().values_list(
+            "custom_seeds", flat=True))
+
+    @property
+    def custom_sources(self):
+        """ Return custom sources of all internal collections combined """
+        return Source.objects.filter(topiccollection__external_collection=self)
+
     def update_slug(self):
         from autoslug.utils import slugify, generate_unique_slug
         field = ExternalTopicCollection._meta.get_field('slug')
@@ -582,7 +593,6 @@ class ExternalTopicCollection(BaseModel, OrderedModel):
         return seeds
 
     def get_www_url(self):
-        # TODO: fix www:collection_detail view
         return reverse('www:collection_detail', kwargs={"slug": self.slug})
 
     def get_absolute_url(self):
