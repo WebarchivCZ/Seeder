@@ -65,26 +65,24 @@ class HarvestEditForm(forms.ModelForm):
         widgets = autocomplete_widgets
 
 
-class TopicCollectionForm(forms.ModelForm):
+class InternalTopicCollectionForm(forms.ModelForm):
     attachments = PatchedMultiFileField(min_num=0, required=False)
 
     class Meta:
         model = models.TopicCollection
         fields = (
+            'external_collection',
             'owner',
             'title_cs',
             'title_en',
-            # 'annotation_cs',
-            # 'annotation_en',
+            'annotation_cs',
+            'annotation_en',
             'date_from',
             'date_to',
-            # 'image',
             'all_open',
             'target_frequency',
             'custom_seeds',
             'custom_sources',
-            # 'slug',
-            # 'keywords',
             "attachments",
         )
 
@@ -92,24 +90,52 @@ class TopicCollectionForm(forms.ModelForm):
             'custom_sources': autocomplete.ModelSelect2Multiple(
                 url='source:source_public_autocomplete'
             ),
+        }
+
+
+class InternalTopicCollectionEditForm(InternalTopicCollectionForm):
+    files_to_delete = forms.MultipleChoiceField(required=False)
+
+    def __init__(self, attachment_list, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['files_to_delete']._set_choices(
+            [(file.id, str(file)) for file in attachment_list]
+        )
+
+    class Meta(InternalTopicCollectionForm.Meta):
+        fields = InternalTopicCollectionForm.Meta.fields + \
+            ('files_to_delete',)
+
+
+class ExternalTopicCollectionForm(forms.ModelForm):
+
+    class Meta:
+        model = models.ExternalTopicCollection
+        fields = (
+            'owner',
+            'title_cs',
+            'title_en',
+            'annotation_cs',
+            'annotation_en',
+            'image',
+            # 'slug',
+            'keywords',
+        )
+
+        widgets = {
             'keywords': autocomplete.ModelSelect2Multiple(
                 url='source:keyword_autocomplete'
             ),
         }
 
 
-class TopicCollectionEditForm(TopicCollectionForm):
-    files_to_delete = forms.MultipleChoiceField(required=False)
+class ExternalTopicCollectionEditForm(ExternalTopicCollectionForm):
     new_order = forms.IntegerField(min_value=1)
 
-    def __init__(self, attachment_list, *args, **kwargs):
+    def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         # Set the initial order to the current one
         self.fields['new_order'].initial = self.instance.order
-        self.fields['files_to_delete']._set_choices(
-            [(file.id, str(file)) for file in attachment_list]
-        )
 
-    class Meta(TopicCollectionForm.Meta):
-        fields = ('new_order',) + TopicCollectionForm.Meta.fields + \
-            ('files_to_delete',)
+    class Meta(ExternalTopicCollectionForm.Meta):
+        fields = ('new_order',) + ExternalTopicCollectionForm.Meta.fields

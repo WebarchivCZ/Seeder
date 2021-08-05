@@ -574,6 +574,21 @@ class ExternalTopicCollection(BaseModel, OrderedModel):
         self.slug = unique_slug
         self.save()
 
+    def get_seeds(self):
+        """ Get seeds from all internal collections """
+        seeds = set()
+        for internal in self.internal_collections.all():
+            seeds = seeds.union(internal.get_seeds())
+        return seeds
+
+    def get_www_url(self):
+        # TODO: fix www:collection_detail view
+        return reverse('www:collection_detail', kwargs={"slug": self.slug})
+
+    def get_absolute_url(self):
+        return reverse(
+            'harvests:external_collection_detail', args=[str(self.id)])
+
     def __str__(self):
         sign = '✔' if self.active else '✗'
         return '{0} {1}'.format(sign, self.title)
@@ -650,13 +665,9 @@ class TopicCollection(HarvestAbstractModel):
     aggregation_with_same_type = models.BooleanField(
         _("Aggregation with same type"), default=True)
 
-    def get_www_url(self):
-        # TODO: move to ExternalTopicCollection
-        return reverse('www:collection_detail', kwargs={"slug": self.slug})
-
     def get_absolute_url(self):
-        # TODO: move to ExternalTopicCollection
-        return reverse('harvests:topic_collection_detail', args=[str(self.id)])
+        return reverse(
+            'harvests:internal_collection_detail', args=[str(self.id)])
 
     def get_collection_json(self, blacklisted=None):
         """ Returns a dict() with topic collection details and seeds """
@@ -684,6 +695,7 @@ class TopicCollection(HarvestAbstractModel):
 
 
 class Attachment(models.Model):
+    #! TODO: External collections should display attachments from all internal attachments now!!
     file = models.FileField(verbose_name=_('file'), upload_to='attachments')
     topic_collection = models.ForeignKey(TopicCollection,
                                          on_delete=models.CASCADE)

@@ -105,8 +105,11 @@
 
                 <hr>
 
-                <li id="topic_collections">
-                    <a href="{% url 'harvests:topic_collection_list' %}">{% trans 'Topic collections' %}</a>
+                <li id="external_topic_collections">
+                    <a href="{% url 'harvests:external_collection_list' %}">{% trans 'External Topic Collections' %}</a>
+                </li>
+                <li id="internal_topic_collections">
+                    <a href="{% url 'harvests:internal_collection_list' %}">{% trans 'Internal Topic Collections' %}</a>
                 </li>
                 <li id="news">
                     <a href="{% url 'news:list' %}">{% trans 'News' %}</a>

@@ -1,6 +1,6 @@
 from datetime import date
 from django.utils import dateparse
-from django.urls import path, re_path, register_converter
+from django.urls import path, register_converter, include
 from .views import *
 
 # TODO move to 'core' if used anywhere else
@@ -21,32 +21,61 @@ class DateConverter:
 
 register_converter(DateConverter, 'date')
 
+# Internal Topic Collections
+internal_collections_urlpatterns = [
+    path('', InternalCollectionListView.as_view(),
+         name='internal_collection_list'),
+    path('add', InternalCollectionAdd.as_view(),
+         name='internal_collection_add'),
+    path('<int:pk>/edit', InternalCollectionEdit.as_view(),
+         name='internal_collection_edit'),
+    path('<int:pk>', InternalCollectionDetail.as_view(),
+         name='internal_collection_detail'),
+    path('<int:pk>/urls', InternalCollectionListUrls.as_view(),
+         name='internal_collection_urls'),
+    path('<int:pk>/history', InternalCollectionHistory.as_view(),
+         name='internal_collection_history'),
+]
+
+# External Topic Collections
+external_collections_urlpatterns = [
+    path('', ExternalCollectionListView.as_view(),
+         name='external_collection_list'),
+    path('add', ExternalCollectionAdd.as_view(),
+         name='external_collection_add'),
+    path('<int:pk>/edit', ExternalCollectionEdit.as_view(),
+         name='external_collection_edit'),
+    path('<int:pk>', ExternalCollectionDetail.as_view(),
+         name='external_collection_detail'),
+    path('<int:pk>/urls', ExternalCollectionListUrls.as_view(),
+         name='external_collection_urls'),
+    path('<int:pk>/history', ExternalCollectionHistory.as_view(),
+         name='external_collection_history'),
+    # Ordering, slug, publishing
+    path('<int:pk>/toggle_publish',
+         ExternalCollectionTogglePublish.as_view(),
+         name='external_collection_toggle_publish'),
+    path('<int:pk>/update_slug',
+         ExternalCollectionUpdateSlug.as_view(),
+         name='external_collection_update_slug'),
+    path('<int:pk>/change_order/<str:to>',
+         ExternalCollectionChangeOrder.as_view(),
+         name='external_collection_change_order'),
+    path('collections/reorder',
+         ExternalCollectionsReorder.as_view(),
+         name='external_collections_reorder'),
+]
+
+
 urlpatterns = [
     path('', CalendarView.as_view(), name='calendar'),
     path('json', CalendarJsonView.as_view(), name='json_calendar'),
     path('add', AddView.as_view(), name='add'),
     path('<int:pk>/detail', Detail.as_view(), name='detail'),
     path('<int:pk>/edit', Edit.as_view(), name='edit'),
-    path('add_topic_collection', AddTopicCollection.as_view(),
-         name='topic_collection_add'),
-    path('<int:pk>/change_order/<str:to>', ChangeOrder.as_view(),
-         name='topic_collection_change_order'),
-    path('<int:pk>/collection_edit', EditCollection.as_view(),
-         name='topic_collection_edit'),
-    path('<int:pk>/collection_detail', CollectionDetail.as_view(),
-         name='topic_collection_detail'),
-    path('<int:pk>/collection_urls', CollectionListUrls.as_view(),
-         name='topic_collection_urls'),
-    path('<int:pk>/collection_history', CollectionHistory.as_view(),
-         name='topic_collection_history'),
-    path('<int:pk>/toggle_publish', CollectionTogglePublish.as_view(),
-         name='topic_collection_toggle_publish'),
-    path('<int:pk>/update_slug', CollectionUpdateSlug.as_view(),
-         name='topic_collection_update_slug'),
-    path('collections', CollectionListView.as_view(),
-         name='topic_collection_list'),
-    path('collections/reorder', ReorderCollections.as_view(),
-         name='topic_collection_reorder'),
+    # Topic Collections (Internal & External)
+    path('collections/internal/', include(internal_collections_urlpatterns)),
+    path('collections/external/', include(external_collections_urlpatterns)),
     # Harvest URLs
     path('catalogue', HarvestUrlCatalogue.as_view(), name='catalogue'),
     # Harvest URLs based on date and harvest id
