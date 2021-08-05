@@ -178,7 +178,7 @@ class SeederUrlsTest(TestCase):
         self.url_names.remove('source:delete')       # requires POST
         self.url_names.remove('contracts:delete')    # requires POST
         # requires POST
-        self.url_names.remove('harvests:topic_collection_toggle_publish')
+        self.url_names.remove('harvests:external_collection_toggle_publish')
         self.url_kwargs = {
             'harvests:json_calendar': [{}, '?from=1000&to=10000'],
             'harvests:shortcut_urls_by_date': {'h_date': DATE},

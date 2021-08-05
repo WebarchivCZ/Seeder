@@ -18,14 +18,18 @@ class ChangeOrderColumn(tables.Column):
             "ordered_model/admin/order_controls.html",
             {
                 "urls": {
-                    "up": reverse("harvests:topic_collection_change_order",
-                                  args=[value, "up"]),
-                    "down": reverse("harvests:topic_collection_change_order",
-                                    args=[value, "down"]),
-                    "top": reverse("harvests:topic_collection_change_order",
-                                   args=[value, "top"]),
-                    "bottom": reverse("harvests:topic_collection_change_order",
-                                      args=[value, "bottom"]),
+                    "up": reverse(
+                        "harvests:external_collection_change_order",
+                        args=[value, "up"]),
+                    "down": reverse(
+                        "harvests:external_collection_change_order",
+                        args=[value, "down"]),
+                    "top": reverse(
+                        "harvests:external_collection_change_order",
+                        args=[value, "top"]),
+                    "bottom": reverse(
+                        "harvests:external_collection_change_order",
+                        args=[value, "bottom"]),
                 },
                 "query_string": "",
             },
@@ -56,6 +60,24 @@ class TopicCollectionTable(tables.Table):
 
     class Meta:
         model = models.TopicCollection
+        fields = ('title', 'status')
+
+        attrs = {
+            'class': 'table table-striped table-hover'
+        }
+
+
+class ExternalTopicCollectionTable(tables.Table):
+    created = NaturalDatetimeColumn()
+    last_changed = NaturalDatetimeColumn()
+    title = AbsoluteURLColumn(
+        accessor='__str__',
+        verbose_name=_('title')
+    )
+    change_order = ChangeOrderColumn(accessor='pk')
+
+    class Meta:
+        model = models.ExternalTopicCollection
         fields = ('order', 'change_order', 'title', 'status')
 
         attrs = {

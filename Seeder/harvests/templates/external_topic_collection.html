@@ -1,0 +1,109 @@
+{% extends 'base.html' %}
+{% load i18n bootstrap3 thumbnail static %}
+
+{% block title %} {{ object }} {% endblock %}
+{% block page_header %} {{ object }}{% endblock %}
+
+{% block content %}
+    <div class="col-md-6 col-sm-5">
+        <h4>{% trans 'Info' %}</h4>
+        <table class="table table-striped">
+            <tbody>
+                <tr>
+                    <td>{% trans 'Order' %}</td>
+                    <td>{{ object.order }}</td>
+                </tr>
+
+                <tr>
+                    <td>{% trans 'title [cs]' %}</td>
+                    <td>{{ object.title_cs }}</td>
+                </tr>
+
+                <tr>
+                    <td>{% trans 'title [en]' %}</td>
+                    <td>{{ object.title_en }}</td>
+                </tr>
+
+                <tr>
+                    <td>{% trans 'annotation [cs]' %}</td>
+                    <td>{{ object.annotation_cs }}</td>
+                </tr>
+
+                <tr>
+                    <td>{% trans 'annotation [en]' %}</td>
+                    <td>{{ object.annotation_en }}</td>
+                </tr>
+
+                {% if object.image %}
+                    <tr>
+                        <td>{% trans 'Screenshot' %}</td>
+                        <td>
+                            {% thumbnail object.image "100x100" crop="center" as im %}
+                                <a href="{{ object.image.url }}" target="_blank">
+                                    <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}">
+                                </a>
+                            {% endthumbnail %}
+                        </td>
+                    </tr>
+                {% endif %}
+
+                <tr>
+                    <td>{% trans 'Created at' %}</td>
+                    <td>{{ object.created }}</td>
+                </tr>
+                <tr>
+                    <td>{% trans 'Owner' %}</td>
+                    <td>{{ object.owner }}</td>
+                </tr>
+
+                <tr>
+                    <td>{% trans 'Keywords' %}</td>
+                    <td>{% for keyword in object.keywords.all %}{{ keyword }}{% include "includes/comma.html" %}{% endfor %}
+                  </td>
+                </tr>
+
+                <tr>
+                    <td>{% trans 'WWW link' %}</td>
+                    <td><a href="{{ object.get_www_url }}" target="_blank">{{ object.get_www_url }}</a></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="col-md-3 col-sm-5">
+    <h4>{% trans 'Internal Topic Collections' %}</h4>
+        <ul class="list-group">
+            {% for internal_tc in object.internal_collections.all %}
+                <a href="{{ internal_tc.get_absolute_url }}">
+                    <li class="list-group-item ">
+                        {{ internal_tc }}
+                    </li>
+                </a>
+            {% endfor %}
+        </ul>
+
+    </div>
+    <div class="col-md-3 col-sm-5">
+        <h4>{% trans 'Links' %}:</h4>
+            <a href="{% url 'harvests:external_collection_edit' pk=object.pk %}" class="btn btn-primary btn-warning btn-block">{% trans 'Edit' %}</a>
+            <a href="{% url 'harvests:external_collection_history' pk=object.pk %}" class="btn btn-primary btn-info btn-block">{% trans 'History' %}</a>
+            <a href="{% url 'harvests:external_collection_urls' pk=object.pk %}" class="btn btn-primary btn-info btn-block" target="_blank">{% trans 'Seed URLs' %}</a>
+            <br />
+            <form action="{% url 'harvests:external_collection_update_slug' pk=object.pk %}" method='post'>
+                {% csrf_token %}
+                <button class="btn btn-success btn-block">{% trans 'Update URL' %}</button>
+            </form>
+            <br />
+            <form action="{% url 'harvests:external_collection_toggle_publish' pk=object.pk %}" method='post'>
+                {% csrf_token %}
+                <button class="btn {% if object.active %} btn-danger {% else %} btn-success {% endif %} btn-block">{% if object.active %} {% trans 'Unpublish' %} {% else %} {% trans 'Publish' %} {% endif %}</button>
+            </form>
+    </div>
+
+    <div class="col-xs-12 col-md-12">
+        <h2>{% trans 'Comments' %}</h2>
+        {% include 'bootstrap_comments_threaded.html' with comments=comments form=comment_form %}
+    </div>
+
+
+{% endblock %}

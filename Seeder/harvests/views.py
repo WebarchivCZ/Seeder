@@ -362,21 +362,32 @@ class HarvestUrlCatalogue(TemplateView):
         context['shortcut_urls'] = shortcut_urls
         return context
 
+# ========================== #
+# Internal Topic Collections #
+# ========================== #
 
-class TCView(generic_views.LoginMixin):
-    view_name = 'topic_collections'
+
+class InternalTCView(generic_views.LoginMixin):
+    view_name = 'internal_topic_collections'
     model = models.TopicCollection
 
 
-class AddTopicCollection(TCView, FormView):
-    form_class = forms.TopicCollectionForm
+class InternalCollectionListView(
+        InternalTCView, generic_views.FilteredListView):
+    title = _('TopicCollections')
+    table_class = tables.TopicCollectionTable
+    filterset_class = field_filters.TopicCollectionFilter
+
+    add_link = 'harvests:internal_collection_add'
+
+
+class InternalCollectionAdd(InternalTCView, FormView):
+    form_class = forms.InternalTopicCollectionForm
     template_name = 'add_form.html'
     title = _('Add TopicCollection')
 
     def form_valid(self, form):
         topic = form.save()
-        # Put the new Topic Collection all the way to the top (newest)
-        topic.top()
         topic.pair_custom_seeds()
 
         for each in form.cleaned_data["attachments"]:
@@ -387,8 +398,8 @@ class AddTopicCollection(TCView, FormView):
         return HttpResponseRedirect(topic.get_absolute_url())
 
 
-class EditCollection(TCView, generic_views.EditView):
-    form_class = forms.TopicCollectionEditForm
+class InternalCollectionEdit(InternalTCView, generic_views.EditView):
+    form_class = forms.InternalTopicCollectionEditForm
 
     def get_form(self, form_class=None):
         if not form_class:
@@ -397,9 +408,6 @@ class EditCollection(TCView, generic_views.EditView):
         return form_class(files, **self.get_form_kwargs())
 
     def form_valid(self, form):
-        # Update the new order through OrderedModel's "to" method
-        new_order = form.cleaned_data['new_order']
-        form.instance.to(new_order)
         topic = form.save()
         topic.pair_custom_seeds()
 
@@ -416,38 +424,11 @@ class EditCollection(TCView, generic_views.EditView):
         return HttpResponseRedirect(topic.get_absolute_url())
 
 
-class ReorderCollections(View):
-    def get(self, request, *args, **kwargs):
-        collections = models.TopicCollection.objects.order_by('order')
-        for i, tc in enumerate(collections):
-            tc.order = i + 1
-            tc.save()
-        return HttpResponseRedirect(reverse('harvests:topic_collection_list'))
-
-
-class ChangeOrder(DetailView):
-    model = models.TopicCollection
-
-    # TODO: make generic
-
-    def get(self, request, pk, to, *args, **kwargs):
-        obj = self.get_object()
-        if to == 'down':
-            obj.down()
-        elif to == 'up':
-            obj.up()
-        elif to == 'bottom':
-            obj.bottom()
-        elif to == 'top':
-            obj.top()
-        return HttpResponseRedirect(reverse('harvests:topic_collection_list'))
-
-
-class CollectionDetail(TCView, DetailView, CommentViewGeneric):
+class InternalCollectionDetail(InternalTCView, DetailView, CommentViewGeneric):
     template_name = 'topic_collection.html'
 
 
-class CollectionListUrls(TCView, DetailView, TemplateView):
+class InternalCollectionListUrls(InternalTCView, DetailView, TemplateView):
     """
     List all seeds for a specific topic collection.
     """
@@ -461,18 +442,112 @@ class CollectionListUrls(TCView, DetailView, TemplateView):
         return context
 
 
-class CollectionHistory(TCView, generic_views.HistoryView):
+class InternalCollectionHistory(InternalTCView, generic_views.HistoryView):
     """
         History of changes to TopicCollections
     """
     pass
 
+# ========================== #
+# External Topic Collections #
+# ========================== #
 
-class CollectionTogglePublish(TCView, DetailView, generic_views.MessageView):
+
+class ExternalTCView(generic_views.LoginMixin):
+    view_name = 'external_topic_collections'
+    model = models.ExternalTopicCollection
+
+
+class ExternalCollectionListView(
+        ExternalTCView, generic_views.FilteredListView):
+    title = _('ExternalTopicCollections')
+    table_class = tables.ExternalTopicCollectionTable
+    filterset_class = field_filters.ExternalTopicCollectionFilter
+
+    add_link = 'harvests:external_collection_add'
+
+
+class ExternalCollectionAdd(ExternalTCView, FormView):
+    form_class = forms.ExternalTopicCollectionForm
+    template_name = 'add_form.html'
+    title = _('Add ExternalTopicCollection')
+
+    def form_valid(self, form):
+        topic = form.save()
+        # Put the new External Topic Collection all the way to the top (newest)
+        topic.top()
+
+        return HttpResponseRedirect(topic.get_absolute_url())
+
+
+class ExternalCollectionEdit(ExternalTCView, generic_views.EditView):
+    form_class = forms.ExternalTopicCollectionEditForm
+
+    def form_valid(self, form):
+        # Update the new order through OrderedModel's "to" method
+        new_order = form.cleaned_data['new_order']
+        form.instance.to(new_order)
+        topic = form.save()
+
+        return HttpResponseRedirect(topic.get_absolute_url())
+
+
+class ExternalCollectionDetail(ExternalTCView, DetailView, CommentViewGeneric):
+    template_name = 'external_topic_collection.html'
+
+
+class ExternalCollectionListUrls(ExternalTCView, DetailView, TemplateView):
+    """
+    List all seeds for a specific topic collection.
+    """
+    template_name = 'urls.html'
+
+    def get_context_data(self, **kwargs):
+        self.object = self.get_object()
+        context = super().get_context_data(**kwargs)
+        context['head_lines'] = [f"# {self.object.title}"]
+        context['urls'] = self.object.get_seeds()
+        return context
+
+
+class ExternalCollectionHistory(ExternalTCView, generic_views.HistoryView):
+    """
+        History of changes to ExternalTopicCollections
+    """
+    pass
+
+
+class ExternalCollectionsReorder(ExternalTCView, View):
+    def get(self, request, *args, **kwargs):
+        collections = models.ExternalTopicCollection.objects.order_by('order')
+        for i, tc in enumerate(collections):
+            tc.order = i + 1
+            tc.save()
+        return HttpResponseRedirect(
+            reverse('harvests:external_collection_list'))
+
+
+class ExternalCollectionChangeOrder(ExternalTCView, DetailView):
+
+    def get(self, request, pk, to, *args, **kwargs):
+        obj = self.get_object()
+        if to == 'down':
+            obj.down()
+        elif to == 'up':
+            obj.up()
+        elif to == 'bottom':
+            obj.bottom()
+        elif to == 'top':
+            obj.top()
+        return HttpResponseRedirect(
+            reverse('harvests:external_collection_list'))
+
+
+class ExternalCollectionTogglePublish(
+        ExternalTCView, DetailView, generic_views.MessageView):
     """
     Toggles the publish status of a collection
     """
-    model = models.TopicCollection
 
     def post(self, request, *args, **kwargs):
         obj = self.get_object()
@@ -486,22 +561,14 @@ class CollectionTogglePublish(TCView, DetailView, generic_views.MessageView):
         return HttpResponseRedirect(obj.get_absolute_url())
 
 
-class CollectionUpdateSlug(TCView, DetailView, generic_views.MessageView):
+class ExternalCollectionUpdateSlug(
+        ExternalTCView, DetailView, generic_views.MessageView):
     """
     Re-compute a Topic Collection's URL slug on-demand
     """
-    model = models.TopicCollection
 
     def post(self, request, *args, **kwargs):
         obj = self.get_object()
         obj.update_slug()
         self.add_message(_('URL slug successfully updated'), messages.SUCCESS)
         return HttpResponseRedirect(obj.get_absolute_url())
-
-
-class CollectionListView(TCView, generic_views.FilteredListView):
-    title = _('TopicCollections')
-    table_class = tables.TopicCollectionTable
-    filterset_class = field_filters.TopicCollectionFilter
-
-    add_link = 'harvests:topic_collection_add'
