@@ -1,4 +1,4 @@
-from datetime import date, timedelta
+from datetime import datetime, timedelta
 
 from django.contrib.auth.models import User
 from django.test import TestCase, Client
@@ -8,7 +8,7 @@ from source.constants import SOURCE_FREQUENCY_PER_YEAR
 from harvests.scheduler import get_dates_for_timedelta
 from harvests.models import Harvest, TopicCollection
 
-TODAY = date.today()
+TODAY = datetime.today()
 
 
 class TopicCollectionTests(TestCase):
@@ -21,26 +21,28 @@ class TopicCollectionTests(TestCase):
 
         for i, freq in enumerate([['1'], ['2', '4'], ['6', '12'], ['4', '12']]):
             TopicCollection(pk=i, status=TopicCollection.STATE_NEW, owner=user,
-                            title_cs="CS TC {}".format(i+1),
-                            title_en="EN TC {}".format(i+1),
+                            title_cs="CS TC {}".format(i + 1),
+                            title_en="EN TC {}".format(i + 1),
                             scheduled_on=TODAY, all_open=True,
                             target_frequency=freq).save()
         Harvest(status=Harvest.STATE_PLANNED, title="Harvest 1",
                 scheduled_on=TODAY, topic_collection_frequency=['4']).save()
 
     def test_topic_collections_appear_in_harvest_urls(self):
-        url = reverse('harvests:shortcut_urls_by_date', kwargs={'h_date': TODAY})
+        url = reverse('harvests:shortcut_urls_by_date',
+                      kwargs={'h_date': TODAY})
         res = self.c.get(url)
         content = res.content.decode('utf-8')
         self.assertIn("TT-cs-tc-2", content)
         self.assertIn("TT-cs-tc-4", content)
         self.assertNotIn("TT-cs-tc-1", content)
         self.assertNotIn("TT-cs-tc-3", content)
-    
+
     def test_topic_collections_accessible_from_harvest_urls(self):
-        url = reverse('harvests:shortcut_urls_by_date', kwargs={'h_date': TODAY})
+        url = reverse('harvests:shortcut_urls_by_date',
+                      kwargs={'h_date': TODAY})
         res = self.c.get(url)
-        urls = [u.rstrip('<br>') 
+        urls = [u.rstrip('<br>')
                 for u in res.content.decode('utf-8').splitlines()
                 if len(u) > 0]
         for url in urls:
@@ -50,7 +52,7 @@ class TopicCollectionTests(TestCase):
 
 class HarvestUrlTest(TestCase):
 
-    DATE = date.today()
+    DATE = datetime.today()
     GENERATE_FREQUENCIES = [
         ['0'], ['1'], ['2'], ['4'], ['6'], ['12'], ['52'], ['365'],
         ['2', '4'],
@@ -65,8 +67,8 @@ class HarvestUrlTest(TestCase):
         # Topic collections
         self.topic_collections = [
             TopicCollection(status=TopicCollection.STATE_NEW,
-                            title_cs="CS Topic C {}".format(i+1),
-                            title_en="EN Topic C {}".format(i+1),
+                            title_cs="CS Topic C {}".format(i + 1),
+                            title_en="EN Topic C {}".format(i + 1),
                             owner=User.objects.get(username='pedro'),
                             scheduled_on=self.DATE,
                             all_open=True,)
@@ -77,7 +79,7 @@ class HarvestUrlTest(TestCase):
         # Various different frequencies and frequency combinations
         self.harvests = [
             Harvest(status=Harvest.STATE_PLANNED,
-                    title="Harvest {}".format(i+1),
+                    title="Harvest {}".format(i + 1),
                     scheduled_on=self.DATE,
                     target_frequency=freq)
             for i, freq in enumerate(self.GENERATE_FREQUENCIES)
@@ -85,7 +87,7 @@ class HarvestUrlTest(TestCase):
         # Simple harvests on different dates, shouldn't be returned
         self.harvests.extend([
             Harvest(status=Harvest.STATE_PLANNED,
-                    title="Harvest (diff. day) {}".format(i+1),
+                    title="Harvest (diff. day) {}".format(i + 1),
                     scheduled_on=self.DATE + timedelta(days=i),
                     target_frequency=['1'])
             for i in (-3, -1, 1, 3)
@@ -93,7 +95,7 @@ class HarvestUrlTest(TestCase):
         # Fewer harvests on a different date, primarily for url testing
         self.harvests.extend([
             Harvest(status=Harvest.STATE_PLANNED,
-                    title="Harvest (other) {}".format(i+1),
+                    title="Harvest (other) {}".format(i + 1),
                     scheduled_on=self.DATE + timedelta(weeks=4),
                     target_frequency=freq)
             for i, freq in enumerate(self.GENERATE_FREQUENCIES[2:6])
@@ -101,7 +103,7 @@ class HarvestUrlTest(TestCase):
         # Harvests with topic collections
         self.tt_harvests = [
             Harvest(status=Harvest.STATE_PLANNED,
-                    title="Harvest (TC) {}".format(i+1),
+                    title="Harvest (TC) {}".format(i + 1),
                     scheduled_on=self.DATE + timedelta(weeks=1),
                     target_frequency=freq)
             for i, freq in enumerate(self.GENERATE_FREQUENCIES[:5])
@@ -213,6 +215,7 @@ class HarvestUrlTest(TestCase):
                 self.assertTrue(str(freq) in h.target_frequency)
 
     def test_harvests_with_tts(self):
+        # TODO: fails now but TT-{slug} will be deprecated with #593
         for h in self.tt_harvests:
             shortcut = 'TT-{}'.format(h.topic_collections.all()[0].slug)
             get_url = reverse('harvests:shortcut_urls_by_date_and_type', kwargs={
@@ -273,14 +276,14 @@ class ScheduleTest(TestCase):
     def test_timedelta_scheduler(self):
         scheduled = get_dates_for_timedelta(
             timedelta(days=10),
-            date(2012, 1, 1),
-            date(2012, 1, 22)
+            datetime(2012, 1, 1),
+            datetime(2012, 1, 22)
         )
         self.assertEqual(
             scheduled,
             [
-                date(2012, 1, 1),
-                date(2012, 1, 11),
-                date(2012, 1, 21)
+                datetime(2012, 1, 1),
+                datetime(2012, 1, 11),
+                datetime(2012, 1, 21)
             ]
         )
