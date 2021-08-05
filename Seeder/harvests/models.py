@@ -538,9 +538,58 @@ class Harvest(HarvestAbstractModel):
 
 
 @revisions.register(exclude=('last_changed',))
-class TopicCollection(HarvestAbstractModel, OrderedModel):
+class ExternalTopicCollection(BaseModel, OrderedModel):
     """
-        Represents the event of harvesting the sources
+    External representation of a Topic Collection visible on the website.
+    Contains all presentation data and is orderable but cannot be selected as
+    a part of a Harvest; the original internal TopicCollection is used for that.
+    """
+
+    title = models.CharField(verbose_name=_('title'), max_length=255)
+    slug = AutoSlugField(unique=True, populate_from='title_cs')
+
+    owner = models.ForeignKey(
+        User, verbose_name=_('Curator'),
+        on_delete=models.PROTECT
+    )
+
+    keywords = models.ManyToManyField(KeyWord, verbose_name=_('keywords'))
+
+    annotation = models.TextField(
+        verbose_name=_('annotation')
+    )
+    image = models.ImageField(
+        verbose_name=_('image'),
+        upload_to='photos',
+        null=True, blank=True,
+    )
+
+    def update_slug(self):
+        from autoslug.utils import slugify, generate_unique_slug
+        field = ExternalTopicCollection._meta.get_field('slug')
+        manager = field.manager
+        slug = slugify(self.title_cs)
+        # Generate a unique seed wrt. other instances
+        unique_slug = generate_unique_slug(field, self, slug, manager)
+        self.slug = unique_slug
+        self.save()
+
+    def __str__(self):
+        sign = '✔' if self.active else '✗'
+        return '{0} {1}'.format(sign, self.title)
+
+    class Meta(OrderedModel.Meta):
+        verbose_name = _("External Topic Collection")
+        verbose_name_plural = _("External Topic Collections")
+        ordering = ('order',)
+
+
+@revisions.register(exclude=('last_changed',))
+class TopicCollection(HarvestAbstractModel):
+    """
+    Internal representation of a Topic Collection, containing seeds and sources
+    that logically belong together and can be harvested as a single entity.
+    This model is used in Harvests while ExternalTopicCollection appears on www.
     """
     STATE_NEW = 1
     STATE_RUNNING = 2
@@ -552,6 +601,13 @@ class TopicCollection(HarvestAbstractModel, OrderedModel):
         (STATE_FINISHED, _('Finished')),
     )
 
+    external_collection = models.ForeignKey(
+        "ExternalTopicCollection", on_delete=models.SET_NULL,
+        related_name="internal_collections",
+        related_query_name="internal_collection",
+        null=True, blank=True,
+    )
+
     status = models.IntegerField(
         choices=STATES,
         verbose_name=_('State'),
@@ -559,14 +615,11 @@ class TopicCollection(HarvestAbstractModel, OrderedModel):
     )
 
     title = models.CharField(verbose_name=_('title'), max_length=255)
-    slug = AutoSlugField(unique=True, populate_from='title_cs')
 
     owner = models.ForeignKey(
         User, verbose_name=_('Curator'),
         on_delete=models.PROTECT
     )
-
-    keywords = models.ManyToManyField(KeyWord, verbose_name=_('keywords'))
 
     seeds_frozen = models.TextField(
         blank=True,
@@ -583,11 +636,6 @@ class TopicCollection(HarvestAbstractModel, OrderedModel):
     annotation = models.TextField(
         verbose_name=_('annotation')
     )
-    image = models.ImageField(
-        verbose_name=_('image'),
-        upload_to='photos',
-        null=True, blank=True,
-    )
 
     all_open = models.BooleanField(
         _('All sources are under open license or contract')
@@ -603,20 +651,12 @@ class TopicCollection(HarvestAbstractModel, OrderedModel):
         _("Aggregation with same type"), default=True)
 
     def get_www_url(self):
+        # TODO: move to ExternalTopicCollection
         return reverse('www:collection_detail', kwargs={"slug": self.slug})
 
     def get_absolute_url(self):
+        # TODO: move to ExternalTopicCollection
         return reverse('harvests:topic_collection_detail', args=[str(self.id)])
-
-    def update_slug(self):
-        from autoslug.utils import slugify, generate_unique_slug
-        field = TopicCollection._meta.get_field('slug')
-        manager = field.manager
-        slug = slugify(self.title_cs)
-        # Generate a unique seed wrt. other instances
-        unique_slug = generate_unique_slug(field, self, slug, manager)
-        self.slug = unique_slug
-        self.save()
 
     def get_collection_json(self, blacklisted=None):
         """ Returns a dict() with topic collection details and seeds """
@@ -638,9 +678,9 @@ class TopicCollection(HarvestAbstractModel, OrderedModel):
         return '{0} {1}'.format(sign, self.title)
 
     class Meta(OrderedModel.Meta):
-        verbose_name = _('Topic collection')
-        verbose_name_plural = _('Topic collections')
-        ordering = ('order',)
+        verbose_name = _('Internal Topic Collection')
+        verbose_name_plural = _('Internal Topic Collections')
+        ordering = ('-last_changed',)
 
 
 class Attachment(models.Model):
