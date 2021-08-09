@@ -172,6 +172,7 @@ class Harvest(HarvestAbstractModel):
         Represents the event of harvesting the sources
     """
     STATE_PLANNED = 0
+    STATE_READY_TO_HARVEST = 6  # Added late, so highest number
     STATE_RUNNING = 1
     STATE_SUCCESS = 2
     STATE_SUCCESS_WITH_FAILURES = 3
@@ -180,6 +181,7 @@ class Harvest(HarvestAbstractModel):
 
     STATES = (
         (STATE_PLANNED, _('Planned')),
+        (STATE_READY_TO_HARVEST, _('Ready to harvest')),
         (STATE_RUNNING, _('Running')),
         (STATE_SUCCESS, _('Success')),
         (STATE_SUCCESS_WITH_FAILURES, _('Success with failures')),
@@ -360,8 +362,7 @@ class Harvest(HarvestAbstractModel):
             "idHarvest": self.pk,
             "dateGenerated": timezone.now().isoformat(),
             "dateFrozen": "self.date_frozen.isoformat()",      # TODO field
-            # TODO is this scheduled_on or a new field? scheduled is only date
-            "plannedStart": "self.(planned_start | scheduled_on).isoformat()",
+            "plannedStart": self.scheduled_on.isoformat(),
             "type": "serials",  # TODO field
             "combined": True,   # TODO field or rule?
             # TODO: can get super long if many topic collections / frequencies
@@ -476,8 +477,8 @@ class Harvest(HarvestAbstractModel):
             else:
                 shortcut = 'V{}'.format(self.target_frequency[0])
             return reverse('harvests:shortcut_urls_by_date_and_type', kwargs={
-                'h_date': self.scheduled_on,
-                'h_date2': self.scheduled_on,
+                'h_date': self.scheduled_on.date(),
+                'h_date2': self.scheduled_on.date(),
                 'shortcut': shortcut,
             })
         return None
@@ -723,11 +724,12 @@ class Attachment(models.Model):
 @receiver(pre_save, sender=Harvest)
 def freeze_urls(sender, instance, **kwargs):
     """
-    Signal that freezes seeds when Harvest is marked as running
+    Signal that freezes seeds when Harvest is marked as ready to harvest
     :param instance: Harvest instance
     :type instance: Harvest
     """
-    if instance.status == Harvest.STATE_RUNNING and not instance.seeds_frozen:
+    if (instance.status == Harvest.STATE_READY_TO_HARVEST
+            and not instance.seeds_frozen):
         # If cannot freeze correctly, reset Harvest status
         if not instance.freeze_seeds():
             instance.status = Harvest.STATE_PLANNED
