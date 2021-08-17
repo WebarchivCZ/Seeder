@@ -194,47 +194,48 @@ class Harvest(HarvestAbstractModel):
         (STATE_FAILED, _('Failed')),
     )
 
+    # Harvest types
+    TYPE_SERIALS = "serials"
+    TYPE_TOPICS = "topics"
+    TYPE_TESTS = "tests"
+    TYPE_TOTALS = "totals"
+    TYPES = (
+        (TYPE_SERIALS, "Serials"),
+        (TYPE_TOPICS, "Topics"),
+        (TYPE_TESTS, "Tests"),
+        (TYPE_TOTALS, "Totals"),
+    )
+
     # Only Harvests with these states will be checked in prev_harv_seeds
     PREVIOUSLY_HARVESTED_STATES = (
         STATE_RUNNING, STATE_SUCCESS, STATE_SUCCESS_WITH_FAILURES
     )
 
+    # Essential metadata
     status = models.IntegerField(
-        choices=STATES,
-        verbose_name=_('State'),
-        default=STATE_PLANNED
-    )
-
+        _('State'), choices=STATES, default=STATE_PLANNED)
+    harvest_type = models.CharField(
+        _("Harvest type"), max_length=7, choices=TYPES, default=TYPE_SERIALS)
     title = models.CharField(
-        verbose_name=_('title'),
-        blank=True, max_length=255
-    )
+        _('title'), blank=True, max_length=255)
     annotation = models.TextField(
-        _('Annotation'),
-        null=True, blank=True)
+        _('Annotation'), null=True, blank=True)
+    scheduled_on = DateTimePickerField(
+        verbose_name=_('Date of harvest'))
 
+    # Automatic/dynamic fields
     seeds_frozen = models.TextField(
-        blank=True,
-        null=True
-    )
-
-    seeds_not_harvested = models.TextField(
-        _("Seeds not harvested"),
-        blank=True, null=True,
-    )
-
+        blank=True, null=True)
+    date_frozen = models.DateTimeField(
+        _("Date frozen"), null=True, blank=True)
     auto_created = models.BooleanField(default=False)
 
-    scheduled_on = DateTimePickerField(
-        verbose_name=_('Date of harvest')
-    )
-
+    # Topic collections
     topic_collections = models.ManyToManyField(
         verbose_name=_('Topic collections'),
         to='TopicCollection',
         blank=True,
     )
-
     topic_collection_frequency = PatchedMultiSelectField(
         verbose_name=_('Topic collections by frequency'),
         choices=source_constants.SOURCE_FREQUENCY_PER_YEAR,
@@ -242,15 +243,37 @@ class Harvest(HarvestAbstractModel):
         null=True
     )
 
+    # Boolean checkboxes
+    paraharvest = models.BooleanField(
+        verbose_name=_("Paraharvest"), default=False)
+    ''' True = "manuals"; False = "automatic" '''
+    manuals = models.BooleanField(
+        verbose_name=_("Manuals"), default=False)
+    combined = models.BooleanField(
+        verbose_name=_("Combined"), default=False)
     archive_it = models.BooleanField(
-        verbose_name=_('ArchiveIt'),
-        default=False,
-    )
-
+        verbose_name=_('ArchiveIt'), default=False)
+    # TODO: so how does this work? harvest type or boolean or both?
     tests = models.BooleanField(
-        verbose_name=_('Tests'),
-        default=False,
-    )
+        verbose_name=_('Tests'), default=False)
+
+    # Harvest Configuration
+    # ? really? seedsNo = models.PositiveIntegerField(
+    # ?    _("seedsNo"), default=300)
+    duration = models.PositiveIntegerField(
+        _("duration"), default=259200)
+    budget = models.PositiveIntegerField(
+        _("budget"), default=10000)
+    dataLimit = models.BigIntegerField(  # in bytes
+        _("dataLimit"), default=10000000000)
+    documentLimit = models.PositiveIntegerField(
+        _("documentLimit"), default=0)
+    deduplication = models.CharField(
+        _("deduplication"), max_length=64, default="PATH")
+
+    # Other fields specified by the curator
+    seeds_not_harvested = models.TextField(
+        _("Seeds not harvested"), blank=True, null=True)
 
     def get_topic_collections_by_frequency(self):
         pks = []
@@ -322,11 +345,11 @@ class Harvest(HarvestAbstractModel):
             previously_harvested = self.get_previously_harvested_seeds()
             oneshot_seeds = self.get_oneshot_seeds(
                 blacklisted, previously_harvested)
-            custom_seeds = super(Harvest, self).get_seeds(blacklisted)
+
             # OneShot collections contain OneShot and Custom sources/seeds
             collections.append(self.construct_collection_json(
-                oneshot_seeds | custom_seeds, blacklisted=blacklisted,
-                name=f"Serials_OneShot_{timezone.now():%Y-%m-%d}",
+                oneshot_seeds, blacklisted=blacklisted,
+                name=f"Serials_OneShot_{self.scheduled_on:%Y-%m-%d}",
                 collectionAlias="OneShot",
                 annotation="Serials sklizen pro OneShot+Custom seminka",
                 nameCurator=None,
@@ -337,18 +360,19 @@ class Harvest(HarvestAbstractModel):
                 blacklisted, previously_harvested)
             collections.append(self.construct_collection_json(
                 archiveit_seeds, blacklisted=blacklisted,
-                name=f"Serials_ArchiveIt_{timezone.now():%Y-%m-%d}",
+                name=f"Serials_ArchiveIt_{self.scheduled_on:%Y-%m-%d}",
                 collectionAlias="ArchiveIt",
                 annotation="Vyber ArchiveIt seminek k archivaci",
                 nameCurator=None,
                 idCollection=None,
                 aggregationWithSameType=True,
             ))
+        # TODO: nope, not like this, "test" is a harvest type
         if self.tests:
             tests_seeds = self.get_tests_seeds(blacklisted)
             collections.append(self.construct_collection_json(
                 tests_seeds, blacklisted=blacklisted,
-                name=f"Serials_Tests_{timezone.now():%Y-%m-%d}",
+                name=f"Serials_Tests_{self.scheduled_on:%Y-%m-%d}",
                 collectionAlias="Tests",
                 annotation="Vyber seminek na testovani",
                 nameCurator=None,
@@ -366,19 +390,23 @@ class Harvest(HarvestAbstractModel):
         return {
             "idHarvest": self.pk,
             "dateGenerated": timezone.now().isoformat(),
-            "dateFrozen": "self.date_frozen.isoformat()",      # TODO field
+            # TODO: implement json freezing, still can be None though
+            "dateFrozen": self.date_frozen.isoformat() if self.date_frozen else None,
             "plannedStart": self.scheduled_on.isoformat(),
-            "type": "serials",  # TODO field
-            "combined": True,   # TODO field or rule?
-            # TODO: can get super long if many topic collections / frequencies
-            "name": f"Serials_YYYY-MM-DD_{aliases}",
+            "type": self.harvest_type,
+            "combined": self.combined,
+            # ? Can get very long if many topic collections / frequencies
+            "name": (f"{self.harvest_type.capitalize()}_"
+                     f"{self.scheduled_on:%Y-%m-%d}_{aliases}"),
             "anotation": annotations,
             "hash": self.hash_seeds(seeds_combined),
             "seedsNo": len(seeds_combined),
-            "duration": 259200,         # TODO new field or model?
-            "budget": 10000,            # TODO new field or model?
-            "dataLimit": 10000000000,   # TODO new field or model?
-            "documentLimit": 0,         # TODO new field or model?
+            # Harvest configuration
+            "duration": self.duration,
+            "budget": self.budget,
+            "dataLimit": self.dataLimit,
+            "documentLimit": self.documentLimit,
+            "deduplication": self.deduplication,
             "collections": collections,
         }
 
@@ -403,12 +431,17 @@ class Harvest(HarvestAbstractModel):
         return set(seeds.values_list('url', flat=True)) - blacklisted
 
     def get_oneshot_seeds(self, blacklisted=None, previously_harvested=None):
+        """
+        Archiving seeds with frequency == 0 AND custom seeds/sources
+        Disregard previously harvested and blacklisted seeds
+        """
         # Return empty if not OneShot
         if not self.is_oneshot:
             return set()
-        # Get all potential OneShot seeds
+        # Get all potential OneShot seeds; including super() custom seeds
+        custom_seeds = super(Harvest, self).get_seeds(blacklisted)
         oneshot = Seed.objects.archiving().filter(source__frequency=0)
-        oneshot = set(oneshot.values_list('url', flat=True))
+        oneshot = set(oneshot.values_list('url', flat=True)) | custom_seeds
         # Get all harvested seeds up to this Harvest's scheduled date
         if previously_harvested is None:  # only if not supplied
             previously_harvested = self.get_previously_harvested_seeds()
@@ -691,8 +724,7 @@ class TopicCollection(HarvestAbstractModel):
                  else "NoAlias")
         return self.construct_collection_json(
             self.get_seeds(), blacklisted=blacklisted,
-            # TODO: is this the date of creation or now?
-            name=f"Topics_{alias}_{timezone.now():%Y-%m-%d}",
+            name=f"Topics_{alias}_{self.scheduled_on:%Y-%m-%d}",
             collectionAlias=alias,
             annotation=self.annotation,
             nameCurator=self.title,
@@ -724,6 +756,30 @@ class Attachment(models.Model):
         if not ext:
             return filename
         return ext.lstrip('.')
+
+
+class HarvestConfiguration(BaseModel):
+    """
+    Default harvest configuration for each harvest type
+    Only a single default can exist for each harvest type (unique=True)
+    """
+    harvest_type = models.CharField(
+        _("Harvest type"), max_length=7, unique=True, choices=Harvest.TYPES)
+    duration = models.PositiveIntegerField(
+        _("duration"), default=259200)
+    budget = models.PositiveIntegerField(
+        _("budget"), default=10000)
+    dataLimit = models.BigIntegerField(  # in bytes
+        _("dataLimit"), default=10000000000)
+    documentLimit = models.PositiveIntegerField(
+        _("documentLimit"), default=0)
+    deduplication = models.CharField(
+        _("deduplication"), max_length=64, default="PATH")
+
+    class Meta:
+        verbose_name = _("Harvest Configuration")
+        verbose_name_plural = _("Harvest Configurations")
+        ordering = ("harvest_type",)
 
 
 @receiver(pre_save, sender=Harvest)
