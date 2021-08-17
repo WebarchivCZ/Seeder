@@ -74,14 +74,19 @@ class HarvestAbstractModel(BaseModel):
 
     @staticmethod
     def hash_seeds(seeds):
+        """ Create an MD5 hash of seeds, each one on a new line """
         return md5("\n".join(seeds).encode("utf-8")).hexdigest()
 
     def construct_collection_json(
             self, seeds, name, collectionAlias, annotation, nameCurator,
             idCollection, aggregationWithSameType, blacklisted=None):
         """
-        seeds: set()
-        blacklisted: set()
+        Construct the basic dictionary for a collection. Mainly necessary since
+        seeds need to be cleaned of blacklisted, counted, and hashed.
+
+        :param seeds: set()
+        :param blacklisted: set()
+        :param `the rest`: everything else is just passed to the dict()
         """
         if blacklisted is None:
             blacklisted = self.get_blacklisted()
