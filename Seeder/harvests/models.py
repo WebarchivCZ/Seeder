@@ -253,13 +253,15 @@ class Harvest(HarvestAbstractModel):
         verbose_name=_("Combined"), default=False)
     archive_it = models.BooleanField(
         verbose_name=_('ArchiveIt'), default=False)
-    # TODO: so how does this work? harvest type or boolean or both?
+    # TODO VERIFY: This will likely be removed and encompassed under harvest_type="tests"
     tests = models.BooleanField(
         verbose_name=_('Tests'), default=False)
 
+    # TODO: if custom seeds or sources are non-empty, include them in the "OneShot" collection automatically without checking anything
+    # TODO: but only include the 0-frequency sources if that's checked
+    # ! -> So essentially get_oneshot_seeds always returns custom seeds/sources but only returns 0-freq if that's checked
+
     # Harvest Configuration
-    # ? really? seedsNo = models.PositiveIntegerField(
-    # ?    _("seedsNo"), default=300)
     duration = models.PositiveIntegerField(
         _("duration"), default=259200)
     budget = models.PositiveIntegerField(
@@ -335,7 +337,7 @@ class Harvest(HarvestAbstractModel):
                  for c in collections if c is not None]
             ):
                 collections.append(tc_json)
-        # Add frequency serials, auto-ignores OneShots
+        # Add frequency serials, auto-ignores OneShots (0-frequency)
         if self.target_frequency:
             for freq in self.target_frequency:
                 collections.append(
@@ -343,19 +345,7 @@ class Harvest(HarvestAbstractModel):
         # Pre-compute previously harvested seeds if OneShot or ArchiveIt
         if self.archive_it or self.is_oneshot:
             previously_harvested = self.get_previously_harvested_seeds()
-            oneshot_seeds = self.get_oneshot_seeds(
-                blacklisted, previously_harvested)
 
-            # OneShot collections contain OneShot and Custom sources/seeds
-            collections.append(self.construct_collection_json(
-                oneshot_seeds, blacklisted=blacklisted,
-                name=f"Serials_OneShot_{self.scheduled_on:%Y-%m-%d}",
-                collectionAlias="OneShot",
-                annotation="Serials sklizen pro OneShot+Custom seminka",
-                nameCurator=None,
-                idCollection=None,
-                aggregationWithSameType=True,
-            ))
             archiveit_seeds = self.get_archiveit_seeds(
                 blacklisted, previously_harvested)
             collections.append(self.construct_collection_json(
@@ -367,8 +357,25 @@ class Harvest(HarvestAbstractModel):
                 idCollection=None,
                 aggregationWithSameType=True,
             ))
-        # TODO: nope, not like this, "test" is a harvest type
-        if self.tests:
+        # Always try to get OneShot seeds because these include custom seeds
+        try:
+            oneshot_seeds = self.get_oneshot_seeds(
+                blacklisted, previously_harvested)
+        # If previously_harvested hasn't been pre-computed, don't mention it
+        except NameError:
+            oneshot_seeds = self.get_oneshot_seeds(blacklisted)
+        # OneShot collections contain OneShot and Custom sources/seeds
+        collections.append(self.construct_collection_json(
+            oneshot_seeds, blacklisted=blacklisted,
+            name=f"Serials_OneShot_{self.scheduled_on:%Y-%m-%d}",
+            collectionAlias="OneShot",
+            annotation="Serials sklizen pro OneShot+Custom seminka",
+            nameCurator=None,
+            idCollection=None,
+            aggregationWithSameType=True,
+        ))
+        # TODO: For now, allow both tests checkbox and harvest type
+        if self.tests or self.harvest_type == Harvest.TYPE_TESTS:
             tests_seeds = self.get_tests_seeds(blacklisted)
             collections.append(self.construct_collection_json(
                 tests_seeds, blacklisted=blacklisted,
@@ -422,7 +429,7 @@ class Harvest(HarvestAbstractModel):
         return set(seeds.values_list('url', flat=True)) - blacklisted
 
     def get_tests_seeds(self, blacklisted=None):
-        if not self.tests:
+        if not self.tests and self.harvest_type != Harvest.TYPE_TESTS:
             return set()
         seeds = Seed.objects.filter(
             source__state=source_constants.STATE_TECHNICAL_REVIEW)
@@ -434,23 +441,29 @@ class Harvest(HarvestAbstractModel):
     def get_oneshot_seeds(self, blacklisted=None, previously_harvested=None):
         """
         Archiving seeds with frequency == 0 AND custom seeds/sources
-        Disregard previously harvested and blacklisted seeds
+        Disregards previously harvested and blacklisted seeds
+
+        OneShot was originally used to mean 0-frequency seeds but since it has
+        been extended to include custom seeds and sources, the function always
+        returns custom seeds/sources (if there are any), and only attempts to
+        retrieve 0-frequency seeds if the frequency is set (self.is_oneshot)
         """
-        # Return empty if not OneShot
-        if not self.is_oneshot:
-            return set()
-        # Get all potential OneShot seeds; including super() custom seeds
+        # Get custom sources and seeds regardless of frequency
         custom_seeds = super(Harvest, self).get_seeds(blacklisted)
+        # If not 0-frequency, only return custom seeds
+        if not self.is_oneshot:
+            return custom_seeds
+        # Get all potential OneShot (0-frequency) seeds
         oneshot = Seed.objects.archiving().filter(source__frequency=0)
-        oneshot = set(oneshot.values_list('url', flat=True)) | custom_seeds
+        oneshot = set(oneshot.values_list('url', flat=True))
         # Get all harvested seeds up to this Harvest's scheduled date
         if previously_harvested is None:  # only if not supplied
             previously_harvested = self.get_previously_harvested_seeds()
         # Compute blacklisted only if not provided
         if blacklisted is None:
             blacklisted = self.get_blacklisted()
-        # Return only the OneShot seeds that haven't been harvested yet
-        return oneshot - previously_harvested - blacklisted
+        # Discard previously harvested OneShots but include all custom seeds
+        return ((oneshot - previously_harvested) | custom_seeds) - blacklisted
 
     def get_archiveit_seeds(self, blacklisted=None, previously_harvested=None):
         if not self.archive_it:
