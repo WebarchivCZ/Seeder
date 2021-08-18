@@ -301,11 +301,11 @@ class Harvest(HarvestAbstractModel):
         alias = f"M{frequency}"
         return self.construct_collection_json(
             seeds, blacklisted=blacklisted,
-            name=f"Serials_{alias}_{timezone.now():%Y-%m-%d}",
+            name=f"Serials_{alias}_{self.scheduled_on:%Y-%m-%d}",
             collectionAlias=alias,
             annotation=f"Serials sklizeň s frekvencí {frequency}x ročně",
             nameCurator=None,
-            idCollection=None,  # TODO: no real ID
+            idCollection=None,
             aggregationWithSameType=True,
         )
 
@@ -391,7 +391,8 @@ class Harvest(HarvestAbstractModel):
             "idHarvest": self.pk,
             "dateGenerated": timezone.now().isoformat(),
             # TODO: implement json freezing, still can be None though
-            "dateFrozen": self.date_frozen.isoformat() if self.date_frozen else None,
+            "dateFrozen": (self.date_frozen.isoformat()
+                           if self.date_frozen else None),
             "plannedStart": self.scheduled_on.isoformat(),
             "type": self.harvest_type,
             "combined": self.combined,
