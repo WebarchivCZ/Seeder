@@ -264,10 +264,6 @@ class Harvest(HarvestAbstractModel):
     tests = models.BooleanField(
         verbose_name=_('Tests'), default=False)
 
-    # TODO: if custom seeds or sources are non-empty, include them in the "OneShot" collection automatically without checking anything
-    # TODO: but only include the 0-frequency sources if that's checked
-    # ! -> So essentially get_oneshot_seeds always returns custom seeds/sources but only returns 0-freq if that's checked
-
     # Harvest Configuration
     duration = models.PositiveIntegerField(
         _("duration"), default=259200)
