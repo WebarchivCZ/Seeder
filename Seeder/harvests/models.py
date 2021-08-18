@@ -59,6 +59,9 @@ class HarvestAbstractModel(BaseModel):
         null=True
     )
 
+    # Pre-computed values for seed retrieval
+    blacklisted, previously_harvested = None, None
+
     def repr(self):
         if self.title:
             return self.title
@@ -123,7 +126,11 @@ class HarvestAbstractModel(BaseModel):
         self.save()
 
     def get_blacklisted(self):
-        return set(Blacklist.collect_urls_by_type(Blacklist.TYPE_HARVEST))
+        """ Return pre-computed blacklisted seeds or retrieve & save """
+        if self.blacklisted is None:
+            self.blacklisted = set(
+                Blacklist.collect_urls_by_type(Blacklist.TYPE_HARVEST))
+        return self.blacklisted
 
     def get_custom_seeds(self):
         if not self.custom_seeds:
@@ -285,16 +292,19 @@ class Harvest(HarvestAbstractModel):
                     freq).values_list('pk', flat=True))
         return TopicCollection.objects.filter(pk__in=pks)
 
-    def get_previously_harvested_seeds(self):
-        seeds = set()
-        for h in Harvest.objects.filter(
-            scheduled_on__lt=self.scheduled_on,
-            status__in=Harvest.PREVIOUSLY_HARVESTED_STATES
-        ):
-            seeds.update(h.get_seeds())
-        return seeds
+    def get_previously_harvested(self):
+        """ Return pre-computed previously_harvested or retrieve & save """
+        if self.previously_harvested is None:
+            seeds = set()
+            for h in Harvest.objects.filter(
+                scheduled_on__lt=self.scheduled_on,
+                status__in=Harvest.PREVIOUSLY_HARVESTED_STATES
+            ):
+                seeds.update(h.get_seeds())
+            self.previously_harvested = seeds
+        return self.previously_harvested
 
-    def get_serials_frequency_json(self, frequency, blacklisted=None):
+    def get_serials_frequency_json(self, frequency):
         # Disregard OneShot seeds, should be dealt with separately
         if frequency == 0:
             return None
@@ -302,7 +312,7 @@ class Harvest(HarvestAbstractModel):
             source__frequency=frequency).values_list('url', flat=True))
         alias = f"M{frequency}"
         return self.construct_collection_json(
-            seeds, blacklisted=blacklisted,
+            seeds,
             name=f"Serials_{alias}_{self.scheduled_on:%Y-%m-%d}",
             collectionAlias=alias,
             annotation=f"Serials sklizeň s frekvencí {frequency}x ročně",
@@ -317,7 +327,7 @@ class Harvest(HarvestAbstractModel):
         # if self.seeds_frozen and self.seeds_frozen != '':
         #     return set(self.seeds_frozen.splitlines())
 
-        # Pre-compute blacklisted and pass down to all functions
+        # Pre-compute blacklisted and pass down to TopicCollection functions
         blacklisted = self.get_blacklisted()
 
         collections = []
@@ -341,32 +351,22 @@ class Harvest(HarvestAbstractModel):
         if self.target_frequency:
             for freq in self.target_frequency:
                 collections.append(
-                    self.get_serials_frequency_json(freq, blacklisted))
-        # Pre-compute previously harvested seeds if OneShot or ArchiveIt
-        if self.archive_it or self.is_oneshot:
-            previously_harvested = self.get_previously_harvested_seeds()
-
-            archiveit_seeds = self.get_archiveit_seeds(
-                blacklisted, previously_harvested)
-            collections.append(self.construct_collection_json(
-                archiveit_seeds, blacklisted=blacklisted,
-                name=f"Serials_ArchiveIt_{self.scheduled_on:%Y-%m-%d}",
-                collectionAlias="ArchiveIt",
-                annotation="Vyber ArchiveIt seminek k archivaci",
-                nameCurator=None,
-                idCollection=None,
-                aggregationWithSameType=True,
-            ))
-        # Always try to get OneShot seeds because these include custom seeds
-        try:
-            oneshot_seeds = self.get_oneshot_seeds(
-                blacklisted, previously_harvested)
-        # If previously_harvested hasn't been pre-computed, don't mention it
-        except NameError:
-            oneshot_seeds = self.get_oneshot_seeds(blacklisted)
-        # OneShot collections contain OneShot and Custom sources/seeds
+                    self.get_serials_frequency_json(freq))
+        # OneShot & ArchiveIt return empty sets if not set
+        archiveit_seeds = self.get_archiveit_seeds()
         collections.append(self.construct_collection_json(
-            oneshot_seeds, blacklisted=blacklisted,
+            archiveit_seeds,
+            name=f"Serials_ArchiveIt_{self.scheduled_on:%Y-%m-%d}",
+            collectionAlias="ArchiveIt",
+            annotation="Vyber ArchiveIt seminek k archivaci",
+            nameCurator=None,
+            idCollection=None,
+            aggregationWithSameType=True,
+        ))
+        # OneShot collections contain OneShot and Custom sources/seeds
+        oneshot_seeds = self.get_oneshot_seeds()
+        collections.append(self.construct_collection_json(
+            oneshot_seeds,
             name=f"Serials_OneShot_{self.scheduled_on:%Y-%m-%d}",
             collectionAlias="OneShot",
             annotation="Serials sklizen pro OneShot+Custom seminka",
@@ -376,9 +376,9 @@ class Harvest(HarvestAbstractModel):
         ))
         # TODO: For now, allow both tests checkbox and harvest type
         if self.tests or self.harvest_type == Harvest.TYPE_TESTS:
-            tests_seeds = self.get_tests_seeds(blacklisted)
+            tests_seeds = self.get_tests_seeds()
             collections.append(self.construct_collection_json(
-                tests_seeds, blacklisted=blacklisted,
+                tests_seeds,
                 name=f"Serials_Tests_{self.scheduled_on:%Y-%m-%d}",
                 collectionAlias="Tests",
                 annotation="Vyber seminek na testovani",
@@ -418,27 +418,23 @@ class Harvest(HarvestAbstractModel):
             "collections": collections,
         }
 
-    def get_seeds_by_frequency(self, blacklisted=None):
+    def get_seeds_by_frequency(self):
         if not self.target_frequency:
             return set()
         seeds = Seed.objects.archiving().filter(
             source__frequency__in=self.target_frequency)
-        # Compute blacklisted only if not provided
-        if blacklisted is None:
-            blacklisted = self.get_blacklisted()
+        blacklisted = self.get_blacklisted()
         return set(seeds.values_list('url', flat=True)) - blacklisted
 
-    def get_tests_seeds(self, blacklisted=None):
+    def get_tests_seeds(self):
         if not self.tests and self.harvest_type != Harvest.TYPE_TESTS:
             return set()
         seeds = Seed.objects.filter(
             source__state=source_constants.STATE_TECHNICAL_REVIEW)
-        # Compute blacklisted only if not provided
-        if blacklisted is None:
-            blacklisted = self.get_blacklisted()
+        blacklisted = self.get_blacklisted()
         return set(seeds.values_list('url', flat=True)) - blacklisted
 
-    def get_oneshot_seeds(self, blacklisted=None, previously_harvested=None):
+    def get_oneshot_seeds(self):
         """
         Archiving seeds with frequency == 0 AND custom seeds/sources
         Disregards previously harvested and blacklisted seeds
@@ -449,7 +445,7 @@ class Harvest(HarvestAbstractModel):
         retrieve 0-frequency seeds if the frequency is set (self.is_oneshot)
         """
         # Get custom sources and seeds regardless of frequency
-        custom_seeds = super(Harvest, self).get_seeds(blacklisted)
+        custom_seeds = super(Harvest, self).get_seeds()
         # If not 0-frequency, only return custom seeds
         if not self.is_oneshot:
             return custom_seeds
@@ -457,15 +453,12 @@ class Harvest(HarvestAbstractModel):
         oneshot = Seed.objects.archiving().filter(source__frequency=0)
         oneshot = set(oneshot.values_list('url', flat=True))
         # Get all harvested seeds up to this Harvest's scheduled date
-        if previously_harvested is None:  # only if not supplied
-            previously_harvested = self.get_previously_harvested_seeds()
-        # Compute blacklisted only if not provided
-        if blacklisted is None:
-            blacklisted = self.get_blacklisted()
+        previously_harvested = self.get_previously_harvested()
+        blacklisted = self.get_blacklisted()
         # Discard previously harvested OneShots but include all custom seeds
         return ((oneshot - previously_harvested) | custom_seeds) - blacklisted
 
-    def get_archiveit_seeds(self, blacklisted=None, previously_harvested=None):
+    def get_archiveit_seeds(self):
         if not self.archive_it:
             return set()
         # Get all potential ArchiveIt seeds
@@ -473,15 +466,12 @@ class Harvest(HarvestAbstractModel):
             source__frequency__in=[1, 2, 4, 6])
         archiveit = set(archiveit.values_list('url', flat=True))
         # Get all harvested seeds up to this Harvest's scheduled date
-        if previously_harvested is None:  # only if not supplied
-            previously_harvested = self.get_previously_harvested_seeds()
-        # Compute blacklisted only if not provided
-        if blacklisted is None:
-            blacklisted = self.get_blacklisted()
+        previously_harvested = self.get_previously_harvested()
+        blacklisted = self.get_blacklisted()
         # Return only the ArchiveIt seeds that haven't been harvested yet
         return archiveit - previously_harvested - blacklisted
 
-    def get_topic_collection_seeds(self, slug, blacklisted=None):
+    def get_topic_collection_seeds(self, slug):
         seeds = set()
         # Technically there should only be one with the slug
         for tc in self.topic_collections.filter(slug=slug):
@@ -489,17 +479,16 @@ class Harvest(HarvestAbstractModel):
         # Could be either manual or by frequency
         for tc in self.get_topic_collections_by_frequency().filter(slug=slug):
             seeds.update(tc.get_seeds())
-        # Compute blacklisted only if not provided
-        if blacklisted is None:
-            blacklisted = self.get_blacklisted()
+        blacklisted = self.get_blacklisted()
         return seeds - blacklisted
 
-    def get_seeds(self):
+    def get_seeds(self, blacklisted=None):
         if self.seeds_frozen and self.seeds_frozen != '':
             return set(self.seeds_frozen.splitlines())
 
-        # Pre-compute blacklisted and pass down to all functions
-        blacklisted = self.get_blacklisted()
+        # Pre-compute blacklisted and pass down to TopicCollection functions
+        if blacklisted is None:
+            blacklisted = self.get_blacklisted()
 
         base_set = super(Harvest, self).get_seeds(blacklisted)
         # Add seeds from all selected topic collections
@@ -508,15 +497,10 @@ class Harvest(HarvestAbstractModel):
         # Add all topic collections by frequency
         for tc in self.get_topic_collections_by_frequency():
             base_set.update(tc.get_seeds(blacklisted))
-        base_set.update(self.get_seeds_by_frequency(blacklisted))
-        base_set.update(self.get_tests_seeds(blacklisted))
-        # Pre-compute previously harvested seeds if OneShot or ArchiveIt
-        if self.archive_it or self.is_oneshot:
-            previously_harvested = self.get_previously_harvested_seeds()
-            base_set.update(
-                self.get_oneshot_seeds(blacklisted, previously_harvested))
-            base_set.update(
-                self.get_archiveit_seeds(blacklisted, previously_harvested))
+        base_set.update(self.get_seeds_by_frequency())
+        base_set.update(self.get_tests_seeds())
+        base_set.update(self.get_oneshot_seeds())
+        base_set.update(self.get_archiveit_seeds())
         return base_set - blacklisted
 
     def get_absolute_url(self):
@@ -638,7 +622,7 @@ class ExternalTopicCollection(BaseModel, OrderedModel):
         self.slug = unique_slug
         self.save()
 
-    def get_seeds(self):
+    def get_seeds(self, blacklisted=None):
         """ Get seeds from all internal collections """
         seeds = set()
         for internal in self.internal_collections.all():
