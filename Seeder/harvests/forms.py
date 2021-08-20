@@ -1,5 +1,7 @@
+from django.core.exceptions import ValidationError
 from multiupload.fields import MultiUploadMetaField, MultiUploadMetaInput
 from django import forms
+from django.utils.translation import gettext as _
 from dal import autocomplete
 from . import models
 
@@ -28,7 +30,24 @@ autocomplete_widgets = {
 
 
 class HarvestCreateForm(forms.ModelForm):
-    # TODO: DataLimit should accept GB and translate to bytes
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        # Display dataLimit as GB instead of bytes
+        self.fields["dataLimit"].label += " (GB)"
+        self.fields["dataLimit"].min_value = 0
+        self.fields["dataLimit"].initial /= 10**9
+
+    def clean_dataLimit(self):
+        """ Value is entered as GB, so translate to bytes """
+        data = self.cleaned_data['dataLimit']
+        if data > 1000:
+            raise ValidationError(
+                _("dataLimit cannot be over 1TB"), code="too_large")
+        # Translate GB -> bytes
+        return data * 10**9
+
     class Meta:
         model = models.Harvest
         fields = [
@@ -59,7 +78,24 @@ class HarvestCreateForm(forms.ModelForm):
 
 
 class HarvestEditForm(forms.ModelForm):
-    # TODO: DataLimit should accept GB and translate to bytes
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        # Display dataLimit as GB instead of bytes
+        self.fields["dataLimit"].label += " (GB)"
+        self.fields["dataLimit"].min_value = 0
+        self.initial["dataLimit"] /= 10**9
+
+    def clean_dataLimit(self):
+        """ Value is entered as GB, so translate to bytes """
+        data = self.cleaned_data['dataLimit']
+        if data > 1000:
+            raise ValidationError(
+                _("dataLimit cannot be over 1TB"), code="too_large")
+        # Translate GB -> bytes
+        return data * 10**9
+
     class Meta:
         model = models.Harvest
         fields = [

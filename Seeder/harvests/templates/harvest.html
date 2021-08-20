@@ -57,7 +57,7 @@
         <li class="list-group-item">{% trans 'budget' %}:
             <span class="pull-right">{{ object.budget }}</span></li>
         <li class="list-group-item">{% trans 'dataLimit' %}:
-            <span class="pull-right">{{ object.dataLimit }}</span></li>
+            <span class="pull-right">{{ object.get_dataLimit_display }}</span></li>
         <li class="list-group-item">{% trans 'documentLimit' %}:
             <span class="pull-right">{{ object.documentLimit }}</span></li>
         <li class="list-group-item">{% trans 'deduplication' %}:

@@ -502,6 +502,9 @@ class Harvest(HarvestAbstractModel):
     def get_absolute_url(self):
         return reverse('harvests:detail', args=[str(self.id)])
 
+    def get_dataLimit_display(self):
+        return f"{self.dataLimit / 10**9:.1f} GB"
+
     def freeze_seeds(self):
         """
         Freezes the seeds to preserve them for later use
