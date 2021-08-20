@@ -502,19 +502,6 @@ class Harvest(HarvestAbstractModel):
     def get_absolute_url(self):
         return reverse('harvests:detail', args=[str(self.id)])
 
-    def get_date_url(self):
-        if self.target_frequency:
-            if self.target_frequency[0] == '0':
-                shortcut = 'OneShot'
-            else:
-                shortcut = 'V{}'.format(self.target_frequency[0])
-            return reverse('harvests:shortcut_urls_by_date_and_type', kwargs={
-                'h_date': self.scheduled_on.date(),
-                'h_date2': self.scheduled_on.date(),
-                'shortcut': shortcut,
-            })
-        return None
-
     def freeze_seeds(self):
         """
         Freezes the seeds to preserve them for later use

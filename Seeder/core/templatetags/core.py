@@ -1,5 +1,6 @@
 from django import template
 from django.conf import settings
+from django.utils.html import format_html
 
 register = template.Library()
 
@@ -14,3 +15,13 @@ def version():
 def version_datetime():
     ''' Display the datetime of the last git commit '''
     return settings.VERSION_DATETIME
+
+
+@register.filter(name="fa_boolean")
+def fa_boolean(value):
+    ''' Return a colored FontAwesome check/cross based on boolean value '''
+    icon = '<i class="fas fa-{}-circle text-{}" style="font-size:1.4em"></i>'
+    if value:
+        return format_html(icon.format("check", "success"))
+    else:
+        return format_html(icon.format("times", "danger"))
