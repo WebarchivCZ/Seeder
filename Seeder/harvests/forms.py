@@ -28,38 +28,65 @@ autocomplete_widgets = {
 
 
 class HarvestCreateForm(forms.ModelForm):
+    # TODO: DataLimit should accept GB and translate to bytes
     class Meta:
         model = models.Harvest
         fields = [
             'scheduled_on',
             'title',
+            'harvest_type',
             'annotation',
+
             'archive_it',
             'tests',
+            'paraharvest',
+            'manuals',
+            'combined',
+
             'target_frequency',
             'custom_seeds',
             'custom_sources',
             'topic_collections',
             'topic_collection_frequency',
+
+            'duration',
+            'budget',
+            'dataLimit',
+            'documentLimit',
+            'deduplication',
         ]
         widgets = autocomplete_widgets
 
 
 class HarvestEditForm(forms.ModelForm):
+    # TODO: DataLimit should accept GB and translate to bytes
     class Meta:
         model = models.Harvest
         fields = [
             'status',
             'scheduled_on',
             'title',
+            'harvest_type',
             'annotation',
+
             'archive_it',
             'tests',
+            'paraharvest',
+            'manuals',
+            'combined',
+
             'target_frequency',
             'custom_seeds',
             'custom_sources',
             'topic_collections',
             'topic_collection_frequency',
+
+            'duration',
+            'budget',
+            'dataLimit',
+            'documentLimit',
+            'deduplication',
+
             'seeds_not_harvested',
         ]
         widgets = autocomplete_widgets
