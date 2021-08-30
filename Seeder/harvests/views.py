@@ -97,7 +97,7 @@ class CalendarJsonView(generic_views.JSONView):
 
 class AddView(HarvestView, FormView):
     form_class = forms.HarvestCreateForm
-    template_name = 'add_form.html'
+    template_name = 'harvest_add_form.html'
 
     def form_valid(self, form):
         # TODO: check that serials don't have Topic Collections and the other way around
@@ -112,6 +112,7 @@ class Detail(HarvestView, DetailView, CommentViewGeneric):
 
 class Edit(HarvestView, EditView):
     # TODO: check that serials don't have Topic Collections and the other way around
+    template_name = 'harvest_edit_form.html'
     form_class = forms.HarvestEditForm
 
 
