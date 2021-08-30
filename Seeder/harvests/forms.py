@@ -38,6 +38,9 @@ class HarvestCreateForm(forms.ModelForm):
         self.fields["dataLimit"].label += " (GB)"
         self.fields["dataLimit"].min_value = 0
         self.fields["dataLimit"].initial /= 10**9
+        # So it also works on EditForm
+        if "dataLimit" in self.initial:
+            self.initial["dataLimit"] /= 10**9
 
     def clean_dataLimit(self):
         """ Value is entered as GB, so translate to bytes """
@@ -77,24 +80,7 @@ class HarvestCreateForm(forms.ModelForm):
         widgets = autocomplete_widgets
 
 
-class HarvestEditForm(forms.ModelForm):
-
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-
-        # Display dataLimit as GB instead of bytes
-        self.fields["dataLimit"].label += " (GB)"
-        self.fields["dataLimit"].min_value = 0
-        self.initial["dataLimit"] /= 10**9
-
-    def clean_dataLimit(self):
-        """ Value is entered as GB, so translate to bytes """
-        data = self.cleaned_data['dataLimit']
-        if data > 1000:
-            raise ValidationError(
-                _("dataLimit cannot be over 1TB"), code="too_large")
-        # Translate GB -> bytes
-        return data * 10**9
+class HarvestEditForm(HarvestCreateForm):
 
     class Meta:
         model = models.Harvest
