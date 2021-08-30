@@ -332,11 +332,12 @@ class Harvest(HarvestAbstractModel):
 
         # Add selected topic collections
         for tc in self.topic_collections.all():
-            collections.append(tc.get_collection_json(blacklisted))
+            collections.append(tc.get_collection_json(
+                self.scheduled_on, blacklisted))
         # Add all topic collections by frequency
         for tc in self.get_topic_collections_by_frequency():
             # Ensure topic collection hasn't already been added
-            tc_json = tc.get_collection_json(blacklisted)
+            tc_json = tc.get_collection_json(self.scheduled_on, blacklisted)
             if tc_json and not any(
                 [tc_json["idCollection"] == c.get("idCollection")
                  # Collection can be None if it has no seeds
@@ -702,13 +703,13 @@ class TopicCollection(HarvestAbstractModel):
         return reverse(
             'harvests:internal_collection_detail', args=[str(self.id)])
 
-    def get_collection_json(self, blacklisted=None):
+    def get_collection_json(self, scheduled_on, blacklisted=None):
         """ Returns a dict() with topic collection details and seeds """
         alias = (self.collection_alias if len(self.collection_alias) > 0
                  else "NoAlias")
         return self.construct_collection_json(
             self.get_seeds(), blacklisted=blacklisted,
-            name=f"Topics_{alias}_{self.scheduled_on:%Y-%m-%d}",
+            name=f"Topics_{alias}_{scheduled_on:%Y-%m-%d}",
             collectionAlias=alias,
             annotation=self.annotation,
             nameCurator=self.title,
