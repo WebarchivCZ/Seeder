@@ -233,6 +233,8 @@ class Harvest(HarvestAbstractModel):
     # Automatic/dynamic fields
     seeds_frozen = models.TextField(
         blank=True, null=True)
+    json_frozen = models.TextField(
+        blank=True, null=True)
     date_frozen = models.DateTimeField(
         _("Date frozen"), null=True, blank=True)
     auto_created = models.BooleanField(default=False)
