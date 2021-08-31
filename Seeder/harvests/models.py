@@ -783,8 +783,13 @@ def freeze_urls(sender, instance, **kwargs):
     :param instance: Harvest instance
     :type instance: Harvest
     """
+    # Need to check both seeds_ and json_ frozen because older won't have JSON
     if (instance.status == Harvest.STATE_READY_TO_HARVEST
-            and not instance.seeds_frozen):
+            and (not instance.seeds_frozen or not instance.json_frozen)):
         # If cannot freeze correctly, reset Harvest status
         if not instance.freeze_seeds():
             instance.status = Harvest.STATE_PLANNED
+    # Allow un-freezing when status changed back to Planned
+    elif instance.status == Harvest.STATE_PLANNED:
+        instance.seeds_frozen = None
+        instance.json_frozen = None

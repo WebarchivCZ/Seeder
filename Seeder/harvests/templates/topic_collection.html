@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% load i18n bootstrap3 thumbnail static %}
+{% load i18n bootstrap3 thumbnail static core %}
 
 {% block title %} {{ object }} {% endblock %}
 {% block page_header %} {{ object }}{% endblock %}
@@ -23,6 +23,11 @@
                 <tr>
                     <td>{% trans 'Status' %}</td>
                     <td>{{ object.get_status_display }}</td>
+                </tr>
+
+                <tr>
+                    <td>{% trans "Collection alias" %}</td>
+                    <td>{{ object.collection_alias }}</td>
                 </tr>
 
                 <tr>
@@ -79,8 +84,12 @@
                 </tr>
 
                 <tr>
+                    <td>{% trans "Aggregation with same type" %}</td>
+                    <td>{{ object.aggregation_with_same_type|fa_boolean }}</td>
+                </tr>
+                <tr>
                     <td>{% trans 'All sources are open?' %}</td>
-                    <td>{{ object.all_open }}</td>
+                    <td>{{ object.all_open|fa_boolean }}</td>
                 </tr>
             </tbody>
         </table>
