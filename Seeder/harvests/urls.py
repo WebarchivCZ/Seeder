@@ -75,6 +75,8 @@ harvest_config_urlpatterns = [
          name='harvest_config_detail'),
     path('<int:pk>/edit', HarvestConfigEdit.as_view(),
          name='harvest_config_edit'),
+    path('<int:pk>/history', HarvestConfigHistory.as_view(),
+         name='harvest_config_history'),
 ]
 
 urlpatterns = [

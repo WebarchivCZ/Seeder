@@ -5,8 +5,13 @@
 {% load core %}
 
 {% block title %}{{ object }} {% endblock %}
-{% block page_header %}{{ object }} <a href="{% url 'harvests:harvest_config_edit' pk=object.pk %}"
-    class="btn btn-primary btn-info pull-right">{% trans 'Edit' %}</a>{% endblock %}o
+{% block page_header %}{{ object }}
+
+<a href="{% url 'harvests:harvest_config_edit' pk=object.pk %}"
+    class="btn btn-primary btn-warning pull-right">{% trans 'Edit' %}</a>
+<a href="{% url 'harvests:harvest_config_history' pk=object.pk %}"
+    class="btn btn-primary btn-info pull-right">{% trans 'History' %}</a>
+{% endblock %}o
 {% block content %}
 <div class="col-xs-12 col-md-6 col-lg-4">
     <ul class="list-group">

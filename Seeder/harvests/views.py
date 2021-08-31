@@ -413,6 +413,11 @@ class HarvestConfigDetail(HarvestConfigView, DetailView):
 class HarvestConfigEdit(HarvestConfigView, EditView):
     form_class = forms.HarvestConfigEditForm
 
+
+class HarvestConfigHistory(HarvestConfigView, generic_views.HistoryView):
+    """ History of changes to Harvest Configurations """
+    pass
+
 # ========================== #
 # Internal Topic Collections #
 # ========================== #

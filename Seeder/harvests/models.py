@@ -759,6 +759,7 @@ class Attachment(models.Model):
         return ext.lstrip('.')
 
 
+@revisions.register(exclude=('last_changed',))
 class HarvestConfiguration(BaseModel):
     """
     Default harvest configuration for each harvest type

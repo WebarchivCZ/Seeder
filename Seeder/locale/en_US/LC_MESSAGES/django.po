@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Seeder\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-08-31 08:15+0000\n"
+"POT-Creation-Date: 2021-08-31 10:09+0000\n"
 "PO-Revision-Date: 2017-11-07 12:38+0100\n"
 "Last-Translator: Visgean Skeloru <visgean@gmail.com>, 2017\n"
 "Language-Team: English (United States) (https://www.transifex.com/"
@@ -41,7 +41,7 @@ msgstr "List of URLs to block"
 msgid "Blacklist"
 msgstr "Blacklist"
 
-#: blacklists/models.py:40 blacklists/views.py:19 templates/base.html:125
+#: blacklists/models.py:40 blacklists/views.py:19 templates/base.html:131
 msgid "Blacklists"
 msgstr "Blacklists"
 
@@ -56,7 +56,7 @@ msgstr "Dump"
 #: blacklists/templates/blacklists.html:24
 #: contracts/templates/contract.html:114
 #: harvests/templates/external_topic_collection.html:96
-#: harvests/templates/harvest.html:9
+#: harvests/templates/harvest.html:9 harvests/templates/harvest_config.html:11
 #: harvests/templates/topic_collection.html:111
 #: publishers/templates/publisher.html:36 source/templates/edit_source.html:7
 #: source/templates/edit_source.html:11 source/templates/source.html:157
@@ -68,6 +68,7 @@ msgstr "Edit"
 #: blacklists/templates/blacklists.html:25
 #: contracts/templates/contract.html:113
 #: harvests/templates/external_topic_collection.html:97
+#: harvests/templates/harvest_config.html:13
 #: harvests/templates/topic_collection.html:112
 #: publishers/templates/publisher.html:35 source/templates/source.html:168
 #: www/templates/news_admin_detail.html:86
@@ -504,7 +505,7 @@ msgstr "Profile changed."
 msgid "Password changed successfully."
 msgstr "Password changed successfully."
 
-#: harvests/admin.py:54 harvests/forms.py:50
+#: harvests/admin.py:54 harvests/forms.py:50 harvests/forms.py:134
 msgid "dataLimit cannot be over 1TB"
 msgstr "dataLimit cannot be over 1TB"
 
@@ -552,13 +553,13 @@ msgstr "Cancelled"
 msgid "Failed"
 msgstr "Failed"
 
-#: harvests/models.py:229 harvests/models.py:768
-#: harvests/templates/harvest.html:15
+#: harvests/models.py:229 harvests/models.py:769
+#: harvests/templates/harvest.html:15 harvests/templates/harvest_config.html:18
 msgid "Harvest type"
 msgstr "Harvest type"
 
 #: harvests/models.py:231 harvests/models.py:582 harvests/models.py:682
-#: harvests/tables.py:57 harvests/tables.py:74 www/tables.py:13
+#: harvests/tables.py:76 harvests/tables.py:93 www/tables.py:13
 msgid "title"
 msgstr "Title"
 
@@ -595,36 +596,36 @@ msgstr "Manuals"
 msgid "Combined"
 msgstr "Combined"
 
-#: harvests/models.py:268 harvests/views.py:359
+#: harvests/models.py:268 harvests/views.py:371
 msgid "ArchiveIt"
 msgstr "ArchiveIt"
 
-#: harvests/models.py:271 harvests/views.py:361
+#: harvests/models.py:271 harvests/views.py:373
 msgid "Tests"
 msgstr "Tests"
 
-#: harvests/models.py:275 harvests/models.py:770
-#: harvests/templates/harvest.html:55
+#: harvests/models.py:275 harvests/models.py:771
+#: harvests/templates/harvest.html:55 harvests/templates/harvest_config.html:20
 msgid "duration"
 msgstr "duration"
 
-#: harvests/models.py:277 harvests/models.py:772
-#: harvests/templates/harvest.html:57
+#: harvests/models.py:277 harvests/models.py:773
+#: harvests/templates/harvest.html:57 harvests/templates/harvest_config.html:22
 msgid "budget"
 msgstr "budget"
 
-#: harvests/models.py:279 harvests/models.py:774
-#: harvests/templates/harvest.html:59
+#: harvests/models.py:279 harvests/models.py:775
+#: harvests/templates/harvest.html:59 harvests/templates/harvest_config.html:24
 msgid "dataLimit"
 msgstr "dataLimit"
 
-#: harvests/models.py:281 harvests/models.py:776
-#: harvests/templates/harvest.html:61
+#: harvests/models.py:281 harvests/models.py:777
+#: harvests/templates/harvest.html:61 harvests/templates/harvest_config.html:26
 msgid "documentLimit"
 msgstr "documentLimit"
 
-#: harvests/models.py:283 harvests/models.py:778
-#: harvests/templates/harvest.html:63
+#: harvests/models.py:283 harvests/models.py:779
+#: harvests/templates/harvest.html:63 harvests/templates/harvest_config.html:28
 msgid "deduplication"
 msgstr "deduplication"
 
@@ -698,13 +699,18 @@ msgstr "Internal Topic Collections"
 msgid "file"
 msgstr "file"
 
-#: harvests/models.py:781
+#: harvests/models.py:782
 msgid "Harvest Configuration"
 msgstr "Harvest Configuration"
 
-#: harvests/models.py:782
+#: harvests/models.py:783 harvests/views.py:386 templates/base.html:126
 msgid "Harvest Configurations"
 msgstr "Harvest Configurations"
+
+#: harvests/models.py:787
+#, python-format
+msgid "Configuration for %(type)s Harvests"
+msgstr "Configuration for %(type)s Harvests"
 
 #: harvests/templates/calendar.html:22
 msgid "Prev"
@@ -897,51 +903,51 @@ msgstr "All sources are open?"
 msgid "Seeds"
 msgstr "Seeds"
 
-#: harvests/views.py:53 templates/base.html:121
+#: harvests/views.py:57 templates/base.html:121
 msgid "Harvests"
 msgstr "Harvests"
 
-#: harvests/views.py:329 harvests/views.py:348
+#: harvests/views.py:341 harvests/views.py:360
 msgid "Available URLs for date"
 msgstr "Available URLs for date"
 
-#: harvests/views.py:333
+#: harvests/views.py:345
 msgid "All seeds for Harvest"
 msgstr "All seeds for Harvest"
 
-#: harvests/views.py:360
+#: harvests/views.py:372
 msgid "VNC"
 msgstr "VNC: Custom seeds"
 
-#: harvests/views.py:362
+#: harvests/views.py:374
 msgid "Totals"
 msgstr "Totals: All seeds"
 
-#: harvests/views.py:378
+#: harvests/views.py:433
 msgid "TopicCollections"
 msgstr "Topic Collections"
 
-#: harvests/views.py:388
+#: harvests/views.py:443
 msgid "Add TopicCollection"
 msgstr "Add Topic Collection"
 
-#: harvests/views.py:464
+#: harvests/views.py:519
 msgid "ExternalTopicCollections"
 msgstr "External Topic Collections"
 
-#: harvests/views.py:474
+#: harvests/views.py:529
 msgid "Add ExternalTopicCollection"
 msgstr "Add External Topic Collection"
 
-#: harvests/views.py:558
+#: harvests/views.py:613
 msgid "Topic collection published"
 msgstr "Topic collection published"
 
-#: harvests/views.py:560
+#: harvests/views.py:615
 msgid "Topic collection unpublished"
 msgstr "Topic collection unpublished"
 
-#: harvests/views.py:574
+#: harvests/views.py:629
 msgid "URL slug successfully updated"
 msgstr "URL slug successfully updated"
 
@@ -1446,23 +1452,23 @@ msgstr "Quality assurance"
 msgid "News"
 msgstr "News"
 
-#: templates/base.html:123
+#: templates/base.html:129
 msgid "Seed DB dump"
 msgstr "Whitelist"
 
-#: templates/base.html:131
+#: templates/base.html:137
 msgid "Search logs"
 msgstr "Search logs"
 
-#: templates/base.html:137
+#: templates/base.html:143
 msgid "Bug report"
 msgstr "Bug report"
 
-#: templates/base.html:138
+#: templates/base.html:144
 msgid "Read the docs"
 msgstr "Read the docs"
 
-#: templates/base.html:139
+#: templates/base.html:145
 msgid "Harvests urls"
 msgstr "Harvests urls"
 
