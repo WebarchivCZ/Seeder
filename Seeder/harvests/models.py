@@ -522,6 +522,7 @@ class Harvest(HarvestAbstractModel):
         if len(seeds) > 0:
             self.seeds_frozen = '\n'.join(seeds)
             self.json_frozen = json.dumps(self.get_json())
+            self.date_frozen = timezone.now()
             self.save()
             return True     # frozen correctly
         return False        # not frozen
