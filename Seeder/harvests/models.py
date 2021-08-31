@@ -1,4 +1,6 @@
 import os
+import json
+import logging
 
 from itertools import chain
 from hashlib import md5
@@ -22,6 +24,8 @@ from source import constants as source_constants
 from source.models import Source, Seed, KeyWord
 from django.contrib.auth.models import User
 from multiselectfield import MultiSelectField
+
+log = logging.getLogger(__name__)
 
 # Django 2 fix (https://github.com/goinnn/django-multiselectfield/issues/74)
 
@@ -320,10 +324,12 @@ class Harvest(HarvestAbstractModel):
         )
 
     def get_json(self):
-        # TODO: should figure out how to freeze/recognize correctly frozen
-        # TODO: could add json_frozen
-        # if self.seeds_frozen and self.seeds_frozen != '':
-        #     return set(self.seeds_frozen.splitlines())
+        if self.json_frozen and self.json_frozen != '':
+            try:
+                return json.loads(self.json_frozen)
+            # If an Exception is raised, continue re-computing JSON
+            except Exception as e:
+                log.exception("Cannot load frozen JSON; re-computing")
 
         # Pre-compute blacklisted and pass down to TopicCollection functions
         blacklisted = self.get_blacklisted()
@@ -510,11 +516,12 @@ class Harvest(HarvestAbstractModel):
 
     def freeze_seeds(self):
         """
-        Freezes the seeds to preserve them for later use
+        Freezes the seeds and JSON to preserve them for later use
         """
         seeds = self.get_seeds()
         if len(seeds) > 0:
             self.seeds_frozen = '\n'.join(seeds)
+            self.json_frozen = json.dumps(self.get_json())
             self.save()
             return True     # frozen correctly
         return False        # not frozen
