@@ -25,3 +25,10 @@ def fa_boolean(value):
         return format_html(icon.format("check", "success"))
     else:
         return format_html(icon.format("times", "danger"))
+
+
+@register.simple_tag
+def user_in_group(user, group):
+    ''' Check the provided user belongs to the provided group; all lowered '''
+    return (str.lower(group)
+            in map(str.lower, user.groups.values_list("name", flat=True)))

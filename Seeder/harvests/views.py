@@ -386,8 +386,10 @@ class HarvestConfigView(UserPassesTestMixin):
     title = _('Harvest Configurations')
 
     def test_func(self):
-        # TODO: should allow Superuser and group "Tech"
-        return self.request.user.is_superuser
+        """ Allow Superusers and users in group 'Tech' """
+        groups = map(
+            str.lower, self.request.user.groups.values_list("name", flat=True))
+        return (self.request.user.is_superuser or "tech" in groups)
 
 
 class HarvestConfigList(HarvestConfigView, generic_views.FilteredListView):

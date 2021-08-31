@@ -120,9 +120,12 @@
                 <li id="harvests">
                     <a href="{% url 'harvests:calendar' %}">{% trans 'Harvests' %}</a>
                 </li>
+                {% user_in_group user "tech" as tech_user %}
+                {% if user.is_superuser or tech_user %}
                 <li id="harvest_configurations">
                     <a href="{% url 'harvests:harvest_config_list' %}">{% trans 'Harvest Configurations' %}</a>
                 </li>
+                {% endif %}
                 <li><a href="{% url 'source:dump' %}" target="_blank">{% trans 'Seed DB dump' %}</a></li>
                 <li id="blacklists">
                     <a href="{% url 'blacklists:list' %}">{% trans 'Blacklists' %}</a>
