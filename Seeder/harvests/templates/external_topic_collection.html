@@ -66,6 +66,14 @@
                     <td>{% trans 'WWW link' %}</td>
                     <td><a href="{{ object.get_www_url }}" target="_blank">{{ object.get_www_url }}</a></td>
                 </tr>
+
+                <tr>
+                    <td>{% trans 'Attachments' %} ({% trans 'on Internal' %})</td>
+                    <td>{% for attachment in object.attachment_set.all %}
+                      <a href="{{ attachment.file.url }}">{{ attachment }}</a>{% include "includes/comma.html" %}
+                    {% endfor %}
+                  </td>
+                </tr>
             </tbody>
         </table>
     </div>

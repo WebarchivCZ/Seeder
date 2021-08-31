@@ -56,7 +56,6 @@ class TopicCollectionTable(tables.Table):
         accessor='__str__',
         verbose_name=_('title')
     )
-    change_order = ChangeOrderColumn(accessor='pk')
 
     class Meta:
         model = models.TopicCollection

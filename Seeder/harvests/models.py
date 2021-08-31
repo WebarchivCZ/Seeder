@@ -609,6 +609,12 @@ class ExternalTopicCollection(BaseModel, OrderedModel):
         """ Return custom sources of all internal collections combined """
         return Source.objects.filter(topiccollection__external_collection=self)
 
+    @property
+    def attachment_set(self):
+        """ Return attachments of all internal collections combined """
+        return Attachment.objects.filter(
+            topic_collection__in=self.internal_collections.all())
+
     def update_slug(self):
         from autoslug.utils import slugify, generate_unique_slug
         field = ExternalTopicCollection._meta.get_field('slug')
