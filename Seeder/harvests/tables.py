@@ -18,14 +18,18 @@ class ChangeOrderColumn(tables.Column):
             "ordered_model/admin/order_controls.html",
             {
                 "urls": {
-                    "up": reverse("harvests:topic_collection_change_order",
-                                  args=[value, "up"]),
-                    "down": reverse("harvests:topic_collection_change_order",
-                                    args=[value, "down"]),
-                    "top": reverse("harvests:topic_collection_change_order",
-                                   args=[value, "top"]),
-                    "bottom": reverse("harvests:topic_collection_change_order",
-                                      args=[value, "bottom"]),
+                    "up": reverse(
+                        "harvests:external_collection_change_order",
+                        args=[value, "up"]),
+                    "down": reverse(
+                        "harvests:external_collection_change_order",
+                        args=[value, "down"]),
+                    "top": reverse(
+                        "harvests:external_collection_change_order",
+                        args=[value, "top"]),
+                    "bottom": reverse(
+                        "harvests:external_collection_change_order",
+                        args=[value, "bottom"]),
                 },
                 "query_string": "",
             },
@@ -45,7 +49,43 @@ class HarvestTable(tables.Table):
         }
 
 
+class HarvestConfigTable(tables.Table):
+    harvest_type = AbsoluteURLColumn(accessor='harvest_type')
+
+    def render_dataLimit(self, value):
+        """ Display dataLimit in GB """
+        return f"{value / 10**9:.1f} GB"
+
+    class Meta:
+        model = models.HarvestConfiguration
+        fields = (
+            'harvest_type', 'duration', 'budget', 'dataLimit', 'documentLimit',
+            'deduplication',
+        )
+
+        attrs = {
+            'class': 'table table-striped table-hover'
+        }
+
+
 class TopicCollectionTable(tables.Table):
+    created = NaturalDatetimeColumn()
+    last_changed = NaturalDatetimeColumn()
+    title = AbsoluteURLColumn(
+        accessor='__str__',
+        verbose_name=_('title')
+    )
+
+    class Meta:
+        model = models.TopicCollection
+        fields = ('title', 'status')
+
+        attrs = {
+            'class': 'table table-striped table-hover'
+        }
+
+
+class ExternalTopicCollectionTable(tables.Table):
     created = NaturalDatetimeColumn()
     last_changed = NaturalDatetimeColumn()
     title = AbsoluteURLColumn(
@@ -55,7 +95,7 @@ class TopicCollectionTable(tables.Table):
     change_order = ChangeOrderColumn(accessor='pk')
 
     class Meta:
-        model = models.TopicCollection
+        model = models.ExternalTopicCollection
         fields = ('order', 'change_order', 'title', 'status')
 
         attrs = {

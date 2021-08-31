@@ -105,8 +105,11 @@
 
                 <hr>
 
-                <li id="topic_collections">
-                    <a href="{% url 'harvests:topic_collection_list' %}">{% trans 'Topic collections' %}</a>
+                <li id="external_topic_collections">
+                    <a href="{% url 'harvests:external_collection_list' %}">{% trans 'External Topic Collections' %}</a>
+                </li>
+                <li id="internal_topic_collections">
+                    <a href="{% url 'harvests:internal_collection_list' %}">{% trans 'Internal Topic Collections' %}</a>
                 </li>
                 <li id="news">
                     <a href="{% url 'news:list' %}">{% trans 'News' %}</a>
@@ -117,6 +120,12 @@
                 <li id="harvests">
                     <a href="{% url 'harvests:calendar' %}">{% trans 'Harvests' %}</a>
                 </li>
+                {% user_in_group user "tech" as tech_user %}
+                {% if user.is_superuser or tech_user %}
+                <li id="harvest_configurations">
+                    <a href="{% url 'harvests:harvest_config_list' %}">{% trans 'Harvest Configurations' %}</a>
+                </li>
+                {% endif %}
                 <li><a href="{% url 'source:dump' %}" target="_blank">{% trans 'Seed DB dump' %}</a></li>
                 <li id="blacklists">
                     <a href="{% url 'blacklists:list' %}">{% trans 'Blacklists' %}</a>

@@ -1,0 +1,45 @@
+<script>
+    const BASE_URL = "{% url 'harvest_config-list' %}";
+    // Save defaults or whatever values were set originally
+    const DEFAULTS = {
+        duration: $("#id_duration").val(),
+        budget: $("#id_budget").val(),
+        dataLimit: $("#id_dataLimit").val() * 10 ** 9,
+        documentLimit: $("#id_documentLimit").val(),
+        deduplication: $("#id_deduplication").val(),
+    };
+    console.info("Defaults saved", DEFAULTS)
+
+    // Load the HarvestConfiguration for a particular harvestType
+    function load_harvest_config(harvestType) {
+        const url = `${BASE_URL}?harvest_type=${harvestType}`;
+        $.get(url, (data, status) => {
+            if (status !== "success") return alert(
+                `Error while fetching harvest configuration for '${harvestType}'`)
+            // There shouldn't be multiple results, so 0 or 1
+            if (data.length > 0) {
+                $("#id_duration").val(data[0]["duration"])
+                $("#id_budget").val(data[0]["budget"])
+                $("#id_dataLimit").val(data[0]["dataLimit"] / 10 ** 9)
+                $("#id_documentLimit").val(data[0]["documentLimit"])
+                $("#id_deduplication").val(data[0]["deduplication"])
+            }
+            // If nothing found, reload DEFAULTS
+            else {
+                alert(`No defaults found for '${harvestType}', reloading original defaults`);
+                $("#id_duration").val(DEFAULTS["duration"])
+                $("#id_budget").val(DEFAULTS["budget"])
+                $("#id_dataLimit").val(DEFAULTS["dataLimit"] / 10 ** 9)
+                $("#id_documentLimit").val(DEFAULTS["documentLimit"])
+                $("#id_deduplication").val(DEFAULTS["deduplication"])
+            }
+        })
+    }
+
+    // Initially load HarvestConfiguration for default Harvest Type
+    load_harvest_config($("#id_harvest_type").val())
+    // Whenever the Harvest Type is changed, try to load its Harvest Config
+    $(document).on("change", "#id_harvest_type", (e) => {
+        load_harvest_config(e.currentTarget.value)
+    })
+</script>

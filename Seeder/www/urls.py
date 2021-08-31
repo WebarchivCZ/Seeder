@@ -7,10 +7,10 @@ urlpatterns = [
     re_path(_('^topic_collections_url$'), www.TopicCollections.as_view(),
             name='topic_collections'),
     re_path(_('^topic_collections_url/(?P<slug>[\w-]+)$'),
-            www.CollectionDetail.as_view(),
+            www.TopicCollectionDetail.as_view(),
             name='collection_detail'),
     re_path(_('^topic_collections_url/(?P<slug>[\w-]+)/urls$'),
-            www.CollectionUrlsCsv.as_view(),
+            www.TopicCollectionUrlsCsv.as_view(),
             name='collection_csv'),
 
     re_path(_('^about_url$'), www.About.as_view(), name='about'),

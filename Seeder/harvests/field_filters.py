@@ -9,3 +9,20 @@ class TopicCollectionFilter(BaseFilterSet):
             'status': ('exact',),
             'title': ('icontains',),
         }
+
+
+class ExternalTopicCollectionFilter(BaseFilterSet):
+    class Meta:
+        model = models.ExternalTopicCollection
+        fields = {
+            'title': ('icontains',),
+        }
+
+
+class HarvestConfigFilter(BaseFilterSet):
+    class Meta:
+        model = models.HarvestConfiguration
+        fields = (
+            'harvest_type', 'duration', 'budget', 'dataLimit', 'documentLimit',
+            'deduplication',
+        )

@@ -11,6 +11,16 @@ class DatePickerWidget(widgets.DateInput):
         super().__init__(attrs=attrs, format=format)
 
 
+class DateTimePickerWidget(widgets.DateTimeInput):
+    def __init__(self, attrs=None, format='%Y-%m-%dT%H:%M'):
+        # Use the HTML datetime-local widget
+        if attrs is not None:
+            attrs.update({'type': 'datetime-local'})
+        else:
+            attrs = {'type': 'datetime-local'}
+        super().__init__(attrs=attrs, format=format)
+
+
 class DateRangeWidget(widgets.MultiWidget):
     def __init__(self, **kwargs):
         super().__init__(
