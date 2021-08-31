@@ -120,6 +120,9 @@
                 <li id="harvests">
                     <a href="{% url 'harvests:calendar' %}">{% trans 'Harvests' %}</a>
                 </li>
+                <li id="harvest_configurations">
+                    <a href="{% url 'harvests:harvest_config_list' %}">{% trans 'Harvest Configurations' %}</a>
+                </li>
                 <li><a href="{% url 'source:dump' %}" target="_blank">{% trans 'Seed DB dump' %}</a></li>
                 <li id="blacklists">
                     <a href="{% url 'blacklists:list' %}">{% trans 'Blacklists' %}</a>

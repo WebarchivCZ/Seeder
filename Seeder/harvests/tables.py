@@ -49,6 +49,25 @@ class HarvestTable(tables.Table):
         }
 
 
+class HarvestConfigTable(tables.Table):
+    harvest_type = AbsoluteURLColumn(accessor='harvest_type')
+
+    def render_dataLimit(self, value):
+        """ Display dataLimit in GB """
+        return f"{value / 10**9:.1f} GB"
+
+    class Meta:
+        model = models.HarvestConfiguration
+        fields = (
+            'harvest_type', 'duration', 'budget', 'dataLimit', 'documentLimit',
+            'deduplication',
+        )
+
+        attrs = {
+            'class': 'table table-striped table-hover'
+        }
+
+
 class TopicCollectionTable(tables.Table):
     created = NaturalDatetimeColumn()
     last_changed = NaturalDatetimeColumn()

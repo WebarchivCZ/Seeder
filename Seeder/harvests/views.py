@@ -1,13 +1,13 @@
 import time
 import re
 from datetime import date
-from itertools import chain
 
 import datetime
 from django.urls import reverse
-from django.utils import dateparse
 from django.http import Http404
 from django.contrib import messages
+from django.contrib.auth.mixins import UserPassesTestMixin
+from django.views.generic.edit import CreateView
 
 from source import constants as source_constants
 from . import models
@@ -45,6 +45,10 @@ def timestamp(dtm_object):
     :return: int with epoch timestamp in milliseconds
     """
     return time.mktime(dtm_object.timetuple()) * 1000
+
+# ======== #
+# Harvests #
+# ======== #
 
 
 class HarvestView(generic_views.LoginMixin):
@@ -115,6 +119,10 @@ class Edit(HarvestView, EditView):
     template_name = 'harvest_edit_form.html'
     form_class = forms.HarvestEditForm
 
+# =================== #
+# Harvest URLS / JSON #
+# =================== #
+
 
 class ListHarvestUrls(HarvestView, TemplateView):
     """
@@ -124,7 +132,7 @@ class ListHarvestUrls(HarvestView, TemplateView):
 
     def get_context_data(self, h_date, **kwargs):
         context = super().get_context_data(**kwargs)
-        harvests = models.Harvest.objects.filter(scheduled_on=h_date)
+        harvests = models.Harvest.objects.filter(scheduled_on__date=h_date)
         context['urls'] = [reverse('harvests:urls', kwargs={'pk': h.pk})
                            for h in harvests]
         return context
@@ -165,7 +173,11 @@ class ListShortcutUrlsByDate(HarvestView, TemplateView):
     def get_context_data(self, h_date, **kwargs):
         context = super().get_context_data(**kwargs)
 
-        harvests = models.Harvest.objects.filter(scheduled_on=h_date)
+        # !
+        # TODO: Shortcut URLs should be deprecated, e.g. Topic Collections no longer have slugs (moved to ExternalTC), and the rest is also irrelevant
+        # !
+
+        harvests = models.Harvest.objects.filter(scheduled_on__date=h_date)
         if harvests.count() == 0:
             context['urls'] = []
             return context
@@ -362,6 +374,42 @@ class HarvestUrlCatalogue(TemplateView):
         shortcut_urls.append((url_by_shortcut('Totals'), _('Totals')))
         context['shortcut_urls'] = shortcut_urls
         return context
+
+# ====================== #
+# Harvest Configurations #
+# ====================== #
+
+
+class HarvestConfigView(UserPassesTestMixin):
+    view_name = 'harvest_configurations'
+    model = models.HarvestConfiguration
+    title = _('Harvest Configurations')
+
+    def test_func(self):
+        # TODO: should allow Superuser and group "Tech"
+        return self.request.user.is_superuser
+
+
+class HarvestConfigList(HarvestConfigView, generic_views.FilteredListView):
+    table_class = tables.HarvestConfigTable
+    filterset_class = field_filters.HarvestConfigFilter
+    add_link = 'harvests:harvest_config_add'
+
+
+class HarvestConfigAdd(HarvestConfigView, CreateView):
+    form_class = forms.HarvestConfigCreateForm
+    template_name = 'add_form.html'
+
+    def get_success_url(self):
+        return reverse('harvests:harvest_config_list')
+
+
+class HarvestConfigDetail(HarvestConfigView, DetailView):
+    template_name = 'harvest_config.html'
+
+
+class HarvestConfigEdit(HarvestConfigView, EditView):
+    form_class = forms.HarvestConfigEditForm
 
 # ========================== #
 # Internal Topic Collections #

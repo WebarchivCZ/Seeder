@@ -782,6 +782,16 @@ class HarvestConfiguration(BaseModel):
         verbose_name_plural = _("Harvest Configurations")
         ordering = ("harvest_type",)
 
+    def __str__(self):
+        return (_("Configuration for %(type)s Harvests")
+                % {'type': self.get_harvest_type_display()})
+
+    def get_absolute_url(self):
+        return reverse("harvests:harvest_config_detail", kwargs={"pk": self.pk})
+
+    def get_dataLimit_display(self):
+        return f"{self.dataLimit / 10**9:.1f} GB"
+
 
 @receiver(pre_save, sender=Harvest)
 def freeze_urls(sender, instance, **kwargs):

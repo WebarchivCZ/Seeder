@@ -66,6 +66,16 @@ external_collections_urlpatterns = [
          name='external_collections_reorder'),
 ]
 
+harvest_config_urlpatterns = [
+    path('', HarvestConfigList.as_view(),
+         name='harvest_config_list'),
+    path('add', HarvestConfigAdd.as_view(),
+         name='harvest_config_add'),
+    path('<int:pk>/detail', HarvestConfigDetail.as_view(),
+         name='harvest_config_detail'),
+    path('<int:pk>/edit', HarvestConfigEdit.as_view(),
+         name='harvest_config_edit'),
+]
 
 urlpatterns = [
     path('', CalendarView.as_view(), name='calendar'),
@@ -89,4 +99,6 @@ urlpatterns = [
     path('<date:h_date>/seeds-<date:h_date2>-<str:shortcut>.txt',
          ListUrlsByDateAndShortcut.as_view(),
          name='shortcut_urls_by_date_and_type'),
+    # Harvest Configuration URLs
+    path('config/', include(harvest_config_urlpatterns)),
 ]

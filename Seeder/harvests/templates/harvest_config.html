@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load humanize %}
+{% load bootstrap3 %}
+{% load core %}
+
+{% block title %}{{ object }} {% endblock %}
+{% block page_header %}{{ object }} <a href="{% url 'harvests:harvest_config_edit' pk=object.pk %}"
+    class="btn btn-primary btn-info pull-right">{% trans 'Edit' %}</a>{% endblock %}o
+{% block content %}
+<div class="col-xs-12 col-md-6 col-lg-4">
+    <ul class="list-group">
+        <li class="list-group-item">{% trans 'Harvest type' %}:
+            <span class="pull-right">{{ object.get_harvest_type_display }}</span></li>
+        <li class="list-group-item">{% trans 'duration' %}:
+            <span class="pull-right">{{ object.duration }}</span></li>
+        <li class="list-group-item">{% trans 'budget' %}:
+            <span class="pull-right">{{ object.budget }}</span></li>
+        <li class="list-group-item">{% trans 'dataLimit' %}:
+            <span class="pull-right">{{ object.get_dataLimit_display }}</span></li>
+        <li class="list-group-item">{% trans 'documentLimit' %}:
+            <span class="pull-right">{{ object.documentLimit }}</span></li>
+        <li class="list-group-item">{% trans 'deduplication' %}:
+            <span class="pull-right">{{ object.deduplication }}</span></li>
+    </ul>
+</div>
+{% endblock %}
