@@ -787,6 +787,12 @@ class HarvestConfiguration(BaseModel):
         return (_("Configuration for %(type)s Harvests")
                 % {'type': self.get_harvest_type_display()})
 
+    @classmethod
+    def create_defaults(cls):
+        """ Create a default object for each Harvest Type """
+        for harvest_type, _ in Harvest.TYPES:
+            cls.objects.get_or_create(harvest_type=harvest_type)
+
     def get_absolute_url(self):
         return reverse("harvests:harvest_config_detail", kwargs={"pk": self.pk})
 
