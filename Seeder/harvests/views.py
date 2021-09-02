@@ -107,6 +107,9 @@ class AddView(HarvestView, FormView):
         # TODO: check that serials don't have Topic Collections and the other way around
         harvest = form.save()
         harvest.pair_custom_seeds()
+        # If there are no seeds at all in the Harvest, send an alert
+        if len(harvest.get_seeds()) == 0:
+            messages.error(self.request, _("Harvest contains no seeds!"))
         return HttpResponseRedirect(harvest.get_absolute_url())
 
 
@@ -122,6 +125,9 @@ class Edit(HarvestView, EditView):
         # TODO: check that serials don't have Topic Collections and the other way around
         harvest = form.save()
         harvest.pair_custom_seeds()
+        # If there are no seeds at all in the Harvest, send an alert
+        if len(harvest.get_seeds()) == 0:
+            messages.error(self.request, _("Harvest contains no seeds!"))
         return HttpResponseRedirect(harvest.get_absolute_url())
 
 # =================== #

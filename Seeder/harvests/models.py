@@ -824,5 +824,6 @@ def freeze_urls(sender, instance, **kwargs):
             instance.status = Harvest.STATE_PLANNED
     # Allow un-freezing when status changed back to Planned
     elif instance.status == Harvest.STATE_PLANNED:
+        instance.date_frozen = None
         instance.seeds_frozen = None
         instance.json_frozen = None
