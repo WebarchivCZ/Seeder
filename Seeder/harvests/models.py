@@ -116,17 +116,26 @@ class HarvestAbstractModel(BaseModel):
     def pair_custom_seeds(self):
         """
         Tries to pair the urls from ``custom_seeds`` with existing sources
-        """
-        cleaned_urls = []
+
+        # Optimization using Q() and icontains: (issue #570)
+        ## Still takes a lot of time due to 'icontains'
+        ## Potentially can return wrong things because of the 'icontains'
+        query = Q()
         for seed_url in self.custom_seeds.splitlines():
-            seed = Seed.objects.filter(
-                state=source_constants.SEED_STATE_INCLUDE,
-                url__icontains=seed_url).first()
-            if seed:
-                self.custom_sources.add(seed.source)
-            else:
-                cleaned_urls.append(seed_url)
-        self.custom_seeds = u'\n'.join(cleaned_urls)
+            query |= Q(seed__url__icontains=seed_url)
+        sources = Source.objects.filter(
+            query, seed__state=source_constants.SEED_STATE_INCLUDE)
+        """
+        # Includes stripping and empty string filtering; set()
+        seeds = self.get_custom_seeds()
+        # Match only Sources with equal URL and add them
+        sources = Source.objects.filter(
+            seed__state=source_constants.SEED_STATE_INCLUDE,
+            seed__url__in=seeds)
+        self.custom_sources.add(*sources)
+        # Save un-matched seeds, remove anything that was matched
+        self.custom_seeds = '\n'.join(
+            seeds - set(sources.values_list("seed__url", flat=True)))
         self.save()
 
     def get_blacklisted(self):
