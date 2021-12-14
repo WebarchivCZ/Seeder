@@ -6,7 +6,6 @@ class TopicCollectionFilter(BaseFilterSet):
     class Meta:
         model = models.TopicCollection
         fields = {
-            'status': ('exact',),
             'title': ('icontains',),
         }
 

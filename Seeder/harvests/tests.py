@@ -20,7 +20,7 @@ class TopicCollectionTests(TestCase):
         self.c.login(username='pedro', password='password')
 
         for i, freq in enumerate([['1'], ['2', '4'], ['6', '12'], ['4', '12']]):
-            TopicCollection(pk=i, status=TopicCollection.STATE_NEW, owner=user,
+            TopicCollection(pk=i, owner=user,
                             title_cs="CS TC {}".format(i + 1),
                             title_en="EN TC {}".format(i + 1),
                             scheduled_on=TODAY, all_open=True,
@@ -66,8 +66,7 @@ class HarvestUrlTest(TestCase):
         self.c.login(username='pedro', password='password')
         # Topic collections
         self.topic_collections = [
-            TopicCollection(status=TopicCollection.STATE_NEW,
-                            title_cs="CS Topic C {}".format(i + 1),
+            TopicCollection(title_cs="CS Topic C {}".format(i + 1),
                             title_en="EN Topic C {}".format(i + 1),
                             owner=User.objects.get(username='pedro'),
                             scheduled_on=self.DATE,

@@ -682,6 +682,7 @@ class TopicCollection(HarvestAbstractModel):
         null=True, blank=True,
     )
 
+    # ? DEPRECATED: not used anywhere, could be deleted
     status = models.IntegerField(
         choices=STATES,
         verbose_name=_('State'),
