@@ -907,7 +907,7 @@ msgstr "Sklizně"
 #: harvests/views.py:112 harvests/views.py:130
 msgid "Harvest contains no seeds!"
 msgstr ""
-"Sklizeň neobsahuje žádná semínka! Tím pádem nemůže být zmražena "
+"Sklizeň neobsahuje žádná semínka! Tím pádem nemůže být zmrazena "
 "(stav nastaven na 'Připraveno na sklízení')"
 
 #: harvests/views.py:352 harvests/views.py:371

@@ -56,8 +56,8 @@ class HarvestCreateForm(forms.ModelForm):
         fields = [
             'scheduled_on',
             'title',
-            'harvest_type',
             'annotation',
+            'harvest_type',
 
             'archive_it',
             'tests',
@@ -65,10 +65,10 @@ class HarvestCreateForm(forms.ModelForm):
             'manuals',
             'combined',
 
-            'target_frequency',
+            'topic_collections',
             'custom_seeds',
             'custom_sources',
-            'topic_collections',
+            'target_frequency',
             'topic_collection_frequency',
 
             'duration',
@@ -88,8 +88,8 @@ class HarvestEditForm(HarvestCreateForm):
             'status',
             'scheduled_on',
             'title',
-            'harvest_type',
             'annotation',
+            'harvest_type',
 
             'archive_it',
             'tests',
@@ -97,10 +97,10 @@ class HarvestEditForm(HarvestCreateForm):
             'manuals',
             'combined',
 
-            'target_frequency',
+            'topic_collections',
             'custom_seeds',
             'custom_sources',
-            'topic_collections',
+            'target_frequency',
             'topic_collection_frequency',
 
             'duration',
