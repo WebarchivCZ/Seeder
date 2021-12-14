@@ -38,8 +38,15 @@
             <span class="pull-right">{{ object.paraharvest|fa_boolean }}</span></li>
         <li class="list-group-item">{% trans 'Manuals' %}:
             <span class="pull-right">
-                {{ object.manuals|yesno:"Manuals  ,Automatic  " }}
-                {{ object.manuals|fa_boolean }}
+                {% if object.manuals %}
+                <span class="text-success">{{ True|fa_boolean }} <b>Manuals</b></span>
+                <span> | </span>
+                <span class="text-muted">Automatic</span>
+                {% else %}
+                <span class="text-muted">Manuals</span>
+                <span> | </span>
+                <span class="text-success">{{ True|fa_boolean }} <b>Automatic</b></span>
+                {% endif %}
             </span></li>
         <li class="list-group-item">{% trans 'Combined' %}:
             <span class="pull-right">{{ object.combined|fa_boolean }}</span></li>
