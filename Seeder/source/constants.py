@@ -11,7 +11,7 @@ STATE_COMMUNICATING = 'communication'       # V jednání
 STATE_ACCEPTED_BY_STAFF = 'vote_accepted'   # Přijato Webarchivem
 STATE_DECLINED_BY_STAFF = 'vote_declined'   # Odmítnuto Webarchivem
 STATE_DECLINED_BY_PUBLISHER = 'declined'    # Odmítnuto vydavatelem
-STATE_PUBLISHER_IGNORED_REQUEST = 'ignored' # Bez odezvy
+STATE_PUBLISHER_IGNORED_REQUEST = 'ignored'  # Bez odezvy
 STATE_RUNNING = 'success'                   # Archivován
 STATE_WITHOUT_PUBLISHER = 'forced'          # Archivováno bez smlouvy
 STATE_CONTRACT_EXPIRED = 'expired'          # Bez smlouvy
@@ -125,6 +125,11 @@ SUGGESTED_CHOICES = (
     (SUGGESTED_VISITOR, _('Visitor')),
     (SUGGESTED_ISSN, _('ISSN')),
     (SUGGESTED_CURATOR, _('Curator')),
+)
+
+SUGGESTED_BOLD = (
+    SUGGESTED_PUBLISHER,
+    SUGGESTED_ISSN,
 )
 
 

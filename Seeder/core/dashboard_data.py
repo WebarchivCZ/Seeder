@@ -25,6 +25,7 @@ class DashboardCard(object):
     get_badge = NotImplemented
     get_color = NotImplemented
     get_title = NotImplemented
+    get_font_weight = NotImplemented
     empty = False
     reversable = False
 
@@ -68,6 +69,8 @@ class DashboardCard(object):
                 context_element['color'] = self.get_color(element)
             if callable(self.get_title):
                 context_element['title'] = self.get_title(element)
+            if callable(self.get_font_weight):
+                context_element['font_weight'] = self.get_font_weight(element)
             yield context_element
 
 
@@ -76,6 +79,7 @@ class ContractsCard(DashboardCard):
         Cards that displays contracts in negotiation.
     """
     id = "contracts"
+    # Smlouva v jednání
     title = _('Contracts in negotiation')
 
     def get_title(self, element):
@@ -97,6 +101,7 @@ class ContractsWithoutCommunication(ContractsCard):
         email communication.
     """
     id = "no_communication"
+    # Smlouvy bez rozvrhnutého jednání
     title = _('Contracts without scheduled communication')
 
     def get_queryset(self):
@@ -127,6 +132,7 @@ class ManagedVotingRounds(VoteCard):
     Cards with voting rounds that user manages
     """
     id = "voting_rounds"
+    # Hodnocení, která spravujete
     title = _('Voting rounds you manage')
 
     def get_queryset(self):
@@ -141,6 +147,13 @@ class ManagedVotingRounds(VoteCard):
         has_voted = element.vote_set.filter(author=self.user).exists()
         return 'success' if has_voted else ''
 
+    def get_font_weight(self, element):
+        if (element.source.suggested_by
+                in source_models.constants.SUGGESTED_BOLD):
+            return "bold"
+        else:
+            return "normal"
+
 
 class OpenToVoteRounds(VoteCard):
     """
@@ -148,6 +161,7 @@ class OpenToVoteRounds(VoteCard):
     vote yet...
     """
     id = "open_votes"
+    # Otevřená hodnocení
     title = _('Open voting rounds')
 
     def get_queryset(self):
@@ -158,6 +172,13 @@ class OpenToVoteRounds(VoteCard):
             Q(state=voting_models.constants.VOTE_INITIAL) &
             Q(source__state__in=source_models.constants.VOTE_STATES)
         ).annotate(Count('vote')).order_by('vote__count', Lower('source__name'))
+
+    def get_font_weight(self, element):
+        if (element.source.suggested_by
+                in source_models.constants.SUGGESTED_BOLD):
+            return "bold"
+        else:
+            return "normal"
 
 
 class SourceCard(DashboardCard):
@@ -177,6 +198,7 @@ class SourceOwned(SourceCard):
     Displays sources that you own and are
     """
     id = "sources_owned"
+    # Zdroje, které spravujete
     title = _('Sources curating')
 
     def get_queryset(self):
@@ -190,6 +212,7 @@ class TechnicalReview(SourceCard):
     Displays sources that you own and are
     """
     id = "technical"
+    # Zdroje, které potřebují technický dohled
     title = _('Sources that need technical review')
 
     def get_queryset(self):
@@ -200,6 +223,7 @@ class TechnicalReview(SourceCard):
 
 class WithoutAleph(SourceCard):
     id = "without_aleph"
+    # Zdroje ke katalogizaci
     title = _('Source without Aleph ID')
 
     def get_queryset(self):
@@ -211,6 +235,7 @@ class WithoutAleph(SourceCard):
 
 class QAOpened(DashboardCard):
     id = "QAopened"
+    # Rozpracovaná kontrola kvality
     title = _('Opened QAs')
 
     def get_title(self, element):
@@ -225,6 +250,7 @@ class QAOpened(DashboardCard):
 
 class NewQA(DashboardCard):
     id = "qa_create"
+    # Zdroje ke kontrole
     title = _('Sources needing QA')
 
     def get_url(self, element):
