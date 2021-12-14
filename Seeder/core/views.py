@@ -1,14 +1,16 @@
+from .json_constants import store_constants
 from . import forms
 
 from django.http.response import HttpResponseRedirect
 from django.views.generic.base import RedirectView, TemplateView, View
 from django.utils.translation import ugettext_lazy as _
 from django.contrib import messages
-from django.views.generic.edit import UpdateView
+from django.urls import reverse_lazy
 from django.utils.http import is_safe_url
 from django.utils import translation
+from django.views.generic.edit import FormView, UpdateView
 
-from .generic_views import LoginMixin, MessageView
+from .generic_views import LoginMixin, MessageView, SuperuserRequiredMixin
 from .dashboard_data import get_cards, cards_registry, REVERSE_SESSION
 
 
@@ -110,3 +112,27 @@ class DevNotesView(LoginMixin, TemplateView):
     """
 
     template_name = 'dev_notes.html'
+
+
+class EditJsonConstantsView(SuperuserRequiredMixin, FormView, MessageView):
+    """
+    View for superusers where they can change constants accessed elsewhere in
+    the application.
+    e.g. "webarchive_size" on WWW Index
+    """
+    form_class = forms.UpdateJsonConstantsForm
+    template_name = 'edit_form.html'
+    success_url = reverse_lazy('core:json_constants')
+    view_name = "json_constants"
+
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        # This will show up in the page title & header w/ edit_form.html
+        ctx["object"] = _("Constants")
+        return ctx
+
+    def form_valid(self, form):
+        # Fields are created using constants' keys, so just store everything
+        store_constants(form.cleaned_data)
+        self.add_message(_("Constants successfully updated"), messages.SUCCESS)
+        return super().form_valid(form)
