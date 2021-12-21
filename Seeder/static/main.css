@@ -146,6 +146,10 @@ table td {
  * Fix Select2 vs Bootstrap form-control styling
  */
 
-.select2-selection {
+.select2-selection--single {
+  padding: 0 !important;
+}
+
+.select2-selection--multiple {
   height: auto !important;
 }
