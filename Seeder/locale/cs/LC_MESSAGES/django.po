@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Seeder\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-09-02 09:12+0000\n"
+"POT-Creation-Date: 2021-12-21 09:37+0000\n"
 "PO-Revision-Date: 2018-04-16 13:40+0200\n"
 "Last-Translator: mariehaskovcova <marie.haskovcova@nkp.cz>, 2017\n"
 "Language-Team: Czech (https://www.transifex.com/webarchivecz/teams/43032/"
@@ -30,7 +30,7 @@ msgid "Wayback blacklist"
 msgstr "Wayback blacklist"
 
 #: blacklists/models.py:28 comments/models.py:55
-#: harvests/templates/harvest.html:13
+#: harvests/templates/harvest.html:15
 msgid "Title"
 msgstr "Název"
 
@@ -46,7 +46,7 @@ msgstr "Blacklist"
 msgid "Blacklists"
 msgstr "Blacklisty"
 
-#: blacklists/templates/blacklists.html:5 core/generic_views.py:146
+#: blacklists/templates/blacklists.html:5 core/generic_views.py:152
 msgid "Add"
 msgstr "Přidat"
 
@@ -58,7 +58,7 @@ msgstr "Dump"
 #: contracts/templates/contract.html:114
 #: harvests/templates/external_topic_collection.html:96
 #: harvests/templates/harvest.html:9 harvests/templates/harvest_config.html:11
-#: harvests/templates/topic_collection.html:111
+#: harvests/templates/topic_collection.html:106
 #: publishers/templates/publisher.html:36 source/templates/edit_source.html:7
 #: source/templates/edit_source.html:11 source/templates/source.html:157
 #: source/templates/source.html:166 templates/edit_form.html:6
@@ -70,7 +70,7 @@ msgstr "Upravit"
 #: contracts/templates/contract.html:113
 #: harvests/templates/external_topic_collection.html:97
 #: harvests/templates/harvest_config.html:13
-#: harvests/templates/topic_collection.html:112
+#: harvests/templates/topic_collection.html:107
 #: publishers/templates/publisher.html:35 source/templates/source.html:168
 #: www/templates/news_admin_detail.html:86
 msgid "History"
@@ -158,8 +158,8 @@ msgstr "Komentář"
 
 #: comments/models.py:169 contracts/templates/contract.html:122
 #: harvests/templates/external_topic_collection.html:112
-#: harvests/templates/harvest.html:99
-#: harvests/templates/topic_collection.html:117
+#: harvests/templates/harvest.html:110
+#: harvests/templates/topic_collection.html:112
 #: publishers/templates/publisher.html:39 qa/templates/detail.html:22
 #: source/templates/source.html:200 voting/templates/voting_round.html:118
 #: www/templates/news_admin_detail.html:90
@@ -215,7 +215,7 @@ msgid "Narodni knihovna CR - archivace Vasich webovych stranek"
 msgstr "Narodni knihovna CR - archivace Vasich webovych stranek"
 
 #: contracts/models.py:55 contracts/templates/contract.html:20
-#: harvests/models.py:236 harvests/models.py:687 source/models.py:268
+#: harvests/models.py:238 harvests/models.py:690 source/models.py:268
 #: voting/models.py:27
 msgid "State"
 msgstr "Stav"
@@ -346,7 +346,7 @@ msgstr "Přiřazené zdroje"
 
 #: contracts/templates/contract.html:112
 #: harvests/templates/external_topic_collection.html:95
-#: harvests/templates/topic_collection.html:110
+#: harvests/templates/topic_collection.html:105
 #: publishers/templates/publisher.html:34 source/templates/source.html:165
 #: www/templates/news_admin_detail.html:83
 msgid "Links"
@@ -360,7 +360,7 @@ msgstr "Smazat"
 msgid "Proceed with deletion?"
 msgstr "Pokračovat se smazáním?"
 
-#: contracts/templates/contract.html:139 harvests/templates/calendar.html:49
+#: contracts/templates/contract.html:139 harvests/templates/calendar.html:50
 #: source/templates/source.html:221
 msgid "Close"
 msgstr "Zavřít"
@@ -433,80 +433,88 @@ msgstr "Nelze smazat smlouvu s číslem"
 msgid "Contract deleted."
 msgstr "Smlouva smazána"
 
-#: core/dashboard_data.py:79
+#: core/dashboard_data.py:83
 msgid "Contracts in negotiation"
 msgstr "Smlouvy v jednání"
 
-#: core/dashboard_data.py:100
+#: core/dashboard_data.py:105
 msgid "Contracts without scheduled communication"
 msgstr "Smlouvy bez rozvrhnutého jednání"
 
-#: core/dashboard_data.py:130
+#: core/dashboard_data.py:147
 msgid "Voting rounds you manage"
 msgstr "Hodnocení, která spravujete"
 
-#: core/dashboard_data.py:151
+#: core/dashboard_data.py:177
 msgid "Open voting rounds"
 msgstr "Otevřená hodnocení"
 
-#: core/dashboard_data.py:180
+#: core/dashboard_data.py:215
 msgid "Sources curating"
 msgstr "Zdroje, které spravujete"
 
-#: core/dashboard_data.py:193
+#: core/dashboard_data.py:229
 msgid "Sources that need technical review"
 msgstr "Zdroje, které potřebují technický dohled"
 
-#: core/dashboard_data.py:203
+#: core/dashboard_data.py:240
 msgid "Source without Aleph ID"
 msgstr "Zdroje ke katalogizaci"
 
-#: core/dashboard_data.py:214
+#: core/dashboard_data.py:252
 msgid "Opened QAs"
 msgstr "Rozpracovaná kontrola kvality"
 
-#: core/dashboard_data.py:228
+#: core/dashboard_data.py:267
 msgid "Sources needing QA"
 msgstr "Zdroje ke kontrole"
 
-#: core/forms.py:19
+#: core/forms.py:21
 msgid "Check this to delete this object"
 msgstr "Potvrďte pro odstranění"
 
-#: core/generic_views.py:75
+#: core/generic_views.py:81
 msgid "Insufficient permissions."
 msgstr "Nedostatečné oprávnění."
 
-#: core/generic_views.py:83
+#: core/generic_views.py:89
 #, python-brace-format
 msgid "Action {0} not allowed."
 msgstr "Akce {0} nepovolena."
 
-#: core/generic_views.py:93
+#: core/generic_views.py:99
 msgid "Changes successfully saved."
 msgstr "Změny uloženy."
 
-#: core/views.py:17 templates/base.html:87 templates/card_detail.html:9
+#: core/views.py:19 templates/base.html:87 templates/card_detail.html:9
 msgid "Dashboard"
 msgstr "Hlavní stránka"
 
-#: core/views.py:74
+#: core/views.py:76
 msgid "Change user information"
 msgstr "Změnit uživatelské informace"
 
-#: core/views.py:82
+#: core/views.py:84
 msgid "Profile changed."
 msgstr "Profil změněn."
 
-#: core/views.py:92
+#: core/views.py:94
 msgid "Password changed successfully."
 msgstr "Heslo bylo úspěšně změněno."
 
-#: harvests/admin.py:54 harvests/forms.py:50 harvests/forms.py:134
+#: core/views.py:131 templates/base.html:141
+msgid "Constants"
+msgstr "Konstanty"
+
+#: core/views.py:137
+msgid "Constants successfully updated"
+msgstr "Konstanty byly úspěšně změněny"
+
+#: harvests/admin.py:54 harvests/forms.py:57 harvests/forms.py:141
 msgid "dataLimit cannot be over 1TB"
 msgstr "dataLimit nesmí být přes 1TB"
 
-#: harvests/models.py:47 harvests/templates/topic_collection.html:54
+#: harvests/models.py:47 harvests/templates/topic_collection.html:49
 msgid "Seeds by frequency"
 msgstr "Semínka podle frekvence"
 
@@ -519,192 +527,196 @@ msgid "Custom seeds URL"
 msgstr "Mimosystémová semínka"
 
 #: harvests/models.py:61
-msgid "One URL per line"
-msgstr "Jedna URL na řádku"
+msgid ""
+"Sem vložte všechna semínka, po uložení zde zůstanou zdroje bez záznamu v "
+"Seederu, ostatní budu v poli Přiřazené zdroje"
+msgstr ""
+"Sem vložte všechna semínka, po uložení zde zůstanou zdroje bez záznamu v "
+"Seederu, ostatní budu v poli Přiřazené zdroje"
 
-#: harvests/models.py:208
+#: harvests/models.py:210
 msgid "Planned"
 msgstr "Plánované"
 
-#: harvests/models.py:209
+#: harvests/models.py:211
 msgid "Ready to harvest"
 msgstr "Připraveno na sklízení"
 
-#: harvests/models.py:210 harvests/models.py:673
+#: harvests/models.py:212 harvests/models.py:675
 msgid "Running"
 msgstr "Probíhající"
 
-#: harvests/models.py:211
+#: harvests/models.py:213
 msgid "Success"
 msgstr "Úspěšné"
 
-#: harvests/models.py:212
+#: harvests/models.py:214
 msgid "Success with failures"
 msgstr "Úspěšné se závadami"
 
-#: harvests/models.py:213
+#: harvests/models.py:215
 msgid "Cancelled"
 msgstr "Zrušené"
 
-#: harvests/models.py:214
+#: harvests/models.py:216
 msgid "Failed"
 msgstr "Neúspěšné"
 
-#: harvests/models.py:238 harvests/models.py:778
-#: harvests/templates/harvest.html:15 harvests/templates/harvest_config.html:18
+#: harvests/models.py:240 harvests/models.py:781
+#: harvests/templates/harvest.html:19 harvests/templates/harvest_config.html:18
 msgid "Harvest type"
 msgstr "Typ sklizně"
 
-#: harvests/models.py:240 harvests/models.py:591 harvests/models.py:691
+#: harvests/models.py:242 harvests/models.py:593 harvests/models.py:694
 #: harvests/tables.py:76 harvests/tables.py:93 www/tables.py:13
 msgid "title"
 msgstr "Název"
 
-#: harvests/models.py:242 harvests/templates/harvest.html:21
+#: harvests/models.py:244 harvests/templates/harvest.html:17
 #: source/models.py:255 source/templates/source.html:87
 msgid "Annotation"
 msgstr "Anotace"
 
-#: harvests/models.py:244 harvests/models.py:706
+#: harvests/models.py:246 harvests/models.py:709
 msgid "Date of harvest"
 msgstr "Datum sklizně"
 
-#: harvests/models.py:252 harvests/templates/harvest.html:27
+#: harvests/models.py:254 harvests/templates/harvest.html:27
 msgid "Date frozen"
 msgstr "Datum zmrazení"
 
-#: harvests/models.py:257
+#: harvests/models.py:259
 msgid "Topic collections"
 msgstr "Tematické kolekce"
 
-#: harvests/models.py:262 harvests/templates/harvest.html:37
+#: harvests/models.py:264 harvests/templates/harvest.html:58
 msgid "Topic collections by frequency"
 msgstr "Tematické kolekce podle frekvence"
 
-#: harvests/models.py:270 harvests/templates/harvest.html:43
+#: harvests/models.py:272 harvests/templates/harvest.html:37
 msgid "Paraharvest"
 msgstr "Parasklizeň"
 
-#: harvests/models.py:273 harvests/templates/harvest.html:45
+#: harvests/models.py:275 harvests/templates/harvest.html:39
 msgid "Manuals"
 msgstr "Manuals"
 
-#: harvests/models.py:275 harvests/templates/harvest.html:50
+#: harvests/models.py:277 harvests/templates/harvest.html:51
 msgid "Combined"
 msgstr "Combined"
 
-#: harvests/models.py:277 harvests/views.py:382
+#: harvests/models.py:279 harvests/views.py:382
 msgid "ArchiveIt"
 msgstr "ArchiveIt"
 
-#: harvests/models.py:280 harvests/views.py:384
+#: harvests/models.py:282 harvests/views.py:384
 msgid "Tests"
 msgstr "Tests"
 
-#: harvests/models.py:284 harvests/models.py:780
-#: harvests/templates/harvest.html:55 harvests/templates/harvest_config.html:20
+#: harvests/models.py:286 harvests/models.py:783
+#: harvests/templates/harvest.html:65 harvests/templates/harvest_config.html:20
 msgid "duration"
 msgstr "duration"
 
-#: harvests/models.py:286 harvests/models.py:782
-#: harvests/templates/harvest.html:57 harvests/templates/harvest_config.html:22
+#: harvests/models.py:288 harvests/models.py:785
+#: harvests/templates/harvest.html:67 harvests/templates/harvest_config.html:22
 msgid "budget"
 msgstr "budget"
 
-#: harvests/models.py:288 harvests/models.py:784
-#: harvests/templates/harvest.html:59 harvests/templates/harvest_config.html:24
+#: harvests/models.py:290 harvests/models.py:787
+#: harvests/templates/harvest.html:69 harvests/templates/harvest_config.html:24
 msgid "dataLimit"
 msgstr "dataLimit"
 
-#: harvests/models.py:290 harvests/models.py:786
-#: harvests/templates/harvest.html:61 harvests/templates/harvest_config.html:26
+#: harvests/models.py:292 harvests/models.py:789
+#: harvests/templates/harvest.html:71 harvests/templates/harvest_config.html:26
 msgid "documentLimit"
 msgstr "documentLimit"
 
-#: harvests/models.py:292 harvests/models.py:788
-#: harvests/templates/harvest.html:63 harvests/templates/harvest_config.html:28
+#: harvests/models.py:294 harvests/models.py:791
+#: harvests/templates/harvest.html:73 harvests/templates/harvest_config.html:28
 msgid "deduplication"
 msgstr "deduplication"
 
-#: harvests/models.py:296 harvests/templates/harvest.html:72
+#: harvests/models.py:298 harvests/templates/harvest.html:82
 msgid "Seeds not harvested"
 msgstr "Nesklizená semínka"
 
-#: harvests/models.py:595 harvests/models.py:694 source/constants.py:127
+#: harvests/models.py:597 harvests/models.py:697 source/constants.py:127
 #: source/models.py:239
 msgid "Curator"
 msgstr "Kurátor"
 
-#: harvests/models.py:599 source/templates/source.html:91
+#: harvests/models.py:601 source/templates/source.html:91
 msgid "keywords"
 msgstr "Klíčová slova"
 
-#: harvests/models.py:602 harvests/models.py:711
+#: harvests/models.py:604 harvests/models.py:714
 msgid "annotation"
 msgstr "anotace"
 
-#: harvests/models.py:605
+#: harvests/models.py:607
 msgid "image"
 msgstr "obrázek"
 
-#: harvests/models.py:656 harvests/templates/topic_collection.html:13
+#: harvests/models.py:658 harvests/templates/topic_collection.html:13
 msgid "External Topic Collection"
 msgstr "Externí tématická kolekce"
 
-#: harvests/models.py:657 templates/base.html:109
+#: harvests/models.py:659 templates/base.html:109
 msgid "External Topic Collections"
 msgstr "Externí tématické kolekce"
 
-#: harvests/models.py:674
+#: harvests/models.py:676
 msgid "New"
 msgstr "Aktualita"
 
-#: harvests/models.py:675
+#: harvests/models.py:677
 msgid "Finished"
 msgstr "Hotovo"
 
-#: harvests/models.py:715
+#: harvests/models.py:718
 msgid "All sources are under open license or contract"
 msgstr "Všechny zdroje jsou nasmlouvány nebo vystaveny pod otevřenou licencí"
 
-#: harvests/models.py:718
+#: harvests/models.py:721
 msgid "Date from"
 msgstr "Od"
 
-#: harvests/models.py:719
+#: harvests/models.py:722
 msgid "Date to"
 msgstr "Do"
 
-#: harvests/models.py:723 harvests/templates/topic_collection.html:29
+#: harvests/models.py:726 harvests/templates/topic_collection.html:24
 msgid "Collection alias"
 msgstr "Alias kolekce"
 
-#: harvests/models.py:725 harvests/templates/topic_collection.html:87
+#: harvests/models.py:728 harvests/templates/topic_collection.html:82
 msgid "Aggregation with same type"
 msgstr "Agregovat se stejným typem"
 
-#: harvests/models.py:750
+#: harvests/models.py:753
 msgid "Internal Topic Collection"
 msgstr "Interní tématická kolekce"
 
-#: harvests/models.py:751 harvests/templates/external_topic_collection.html:82
+#: harvests/models.py:754 harvests/templates/external_topic_collection.html:82
 #: templates/base.html:112
 msgid "Internal Topic Collections"
 msgstr "Interní tématické kolekce"
 
-#: harvests/models.py:757
+#: harvests/models.py:760
 msgid "file"
 msgstr "pole"
 
-#: harvests/models.py:791
+#: harvests/models.py:794
 msgid "Harvest Configuration"
 msgstr "Konfigurace sklizní"
 
-#: harvests/models.py:792 harvests/views.py:397 templates/base.html:126
+#: harvests/models.py:795 harvests/views.py:397 templates/base.html:126
 msgid "Harvest Configurations"
 msgstr "Konfigurace sklizní"
 
-#: harvests/models.py:796
+#: harvests/models.py:799
 #, python-format
 msgid "Configuration for %(type)s Harvests"
 msgstr "Konfigurace pro %(type)s Sklizně"
@@ -718,7 +730,7 @@ msgid "Today"
 msgstr "Dnes"
 
 #: harvests/templates/calendar.html:24 templates/bootstrap_table.html:52
-#: templates/card_detail.html:35 templates/search/search.html:44
+#: templates/card_detail.html:37 templates/search/search.html:44
 msgid "Next"
 msgstr "Další"
 
@@ -745,25 +757,25 @@ msgid "Order"
 msgstr "Pořadí"
 
 #: harvests/templates/external_topic_collection.html:18
-#: harvests/templates/topic_collection.html:34
+#: harvests/templates/topic_collection.html:29
 #: www/templates/news_admin_detail.html:12
 msgid "title [cs]"
 msgstr "název (ČJ)"
 
 #: harvests/templates/external_topic_collection.html:23
-#: harvests/templates/topic_collection.html:39
+#: harvests/templates/topic_collection.html:34
 #: www/templates/news_admin_detail.html:17
 msgid "title [en]"
 msgstr "název (AJ)"
 
 #: harvests/templates/external_topic_collection.html:28
-#: harvests/templates/topic_collection.html:44
+#: harvests/templates/topic_collection.html:39
 #: www/templates/news_admin_detail.html:22
 msgid "annotation [cs]"
 msgstr "anotace (ČJ)"
 
 #: harvests/templates/external_topic_collection.html:33
-#: harvests/templates/topic_collection.html:49
+#: harvests/templates/topic_collection.html:44
 #: www/templates/news_admin_detail.html:27
 msgid "annotation [en]"
 msgstr "anotace (AJ)"
@@ -774,13 +786,13 @@ msgid "Screenshot"
 msgstr "Screenshot"
 
 #: harvests/templates/external_topic_collection.html:51
-#: harvests/templates/topic_collection.html:70 source/templates/source.html:64
+#: harvests/templates/topic_collection.html:65 source/templates/source.html:64
 #: www/templates/news_admin_detail.html:76
 msgid "Created at"
 msgstr "Vytvořeno"
 
 #: harvests/templates/external_topic_collection.html:55
-#: harvests/templates/topic_collection.html:74 source/templates/source.html:52
+#: harvests/templates/topic_collection.html:69 source/templates/source.html:52
 msgid "Owner"
 msgstr "Kurátor"
 
@@ -794,7 +806,7 @@ msgid "WWW link"
 msgstr "Link na web"
 
 #: harvests/templates/external_topic_collection.html:71
-#: harvests/templates/topic_collection.html:79
+#: harvests/templates/topic_collection.html:74
 msgid "Attachments"
 msgstr "Přílohy"
 
@@ -803,7 +815,7 @@ msgid "on Internal"
 msgstr "na Interních"
 
 #: harvests/templates/external_topic_collection.html:98
-#: harvests/templates/topic_collection.html:113
+#: harvests/templates/topic_collection.html:108
 msgid "Seed URLs"
 msgstr "URL Semínek"
 
@@ -819,14 +831,13 @@ msgstr "Nepublikovat"
 msgid "Publish"
 msgstr "Publikovat"
 
-#: harvests/templates/harvest.html:17
-#: harvests/templates/topic_collection.html:24 source/templates/source.html:27
-msgid "Status"
-msgstr "Stav"
-
-#: harvests/templates/harvest.html:19
+#: harvests/templates/harvest.html:13
 msgid "Scheduled on"
 msgstr "Naplánováno na"
+
+#: harvests/templates/harvest.html:21 source/templates/source.html:27
+msgid "Status"
+msgstr "Stav"
 
 #: harvests/templates/harvest.html:23 publishers/tables.py:10
 #: source/tables.py:17
@@ -842,19 +853,23 @@ msgstr "Poslední změna"
 msgid "List of urls"
 msgstr "Seznam URL adres"
 
-#: harvests/templates/harvest.html:35
-msgid "Sources by frequency"
-msgstr "Zdroje podle frekvence"
-
-#: harvests/templates/harvest.html:39
+#: harvests/templates/harvest.html:33
 msgid "Include ArchiveIt seeds"
 msgstr "Zahrnout ArchiveIt semínka"
 
-#: harvests/templates/harvest.html:41
+#: harvests/templates/harvest.html:35
 msgid "Include Tests seeds"
 msgstr "Zahrnout Tests semínka"
 
-#: harvests/templates/harvest.html:68
+#: harvests/templates/harvest.html:56
+msgid "Sources by frequency"
+msgstr "Zdroje podle frekvence"
+
+#: harvests/templates/harvest.html:62
+msgid "Technická nastavení"
+msgstr "Technická nastavení"
+
+#: harvests/templates/harvest.html:78
 msgid ""
 "Poznámka: Po přepnutí sklizně do stavu running dojde ke zmražení semínek a "
 "nelze je měnit."
@@ -862,15 +877,15 @@ msgstr ""
 "Poznámka: Po přepnutí sklizně do stavu running dojde ke zmražení semínek a "
 "nelze je měnit."
 
-#: harvests/templates/harvest.html:77
+#: harvests/templates/harvest.html:87
 msgid "Included topic collections"
 msgstr "Zahrnuté tematické kolekce"
 
-#: harvests/templates/harvest.html:85
+#: harvests/templates/harvest.html:96
 msgid "Custom seeds"
 msgstr "Mimosystémová semínka"
 
-#: harvests/templates/harvest.html:90
+#: harvests/templates/harvest.html:101
 msgid "Custom sources"
 msgstr "Manuálně nadefinované zdroje"
 
@@ -883,19 +898,19 @@ msgstr "Katalog sklizní"
 msgid "No assigned External Topic Collection"
 msgstr "Žádná přiřazená Externí tématická kolekce"
 
-#: harvests/templates/topic_collection.html:60
+#: harvests/templates/topic_collection.html:55
 msgid "Harvested from"
 msgstr "Sklízeno od"
 
-#: harvests/templates/topic_collection.html:65
+#: harvests/templates/topic_collection.html:60
 msgid "Harvested till"
 msgstr "Sklízeno do"
 
-#: harvests/templates/topic_collection.html:91
+#: harvests/templates/topic_collection.html:86
 msgid "All sources are open?"
 msgstr "Všechny zdroje jsou otevřené?"
 
-#: harvests/templates/topic_collection.html:99 qa/templates/qa_form.html:20
+#: harvests/templates/topic_collection.html:94 qa/templates/qa_form.html:20
 #: source/models.py:538 source/templates/source.html:152
 msgid "Seeds"
 msgstr "Semínka"
@@ -907,8 +922,8 @@ msgstr "Sklizně"
 #: harvests/views.py:112 harvests/views.py:130
 msgid "Harvest contains no seeds!"
 msgstr ""
-"Sklizeň neobsahuje žádná semínka! Tím pádem nemůže být zmrazena "
-"(stav nastaven na 'Připraveno na sklízení')"
+"Sklizeň neobsahuje žádná semínka! Tím pádem nemůže být zmrazena (stav "
+"nastaven na 'Připraveno na sklízení')"
 
 #: harvests/views.py:352 harvests/views.py:371
 msgid "Available URLs for date"
@@ -1459,15 +1474,15 @@ msgstr "Generovat whitelist"
 msgid "Search logs"
 msgstr "Historie hledání"
 
-#: templates/base.html:143
+#: templates/base.html:148
 msgid "Bug report"
 msgstr "Nahlásit chybu"
 
-#: templates/base.html:144
+#: templates/base.html:149
 msgid "Read the docs"
 msgstr "Dokumentace"
 
-#: templates/base.html:145
+#: templates/base.html:150
 msgid "Harvests urls"
 msgstr "URL Sklizní"
 
@@ -1483,7 +1498,7 @@ msgstr "Odpovědět "
 msgid "Submit comment"
 msgstr "Odeslat komentář"
 
-#: templates/bootstrap_table.html:48 templates/card_detail.html:31
+#: templates/bootstrap_table.html:48 templates/card_detail.html:33
 #: templates/search/search.html:40
 msgid "Previous"
 msgstr "Předchozí"
@@ -1492,7 +1507,7 @@ msgstr "Předchozí"
 msgid "You are done, nothing more to do here."
 msgstr "Hotovo, už zde není potřeba nic udělat."
 
-#: templates/dashboard.html:22
+#: templates/dashboard.html:23
 msgid "Reverse order"
 msgstr "Obrátit pořadí"
 
@@ -1982,5 +1997,6 @@ msgstr "Webarchiv.cz - archivace webových stránek %(url)s"
 msgid "New nomination %(url)s"
 msgstr "Nový návrh %(url)s"
 
-#~ msgid "Date/Type URL"
-#~ msgstr "Date/Type URL"
+#: harvests/forms.py:27
+msgid "One URL per line"
+msgstr "Jedna URL na řádku"
