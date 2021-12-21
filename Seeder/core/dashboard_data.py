@@ -1,7 +1,7 @@
 from django.urls import reverse
 from django.utils.translation import ugettext_lazy as _
 from django.utils import timezone
-from django.db.models import Count, Q
+from django.db.models import Count, Q, Case, When, Value, BooleanField
 from django.db.models.functions import Lower
 from django.core.paginator import Paginator
 
@@ -126,6 +126,17 @@ class VoteCard(DashboardCard):
     def get_badge(self, element):
         return element.vote__count
 
+    def annotate_and_order(self, qs):
+        """ Order the SUGGESTED_BOLD on top -> Vote count -> Source name """
+        return qs.annotate(
+            Count('vote'),
+            priority=Case(
+                When(source__suggested_by__in=source_models.constants.SUGGESTED_BOLD,
+                     then=Value(True)),
+                default=Value(False), output_field=BooleanField()
+            )
+        ).order_by('-priority', 'vote__count', Lower('source__name'))
+
 
 class ManagedVotingRounds(VoteCard):
     """
@@ -136,11 +147,12 @@ class ManagedVotingRounds(VoteCard):
     title = _('Voting rounds you manage')
 
     def get_queryset(self):
-        return voting_models.VotingRound.objects.filter(
+        qs = voting_models.VotingRound.objects.filter(
             source__active=True,
             source__owner=self.user,
             state=voting_models.constants.VOTE_INITIAL
-        ).annotate(Count('vote')).order_by('vote__count', Lower('source__name'))
+        )
+        return self.annotate_and_order(qs)
 
     def get_color(self, element):
         # User has cast a vote in the voting round
@@ -165,13 +177,14 @@ class OpenToVoteRounds(VoteCard):
     title = _('Open voting rounds')
 
     def get_queryset(self):
-        return voting_models.VotingRound.objects.filter(
+        qs = voting_models.VotingRound.objects.filter(
             ~Q(source__owner=self.user) &
             ~Q(vote__author=self.user) &
             Q(source__active=True) &
             Q(state=voting_models.constants.VOTE_INITIAL) &
             Q(source__state__in=source_models.constants.VOTE_STATES)
-        ).annotate(Count('vote')).order_by('vote__count', Lower('source__name'))
+        )
+        return self.annotate_and_order(qs)
 
     def get_font_weight(self, element):
         if (element.source.suggested_by
