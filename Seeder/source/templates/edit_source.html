@@ -26,14 +26,11 @@
     function check_frequency(e) {
         const val = $("#id_state").val();
         const freq_empty = $("#id_frequency").val() == "";
-        const alert_msg =
-            `{% trans "Zdroje se stavem 'Archivován' a 'Archivován bez smlouvy' musí mít vybranou Frekvenci sklízení" %}`;
         // Archivován || Archivován bez smlouvy
         if ((val == "success" || val == "forced") && freq_empty) {
             $("#id_frequency").prop("required", true);
             // Make label red
             $("#id_frequency").parent().find("label").css("color", "red");
-            alert(alert_msg);
         } else {
             $("#id_frequency").prop("required", false);
             // Reset color
