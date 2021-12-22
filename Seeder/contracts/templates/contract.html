@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% load i18n %}
 {% load humanize %}
+{% load core %}
 
 
 {% block title %}{% trans 'Contract for' %} {{ object.publisher }}{% endblock %}
@@ -34,7 +35,7 @@
                             {{object.creative_commons_type}}
                         {% endif %}
                     {% else %}
-                        {% trans 'No' %}
+                        {{ False|fa_boolean }}
                     {% endif %}
                     </td>
                 </tr>
@@ -78,7 +79,7 @@
                 {% endif %}
                 <tr>
                     <td>{% trans 'Publisher responded to communication' %}</td>
-                    <td>{{ object.publisher_responds|yesno }}</td>
+                    <td>{{ object.publisher_responds|fa_boolean }}</td>
                 </tr>
             </tbody>
         </table>
@@ -89,7 +90,7 @@
             {% for email in object.emailnegotiation_set.all %}
                 <li class="list-group-item">
                     {{ email.title }}<br/>
-                    {{ email.scheduled_date|naturalday }}, {% trans 'sent' %}: {{ email.sent|yesno }}
+                    {{ email.scheduled_date|naturalday }}, {% trans 'sent' %}: {{ email.sent|fa_boolean }}
                 </li>
             {% empty %}
                 <p>{% trans 'Sorry, nothing found.' %}</p>

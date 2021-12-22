@@ -1,25 +1,41 @@
 {% extends 'base.html' %}
 {% load i18n %}
 {% load humanize %}
+{% load core %}
 {% load bootstrap3 %}
 
 {% block title %}{{ object }} {% endblock %}
 {% block page_header %}{{ object }}{% endblock %}o
 {% block content %}
-    <div class="col-xs-12 col-md-12">
-        <ul class="list-group">
-          <li class="list-group-item">{% trans 'Source' %}: <span class="pull-right"><a href="{{ object.source.get_absolute_url }}">{{ object.source }}</a></span></li>
-          <li class="list-group-item">{% trans 'Checked by' %}: <span class="pull-right">{{ object.checked_by }}</span></li>
-          <li class="list-group-item">{% trans 'Content changed' %}: <span class="pull-right">{{ object.content_changed|yesno }}</span></li>
-          <li class="list-group-item">{% trans 'Technical quality changed' %}: <span class="pull-right">{{ object.technical_quality_changed|yesno }}</span></li>
-          <li class="list-group-item">{% trans 'Comment' %}: <span class="pull-right">{{ object.comment }}</span></li>
-          <li class="list-group-item">{% trans 'Action' %}: <span class="pull-right">{{ object.get_source_action_display }}</span></li>
-        </ul>
-    </div>
+<div class="col-xs-12 col-md-12">
+    <ul class="list-group">
+        <li class="list-group-item">
+            {% trans 'Source' %}: <span class="pull-right"><a
+                    href="{{ object.source.get_absolute_url }}">{{ object.source }}</a></span>
+        </li>
+        <li class="list-group-item">
+            {% trans 'Checked by' %}: <span class="pull-right">{{ object.checked_by }}</span>
+        </li>
+        <li class="list-group-item">
+            {% trans 'Content changed' %}: <span class="pull-right">{{ object.content_changed|fa_boolean }}</span>
+        </li>
+        <li class="list-group-item">
+            {% trans 'Technical quality changed' %}: <span
+                class="pull-right">{{ object.technical_quality_changed|fa_boolean }}</span>
+        </li>
+        <li class="list-group-item">
+            {% trans 'Action' %}: <span class="pull-right">{{ object.get_source_action_display }}</span>
+        </li>
+        <li class="list-group-item">
+            {% trans 'Comment' %}:
+            <span class="pull-right">{{ object.comment }}</span>
+        </li>
+    </ul>
+</div>
 
 
-    <div class="col-xs-12 col-md-12">
-        <h2>{% trans 'Comments' %}</h2>
-        {% include 'bootstrap_comments.html' with comments=comments form=comment_form %}
-    </div>
+<div class="col-xs-12 col-md-12">
+    <h2>{% trans 'Comments' %}</h2>
+    {% include 'bootstrap_comments.html' with comments=comments form=comment_form %}
+</div>
 {% endblock %}
