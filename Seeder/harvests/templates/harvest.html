@@ -10,16 +10,16 @@
 {% block content %}
 <div class="col-xs-12 col-md-12">
     <ul class="list-group">
+        <li class="list-group-item">{% trans 'Scheduled on' %}:
+            <span class="pull-right">{{ object.scheduled_on }}</span></li>
         <li class="list-group-item">{% trans 'Title' %}:
             <span class="pull-right">{{ object.title }}</span></li>
+        <li class="list-group-item">{% trans 'Annotation' %}:
+            <span class="pull-right">{{ object.annotation }}</span></li>
         <li class="list-group-item">{% trans 'Harvest type' %}:
             <span class="pull-right">{{ object.get_harvest_type_display }}</span></li>
         <li class="list-group-item">{% trans 'Status' %}:
             <span class="pull-right">{{ object.get_status_display }}</span></li>
-        <li class="list-group-item">{% trans 'Scheduled on' %}:
-            <span class="pull-right">{{ object.scheduled_on }}</span></li>
-        <li class="list-group-item">{% trans 'Annotation' %}:
-            <span class="pull-right">{{ object.annotation }}</span></li>
         <li class="list-group-item">{% trans 'Created' %}:
             <span class="pull-right">{{ object.created }}</span></li>
         <li class="list-group-item">{% trans 'Last changed' %}:
@@ -29,13 +29,7 @@
         <li class="list-group-item"><a href="{% url 'harvests:urls' object.id %}">{% trans 'List of urls' %}</a></li>
     </ul>
 
-
-
     <ul class="list-group">
-        <li class="list-group-item">{% trans 'Sources by frequency' %}:
-            <span class="pull-right">{{ object.get_target_frequency_display }}</span></li>
-        <li class="list-group-item">{% trans 'Topic collections by frequency' %}:
-            <span class="pull-right">{{ object.get_topic_collection_frequency_display }}</span></li>
         <li class="list-group-item">{% trans 'Include ArchiveIt seeds' %}:
             <span class="pull-right">{{ object.archive_it|fa_boolean }}</span></li>
         <li class="list-group-item">{% trans 'Include Tests seeds' %}:
@@ -44,12 +38,28 @@
             <span class="pull-right">{{ object.paraharvest|fa_boolean }}</span></li>
         <li class="list-group-item">{% trans 'Manuals' %}:
             <span class="pull-right">
-                {{ object.manuals|yesno:"Manuals  ,Automatic  " }}
-                {{ object.manuals|fa_boolean }}
+                {% if object.manuals %}
+                <span class="text-success">{{ True|fa_boolean }} <b>Manuals</b></span>
+                <span> | </span>
+                <span class="text-muted">Automatic</span>
+                {% else %}
+                <span class="text-muted">Manuals</span>
+                <span> | </span>
+                <span class="text-success">{{ True|fa_boolean }} <b>Automatic</b></span>
+                {% endif %}
             </span></li>
         <li class="list-group-item">{% trans 'Combined' %}:
             <span class="pull-right">{{ object.combined|fa_boolean }}</span></li>
     </ul>
+
+    <ul class="list-group">
+        <li class="list-group-item">{% trans 'Sources by frequency' %}:
+            <span class="pull-right">{{ object.get_target_frequency_display }}</span></li>
+        <li class="list-group-item">{% trans 'Topic collections by frequency' %}:
+            <span class="pull-right">{{ object.get_topic_collection_frequency_display }}</span></li>
+    </ul>
+
+    <h3>{% trans 'Technická nastavení' %}</h3>
 
     <ul class="list-group">
         <li class="list-group-item">{% trans 'duration' %}:
@@ -79,21 +89,22 @@
         {% for topic_collection in object.topic_collections.all %}
         <li class="list-group-item"><a href="{{ topic_collection.get_absolute_url }}">{{ topic_collection }}</a></li>
         {% endfor %}
-        {% endif %}
+    </ul>
+    {% endif %}
 
-        {% if object.custom_seeds %}
-        <h3>{% trans 'Custom seeds' %}:</h3>
-        <textarea class="form-control" rows="3">{{ object.custom_seeds }}</textarea>
-        {% endif %}
+    {% if object.custom_seeds %}
+    <h3>{% trans 'Custom seeds' %}:</h3>
+    <textarea class="form-control" rows="3">{{ object.custom_seeds }}</textarea>
+    {% endif %}
 
-        {% if object.custom_sources.exists %}
-        <h3>{% trans 'Custom sources' %}</h3>
-        <ul class="list-group">
-            {% for source in object.custom_sources.all %}
-            <li class="list-group-item">{{ source }}</li>
-            {% endfor %}
-        </ul>
-        {% endif %}
+    {% if object.custom_sources.exists %}
+    <h3>{% trans 'Custom sources' %}</h3>
+    <ul class="list-group">
+        {% for source in object.custom_sources.all %}
+        <li class="list-group-item">{{ source }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
 </div>
 <div class="col-xs-12 col-md-12">
     <h2>{% trans 'Comments' %}</h2>

@@ -58,7 +58,9 @@ class HarvestAbstractModel(BaseModel):
 
     custom_seeds = models.TextField(
         verbose_name=_('Custom seeds URL'),
-        help_text=_('One URL per line'),
+        help_text=_("Sem vložte všechna semínka, po uložení zde zůstanou "
+                    "zdroje bez záznamu v Seederu, ostatní budu v poli "
+                    "Přiřazené zdroje"),
         blank=True,
         null=True
     )
@@ -682,6 +684,7 @@ class TopicCollection(HarvestAbstractModel):
         null=True, blank=True,
     )
 
+    # ? DEPRECATED: not used anywhere, could be deleted
     status = models.IntegerField(
         choices=STATES,
         verbose_name=_('State'),

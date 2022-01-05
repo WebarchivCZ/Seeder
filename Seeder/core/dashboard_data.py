@@ -1,7 +1,7 @@
 from django.urls import reverse
 from django.utils.translation import ugettext_lazy as _
 from django.utils import timezone
-from django.db.models import Count, Q
+from django.db.models import Count, Q, Case, When, Value, BooleanField
 from django.db.models.functions import Lower
 from django.core.paginator import Paginator
 
@@ -25,6 +25,7 @@ class DashboardCard(object):
     get_badge = NotImplemented
     get_color = NotImplemented
     get_title = NotImplemented
+    get_font_weight = NotImplemented
     empty = False
     reversable = False
 
@@ -68,6 +69,8 @@ class DashboardCard(object):
                 context_element['color'] = self.get_color(element)
             if callable(self.get_title):
                 context_element['title'] = self.get_title(element)
+            if callable(self.get_font_weight):
+                context_element['font_weight'] = self.get_font_weight(element)
             yield context_element
 
 
@@ -76,6 +79,7 @@ class ContractsCard(DashboardCard):
         Cards that displays contracts in negotiation.
     """
     id = "contracts"
+    # Smlouva v jednání
     title = _('Contracts in negotiation')
 
     def get_title(self, element):
@@ -97,6 +101,7 @@ class ContractsWithoutCommunication(ContractsCard):
         email communication.
     """
     id = "no_communication"
+    # Smlouvy bez rozvrhnutého jednání
     title = _('Contracts without scheduled communication')
 
     def get_queryset(self):
@@ -121,25 +126,45 @@ class VoteCard(DashboardCard):
     def get_badge(self, element):
         return element.vote__count
 
+    def annotate_and_order(self, qs):
+        """ Order the SUGGESTED_BOLD on top -> Vote count -> Source name """
+        return qs.annotate(
+            Count('vote'),
+            priority=Case(
+                When(source__suggested_by__in=source_models.constants.SUGGESTED_BOLD,
+                     then=Value(True)),
+                default=Value(False), output_field=BooleanField()
+            )
+        ).order_by('-priority', 'vote__count', Lower('source__name'))
+
 
 class ManagedVotingRounds(VoteCard):
     """
     Cards with voting rounds that user manages
     """
     id = "voting_rounds"
+    # Hodnocení, která spravujete
     title = _('Voting rounds you manage')
 
     def get_queryset(self):
-        return voting_models.VotingRound.objects.filter(
+        qs = voting_models.VotingRound.objects.filter(
             source__active=True,
             source__owner=self.user,
             state=voting_models.constants.VOTE_INITIAL
-        ).annotate(Count('vote')).order_by('vote__count', Lower('source__name'))
+        )
+        return self.annotate_and_order(qs)
 
     def get_color(self, element):
         # User has cast a vote in the voting round
         has_voted = element.vote_set.filter(author=self.user).exists()
         return 'success' if has_voted else ''
+
+    def get_font_weight(self, element):
+        if (element.source.suggested_by
+                in source_models.constants.SUGGESTED_BOLD):
+            return "bold"
+        else:
+            return "normal"
 
 
 class OpenToVoteRounds(VoteCard):
@@ -148,16 +173,25 @@ class OpenToVoteRounds(VoteCard):
     vote yet...
     """
     id = "open_votes"
+    # Otevřená hodnocení
     title = _('Open voting rounds')
 
     def get_queryset(self):
-        return voting_models.VotingRound.objects.filter(
+        qs = voting_models.VotingRound.objects.filter(
             ~Q(source__owner=self.user) &
             ~Q(vote__author=self.user) &
             Q(source__active=True) &
             Q(state=voting_models.constants.VOTE_INITIAL) &
             Q(source__state__in=source_models.constants.VOTE_STATES)
-        ).annotate(Count('vote')).order_by('vote__count', Lower('source__name'))
+        )
+        return self.annotate_and_order(qs)
+
+    def get_font_weight(self, element):
+        if (element.source.suggested_by
+                in source_models.constants.SUGGESTED_BOLD):
+            return "bold"
+        else:
+            return "normal"
 
 
 class SourceCard(DashboardCard):
@@ -177,6 +211,7 @@ class SourceOwned(SourceCard):
     Displays sources that you own and are
     """
     id = "sources_owned"
+    # Zdroje, které spravujete
     title = _('Sources curating')
 
     def get_queryset(self):
@@ -190,6 +225,7 @@ class TechnicalReview(SourceCard):
     Displays sources that you own and are
     """
     id = "technical"
+    # Zdroje, které potřebují technický dohled
     title = _('Sources that need technical review')
 
     def get_queryset(self):
@@ -200,6 +236,7 @@ class TechnicalReview(SourceCard):
 
 class WithoutAleph(SourceCard):
     id = "without_aleph"
+    # Zdroje ke katalogizaci
     title = _('Source without Aleph ID')
 
     def get_queryset(self):
@@ -211,6 +248,7 @@ class WithoutAleph(SourceCard):
 
 class QAOpened(DashboardCard):
     id = "QAopened"
+    # Rozpracovaná kontrola kvality
     title = _('Opened QAs')
 
     def get_title(self, element):
@@ -225,6 +263,7 @@ class QAOpened(DashboardCard):
 
 class NewQA(DashboardCard):
     id = "qa_create"
+    # Zdroje ke kontrole
     title = _('Sources needing QA')
 
     def get_url(self, element):

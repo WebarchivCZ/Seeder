@@ -17,9 +17,8 @@ from core.generic_views import ObjectMixinFixed, MessageView
 from publishers import forms as publisher_forms
 from core import generic_views
 from comments.views import CommentViewGeneric
-from contracts import constants as contract_constants
 
-from . import forms, models, tables, field_filters
+from . import forms, models, tables, field_filters, constants
 
 
 def show_publisher_create_form(wizard):
@@ -38,9 +37,27 @@ def show_publisher_choose_form(wizard):
     return cleaned_data.get('publisher', False)
 
 
-class SourceView(generic_views.LoginMixin):
+class SourceView(generic_views.LoginMixin, MessageView):
     view_name = 'sources'
     model = models.Source
+
+    def dispatch(self, request, *args, **kwargs):
+        if hasattr(self, "get_object"):
+            msg = (_("Zdroje se stavem 'Archivován' a 'Archivován bez smlouvy' "
+                     "musí mít vybranou Frekvenci sklízení"), messages.ERROR)
+            obj = self.get_object()
+            if isinstance(obj, models.Source):
+                # Archiving states should have Frequency set
+                if (obj.state in constants.ARCHIVING_STATES and
+                        obj.frequency is None):
+                    self.add_message(*msg)
+            elif isinstance(obj, models.Seed):
+                if (obj.source.state in constants.ARCHIVING_STATES and
+                        obj.source.frequency is None):
+                    self.add_message(*msg)
+        else:
+            pass
+        return super().dispatch(request, *args, **kwargs)
 
 
 class AddSource(generic_views.LoginMixin, SessionWizardView):
@@ -166,7 +183,7 @@ class SourceEdit(SourceView, generic_views.EditView):
     template_name = 'edit_source.html'
 
 
-class DeleteView(View, MessageView, SourceView, ObjectMixinFixed):
+class DeleteView(View, SourceView, ObjectMixinFixed):
     def post(self, request, *args, **kwargs):
         s = self.get_object()
 

@@ -1,5 +1,6 @@
 {% extends "base_www.html" %}
 {% load i18n %}
+{% load json_constants %}
 {% get_current_language as lang %}
 
 
@@ -142,14 +143,14 @@ web{% endif %}{% endblock title %}
 
                     {% if lang == "cs" %}
                     <p><a href="{% url "www:index" %}">Webarchiv</a> k {% now "SHORT_DATE_FORMAT" %} obsahuje <span
-                            class="h1-size">{% include "includes/webarchive_size.txt" %}</span> dat. První dokument byl
+                            class="h1-size">{% json_constant "webarchive_size" %}</span> dat. První dokument byl
                         archivován 3. 9. 2001.</p>
                     <hr><br>
                     <p>Celkem jsme s autory uzavřeli <span class="h1-size">{{ contract_count }}</span> smluv. Poslední
                         aktuální smlouvy:</p>
                     {% else %}
                     <p><a href="{% url "www:index" %}">Webarchiv</a> contains to {% now "SHORT_DATE_FORMAT" %} <span
-                            class="h1-size">{% include "includes/webarchive_size.txt" %}</span> data. The first website
+                            class="h1-size">{% json_constant "webarchive_size" %}</span> data. The first website
                         was harvested in 3. 9. 2001.</p>
                     <hr><br>
                     <p>We concluded <span class="h1-size">{{ contract_count }}</span> contracts with a publishers at the

@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% load i18n bootstrap3 thumbnail static %}
+{% load i18n bootstrap3 thumbnail static core %}
 
 {% block title %} {{ source }} {% endblock %}
 {% block page_header %} {{ source }}{% endblock %}
@@ -46,7 +46,7 @@
 
                 <tr>
                     <td>{% trans 'Dead' %}</td>
-                    <td>{{ source.dead_source|yesno }}</td>
+                    <td>{{ source.dead_source|fa_boolean }}</td>
                 </tr>
                 <tr>
                     <td>{% trans 'Owner' %}</td>

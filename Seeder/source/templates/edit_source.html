@@ -4,21 +4,42 @@
 {% load static %}
 
 {% block title %}
-    {% trans 'Edit' %} {{ object }}
+{% trans 'Edit' %} {{ object }}
 {% endblock %}
 
 {% block page_header %}
-    {% trans 'Edit' %} {{ object }}
+{% trans 'Edit' %} {{ object }}
 {% endblock %}
 
 {% block extrahead %}
-    {{ form.media }}
+{{ form.media }}
 {% endblock %}
 
 {% block content %}
-    <form class="" method="post" enctype="multipart/form-data" novalidate>
-        {% csrf_token %}
-        {% bootstrap_form form %}
-        <input type="submit" class="btn btn-primary btn-block" value="{% trans 'Send' %}" />
-    </form>
+<form class="" method="post" enctype="multipart/form-data" novalidate>
+    {% csrf_token %}
+    {% bootstrap_form form %}
+    <input type="submit" class="btn btn-primary btn-block" value="{% trans 'Send' %}" />
+</form>
+<!-- Additional validation based on selected Source state -->
+<script>
+    function check_frequency(e) {
+        const val = $("#id_state").val();
+        const freq_empty = $("#id_frequency").val() == "";
+        // Archivován || Archivován bez smlouvy
+        if ((val == "success" || val == "forced") && freq_empty) {
+            $("#id_frequency").prop("required", true);
+            // Make label red
+            $("#id_frequency").parent().find("label").css("color", "red");
+        } else {
+            $("#id_frequency").prop("required", false);
+            // Reset color
+            $("#id_frequency").parent().find("label").css("color", "");
+        }
+    }
+    // Check initially and bind to changes in State and Frequency
+    $(window).on("load", check_frequency);
+    $("#id_state").on("change", check_frequency);
+    $("#id_frequency").on("change", check_frequency);
+</script>
 {% endblock %}

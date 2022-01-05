@@ -1,7 +1,7 @@
 from django.core.exceptions import ValidationError
 from multiupload.fields import MultiUploadMetaField, MultiUploadMetaInput
 from django import forms
-from django.utils.translation import gettext as _
+from django.utils.translation import gettext as _, gettext_lazy as _lazy
 from dal import autocomplete
 from . import models
 
@@ -22,10 +22,17 @@ class PatchedMultiFileField(MultiUploadMetaField):
         )
 
 
-autocomplete_widgets = {
-    'custom_sources': autocomplete.ModelSelect2Multiple(
-        url='source:source_autocomplete'
-    )
+custom_seeds_widget = {
+    "custom_seeds": forms.widgets.Textarea(attrs={
+        "placeholder": _lazy("One URL per line"),
+    })
+}
+
+harvest_widgets = {
+    "custom_sources": autocomplete.ModelSelect2Multiple(
+        url="source:source_autocomplete"
+    ),
+    **custom_seeds_widget,
 }
 
 
@@ -56,8 +63,8 @@ class HarvestCreateForm(forms.ModelForm):
         fields = [
             'scheduled_on',
             'title',
-            'harvest_type',
             'annotation',
+            'harvest_type',
 
             'archive_it',
             'tests',
@@ -65,10 +72,10 @@ class HarvestCreateForm(forms.ModelForm):
             'manuals',
             'combined',
 
-            'target_frequency',
+            'topic_collections',
             'custom_seeds',
             'custom_sources',
-            'topic_collections',
+            'target_frequency',
             'topic_collection_frequency',
 
             'duration',
@@ -77,7 +84,7 @@ class HarvestCreateForm(forms.ModelForm):
             'documentLimit',
             'deduplication',
         ]
-        widgets = autocomplete_widgets
+        widgets = harvest_widgets
 
 
 class HarvestEditForm(HarvestCreateForm):
@@ -88,8 +95,8 @@ class HarvestEditForm(HarvestCreateForm):
             'status',
             'scheduled_on',
             'title',
-            'harvest_type',
             'annotation',
+            'harvest_type',
 
             'archive_it',
             'tests',
@@ -97,10 +104,10 @@ class HarvestEditForm(HarvestCreateForm):
             'manuals',
             'combined',
 
-            'target_frequency',
+            'topic_collections',
             'custom_seeds',
             'custom_sources',
-            'topic_collections',
+            'target_frequency',
             'topic_collection_frequency',
 
             'duration',
@@ -111,7 +118,7 @@ class HarvestEditForm(HarvestCreateForm):
 
             'seeds_not_harvested',
         ]
-        widgets = autocomplete_widgets
+        widgets = harvest_widgets
 
 
 class HarvestConfigCreateForm(forms.ModelForm):
@@ -187,6 +194,7 @@ class InternalTopicCollectionForm(forms.ModelForm):
             'custom_sources': autocomplete.ModelSelect2Multiple(
                 url='source:source_public_autocomplete'
             ),
+            **custom_seeds_widget,
         }
 
 

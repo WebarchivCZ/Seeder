@@ -136,6 +136,11 @@
                 <li id="searchlog">
                     <a href="{% url 'search:list' %}">{% trans 'Search logs' %}</a>
                 </li>
+                {% if user.is_superuser %}
+                <li id="json_constants">
+                    <a href="{% url 'core:json_constants' %}">{% trans 'Constants' %}</a>
+                </li>
+                {% endif %}
 
                 <hr>
 

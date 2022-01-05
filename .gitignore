@@ -96,3 +96,6 @@ legacy_dumps/*
 
 # Minimize chance docker-compose files with env will end up in repository
 ci/docker-compose-*
+
+# JSON Constants
+Seeder/settings/constants.json

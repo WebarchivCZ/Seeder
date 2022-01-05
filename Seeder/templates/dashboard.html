@@ -2,50 +2,52 @@
 {% load i18n %}
 
 {% block extrahead %}
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/masonry/3.3.0/masonry.pkgd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/masonry/3.3.0/masonry.pkgd.min.js"></script>
 {% endblock %}
 
 
 {% block content %}
-    {% if all_empty %}
-        <h1>{% trans "You are done, nothing more to do here." %}</h1>
-    {% endif %}
-    <div class="grid">
-        {% for card in cards %}
-            {% if not card.empty %}
-                <div class="col-md-5 col-sm-5 col-l-3 grid-item">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <a href="{% url 'core:card' card=card.id %}">{{ card.title }}</a>
-                            <span class="pull-right">
-                                {% if card.reversable %}
-                                <a href="{% url 'core:card_reverse' card=card.id %}?next={{ request.path }}" title="{% trans 'Reverse order' %}"><i class="fas fa-sort"></i></a>
-                                {% endif %}
-                                {{ card.get_count }}
-                            </span>
-                        </div>
-                        <ul class="list-group">
-                            {% for element in card.elements %}
-                                <a href="{{ element.url }}" target="_blank" class="list-group-item list-group-item-{{ element.color }}">
-                                    {% if element.title %}
-                                        {{ element.title }}
-                                    {% else %}
-                                        {{ element.instance }}
-                                    {% endif %}
-                                    <span class="badge">{{ element.badge }}</span>
-                                </a>
-                            {% endfor %}
-                        </ul>
-                    </div>
-                </div>
-
-            {% endif %}
-        {% endfor %}
+{% if all_empty %}
+<h1>{% trans "You are done, nothing more to do here." %}</h1>
+{% endif %}
+<div class="grid">
+    {% for card in cards %}
+    {% if not card.empty %}
+    <div class="col-md-5 col-sm-5 col-l-3 grid-item">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <a href="{% url 'core:card' card=card.id %}">{{ card.title }}</a>
+                <span class="pull-right">
+                    {% if card.reversable %}
+                    <a href="{% url 'core:card_reverse' card=card.id %}?next={{ request.path }}"
+                        title="{% trans 'Reverse order' %}"><i class="fas fa-sort"></i></a>
+                    {% endif %}
+                    {{ card.get_count }}
+                </span>
+            </div>
+            <ul class="list-group">
+                {% for element in card.elements %}
+                <a href="{{ element.url }}" target="_blank" class="list-group-item list-group-item-{{ element.color }}"
+                    style="font-weight: {{ element.font_weight|default:'normal' }}">
+                    {% if element.title %}
+                    {{ element.title }}
+                    {% else %}
+                    {{ element.instance }}
+                    {% endif %}
+                    <span class="badge">{{ element.badge }}</span>
+                </a>
+                {% endfor %}
+            </ul>
+        </div>
     </div>
+
+    {% endif %}
+    {% endfor %}
+</div>
 {% endblock %}
 
 {% block extrajs %}
-    <script>
+<script>
     $('.grid').masonry({
         itemSelector: '.grid-item',
         columnWidth: 300

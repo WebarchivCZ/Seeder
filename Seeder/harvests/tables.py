@@ -78,7 +78,7 @@ class TopicCollectionTable(tables.Table):
 
     class Meta:
         model = models.TopicCollection
-        fields = ('title', 'status')
+        fields = ('title',)
 
         attrs = {
             'class': 'table table-striped table-hover'
@@ -96,7 +96,7 @@ class ExternalTopicCollectionTable(tables.Table):
 
     class Meta:
         model = models.ExternalTopicCollection
-        fields = ('order', 'change_order', 'title', 'status')
+        fields = ('order', 'change_order', 'title',)
 
         attrs = {
             'class': 'table table-striped table-hover'
