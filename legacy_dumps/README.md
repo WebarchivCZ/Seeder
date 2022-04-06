@@ -1,4 +1,10 @@
-### First drop all tables in the schema
+### Create a database dump
+
+`docker compose exec postgres bash`
+`pg_dump -U postgres -fc postgres > dump.dmp`
+`docker cp seeder_postgres_1:/dump.dmp ./legacy_dumps/`
+
+### Drop all tables in the schema
 
 Source: https://stackoverflow.com/questions/3327312/how-can-i-drop-all-the-tables-in-a-postgresql-database
 
