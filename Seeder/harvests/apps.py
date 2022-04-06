@@ -6,6 +6,9 @@ class HarvestsConfig(AppConfig):
     verbose_name = "harvests"
 
     def ready(self):
-        from .models import HarvestConfiguration
-        HarvestConfiguration.create_defaults()
+        try:
+            from .models import HarvestConfiguration
+            HarvestConfiguration.create_defaults()
+        except:
+            print("!! Couldn't create HarvestConfiguration defaults !!")
         print("HarvestConfiguration defaults created if they didn't exist")
