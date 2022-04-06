@@ -39,6 +39,5 @@ class ContractFilter(BaseFilterSet):
             'state': ('exact',),
             'valid_from': ('exact',),
             'valid_to': ('exact',),
-            'is_cc': ('exact',),
             'in_communication': ('exact',),
         }

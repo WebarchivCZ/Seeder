@@ -75,8 +75,4 @@ class SourceFilter(BaseFilterSet):
             'dead_source': ('exact',),
             'created': ('exact',),
             'last_changed': ('exact',),
-            'has_alephid': ('exact',),
-            'has_issn': ('exact',),
-            'has_cc': ('exact',),
-            'contract_number': ('exact',),
         }
