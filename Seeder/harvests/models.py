@@ -43,13 +43,6 @@ class HarvestAbstractModel(BaseModel):
     status = NotImplemented
     scheduled_on = NotImplemented
 
-    target_frequency = PatchedMultiSelectField(
-        verbose_name=_('Seeds by frequency'),
-        choices=source_constants.SOURCE_FREQUENCY_PER_YEAR,
-        blank=True,
-        null=True
-    )
-
     custom_sources = models.ManyToManyField(
         Source,
         verbose_name=_('Included sources'),
@@ -244,6 +237,12 @@ class Harvest(HarvestAbstractModel):
         _('Annotation'), null=True, blank=True)
     scheduled_on = DateTimePickerField(
         verbose_name=_('Date of harvest'))
+    target_frequency = PatchedMultiSelectField(
+        verbose_name=_('Seeds by frequency'),
+        choices=source_constants.SOURCE_FREQUENCY_PER_YEAR,
+        blank=True,
+        null=True
+    )
 
     # Automatic/dynamic fields
     seeds_frozen = models.TextField(
@@ -690,6 +689,14 @@ class TopicCollection(HarvestAbstractModel):
         related_name="internal_collections",
         related_query_name="internal_collection",
         null=True, blank=True,
+    )
+
+    # Should be named differently because it's semantically different
+    target_frequency = PatchedMultiSelectField(
+        verbose_name=_('Frequency'),
+        choices=source_constants.SOURCE_FREQUENCY_PER_YEAR,
+        blank=True,
+        null=True
     )
 
     # ? DEPRECATED: not used anywhere, could be deleted
