@@ -650,6 +650,14 @@ class ExternalTopicCollection(BaseModel, OrderedModel):
         return reverse(
             'harvests:external_collection_detail', args=[str(self.id)])
 
+    @property
+    def image_file_exists(self):
+        try:
+            self.image.file
+        except Exception:
+            return False
+        return True
+
     def __str__(self):
         sign = '✔' if self.active else '✗'
         return '{0} {1}'.format(sign, self.title)
