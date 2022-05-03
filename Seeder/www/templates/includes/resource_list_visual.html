@@ -14,7 +14,7 @@ Display: <a href="" class="current">visual</a>,
         <div class="item-visual">
             <a href="{{ source.wayback_url }} ">
                 <div class="img-wrapper thumb">
-                    {% if source.screenshot %}
+                    {% if source.screenshot_file_exists %}
                     {% thumbnail source.screenshot "206x156" crop="center" as im %}
                     <img src="{{ im.url }}" class="aspect-ratio" width="{{ im.width }}" height="{{ im.height }}">
                     {% endthumbnail %}
