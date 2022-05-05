@@ -1,0 +1,1348 @@
+openapi: 3.0.2
+info:
+  title: ''
+  version: ''
+paths:
+  /seeder/api/category/{id}/:
+    get:
+      operationId: retrieveCategory
+      description: ''
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: A unique integer value identifying this category.
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                properties:
+                  id:
+                    type: integer
+                    readOnly: true
+                  name:
+                    type: string
+                    maxLength: 150
+                  sub_categories:
+                    type: array
+                    items:
+                      properties:
+                        id:
+                          type: integer
+                          readOnly: true
+                        name:
+                          type: string
+                          maxLength: 255
+                        subcategory_id:
+                          type: string
+                          nullable: true
+                          maxLength: 40
+                      required:
+                      - name
+                required:
+                - name
+                - sub_categories
+          description: ''
+  /seeder/api/source/{id}/:
+    get:
+      operationId: retrieveSource
+      description: Viewset that does not implement listing, deleting and creating
+        of sources.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: A unique integer value identifying this Source.
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                properties:
+                  id:
+                    type: integer
+                    readOnly: true
+                  publisher:
+                    properties:
+                      id:
+                        type: integer
+                        readOnly: true
+                      contacts:
+                        type: array
+                        items:
+                          properties:
+                            id:
+                              type: integer
+                              readOnly: true
+                            active:
+                              type: boolean
+                            created:
+                              type: string
+                              format: date-time
+                              readOnly: true
+                            last_changed:
+                              type: string
+                              format: date-time
+                              readOnly: true
+                            name:
+                              type: string
+                              nullable: true
+                              maxLength: 256
+                            email:
+                              type: string
+                              format: email
+                              maxLength: 254
+                            phone:
+                              type: string
+                              nullable: true
+                              maxLength: 128
+                            address:
+                              type: string
+                              nullable: true
+                            position:
+                              type: string
+                              nullable: true
+                              maxLength: 256
+                            publisher:
+                              type: integer
+                          required:
+                          - email
+                          - publisher
+                      active:
+                        type: boolean
+                      created:
+                        type: string
+                        format: date-time
+                        readOnly: true
+                      last_changed:
+                        type: string
+                        format: date-time
+                        readOnly: true
+                      name:
+                        type: string
+                        maxLength: 150
+                    required:
+                    - contacts
+                    - name
+                    type: object
+                    readOnly: true
+                  seed:
+                    properties:
+                      id:
+                        type: integer
+                        readOnly: true
+                      active:
+                        type: boolean
+                      created:
+                        type: string
+                        format: date-time
+                        readOnly: true
+                      last_changed:
+                        type: string
+                        format: date-time
+                        readOnly: true
+                      main_seed:
+                        type: boolean
+                      url:
+                        type: string
+                        format: uri
+                        maxLength: 200
+                        pattern: "^(?:[a-z0-9\\.\\-\\+]*)://(?:[^\\s:@/]+(?::[^\\\
+                          s:@/]*)?@)?(?:(?:0|25[0-5]|2[0-4]\\d|1\\d?\\d?|[1-9]\\d?)(?:\\\
+                          .(?:0|25[0-5]|2[0-4]\\d|1\\d?\\d?|[1-9]\\d?)){3}|\\[[0-9a-f:\\\
+                          .]+\\]|([a-z\xA1-\uFFFF0-9](?:[a-z\xA1-\uFFFF0-9-]{0,61}[a-z\xA1\
+                          -\uFFFF0-9])?(?:\\.(?!-)[a-z\xA1-\uFFFF0-9-]{1,63}(?<!-))*\\\
+                          .(?!-)(?:[a-z\xA1-\uFFFF-]{2,63}|xn--[a-z0-9]{1,59})(?<!-)\\\
+                          .?|localhost))(?::\\d{2,5})?(?:[/?#][^\\s]*)?\\Z"
+                      state:
+                        enum:
+                        - inc
+                        - exc
+                        - old
+                      comment:
+                        type: string
+                        nullable: true
+                      from_time:
+                        type: string
+                        format: date
+                        nullable: true
+                      to_time:
+                        type: string
+                        format: date
+                        nullable: true
+                      javascript:
+                        type: boolean
+                      global_reject:
+                        type: boolean
+                      youtube:
+                        type: boolean
+                      calendars:
+                        type: boolean
+                      local_traps:
+                        type: boolean
+                      redirect:
+                        type: boolean
+                      robots:
+                        type: boolean
+                      gentle_fetch:
+                        enum:
+                        - default
+                        - low
+                        - very_low
+                      budget:
+                        enum:
+                        - 15000
+                        - 60000
+                        - 5600
+                        nullable: true
+                        minimum: -2147483648
+                        maximum: 2147483647
+                    required:
+                    - url
+                    type: object
+                  mdt:
+                    type: string
+                    readOnly: true
+                  active:
+                    type: boolean
+                  created:
+                    type: string
+                    format: date-time
+                    readOnly: true
+                  last_changed:
+                    type: string
+                    format: date-time
+                    readOnly: true
+                  name:
+                    type: string
+                    maxLength: 256
+                  comment:
+                    type: string
+                    nullable: true
+                  annotation:
+                    type: string
+                    nullable: true
+                  suggested_by:
+                    enum:
+                    - publisher
+                    - visitor
+                    - issn
+                    - curator
+                    nullable: true
+                  aleph_id:
+                    type: string
+                    nullable: true
+                    maxLength: 100
+                  issn:
+                    type: string
+                    nullable: true
+                    maxLength: 20
+                  state:
+                    enum:
+                    - voting
+                    - duplicity
+                    - waiting
+                    - reevaluation
+                    - technical
+                    - communication
+                    - vote_accepted
+                    - vote_declined
+                    - success
+                    - forced
+                    - declined
+                    - ignored
+                    - expired
+                    - terminated
+                  frequency:
+                    enum:
+                    - 0
+                    - 1
+                    - 2
+                    - 4
+                    - 6
+                    - 12
+                    - 52
+                    - 365
+                    nullable: true
+                    minimum: -2147483648
+                    maximum: 2147483647
+                  screenshot:
+                    type: string
+                    format: binary
+                    nullable: true
+                  screenshot_date:
+                    type: string
+                    format: date-time
+                    nullable: true
+                  dead_source:
+                    type: boolean
+                  slug:
+                    type: string
+                    nullable: true
+                    maxLength: 50
+                    pattern: ^[-a-zA-Z0-9_]+$
+                  publisher_contact:
+                    type: integer
+                    nullable: true
+                  category:
+                    type: integer
+                  sub_category:
+                    type: integer
+                    nullable: true
+                  keywords:
+                    type: array
+                    items:
+                      type: integer
+                required:
+                - seed
+                - name
+                - category
+          description: ''
+    patch:
+      operationId: partial_updateSource
+      description: Viewset that does not implement listing, deleting and creating
+        of sources.
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: A unique integer value identifying this Source.
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema: &id001
+              properties:
+                seed:
+                  properties:
+                    id:
+                      type: integer
+                      readOnly: true
+                    active:
+                      type: boolean
+                    created:
+                      type: string
+                      format: date-time
+                      readOnly: true
+                    last_changed:
+                      type: string
+                      format: date-time
+                      readOnly: true
+                    main_seed:
+                      type: boolean
+                    url:
+                      type: string
+                      format: uri
+                      maxLength: 200
+                      pattern: "^(?:[a-z0-9\\.\\-\\+]*)://(?:[^\\s:@/]+(?::[^\\s:@/]*)?@)?(?:(?:0|25[0-5]|2[0-4]\\\
+                        d|1\\d?\\d?|[1-9]\\d?)(?:\\.(?:0|25[0-5]|2[0-4]\\d|1\\d?\\\
+                        d?|[1-9]\\d?)){3}|\\[[0-9a-f:\\.]+\\]|([a-z\xA1-\uFFFF0-9](?:[a-z\xA1\
+                        -\uFFFF0-9-]{0,61}[a-z\xA1-\uFFFF0-9])?(?:\\.(?!-)[a-z\xA1\
+                        -\uFFFF0-9-]{1,63}(?<!-))*\\.(?!-)(?:[a-z\xA1-\uFFFF-]{2,63}|xn--[a-z0-9]{1,59})(?<!-)\\\
+                        .?|localhost))(?::\\d{2,5})?(?:[/?#][^\\s]*)?\\Z"
+                    state:
+                      enum:
+                      - inc
+                      - exc
+                      - old
+                    comment:
+                      type: string
+                      nullable: true
+                    from_time:
+                      type: string
+                      format: date
+                      nullable: true
+                    to_time:
+                      type: string
+                      format: date
+                      nullable: true
+                    javascript:
+                      type: boolean
+                    global_reject:
+                      type: boolean
+                    youtube:
+                      type: boolean
+                    calendars:
+                      type: boolean
+                    local_traps:
+                      type: boolean
+                    redirect:
+                      type: boolean
+                    robots:
+                      type: boolean
+                    gentle_fetch:
+                      enum:
+                      - default
+                      - low
+                      - very_low
+                    budget:
+                      enum:
+                      - 15000
+                      - 60000
+                      - 5600
+                      nullable: true
+                      minimum: -2147483648
+                      maximum: 2147483647
+                  required:
+                  - url
+                  type: object
+                active:
+                  type: boolean
+                name:
+                  type: string
+                  maxLength: 256
+                comment:
+                  type: string
+                  nullable: true
+                annotation:
+                  type: string
+                  nullable: true
+                suggested_by:
+                  enum:
+                  - publisher
+                  - visitor
+                  - issn
+                  - curator
+                  nullable: true
+                aleph_id:
+                  type: string
+                  nullable: true
+                  maxLength: 100
+                issn:
+                  type: string
+                  nullable: true
+                  maxLength: 20
+                state:
+                  enum:
+                  - voting
+                  - duplicity
+                  - waiting
+                  - reevaluation
+                  - technical
+                  - communication
+                  - vote_accepted
+                  - vote_declined
+                  - success
+                  - forced
+                  - declined
+                  - ignored
+                  - expired
+                  - terminated
+                frequency:
+                  enum:
+                  - 0
+                  - 1
+                  - 2
+                  - 4
+                  - 6
+                  - 12
+                  - 52
+                  - 365
+                  nullable: true
+                  minimum: -2147483648
+                  maximum: 2147483647
+                screenshot:
+                  type: string
+                  format: binary
+                  nullable: true
+                screenshot_date:
+                  type: string
+                  format: date-time
+                  nullable: true
+                dead_source:
+                  type: boolean
+                slug:
+                  type: string
+                  nullable: true
+                  maxLength: 50
+                  pattern: ^[-a-zA-Z0-9_]+$
+                publisher_contact:
+                  type: integer
+                  nullable: true
+                category:
+                  type: integer
+                sub_category:
+                  type: integer
+                  nullable: true
+                keywords:
+                  type: array
+                  items:
+                    type: integer
+          application/x-www-form-urlencoded:
+            schema: *id001
+          multipart/form-data:
+            schema: *id001
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                properties:
+                  id:
+                    type: integer
+                    readOnly: true
+                  publisher:
+                    properties:
+                      id:
+                        type: integer
+                        readOnly: true
+                      contacts:
+                        type: array
+                        items:
+                          properties:
+                            id:
+                              type: integer
+                              readOnly: true
+                            active:
+                              type: boolean
+                            created:
+                              type: string
+                              format: date-time
+                              readOnly: true
+                            last_changed:
+                              type: string
+                              format: date-time
+                              readOnly: true
+                            name:
+                              type: string
+                              nullable: true
+                              maxLength: 256
+                            email:
+                              type: string
+                              format: email
+                              maxLength: 254
+                            phone:
+                              type: string
+                              nullable: true
+                              maxLength: 128
+                            address:
+                              type: string
+                              nullable: true
+                            position:
+                              type: string
+                              nullable: true
+                              maxLength: 256
+                            publisher:
+                              type: integer
+                          required:
+                          - email
+                          - publisher
+                      active:
+                        type: boolean
+                      created:
+                        type: string
+                        format: date-time
+                        readOnly: true
+                      last_changed:
+                        type: string
+                        format: date-time
+                        readOnly: true
+                      name:
+                        type: string
+                        maxLength: 150
+                    required:
+                    - contacts
+                    - name
+                    type: object
+                    readOnly: true
+                  seed:
+                    properties:
+                      id:
+                        type: integer
+                        readOnly: true
+                      active:
+                        type: boolean
+                      created:
+                        type: string
+                        format: date-time
+                        readOnly: true
+                      last_changed:
+                        type: string
+                        format: date-time
+                        readOnly: true
+                      main_seed:
+                        type: boolean
+                      url:
+                        type: string
+                        format: uri
+                        maxLength: 200
+                        pattern: "^(?:[a-z0-9\\.\\-\\+]*)://(?:[^\\s:@/]+(?::[^\\\
+                          s:@/]*)?@)?(?:(?:0|25[0-5]|2[0-4]\\d|1\\d?\\d?|[1-9]\\d?)(?:\\\
+                          .(?:0|25[0-5]|2[0-4]\\d|1\\d?\\d?|[1-9]\\d?)){3}|\\[[0-9a-f:\\\
+                          .]+\\]|([a-z\xA1-\uFFFF0-9](?:[a-z\xA1-\uFFFF0-9-]{0,61}[a-z\xA1\
+                          -\uFFFF0-9])?(?:\\.(?!-)[a-z\xA1-\uFFFF0-9-]{1,63}(?<!-))*\\\
+                          .(?!-)(?:[a-z\xA1-\uFFFF-]{2,63}|xn--[a-z0-9]{1,59})(?<!-)\\\
+                          .?|localhost))(?::\\d{2,5})?(?:[/?#][^\\s]*)?\\Z"
+                      state:
+                        enum:
+                        - inc
+                        - exc
+                        - old
+                      comment:
+                        type: string
+                        nullable: true
+                      from_time:
+                        type: string
+                        format: date
+                        nullable: true
+                      to_time:
+                        type: string
+                        format: date
+                        nullable: true
+                      javascript:
+                        type: boolean
+                      global_reject:
+                        type: boolean
+                      youtube:
+                        type: boolean
+                      calendars:
+                        type: boolean
+                      local_traps:
+                        type: boolean
+                      redirect:
+                        type: boolean
+                      robots:
+                        type: boolean
+                      gentle_fetch:
+                        enum:
+                        - default
+                        - low
+                        - very_low
+                      budget:
+                        enum:
+                        - 15000
+                        - 60000
+                        - 5600
+                        nullable: true
+                        minimum: -2147483648
+                        maximum: 2147483647
+                    required:
+                    - url
+                    type: object
+                  mdt:
+                    type: string
+                    readOnly: true
+                  active:
+                    type: boolean
+                  created:
+                    type: string
+                    format: date-time
+                    readOnly: true
+                  last_changed:
+                    type: string
+                    format: date-time
+                    readOnly: true
+                  name:
+                    type: string
+                    maxLength: 256
+                  comment:
+                    type: string
+                    nullable: true
+                  annotation:
+                    type: string
+                    nullable: true
+                  suggested_by:
+                    enum:
+                    - publisher
+                    - visitor
+                    - issn
+                    - curator
+                    nullable: true
+                  aleph_id:
+                    type: string
+                    nullable: true
+                    maxLength: 100
+                  issn:
+                    type: string
+                    nullable: true
+                    maxLength: 20
+                  state:
+                    enum:
+                    - voting
+                    - duplicity
+                    - waiting
+                    - reevaluation
+                    - technical
+                    - communication
+                    - vote_accepted
+                    - vote_declined
+                    - success
+                    - forced
+                    - declined
+                    - ignored
+                    - expired
+                    - terminated
+                  frequency:
+                    enum:
+                    - 0
+                    - 1
+                    - 2
+                    - 4
+                    - 6
+                    - 12
+                    - 52
+                    - 365
+                    nullable: true
+                    minimum: -2147483648
+                    maximum: 2147483647
+                  screenshot:
+                    type: string
+                    format: binary
+                    nullable: true
+                  screenshot_date:
+                    type: string
+                    format: date-time
+                    nullable: true
+                  dead_source:
+                    type: boolean
+                  slug:
+                    type: string
+                    nullable: true
+                    maxLength: 50
+                    pattern: ^[-a-zA-Z0-9_]+$
+                  publisher_contact:
+                    type: integer
+                    nullable: true
+                  category:
+                    type: integer
+                  sub_category:
+                    type: integer
+                    nullable: true
+                  keywords:
+                    type: array
+                    items:
+                      type: integer
+                required:
+                - seed
+                - name
+                - category
+          description: ''
+  /seeder/api/seed/{id}/:
+    get:
+      operationId: retrieveSeed
+      description: Viewset for updating seeds
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: A unique integer value identifying this Seed.
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                properties:
+                  id:
+                    type: integer
+                    readOnly: true
+                  active:
+                    type: boolean
+                  created:
+                    type: string
+                    format: date-time
+                    readOnly: true
+                  last_changed:
+                    type: string
+                    format: date-time
+                    readOnly: true
+                  main_seed:
+                    type: boolean
+                  url:
+                    type: string
+                    format: uri
+                    maxLength: 200
+                    pattern: "^(?:[a-z0-9\\.\\-\\+]*)://(?:[^\\s:@/]+(?::[^\\s:@/]*)?@)?(?:(?:0|25[0-5]|2[0-4]\\\
+                      d|1\\d?\\d?|[1-9]\\d?)(?:\\.(?:0|25[0-5]|2[0-4]\\d|1\\d?\\d?|[1-9]\\\
+                      d?)){3}|\\[[0-9a-f:\\.]+\\]|([a-z\xA1-\uFFFF0-9](?:[a-z\xA1\
+                      -\uFFFF0-9-]{0,61}[a-z\xA1-\uFFFF0-9])?(?:\\.(?!-)[a-z\xA1-\uFFFF\
+                      0-9-]{1,63}(?<!-))*\\.(?!-)(?:[a-z\xA1-\uFFFF-]{2,63}|xn--[a-z0-9]{1,59})(?<!-)\\\
+                      .?|localhost))(?::\\d{2,5})?(?:[/?#][^\\s]*)?\\Z"
+                  state:
+                    enum:
+                    - inc
+                    - exc
+                    - old
+                  comment:
+                    type: string
+                    nullable: true
+                  from_time:
+                    type: string
+                    format: date
+                    nullable: true
+                  to_time:
+                    type: string
+                    format: date
+                    nullable: true
+                  javascript:
+                    type: boolean
+                  global_reject:
+                    type: boolean
+                  youtube:
+                    type: boolean
+                  calendars:
+                    type: boolean
+                  local_traps:
+                    type: boolean
+                  redirect:
+                    type: boolean
+                  robots:
+                    type: boolean
+                  gentle_fetch:
+                    enum:
+                    - default
+                    - low
+                    - very_low
+                  budget:
+                    enum:
+                    - 15000
+                    - 60000
+                    - 5600
+                    nullable: true
+                    minimum: -2147483648
+                    maximum: 2147483647
+                required:
+                - url
+          description: ''
+    put:
+      operationId: updateSeed
+      description: Viewset for updating seeds
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: A unique integer value identifying this Seed.
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema: &id002
+              properties:
+                active:
+                  type: boolean
+                main_seed:
+                  type: boolean
+                url:
+                  type: string
+                  format: uri
+                  maxLength: 200
+                  pattern: "^(?:[a-z0-9\\.\\-\\+]*)://(?:[^\\s:@/]+(?::[^\\s:@/]*)?@)?(?:(?:0|25[0-5]|2[0-4]\\\
+                    d|1\\d?\\d?|[1-9]\\d?)(?:\\.(?:0|25[0-5]|2[0-4]\\d|1\\d?\\d?|[1-9]\\\
+                    d?)){3}|\\[[0-9a-f:\\.]+\\]|([a-z\xA1-\uFFFF0-9](?:[a-z\xA1-\uFFFF\
+                    0-9-]{0,61}[a-z\xA1-\uFFFF0-9])?(?:\\.(?!-)[a-z\xA1-\uFFFF0-9-]{1,63}(?<!-))*\\\
+                    .(?!-)(?:[a-z\xA1-\uFFFF-]{2,63}|xn--[a-z0-9]{1,59})(?<!-)\\.?|localhost))(?::\\\
+                    d{2,5})?(?:[/?#][^\\s]*)?\\Z"
+                state:
+                  enum:
+                  - inc
+                  - exc
+                  - old
+                comment:
+                  type: string
+                  nullable: true
+                from_time:
+                  type: string
+                  format: date
+                  nullable: true
+                to_time:
+                  type: string
+                  format: date
+                  nullable: true
+                javascript:
+                  type: boolean
+                global_reject:
+                  type: boolean
+                youtube:
+                  type: boolean
+                calendars:
+                  type: boolean
+                local_traps:
+                  type: boolean
+                redirect:
+                  type: boolean
+                robots:
+                  type: boolean
+                gentle_fetch:
+                  enum:
+                  - default
+                  - low
+                  - very_low
+                budget:
+                  enum:
+                  - 15000
+                  - 60000
+                  - 5600
+                  nullable: true
+                  minimum: -2147483648
+                  maximum: 2147483647
+              required:
+              - url
+          application/x-www-form-urlencoded:
+            schema: *id002
+          multipart/form-data:
+            schema: *id002
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                properties:
+                  id:
+                    type: integer
+                    readOnly: true
+                  active:
+                    type: boolean
+                  created:
+                    type: string
+                    format: date-time
+                    readOnly: true
+                  last_changed:
+                    type: string
+                    format: date-time
+                    readOnly: true
+                  main_seed:
+                    type: boolean
+                  url:
+                    type: string
+                    format: uri
+                    maxLength: 200
+                    pattern: "^(?:[a-z0-9\\.\\-\\+]*)://(?:[^\\s:@/]+(?::[^\\s:@/]*)?@)?(?:(?:0|25[0-5]|2[0-4]\\\
+                      d|1\\d?\\d?|[1-9]\\d?)(?:\\.(?:0|25[0-5]|2[0-4]\\d|1\\d?\\d?|[1-9]\\\
+                      d?)){3}|\\[[0-9a-f:\\.]+\\]|([a-z\xA1-\uFFFF0-9](?:[a-z\xA1\
+                      -\uFFFF0-9-]{0,61}[a-z\xA1-\uFFFF0-9])?(?:\\.(?!-)[a-z\xA1-\uFFFF\
+                      0-9-]{1,63}(?<!-))*\\.(?!-)(?:[a-z\xA1-\uFFFF-]{2,63}|xn--[a-z0-9]{1,59})(?<!-)\\\
+                      .?|localhost))(?::\\d{2,5})?(?:[/?#][^\\s]*)?\\Z"
+                  state:
+                    enum:
+                    - inc
+                    - exc
+                    - old
+                  comment:
+                    type: string
+                    nullable: true
+                  from_time:
+                    type: string
+                    format: date
+                    nullable: true
+                  to_time:
+                    type: string
+                    format: date
+                    nullable: true
+                  javascript:
+                    type: boolean
+                  global_reject:
+                    type: boolean
+                  youtube:
+                    type: boolean
+                  calendars:
+                    type: boolean
+                  local_traps:
+                    type: boolean
+                  redirect:
+                    type: boolean
+                  robots:
+                    type: boolean
+                  gentle_fetch:
+                    enum:
+                    - default
+                    - low
+                    - very_low
+                  budget:
+                    enum:
+                    - 15000
+                    - 60000
+                    - 5600
+                    nullable: true
+                    minimum: -2147483648
+                    maximum: 2147483647
+                required:
+                - url
+          description: ''
+    patch:
+      operationId: partial_updateSeed
+      description: Viewset for updating seeds
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: A unique integer value identifying this Seed.
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema: &id003
+              properties:
+                active:
+                  type: boolean
+                main_seed:
+                  type: boolean
+                url:
+                  type: string
+                  format: uri
+                  maxLength: 200
+                  pattern: "^(?:[a-z0-9\\.\\-\\+]*)://(?:[^\\s:@/]+(?::[^\\s:@/]*)?@)?(?:(?:0|25[0-5]|2[0-4]\\\
+                    d|1\\d?\\d?|[1-9]\\d?)(?:\\.(?:0|25[0-5]|2[0-4]\\d|1\\d?\\d?|[1-9]\\\
+                    d?)){3}|\\[[0-9a-f:\\.]+\\]|([a-z\xA1-\uFFFF0-9](?:[a-z\xA1-\uFFFF\
+                    0-9-]{0,61}[a-z\xA1-\uFFFF0-9])?(?:\\.(?!-)[a-z\xA1-\uFFFF0-9-]{1,63}(?<!-))*\\\
+                    .(?!-)(?:[a-z\xA1-\uFFFF-]{2,63}|xn--[a-z0-9]{1,59})(?<!-)\\.?|localhost))(?::\\\
+                    d{2,5})?(?:[/?#][^\\s]*)?\\Z"
+                state:
+                  enum:
+                  - inc
+                  - exc
+                  - old
+                comment:
+                  type: string
+                  nullable: true
+                from_time:
+                  type: string
+                  format: date
+                  nullable: true
+                to_time:
+                  type: string
+                  format: date
+                  nullable: true
+                javascript:
+                  type: boolean
+                global_reject:
+                  type: boolean
+                youtube:
+                  type: boolean
+                calendars:
+                  type: boolean
+                local_traps:
+                  type: boolean
+                redirect:
+                  type: boolean
+                robots:
+                  type: boolean
+                gentle_fetch:
+                  enum:
+                  - default
+                  - low
+                  - very_low
+                budget:
+                  enum:
+                  - 15000
+                  - 60000
+                  - 5600
+                  nullable: true
+                  minimum: -2147483648
+                  maximum: 2147483647
+          application/x-www-form-urlencoded:
+            schema: *id003
+          multipart/form-data:
+            schema: *id003
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                properties:
+                  id:
+                    type: integer
+                    readOnly: true
+                  active:
+                    type: boolean
+                  created:
+                    type: string
+                    format: date-time
+                    readOnly: true
+                  last_changed:
+                    type: string
+                    format: date-time
+                    readOnly: true
+                  main_seed:
+                    type: boolean
+                  url:
+                    type: string
+                    format: uri
+                    maxLength: 200
+                    pattern: "^(?:[a-z0-9\\.\\-\\+]*)://(?:[^\\s:@/]+(?::[^\\s:@/]*)?@)?(?:(?:0|25[0-5]|2[0-4]\\\
+                      d|1\\d?\\d?|[1-9]\\d?)(?:\\.(?:0|25[0-5]|2[0-4]\\d|1\\d?\\d?|[1-9]\\\
+                      d?)){3}|\\[[0-9a-f:\\.]+\\]|([a-z\xA1-\uFFFF0-9](?:[a-z\xA1\
+                      -\uFFFF0-9-]{0,61}[a-z\xA1-\uFFFF0-9])?(?:\\.(?!-)[a-z\xA1-\uFFFF\
+                      0-9-]{1,63}(?<!-))*\\.(?!-)(?:[a-z\xA1-\uFFFF-]{2,63}|xn--[a-z0-9]{1,59})(?<!-)\\\
+                      .?|localhost))(?::\\d{2,5})?(?:[/?#][^\\s]*)?\\Z"
+                  state:
+                    enum:
+                    - inc
+                    - exc
+                    - old
+                  comment:
+                    type: string
+                    nullable: true
+                  from_time:
+                    type: string
+                    format: date
+                    nullable: true
+                  to_time:
+                    type: string
+                    format: date
+                    nullable: true
+                  javascript:
+                    type: boolean
+                  global_reject:
+                    type: boolean
+                  youtube:
+                    type: boolean
+                  calendars:
+                    type: boolean
+                  local_traps:
+                    type: boolean
+                  redirect:
+                    type: boolean
+                  robots:
+                    type: boolean
+                  gentle_fetch:
+                    enum:
+                    - default
+                    - low
+                    - very_low
+                  budget:
+                    enum:
+                    - 15000
+                    - 60000
+                    - 5600
+                    nullable: true
+                    minimum: -2147483648
+                    maximum: 2147483647
+                required:
+                - url
+          description: ''
+  /seeder/api/blacklist/:
+    get:
+      operationId: listBlacklists
+      description: ''
+      parameters: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  properties:
+                    id:
+                      type: integer
+                      readOnly: true
+                    active:
+                      type: boolean
+                    created:
+                      type: string
+                      format: date-time
+                      readOnly: true
+                    last_changed:
+                      type: string
+                      format: date-time
+                      readOnly: true
+                    title:
+                      type: string
+                      maxLength: 256
+                    blacklist_type:
+                      enum:
+                      - 0
+                      - 1
+                      minimum: -2147483648
+                      maximum: 2147483647
+                    url_list:
+                      type: string
+                  required:
+                  - title
+                  - blacklist_type
+                  - url_list
+          description: ''
+  /seeder/api/blacklist/lastchanged/:
+    get:
+      operationId: lastchangedBlacklist
+      description: ''
+      parameters: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                properties:
+                  id:
+                    type: integer
+                    readOnly: true
+                  active:
+                    type: boolean
+                  created:
+                    type: string
+                    format: date-time
+                    readOnly: true
+                  last_changed:
+                    type: string
+                    format: date-time
+                    readOnly: true
+                  title:
+                    type: string
+                    maxLength: 256
+                  blacklist_type:
+                    enum:
+                    - 0
+                    - 1
+                    minimum: -2147483648
+                    maximum: 2147483647
+                  url_list:
+                    type: string
+                required:
+                - title
+                - blacklist_type
+                - url_list
+          description: ''
+  /seeder/api/blacklist/{id}/:
+    get:
+      operationId: retrieveBlacklist
+      description: ''
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: A unique integer value identifying this Blacklist.
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                properties:
+                  id:
+                    type: integer
+                    readOnly: true
+                  active:
+                    type: boolean
+                  created:
+                    type: string
+                    format: date-time
+                    readOnly: true
+                  last_changed:
+                    type: string
+                    format: date-time
+                    readOnly: true
+                  title:
+                    type: string
+                    maxLength: 256
+                  blacklist_type:
+                    enum:
+                    - 0
+                    - 1
+                    minimum: -2147483648
+                    maximum: 2147483647
+                  url_list:
+                    type: string
+                required:
+                - title
+                - blacklist_type
+                - url_list
+          description: ''
+  /seeder/api/harvest_config/:
+    get:
+      operationId: listHarvestConfigurations
+      description: Meant for logged in users, accessed with AJAX based on harvest_type
+      parameters: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  properties:
+                    harvest_type:
+                      enum:
+                      - serials
+                      - topics
+                      - tests
+                      - totals
+                    duration:
+                      type: integer
+                      maximum: 2147483647
+                      minimum: 0
+                    budget:
+                      type: integer
+                      maximum: 2147483647
+                      minimum: 0
+                    dataLimit:
+                      type: integer
+                      maximum: 9223372036854775807
+                      minimum: -9223372036854775808
+                      format: int64
+                    documentLimit:
+                      type: integer
+                      maximum: 2147483647
+                      minimum: 0
+                    deduplication:
+                      type: string
+                      maxLength: 64
+                  required:
+                  - harvest_type
+          description: ''
+  /seeder/api/harvest_config/{id}/:
+    get:
+      operationId: retrieveHarvestConfiguration
+      description: Meant for logged in users, accessed with AJAX based on harvest_type
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: ''
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                properties:
+                  harvest_type:
+                    enum:
+                    - serials
+                    - topics
+                    - tests
+                    - totals
+                  duration:
+                    type: integer
+                    maximum: 2147483647
+                    minimum: 0
+                  budget:
+                    type: integer
+                    maximum: 2147483647
+                    minimum: 0
+                  dataLimit:
+                    type: integer
+                    maximum: 9223372036854775807
+                    minimum: -9223372036854775808
+                    format: int64
+                  documentLimit:
+                    type: integer
+                    maximum: 2147483647
+                    minimum: 0
+                  deduplication:
+                    type: string
+                    maxLength: 64
+                required:
+                - harvest_type
+          description: ''
+  /seeder/api/token/:
+    post:
+      operationId: CreateObtainAuthToken
+      description: ''
+      parameters: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema: {}
+          description: ''
