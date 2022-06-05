@@ -18,7 +18,8 @@ WORKDIR /code
 
 RUN pip3 install -r requirements.txt --upgrade
 
-ENV DJANGO_SETTINGS_MODULE=settings.env
-RUN python3 /code/Seeder/manage.py collectstatic --noinput --clear
-RUN unset DJANGO_SETTINGS_MODULE
+RUN export DJANGO_SETTINGS_MODULE=settings.env \
+    && python3 /code/Seeder/manage.py collectstatic --noinput --clear \
+    && unset DJANGO_SETTINGS_MODULE
+
 EXPOSE 8000
