@@ -53,7 +53,7 @@ services:
     volumes:
       - static:/seeder/static:ro
       - media:/seeder/media:ro
-      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./ci/nginx.conf:/etc/nginx/conf.d/default.conf:ro
     logging:
       options:
         max-size: "10m"
