@@ -28,7 +28,7 @@
 
     - name: "Deployment script"
       template:
-        src: "{{ item }}"
+        src: "{{ item }}"
         dest: /home/ansible/seeder/
         mode: u+x
       loop:

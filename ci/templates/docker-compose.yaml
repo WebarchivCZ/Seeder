@@ -9,7 +9,7 @@ volumes:
 services:
   reverse-proxy:
     # The official v2 Traefik docker image
-    image: traefik:v2.2
+    image: traefik:v2.8
     # Enables the web UI and tells Traefik to listen to docker
     command:
       - "--providers.docker"
@@ -29,10 +29,10 @@ services:
         max-size: "10m"
         max-file: "3"
     labels:
-      traefik.http.routers.api.rule: "{{ treafik_api_rule }}"
+      traefik.http.routers.api.rule: "{{ treafik_api_rule }}"
       traefik.http.routers.api.service: api@internal
       traefik.http.routers.api.middlewares: allowed-ips@docker
-      traefik.http.middlewares.allowed-ips.ipwhitelist.sourcerange: 172.16.3.65, 172.16.3.66, 172.16.3.67
+      traefik.http.middlewares.allowed-ips.ipwhitelist.sourcerange: 172.16.3.65, 172.16.3.66, 172.16.3.67, 172.16.6.137
 
   web:
     image: webarchiv/seeder:{{ seeder_docker_tag }}
@@ -50,11 +50,11 @@ services:
     environment:
       DJANGO_SETTINGS_MODULE: settings.env
       ALLOWED_HOSTS: {{ seeder_django_allowed_hosts }}
-      DEBUG: '{{ seeder_django_debug }}'
-      DB_HOST: {{ seeder_db_host }}
-      DB_NAME: {{ seeder_db_name }}
-      DB_USER: {{ seeder_db_user }}
-      DB_PASS: {{ seeder_db_pass }}
+      DEBUG: '{{ seeder_django_debug }}'
+      DB_HOST: {{ seeder_db_host }}
+      DB_NAME: {{ seeder_db_name }}
+      DB_USER: {{ seeder_db_user }}
+      DB_PASS: {{ seeder_db_pass }}
       SENTRY_DSN: {{ sentry_dsn_vault }}
       RECAPTCHA_PUBLIC_KEY: {{ RECAPTCHA_PUBLIC_KEY }}
       RECAPTCHA_PRIVATE_KEY: {{ RECAPTCHA_PRIVATE_KEY }}
@@ -99,7 +99,7 @@ services:
         max-file: "3"
     environment:
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: {{ postgres_db_pass_vault }}
+      POSTGRES_PASSWORD: {{ postgres_db_pass_vault }}
 
   memcached:
     image: memcached:latest
