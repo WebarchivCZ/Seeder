@@ -1,8 +1,8 @@
 ---
 test:
   hosts:
-    localhost:
-      ansible_connection: local
+    wa-dev-docker00:
+      ansible_host: 10.3.0.110
   vars:
     env: test
     seeder_docker_tag: develop

@@ -18,6 +18,10 @@ services:
     volumes:
       # So that Traefik can listen to the Docker events
       - /var/run/docker.sock:/var/run/docker.sock
+    logging:  
+      options:
+        max-size: "10m"
+        max-file: "3"
 
   web:
     build:
@@ -30,6 +34,10 @@ services:
     working_dir: /code/Seeder
     labels:
       - "traefik.http.routers.seeder.rule=Host(`localhost`) || Host(`127.0.0.1`)"
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "3"
     environment:
       DEBUG: 'True'
       THUMBNAIL_DEBUG: 'True'
@@ -45,25 +53,45 @@ services:
     volumes:
       - static:/seeder/static:ro
       - media:/seeder/media:ro
-      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./ci/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "3"
     labels:
       traefik.http.routers.static.rule: "PathPrefix(`/static`) || PathPrefix(`/media`)"
     depends_on:
       - web
 
-  naki:
+  vyvoj:
     image: webarchiv/vyvoj:naki
+    logging:  
+      options:
+        max-size: "10m"
+        max-file: "3"
     labels:
       traefik.http.routers.vyvoj.rule: Host(`localhost`) && PathPrefix(`/vyvoj`)
 
   postgres:
     image: postgres:9.6
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "3"
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
 
   memcached:
     image: memcached:latest
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "3"
 
   manet:
     image: bobey/manet:latest
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "3"
