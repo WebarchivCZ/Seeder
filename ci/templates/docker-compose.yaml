@@ -32,7 +32,7 @@ services:
       traefik.http.routers.api.rule: "{{ treafik_api_rule }}"
       traefik.http.routers.api.service: api@internal
       traefik.http.routers.api.middlewares: allowed-ips@docker
-      traefik.http.middlewares.allowed-ips.ipwhitelist.sourcerange: 172.16.3.65, 172.16.3.66, 172.16.3.67
+      traefik.http.middlewares.allowed-ips.ipwhitelist.sourcerange: 172.16.3.65, 172.16.3.66, 172.16.3.67, 172.16.6.137
 
   web:
     image: webarchiv/seeder:{{ seeder_docker_tag }}
