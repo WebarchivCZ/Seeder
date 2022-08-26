@@ -163,6 +163,9 @@ class AddSource(generic_views.LoginMixin, SessionWizardView):
                 contact.save()
             source.publisher_contact = contact
         source.save()
+        # Since Keywords are Many2Many, they cannot be saved on commit=False,
+        # hence save_m2m must be called on the form after committing the object
+        source_form.save_m2m()
 
         models.Seed(
             url=source_form.cleaned_data['main_url'],
