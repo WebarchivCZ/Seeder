@@ -22,7 +22,8 @@ STATE = {
     6: source_constants.STATE_DECLINED_BY_PUBLISHER,
     7: source_constants.STATE_PUBLISHER_IGNORED_REQUEST,
     8: source_constants.STATE_COMMUNICATING,
-    9: source_constants.STATE_CONTRACT_EXPIRED,
+    # used to be "expired" (Bez smlouvy)
+    9: source_constants.STATE_WITHOUT_PUBLISHER,
     10: source_constants.STATE_CONTRACT_TERMINATED,
     None: source_constants.STATE_VOTE,
 }

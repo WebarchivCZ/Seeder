@@ -17,9 +17,12 @@ CONTRACT_STATES = (
 
 
 STATE_CONVERSION = {
+    # Smlouva:"Odmítnuto vydavatelem" => Zdroj:"Odmítnuto vydavatelem"
     CONTRACT_STATE_DECLINED: source_constants.STATE_DECLINED_BY_PUBLISHER,
+    # Smlouva:"Platná smlouva" => Zdroj:"Archivován"
     CONTRACT_STATE_VALID: source_constants.STATE_RUNNING,
-    CONTRACT_STATE_EXPIRED: source_constants.STATE_CONTRACT_EXPIRED,
+    # Smlouva:"Bez smlouvy" => Zdroj:"Archivován bez smlouvy"
+    CONTRACT_STATE_EXPIRED: source_constants.STATE_WITHOUT_PUBLISHER,
 }
 
 # number of days between each email reminder:

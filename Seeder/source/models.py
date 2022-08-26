@@ -442,7 +442,7 @@ class Source(SearchModel, SlugOrCreateModel, BaseModel):
         if self.state == constants.STATE_RUNNING:
             valid_contracts = [c.is_valid() for c in self.contract_set.all()]
             if not any(valid_contracts):
-                self.state = constants.STATE_CONTRACT_EXPIRED
+                self.state = constants.STATE_WITHOUT_PUBLISHER
                 self.save()
 
     def get_suggested_by(self):
