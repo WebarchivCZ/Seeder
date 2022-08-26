@@ -17,11 +17,20 @@ class SourceTable(tables.Table):
     created = NaturalDatetimeColumn(verbose_name=_('Created'))
     last_changed = NaturalDatetimeColumn(verbose_name=_('Last changed'))
 
+    # Seeder = show # of seeds ; Export = show URLs joined w/ a comma
+    urls = tables.Column(accessor="seed_set.all")
+
+    def value_urls(self, record, value):
+        return ",".join(value.values_list("url", flat=True))
+
+    def render_urls(self, record, value):
+        return value.count()
+
     class Meta:
         model = models.Source
         fields = ('name', 'owner', 'state', 'publisher', 'category',
                   'sub_category', 'suggested_by', 'dead_source',
-                  'created', 'last_changed')
+                  'created', 'last_changed', 'urls')
         attrs = {
             'class': 'table table-striped table-hover'
         }
