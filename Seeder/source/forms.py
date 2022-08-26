@@ -25,6 +25,9 @@ class SourceForm(forms.ModelForm):
             'publisher': autocomplete.ModelSelect2(
                 url='publishers:autocomplete'
             ),
+            'category': autocomplete.ModelSelect2(
+                url='source:category_autocomplete'
+            ),
             'keywords': autocomplete.ModelSelect2Multiple(url='source:keyword_autocomplete'),
         }
 
