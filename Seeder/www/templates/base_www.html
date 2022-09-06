@@ -1,5 +1,6 @@
-{% load i18n raven core %}
+{% load i18n raven core json_constants %}
 {% get_current_language as lang %}
+{% json_constant "wayback_maintenance" as wayback_maintenance%}
 <!DOCTYPE html>
 <html lang="{{ lang }}">
 
@@ -81,8 +82,13 @@
                 {% if not hide_search_box %}
                 <form action="{% url "www:search_redirect" %}"
                     class="form-inline my-2 mt-lg-3 ml-4 justify-content-center" method="GET" id="frm-smallSearchBox">
-                    <input type="search" name="query" value="{{ query }}" placeholder="{% trans 'Search' %}" required
-                        class="text form-control mr-sm-2">
+                    <input type="search" name="query" value="{{ query }}"
+                        {% if wayback_maintenance %}
+                        placeholder="{% trans 'Nelze nyní vyhledávat...' %}" disabled style="font-size:0.85em"
+                        {% else %}
+                        placeholder="{% trans 'Search' %}"
+                        {% endif %}
+                        required class="text form-control mr-sm-2">
                 </form>
                 {% endif %}
             </div><!-- /.navbar-collapse -->
@@ -100,6 +106,18 @@
         </div><!-- /.container-fluid -->
     </nav>
 
+    {% if wayback_maintenance %}
+    <section id="error">
+        <div class="container" style="padding: 40px 0 40px 0;">
+            {% if lang == "cs" %}
+                {% json_constant "wayback_maintenance_text_cs" as text %}
+            {% else %}
+                {% json_constant "wayback_maintenance_text_en" as text %}
+            {% endif %}
+            {{ text|safe }}
+        </div>
+    </section>
+    {% endif %}
 
     {% block content %}{% endblock content %}
 
