@@ -1,7 +1,7 @@
 from django.core.exceptions import ValidationError
 from multiupload.fields import MultiUploadMetaField, MultiUploadMetaInput
 from django import forms
-from django.utils.translation import gettext as _, gettext_lazy as _lazy
+from django.utils.translation import gettext as _, gettext_lazy as _L
 from dal import autocomplete
 from . import models
 
@@ -24,7 +24,7 @@ class PatchedMultiFileField(MultiUploadMetaField):
 
 custom_seeds_widget = {
     "custom_seeds": forms.widgets.Textarea(attrs={
-        "placeholder": _lazy("One URL per line"),
+        "placeholder": _L("One URL per line"),
     })
 }
 
