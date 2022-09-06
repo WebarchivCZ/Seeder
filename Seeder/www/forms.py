@@ -17,9 +17,6 @@ class BigSearchForm(forms.Form):
         maintenance = get_constant("wayback_maintenance") or False
         self.fields["query"].disabled = maintenance
         if maintenance:
-            # TODO: add a localized string: "Probíhá údržba dat, nelze vyhledávat" or shorter
-            # TODO: do the same with the Navbar search box
-            # TODO Cannot search now...
             self.fields["query"].widget.attrs["placeholder"] = _(
                 "Nelze nyní vyhledávat...")
 

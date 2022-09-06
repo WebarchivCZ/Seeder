@@ -1,4 +1,5 @@
-{% load bootstrap3 i18n raven core static %}
+{% load bootstrap3 i18n raven core static json_constants %}
+{% json_constant "wayback_maintenance" as wayback_maintenance%}
 <!DOCTYPE html>
 <html lang="{{ LANGUAGE_CODE }}" data-date-format="{{ js_format }}">
 <head>
@@ -149,6 +150,17 @@
                 <li><a href="https://seeder.readthedocs.org/en/latest/">{% trans 'Read the docs' %}</a></li>
                 <li id="harvest_catalogue"><a href="{% url 'harvests:catalogue' %}">{% trans 'Harvests urls' %}</a></li>
 
+                <hr>
+
+                <a href="#" class="btn text-center
+                {% if wayback_maintenance %} btn-danger{% else %} btn-primary{% endif %}" data-toggle="modal"
+                    data-target="#maintenanceModal" style="margin:0 8px; display:block;">
+                    {% if wayback_maintenance %}
+                    {% trans 'Turn off Wayback Maintenance' %}
+                    {% else %}
+                    {% trans 'Turn on Wayback Maintenance' %}
+                    {% endif %}
+                </a>
 
             </ul>
 
@@ -162,6 +174,36 @@
                 {% endblock %}
             </div>
         {% endblock %}
+    </div>
+</div>
+
+<div class="modal fade" id="maintenanceModal" tabindex="-1" role="dialog" aria-labelledby="maintenanceModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="maintenanceModalLabel">
+                    {% trans 'Do you really want to change the Wayback Maintenance status?' %}
+                </h5>
+            </div>
+            <div class="modal-body">
+                <form method="post" action="{% url 'core:toggle_wayback_maintenance' %}">
+                    {% csrf_token %}
+                    <input type="submit" class="btn btn-block
+                    {% if wayback_maintenance %} btn-danger{% else %} btn-primary{% endif %}" value="
+                        {% if wayback_maintenance %}
+                        {% trans 'Turn off Wayback Maintenance' %}
+                        {% else %}
+                        {% trans 'Turn on Wayback Maintenance' %}
+                        {% endif %}
+                    ">
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-success"
+                    data-dismiss="modal">{% trans 'Close' %}</button>
+            </div>
+        </div>
     </div>
 </div>
 
