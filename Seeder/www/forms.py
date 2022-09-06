@@ -1,21 +1,33 @@
 from captcha.fields import ReCaptchaField
 from django import forms
-from django import forms
+from django.utils.translation import gettext as _
 
 from dal import autocomplete
 from . import models
+from core.json_constants import get_constant
 
 
 class BigSearchForm(forms.Form):
     query = forms.CharField(
-        widget=forms.TextInput(attrs={'size': '32', 'class': 'query'})
-    )
+        widget=forms.TextInput(attrs={'size': '32', 'class': 'query'}))
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # If wayback maintenance is on, disable the search box
+        maintenance = get_constant("wayback_maintenance") or False
+        self.fields["query"].disabled = maintenance
+        if maintenance:
+            # TODO: add a localized string: "Probíhá údržba dat, nelze vyhledávat" or shorter
+            # TODO: do the same with the Navbar search box
+            # TODO Cannot search now...
+            self.fields["query"].widget.attrs["placeholder"] = _(
+                "Nelze nyní vyhledávat...")
 
 
 class NewsForm(forms.ModelForm):
     class Meta:
         model = models.NewsObject
-        
+
         # exclude translated fields
         exclude = [
             'active', 'title', 'annotation',
