@@ -236,6 +236,13 @@ CKEDITOR_CONFIGS = {
         'width': 800,
         'height': 100,
     },
+    'json_constants': {
+        'toolbar': 'Custom',
+        'toolbar_Custom': [
+            ['Bold', 'Italic', 'Underline', 'FontSize'],
+            ['NumberedList', 'BulletedList', 'Link', 'Source'],
+        ],
+    },
 }
 
 DEBUG_TOOLBAR_CONFIG = {
