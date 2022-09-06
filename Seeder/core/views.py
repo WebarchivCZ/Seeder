@@ -5,11 +5,12 @@ from django.http.response import HttpResponseRedirect
 from django.views.generic.base import RedirectView, TemplateView, View
 from django.utils.translation import ugettext_lazy as _
 from django.contrib import messages
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.utils.http import is_safe_url
 from django.utils import translation
 from django.views.generic.edit import FormView, UpdateView
 
+from core.json_constants import get_constant, update_constant
 from .generic_views import LoginMixin, MessageView, SuperuserRequiredMixin
 from .dashboard_data import get_cards, cards_registry, REVERSE_SESSION
 
@@ -136,3 +137,23 @@ class EditJsonConstantsView(SuperuserRequiredMixin, FormView, MessageView):
         store_constants(form.cleaned_data)
         self.add_message(_("Constants successfully updated"), messages.SUCCESS)
         return super().form_valid(form)
+
+
+class ToggleWaybackMaintenanceView(LoginMixin, View, MessageView):
+    """
+    Toggles status of Wayback Maintenance
+    """
+
+    def post(self, request, *args, **kwargs):
+        maintenance = get_constant("wayback_maintenance")
+        update_constant("wayback_maintenance", not maintenance)
+        # Based on the original value before update
+        if maintenance:
+            self.add_message(_('Wayback maintenance turned OFF'),
+                             messages.SUCCESS)
+        else:
+            self.add_message(_('Wayback maintenance turned ON'),
+                             messages.SUCCESS)
+        # Essentially reload
+        return HttpResponseRedirect(
+            request.META.get("HTTP_REFERER", reverse("core:dashboard")))
