@@ -7,7 +7,7 @@ body {
 	background: white;
 }
 h1 {
-	margin-top: 90px;
+	margin-top: 60px;
 	font-size: 60px;
 }
 h2 {
@@ -81,20 +81,20 @@ hr {
 	position: relative;
 }
 
-.navbar-default .navbar-nav > li > a {
+.navbar-light .navbar-nav > li > a {
 	border: none;
 	color: #000;
 }
-.navbar-default .navbar-nav > li > a:hover {
-	color: #0000ff;
+.navbar-light .navbar-nav > li > a:hover {
+	color: #0000ff !important;
 	text-decoration: underline;
 }
-.navbar-default .navbar-nav > .active > a,
-.navbar-default .navbar-nav > .active > a:hover, 
-.navbar-default .navbar-nav > .active > a:focus
+.navbar-light .navbar-nav > .active > a,
+.navbar-light .navbar-nav > .active > a:hover, 
+.navbar-light .navbar-nav > .active > a:focus
 {
 	background: none;
-	color: #0000ff;
+	color: #0000ff !important;
 	text-decoration: none;
 }
 
@@ -402,20 +402,15 @@ input.text {
 /* Small-searchbox */
 /*******************/
 
-.small-searchbox-wrapper {
-	position: absolute;
-	margin: 25px 0 0 0;
-	left: 630px;
-}
-.small-searchbox-wrapper input.text {
+#frm-smallSearchBox input.text {
 	width: 200px;
-	font-size: 25px;
-	line-height: 40px;
+	font-size: 1.1em;
+	line-height: 1.8em;
 	height: 48px;
-	padding-right: 60px;
  	border: 3px solid #0000ff;
+  border-radius: 0;
 }
-.small-searchbox-wrapper input.submit {
+#frm-smallSearchBox input.submit {
 	display: none;
 	position: absolute;
 	top: 0;
@@ -906,9 +901,6 @@ footer .cc-link img {
 	#advanced-search h1, #main-search h1 {
 		margin-top: 50px;
 	}
-	.navbar {
-		//background: #0000ff;
-	}
 	.navbar-default {
 		padding-top: 0;
 	}
@@ -967,14 +959,13 @@ footer .cc-link img {
 		margin-top: 0;
 		border-top: none;
 	}
-	.small-searchbox-wrapper input.text {
+	#frm-smallSearchBox input.text {
 		width: 100%;
 		line-height: 65px;
 		height: 65px;
 		padding-right: 0;
 		font-size: 30px;
 		padding-left: 12px;
-		border-top: none;
 	}
 	.small-searchbox-wrapper input.submit {
 		line-height: 65px;
@@ -987,12 +978,15 @@ footer .cc-link img {
 	{
 		background: none;
 	}
-	.navbar-default .navbar-nav > li {
+	.navbar-light .navbar-nav > li {
 		border-left: 3px solid #0000ff;
 		border-bottom: 3px solid #0000ff;
 		border-right: 3px solid #0000ff;
 	}		
-	.navbar-default .navbar-nav > li > a {
+	.navbar-light .navbar-nav > li:first-child {
+		border-top: 3px solid #0000ff;
+	}		
+	.navbar-light .navbar-nav > li > a {
 		padding: 20px 0;
 		text-align: center;
 		text-transform: uppercase;
@@ -1134,10 +1128,6 @@ footer .cc-link img {
 	margin-bottom: 0;
 }
 
-.collection .sources {
-	
-}
-
 
 .collection-list {
 	margin-left: 20px;
@@ -1164,6 +1154,12 @@ footer .cc-link img {
 
 .collection h2 {
 	margin-top: 25px;
+  font-style: normal;
+}
+
+.collection .passive_link {
+  color: black;
+  font-style: italic;
 }
 
 .switch_style {

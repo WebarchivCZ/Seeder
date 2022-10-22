@@ -10,31 +10,34 @@
 {% endblock %}
 
 {% block content %}
-    <div class="panel panel-default">
-        <ul class="list-group">
-            {% for element in card.elements %}
-                <a href="{{ element.url }}" target="_blank" class="list-group-item list-group-item-{{ element.color }}">
-                    {% if element.title %}
-                        {{ element.title }}
-                    {% else %}
-                        {{ element.instance }}
-                    {% endif %}
-                    <span class="badge">{{ element.badge }}</span>
-                </a>
-            {% endfor %}
-        </ul>
-    </div>
-
-    <nav>
-        <ul class="pager">
-            {% if card.page.has_previous %}
-                <li class="previous"><a href="?page={{ card.page.previous_page_number }}"><span aria-hidden="true">&larr;</span>{% trans 'Previous' %}</a></li>
+<div class="panel panel-default">
+    <ul class="list-group">
+        {% for element in card.elements %}
+        <a href="{{ element.url }}" target="_blank" class="list-group-item list-group-item-{{ element.color }}"
+            style="font-weight: {{ element.font_weight|default:'normal' }}">
+            {% if element.title %}
+            {{ element.title }}
+            {% else %}
+            {{ element.instance }}
             {% endif %}
+            <span class="badge">{{ element.badge }}</span>
+        </a>
+        {% endfor %}
+    </ul>
+</div>
 
-            {% if card.page.has_next %}
-                <li class="next"><a href="?page={{ card.page.next_page_number }}">{% trans 'Next' %} <span aria-hidden="true">&rarr;</span></a></li>
-            {% endif %}
-          </ul>
-    </nav>
+<nav>
+    <ul class="pager">
+        {% if card.page.has_previous %}
+        <li class="previous"><a href="?page={{ card.page.previous_page_number }}"><span
+                    aria-hidden="true">&larr;</span>{% trans 'Previous' %}</a></li>
+        {% endif %}
+
+        {% if card.page.has_next %}
+        <li class="next"><a href="?page={{ card.page.next_page_number }}">{% trans 'Next' %} <span
+                    aria-hidden="true">&rarr;</span></a></li>
+        {% endif %}
+    </ul>
+</nav>
 
 {% endblock %}

@@ -16,4 +16,5 @@ prod:
     seeder_django_email_host: 10.1.2.183
     treafik_seeder_rule: "Host(`webarchiv.cz`) || Host(`www.webarchiv.cz`) || Host(`seeder.webarchiv.cz`)"
     treafik_seeder_static_rule: "Host(`webarchiv.cz`) && (PathPrefix(`/static`) || PathPrefix(`/media`)) || Host(`www.webarchiv.cz`) && (PathPrefix(`/static`) || PathPrefix(`/media`)) || Host(`seeder.webarchiv.cz`) && (PathPrefix(`/static`) || PathPrefix(`/media`))"
+    treafik_seeder_vyvoj_rule: "Host(`webarchiv.cz`) && PathPrefix(`/vyvoj`) || Host(`www.webarchiv.cz`) && PathPrefix(`/vyvoj`)"
     treafik_api_rule: "Host(`wa-docker00`) || Host(`10.3.0.50`)"

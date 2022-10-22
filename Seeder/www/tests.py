@@ -13,7 +13,7 @@ from django.contrib.auth.models import User
 from source.models import Category, SubCategory, KeyWord, Source, Seed
 from source import constants as source_constants
 from publishers.models import Publisher, ContactPerson
-from harvests.models import Harvest, TopicCollection
+from harvests.models import Harvest, TopicCollection, ExternalTopicCollection
 from blacklists.models import Blacklist
 from contracts.models import Contract
 from qa.models import QualityAssuranceCheck
@@ -21,6 +21,8 @@ from www.models import NewsObject
 from voting.models import VotingRound
 
 DATE = date.today()
+
+# TODO: Currently failing, either after TopicCollections split or sth else
 
 
 def create_test_objects():
@@ -42,8 +44,12 @@ def create_test_objects():
            publisher=Publisher.objects.all()[0]).save()
     Seed(pk=0, source=Source.objects.get(pk=0)).save()
     Seed(pk=1, source=Source.objects.get(pk=1)).save()
-    TopicCollection(pk=0, title_cs="tc", title_en="tc", owner=user,
-                    custom_seeds="", annotation="", all_open=True).save()
+    external_tc = ExternalTopicCollection.objects.create(
+        pk=0, title_cs="tc", title_en="tc", owner=user, annotation="")
+    internal_tc = TopicCollection.objects.create(
+        pk=0, title_cs="tc_int", title_en="tc_int", owner=user,
+        custom_seeds="", annotation="", all_open=True,
+        external_collection=external_tc).save()
     Harvest(pk=0, status=Harvest.STATE_PLANNED, title="H",
             scheduled_on=date.today(), target_frequency=['1']).save()
     Blacklist(pk=0, title="B", blacklist_type=Blacklist.TYPE_HARVEST,
@@ -148,6 +154,7 @@ class WwwUrlsTest(TestCase):
             'www:keyword': {'slug': 'k'},
             'www:change_list_view': [{'list_type': 'text'}, '', [302]],
             'www:source_detail': {'slug': 's'},
+            'www:collection_csv': {'slug': 'tc'},
             'www:collection_detail': {'slug': 'tc'},
         }
 
@@ -178,8 +185,10 @@ class SeederUrlsTest(TestCase):
         self.url_names.remove('source:delete')       # requires POST
         self.url_names.remove('contracts:delete')    # requires POST
         # requires POST
-        self.url_names.remove('harvests:topic_collection_toggle_publish')
+        # For some reason url_names don't have external as "harvests:..."
+        self.url_names.remove('external_collection_toggle_publish')
         self.url_kwargs = {
+            'harvests:detail': {'pk': 0},
             'harvests:json_calendar': [{}, '?from=1000&to=10000'],
             'harvests:shortcut_urls_by_date': {'h_date': DATE},
             'harvests:shortcut_urls_by_date_and_type': {

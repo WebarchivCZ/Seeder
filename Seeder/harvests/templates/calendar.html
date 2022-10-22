@@ -43,6 +43,8 @@
                 {% csrf_token %}
               <div class="modal-body">
                   {% bootstrap_form harvest_form %}
+                  {% include "harvest_config_ajax.html" %}
+                  {% include "harvest_clear_tcs.html" %}
               </div>
               <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">{% trans 'Close' %}</button>

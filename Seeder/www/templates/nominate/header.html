@@ -32,6 +32,6 @@
 
 <script>
     // dynamically activate menu link, yes this seem like a barbaric think to do, but think of all the if conditions in django that does not need to exist!
-    var view_name = ".sub_view_{{ view.url_name }}";
+    var view_name = ".sub_view_{{ view.sub_view_name }}";
     $(view_name).addClass('current');
 </script>

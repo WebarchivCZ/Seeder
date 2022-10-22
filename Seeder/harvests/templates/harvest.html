@@ -2,54 +2,112 @@
 {% load i18n %}
 {% load humanize %}
 {% load bootstrap3 %}
+{% load core %}
 
 {% block title %}{{ object.scheduled_on }} - {{ object }} {% endblock %}
-{% block page_header %}{{ object.scheduled_on }} - {{ object }} <a href="{% url 'harvests:edit' pk=object.pk %}" class="btn btn-primary btn-info pull-right">{% trans 'Edit' %}</a>{% endblock %}o
+{% block page_header %}{{ object.scheduled_on }} - {{ object }} <a href="{% url 'harvests:edit' pk=object.pk %}"
+    class="btn btn-primary btn-info pull-right">{% trans 'Edit' %}</a>{% endblock %}o
 {% block content %}
-    <div class="col-xs-12 col-md-12">
-        <ul class="list-group">
-          <li class="list-group-item">{% trans 'Title' %}: <span class="pull-right">{{ object.title }}</span></li>
-          <li class="list-group-item">{% trans 'Date/Type URL' %}: <span class="pull-right"><code>{{ object.get_date_url }}</code></span></li>
-          <li class="list-group-item">{% trans 'Annotation' %}: <span class="pull-right">{{ object.annotation }}</span></li>
-          <li class="list-group-item">{% trans 'Status' %}: <span class="pull-right">{{ object.get_status_display }}</span></li>
-          <li class="list-group-item">{% trans 'Scheduled on' %}: <span class="pull-right">{{ object.scheduled_on }}</span></li>
-          <li class="list-group-item">{% trans 'Sources by frequency' %}: <span class="pull-right">{{ object.get_target_frequency_display }}</span></li>
-          <li class="list-group-item">{% trans 'Topic collections by frequency' %}: <span class="pull-right">{{ object.get_topic_collection_frequency_display }}</span></li>
-          <li class="list-group-item">{% trans 'Include ArchiveIt seeds' %}: <span class="pull-right">{{ object.archive_it }}</span></li>
-          <li class="list-group-item">{% trans 'Include Tests seeds' %}: <span class="pull-right">{{ object.tests }}</span></li>
-          <li class="list-group-item">{% trans 'Created' %}: <span class="pull-right">{{ object.created }}</span></li>
-          <li class="list-group-item">{% trans 'Last changed' %}: <span class="pull-right">{{ object.last_changed }}</span></li>
-          <li class="list-group-item"><a href="{% url 'harvests:urls' object.id %}">{% trans 'List of urls' %}</a></li>
-        </ul>
+<div class="col-xs-12 col-md-12">
+    <ul class="list-group">
+        <li class="list-group-item">{% trans 'Scheduled on' %}:
+            <span class="pull-right">{{ object.scheduled_on }}</span></li>
+        <li class="list-group-item">{% trans 'Title' %}:
+            <span class="pull-right">{{ object.title }}</span></li>
+        <li class="list-group-item">{% trans 'Annotation' %}:
+            <span class="pull-right">{{ object.annotation }}</span></li>
+        <li class="list-group-item">{% trans 'Harvest type' %}:
+            <span class="pull-right">{{ object.get_harvest_type_display }}</span></li>
+        <li class="list-group-item">{% trans 'Status' %}:
+            <span class="pull-right">{{ object.get_status_display }}</span></li>
+        <li class="list-group-item">{% trans 'Created' %}:
+            <span class="pull-right">{{ object.created }}</span></li>
+        <li class="list-group-item">{% trans 'Last changed' %}:
+            <span class="pull-right">{{ object.last_changed }}</span></li>
+        <li class="list-group-item">{% trans 'Date frozen' %}:
+            <span class="pull-right">{{ object.date_frozen|default:"—" }}</span></li>
+        <li class="list-group-item"><a href="{% url 'harvests:urls' object.id %}">{% trans 'List of urls' %}</a></li>
+    </ul>
 
-        <p>
-            {% trans 'Poznámka: Po přepnutí sklizně do stavu running dojde ke zmražení semínek a nelze je měnit.' %}
-        </p>
+    <ul class="list-group">
+        <li class="list-group-item">{% trans 'Include ArchiveIt seeds' %}:
+            <span class="pull-right">{{ object.archive_it|fa_boolean }}</span></li>
+        <li class="list-group-item">{% trans 'Include Tests seeds' %}:
+            <span class="pull-right">{{ object.tests|fa_boolean }}</span></li>
+        <li class="list-group-item">{% trans 'Paraharvest' %}:
+            <span class="pull-right">{{ object.paraharvest|fa_boolean }}</span></li>
+        <li class="list-group-item">{% trans 'Manuals' %}:
+            <span class="pull-right">
+                {% if object.manuals %}
+                <span class="text-success">{{ True|fa_boolean }} <b>Manuals</b></span>
+                <span> | </span>
+                <span class="text-muted">Automatic</span>
+                {% else %}
+                <span class="text-muted">Manuals</span>
+                <span> | </span>
+                <span class="text-success">{{ True|fa_boolean }} <b>Automatic</b></span>
+                {% endif %}
+            </span></li>
+        <li class="list-group-item">{% trans 'Combined' %}:
+            <span class="pull-right">{{ object.combined|fa_boolean }}</span></li>
+    </ul>
 
-        {% if object.topic_collections.exists %}
-            <h3>{% trans 'Included topic collections' %}</h3>
-            <ul class="list-group">
-            {% for topic_collection in object.topic_collections.all %}
-                <li class="list-group-item"><a href="{{ topic_collection.get_absolute_url }}">{{ topic_collection }}</a></li>
-            {% endfor %}
-        {% endif %}
-    
-        {% if object.custom_seeds %}
-            <h3>{% trans 'Custom seeds' %}:</h3>
-            <textarea class="form-control" rows="3">{{ object.custom_seeds }}</textarea>
-        {% endif %}
+    <ul class="list-group">
+        <li class="list-group-item">{% trans 'Sources by frequency' %}:
+            <span class="pull-right">{{ object.get_target_frequency_display }}</span></li>
+        <li class="list-group-item">{% trans 'Topic collections by frequency' %}:
+            <span class="pull-right">{{ object.get_topic_collection_frequency_display }}</span></li>
+    </ul>
 
-        {% if object.custom_sources.exists %}
-            <h3>{% trans 'Custom sources' %}</h3>
-            <ul class="list-group">
-                {% for source in object.custom_sources.all %}
-                    <li class="list-group-item">{{ source }}</li>
-                {% endfor %}
-            </ul>
-        {% endif %}
-    </div>
-    <div class="col-xs-12 col-md-12">
-        <h2>{% trans 'Comments' %}</h2>
-        {% include 'bootstrap_comments.html' with comments=comments form=comment_form %}
-    </div>
+    <h3>{% trans 'Technická nastavení' %}</h3>
+
+    <ul class="list-group">
+        <li class="list-group-item">{% trans 'duration' %}:
+            <span class="pull-right">{{ object.duration }}</span></li>
+        <li class="list-group-item">{% trans 'budget' %}:
+            <span class="pull-right">{{ object.budget }}</span></li>
+        <li class="list-group-item">{% trans 'dataLimit' %}:
+            <span class="pull-right">{{ object.get_dataLimit_display }}</span></li>
+        <li class="list-group-item">{% trans 'documentLimit' %}:
+            <span class="pull-right">{{ object.documentLimit }}</span></li>
+        <li class="list-group-item">{% trans 'deduplication' %}:
+            <span class="pull-right">{{ object.deduplication }}</span></li>
+    </ul>
+
+    <p>
+        {% trans 'Poznámka: Po přepnutí sklizně do stavu running dojde ke zmražení semínek a nelze je měnit.' %}
+    </p>
+
+    {% if object.seeds_not_harvested %}
+    <h3>{% trans 'Seeds not harvested' %}:</h3>
+    <textarea class="form-control" rows="3">{{ object.seeds_not_harvested }}</textarea>
+    {% endif %}
+
+    {% if object.topic_collections.exists %}
+    <h3>{% trans 'Included topic collections' %}</h3>
+    <ul class="list-group">
+        {% for topic_collection in object.topic_collections.all %}
+        <li class="list-group-item"><a href="{{ topic_collection.get_absolute_url }}">{{ topic_collection }}</a></li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+
+    {% if object.custom_seeds %}
+    <h3>{% trans 'Custom seeds' %}:</h3>
+    <textarea class="form-control" rows="3">{{ object.custom_seeds }}</textarea>
+    {% endif %}
+
+    {% if object.custom_sources.exists %}
+    <h3>{% trans 'Custom sources' %}</h3>
+    <ul class="list-group">
+        {% for source in object.custom_sources.all %}
+        <li class="list-group-item">{{ source }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+</div>
+<div class="col-xs-12 col-md-12">
+    <h2>{% trans 'Comments' %}</h2>
+    {% include 'bootstrap_comments.html' with comments=comments form=comment_form %}
+</div>
 {% endblock %}

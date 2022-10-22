@@ -11,10 +11,9 @@ STATE_COMMUNICATING = 'communication'       # V jednání
 STATE_ACCEPTED_BY_STAFF = 'vote_accepted'   # Přijato Webarchivem
 STATE_DECLINED_BY_STAFF = 'vote_declined'   # Odmítnuto Webarchivem
 STATE_DECLINED_BY_PUBLISHER = 'declined'    # Odmítnuto vydavatelem
-STATE_PUBLISHER_IGNORED_REQUEST = 'ignored' # Bez odezvy
+STATE_PUBLISHER_IGNORED_REQUEST = 'ignored'  # Bez odezvy
 STATE_RUNNING = 'success'                   # Archivován
 STATE_WITHOUT_PUBLISHER = 'forced'          # Archivováno bez smlouvy
-STATE_CONTRACT_EXPIRED = 'expired'          # Bez smlouvy
 STATE_CONTRACT_TERMINATED = 'terminated'    # Vypovězená smlouva
 
 SOURCE_STATES = (
@@ -30,12 +29,11 @@ SOURCE_STATES = (
     (STATE_WITHOUT_PUBLISHER, _('Archiving without publisher consent')),
     (STATE_DECLINED_BY_PUBLISHER, _('Declined by publisher')),
     (STATE_PUBLISHER_IGNORED_REQUEST, _('Publisher ignored requests')),
-    (STATE_CONTRACT_EXPIRED, _('Contract expired')),
     (STATE_CONTRACT_TERMINATED, _('Contract terminated')),
 )
 
 STATES_WITH_POTENTIAL = (STATE_VOTE, STATE_WAITING, STATE_COMMUNICATING,
-                         STATE_CONTRACT_EXPIRED)
+                         STATE_WITHOUT_PUBLISHER)
 
 VOTE_STATES = (STATE_VOTE, STATE_REEVALUTATION)
 ARCHIVING_STATES = (
@@ -53,7 +51,7 @@ STATE_COLORS = {
              STATE_WAITING),
     'warning': (STATE_TECHNICAL_REVIEW, STATE_REEVALUTATION, STATE_DUPLICITY),
     'danger': (STATE_DECLINED_BY_PUBLISHER, STATE_DECLINED_BY_STAFF,
-               STATE_PUBLISHER_IGNORED_REQUEST, STATE_CONTRACT_EXPIRED,
+               STATE_PUBLISHER_IGNORED_REQUEST, STATE_WITHOUT_PUBLISHER,
                STATE_CONTRACT_TERMINATED)
 }
 
@@ -125,6 +123,11 @@ SUGGESTED_CHOICES = (
     (SUGGESTED_VISITOR, _('Visitor')),
     (SUGGESTED_ISSN, _('ISSN')),
     (SUGGESTED_CURATOR, _('Curator')),
+)
+
+SUGGESTED_BOLD = (
+    SUGGESTED_PUBLISHER,
+    SUGGESTED_ISSN,
 )
 
 

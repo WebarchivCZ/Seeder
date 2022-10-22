@@ -1,161 +1,174 @@
 {% extends "base_www.html" %}
 {% load i18n %}
+{% load json_constants %}
 {% get_current_language as lang %}
 
 
 
-{% block title %}{% if lang == "cs" %}Památník českého internetu{% else %}The Museum of Czech web{% endif %}{% endblock title %}
+{% block title %}{% if lang == "cs" %}Památník českého internetu{% else %}The Museum of Czech
+web{% endif %}{% endblock title %}
 
 
 
 
 {% block content %}
-	<section id="main-search">
-		<div class="container">
+<section id="main-search">
+    <div class="container">
 
-			<div class="row">
-				<div class="col-md-8 col-md-offset-2">
+        <div class="row">
+            <div class="col-md-8 offset-md-2">
 
-					<div class="main-header">
-						<h1><a href="{% url "www:index" %}">Webarchiv<span class="false-link-underline-blue"></span></a></h1>
-						{% if lang == "cs" %}
-							<p class="italic">památník českého internetu, <a href="{% url "www:more_about" %}">více</a></p>
-						{% else %}
-							<p class="italic">the Museum of Czech web, <a href="{% url "www:more_about" %}">more</a></p>
-						{% endif %}
-					</div>
+                <div class="main-header">
+                    <h1><a href="{% url "www:index" %}">Webarchiv<span class="false-link-underline-blue"></span></a>
+                    </h1>
+                    {% if lang == "cs" %}
+                    <p class="italic">památník českého internetu, <a href="{% url "www:more_about" %}">více</a></p>
+                    {% else %}
+                    <p class="italic">the Museum of Czech web, <a href="{% url "www:more_about" %}">more</a></p>
+                    {% endif %}
+                </div>
 
-					<div class="searchbox-wrapper-outer">
+                <div class="searchbox-wrapper-outer">
 
-						<div class="searchbox-wrapper">
+                    <div class="searchbox-wrapper">
 
-							<form action="{% url "www:search_redirect" %}" method="GET" id="frm-bigSearchBox">
-								{{ big_search_form.query }}
-								<input type="submit" id="frm-bigSearchBox-submit" value="Enter" class="submit">
-							</form>
+                        <form action="{% url "www:search_redirect" %}" method="GET" id="frm-bigSearchBox">
+                            {{ big_search_form.query }}
+                            <input type="submit" id="frm-bigSearchBox-submit" value="Enter" class="submit">
+                        </form>
 
-						</div>
+                    </div>
 
-						{% if lang == "cs" %}
-							<p class="italic">hledejte „webarchiv.cz“ nebo „webarchiv“</p>
-						{% else %}
-							<p class="italic">search „webarchiv.cz“ or „webarchiv“</p>
-						{% endif %}
-					</div>
+                    {% if lang == "cs" %}
+                    <p class="italic">hledejte „webarchiv.cz“ nebo „webarchiv“</p>
+                    {% else %}
+                    <p class="italic">search „webarchiv.cz“ or „webarchiv“</p>
+                    {% endif %}
+                </div>
 
-				</div>
-			</div>
-		</div>
-	</section>
-
-
-	<section id="news">
-		<div class="container">
-
-			<div class="row">
-
-					<div class="col-md-4 col-sm-6">
-
-						<div class="news-column left-news">
-
-							<div class="visible-xs">
-								<hr>
-							</div>
-
-							<h2> {{ news_article.title }}</h2>
-							{% if news_article.image %}
-								<img alt="" src="{{ news_article.image.url }}">
-							{% endif %}
-							<br>
-							{{ news_article.annotation|safe }}
-
-						</div>
-					</div>
-
-				<div class="col-md-4 col-sm-6">
-
-					<div class="news-column">
-
-						<div class="visible-xs">
-							<hr><br><br>
-						</div>
-
-						{% if lang == "cs" %}
-							<p>Výběr z katalogu stránek, <br class="visible-md visible-lg"><a href="{% url "www:categories" %}">více v oborovém třídění</a></p>
-						{% else %}
-							<p>Selection of contracted websites, <br class="visible-md visible-lg"><a href="{% url "www:categories" %}">see the full list</a></p>
-						{% endif %}
-
-						{% if news_article.source_1 %}
-							<h2><a href="{{ news_article.source_1.wayback_url }}">{{ news_article.source_1 }}</a></h2>
-							{{ news_article.get_annotation_source_1 | safe}}
-							<p>{% if lang == "cs" %}Vydavatel: {% else %}Publisher: {% endif %} {{ news_article.source_1.publisher }}</p>
-
-							{% if news_article.source_1.keywords %}
-								<ul class="inline-list">
-									{% for keyword in news_article.source_1.keywords.all %}
-										<li><a href="{{ keyword.www_url }}">{{ keyword }}</a>{% include "includes/comma.html" %}</li>
-									{% endfor %}
-								</ul>
-							{% endif %}
-						{% endif %}
-
-						{% if news_article.source_2 %}
-							<hr>
-
-							<h2><a href="{{ news_article.source_2.wayback_url }}">{{ news_article.source_2 }}</a></h2>
-							{{ news_article.get_annotation_source_2 | safe}}
-							<p>{% if lang == "cs" %}Vydavatel: {% else %}Publisher: {% endif %} {{ news_article.source_2.publisher }}</p>
-
-							{% if news_article.source_2.keywords %}
-								<ul class="inline-list">
-									{% for keyword in news_article.source_2.keywords.all %}
-										<li><a href="{{ keyword.www_url }}">{{ keyword }}</a>{% include "includes/comma.html" %}</li>
-									{% endfor %}
-								</ul>
-							{% endif %}
-
-						{% endif %}
-					</div>
-
-					<div class="visible-sm visible-xs">
-						<br>
-					</div>
-
-				</div>
-
-				<div class="clearfix visible-sm"></div>
-
-				<div class="col-md-4 stats">
-
-					<div class="news-column">
-
-						<div class="visible-sm visible-xs clear">
-							<hr><br>
-						</div>
-
-						{% if lang == "cs" %}
-							<p><a href="{% url "www:index" %}">Webarchiv</a> k {% now "SHORT_DATE_FORMAT" %} obsahuje <span class="h1-size">{% include "includes/webarchive_size.txt" %}</span> dat. První dokument byl archivován 3. 9. 2001.</p>
-							<hr><br>
-							<p>Celkem jsme s autory uzavřeli <span class="h1-size">{{ contract_count }}</span> smluv. Poslední aktuální smlouvy:</p>
-						{% else %}
-							<p><a href="{% url "www:index" %}">Webarchiv</a> contains to {% now "SHORT_DATE_FORMAT" %} <span class="h1-size">{% include "includes/webarchive_size.txt" %}</span> data. The first website was harvested in 3. 9. 2001.</p>
-							<hr><br>
-							<p>We concluded <span class="h1-size">{{ contract_count }}</span> contracts with a publishers at the moment. The last contracts are for these websites:</p>
-						{% endif %}
-
-						{% for source in last_sources %}
-							<ul>
-								<li><a href="{{ source.wayback_url }}">{{ source }}</a>{% include "includes/comma.html" %}</li>
-							</ul>
-						{% endfor %}
+            </div>
+        </div>
+    </div>
+</section>
 
 
-					</div>
+<section id="news">
+    <div class="container">
 
-				</div>
+        <div class="row">
 
-			</div>
-		</div>
-	</section>
+            <div class="col-md-4 col-sm-6">
+
+                <div class="news-column left-news">
+
+                    <div class="d-sm-none">
+                        <hr>
+                    </div>
+
+                    <h2> {{ news_article.title }}</h2>
+                    {% if news_article.image %}
+                    <img alt="" src="{{ news_article.image.url }}">
+                    {% endif %}
+                    <br>
+                    {{ news_article.annotation|safe }}
+
+                </div>
+            </div>
+
+            <div class="col-md-4 col-sm-6">
+
+                <div class="news-column">
+
+                    <div class="d-sm-none">
+                        <hr><br><br>
+                    </div>
+
+                    {% if lang == "cs" %}
+                    <p>Výběr z katalogu stránek, <br class="visible-md visible-lg"><a
+                            href="{% url "www:categories" %}">více v oborovém třídění</a></p>
+                    {% else %}
+                    <p>Selection of contracted websites, <br class="visible-md visible-lg"><a
+                            href="{% url "www:categories" %}">see the full list</a></p>
+                    {% endif %}
+
+                    {% if news_article.source_1 %}
+                    <h2><a href="{{ news_article.source_1.wayback_url }}">{{ news_article.source_1 }}</a></h2>
+                    {{ news_article.get_annotation_source_1 | safe}}
+                    <p>{% if lang == "cs" %}Vydavatel: {% else %}Publisher: {% endif %}
+                        {{ news_article.source_1.publisher }}</p>
+
+                    {% if news_article.source_1.keywords %}
+                    <ul class="inline-list">
+                        {% for keyword in news_article.source_1.keywords.all %}
+                        <li><a href="{{ keyword.www_url }}">{{ keyword }}</a>{% include "includes/comma.html" %}</li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+                    {% endif %}
+
+                    {% if news_article.source_2 %}
+                    <hr>
+
+                    <h2><a href="{{ news_article.source_2.wayback_url }}">{{ news_article.source_2 }}</a></h2>
+                    {{ news_article.get_annotation_source_2 | safe}}
+                    <p>{% if lang == "cs" %}Vydavatel: {% else %}Publisher: {% endif %}
+                        {{ news_article.source_2.publisher }}</p>
+
+                    {% if news_article.source_2.keywords %}
+                    <ul class="inline-list">
+                        {% for keyword in news_article.source_2.keywords.all %}
+                        <li><a href="{{ keyword.www_url }}">{{ keyword }}</a>{% include "includes/comma.html" %}</li>
+                        {% endfor %}
+                    </ul>
+                    {% endif %}
+
+                    {% endif %}
+                </div>
+
+                <div class="d-md-none">
+                    <br>
+                </div>
+
+            </div>
+
+            <div class="clearfix visible-sm"></div>
+
+            <div class="col-md-4 stats">
+
+                <div class="news-column">
+
+                    <div class="d-md-none clear">
+                        <hr><br>
+                    </div>
+
+                    {% if lang == "cs" %}
+                    <p><a href="{% url "www:index" %}">Webarchiv</a> k {% now "SHORT_DATE_FORMAT" %} obsahuje <span
+                            class="h1-size">{% json_constant "webarchive_size" %}</span> dat. První dokument byl
+                        archivován 3. 9. 2001.</p>
+                    <hr><br>
+                    <p>Celkem jsme s autory uzavřeli <span class="h1-size">{{ contract_count }}</span> smluv. Poslední
+                        aktuální smlouvy:</p>
+                    {% else %}
+                    <p><a href="{% url "www:index" %}">Webarchiv</a> contains to {% now "SHORT_DATE_FORMAT" %} <span
+                            class="h1-size">{% json_constant "webarchive_size" %}</span> data. The first website
+                        was harvested in 3. 9. 2001.</p>
+                    <hr><br>
+                    <p>We concluded <span class="h1-size">{{ contract_count }}</span> contracts with a publishers at the
+                        moment. The last contracts are for these websites:</p>
+                    {% endif %}
+
+                    {% for source in last_sources %}
+                    <ul>
+                        <li><a href="{{ source.wayback_url }}">{{ source }}</a>{% include "includes/comma.html" %}</li>
+                    </ul>
+                    {% endfor %}
+
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</section>
 {% endblock content %}

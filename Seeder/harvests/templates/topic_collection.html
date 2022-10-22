@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% load i18n bootstrap3 thumbnail static %}
+{% load i18n bootstrap3 thumbnail static core %}
 
 {% block title %} {{ object }} {% endblock %}
 {% block page_header %} {{ object }}{% endblock %}
@@ -10,13 +10,19 @@
         <table class="table table-striped">
             <tbody>
                 <tr>
-                    <td>{% trans 'Status' %}</td>
-                    <td>{{ object.get_status_display }}</td>
+                    <td>{% trans 'External Topic Collection' %}</td>
+                    <td>
+                    {% if object.external_collection %}
+                        <a href="{{ object.external_collection.get_absolute_url }}">{{ object.external_collection }}</a>
+                    {% else %}
+                        {% trans 'No assigned External Topic Collection' %}
+                    {% endif %}
+                    </td>
                 </tr>
-                
+
                 <tr>
-                    <td>{% trans 'Order' %}</td>
-                    <td>{{ object.order }}</td>
+                    <td>{% trans "Collection alias" %}</td>
+                    <td>{{ object.collection_alias }}</td>
                 </tr>
 
                 <tr>
@@ -40,7 +46,7 @@
                 </tr>
 
                 <tr>
-                    <td>{% trans 'Seeds by frequency' %}</td>
+                    <td>{% trans 'Frequency' %}</td>
                     <td>{{ object.get_target_frequency_display }}</td>
                 </tr>
 
@@ -55,19 +61,6 @@
                     <td>{{ object.date_to|default:"—" }}</td>
                 </tr>
 
-                {% if object.image %}
-                    <tr>
-                        <td>{% trans 'Screenshot' %}</td>
-                        <td>
-                            {% thumbnail object.image "100x100" crop="center" as im %}
-                                <a href="{{ object.image.url }}" target="_blank">
-                                    <img src="{{ im.url }}" width="{{ im.width }}" height="{{ im.height }}">
-                                </a>
-                            {% endthumbnail %}
-                        </td>
-                    </tr>
-                {% endif %}
-
                 <tr>
                     <td>{% trans 'Created at' %}</td>
                     <td>{{ object.created }}</td>
@@ -78,11 +71,6 @@
                 </tr>
 
                 <tr>
-                    <td>{% trans 'Keywords' %}</td>
-                    <td>{% for keyword in object.keywords.all %}{{ keyword }}{% include "includes/comma.html" %}{% endfor %}
-                  </td>
-                </tr>
-                <tr>
                     <td>{% trans 'Attachments' %}</td>
                     <td>{% for attachment in object.attachment_set.all %}
                       <a href="{{ attachment.file.url }}">{{ attachment }}</a>{% include "includes/comma.html" %}
@@ -91,12 +79,12 @@
                 </tr>
 
                 <tr>
-                    <td>{% trans 'All sources are open?' %}</td>
-                    <td>{{ object.all_open }}</td>
+                    <td>{% trans "Aggregation with same type" %}</td>
+                    <td>{{ object.aggregation_with_same_type|fa_boolean }}</td>
                 </tr>
                 <tr>
-                    <td>{% trans 'WWW link' %}</td>
-                    <td><a href="{{ object.get_www_url }}" target="_blank">{{ object.get_www_url }}</a></td>
+                    <td>{% trans 'All sources are open?' %}</td>
+                    <td>{{ object.all_open|fa_boolean }}</td>
                 </tr>
             </tbody>
         </table>
@@ -115,13 +103,9 @@
     </div>
     <div class="col-md-3 col-sm-5">
         <h4>{% trans 'Links' %}:</h4>
-            <a href="{% url 'harvests:topic_collection_edit' pk=object.pk %}" class="btn btn-primary btn-warning btn-block">{% trans 'Edit' %}</a>
-            <a href="{% url 'harvests:topic_collection_history' pk=object.pk %}" class="btn btn-primary btn-info btn-block">{% trans 'History' %}</a>
-            <br />
-            <form action='{% url 'harvests:topic_collection_toggle_publish' pk=object.pk %}' method='post'>
-                {% csrf_token %}
-                <button class="btn {% if object.active %} btn-danger {% else %} btn-success {% endif %} btn-block">{% if object.active %} {% trans 'Unpublish' %} {% else %} {% trans 'Publish' %} {% endif %}</button>
-            </form>
+            <a href="{% url 'harvests:internal_collection_edit' pk=object.pk %}" class="btn btn-primary btn-warning btn-block">{% trans 'Edit' %}</a>
+            <a href="{% url 'harvests:internal_collection_history' pk=object.pk %}" class="btn btn-primary btn-info btn-block">{% trans 'History' %}</a>
+            <a href="{% url 'harvests:internal_collection_urls' pk=object.pk %}" class="btn btn-primary btn-info btn-block" target="_blank">{% trans 'Seed URLs' %}</a>
     </div>
 
     <div class="col-xs-12 col-md-12">

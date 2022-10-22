@@ -1,8 +1,8 @@
 ---
 test:
   hosts:
-    localhost:
-      ansible_connection: local
+    wa-dev-docker00:
+      ansible_host: 10.3.0.110
   vars:
     env: test
     seeder_docker_tag: develop
@@ -14,4 +14,5 @@ test:
     seeder_django_debug: 'False'
     treafik_seeder_rule: "Host(`app.webarchiv.cz`)"
     treafik_seeder_static_rule: "Host(`app.webarchiv.cz`) && (PathPrefix(`/static`) || PathPrefix(`/media`))"
+    treafik_seeder_vyvoj_rule: "Host(`app.webarchiv.cz`) && PathPrefix(`/vyvoj`)"
     treafik_api_rule: "Host(`wa-dev-docker00`) || Host(`10.3.0.110`)"

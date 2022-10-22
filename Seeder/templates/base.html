@@ -1,4 +1,5 @@
-{% load bootstrap3 i18n raven core %}
+{% load bootstrap3 i18n raven core static json_constants %}
+{% json_constant "wayback_maintenance" as wayback_maintenance%}
 <!DOCTYPE html>
 <html lang="{{ LANGUAGE_CODE }}" data-date-format="{{ js_format }}">
 <head>
@@ -6,13 +7,19 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="icon" href="http://getbootstrap.com/favicon.ico">
+
+    <link rel="apple-touch-icon" sizes="180x180" href="{% static 'seeder-assets/apple-touch-icon.png' %}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{% static 'seeder-assets/favicon-32x32.png' %}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{% static 'seeder-assets/favicon-16x16.png' %}">
+    <link rel="manifest" href="{% static 'seeder-assets/site.webmanifest' %}">
+    <link rel="shortcut icon" href="{% static 'seeder-assets/favicon.ico' %}">
 
     <title>{% block title %}{{ view.title }}{% endblock %} | {% trans 'Seeder' %}</title>
     <script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
 
     {% bootstrap_css %}
     {% bootstrap_javascript %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" integrity="sha512-+4zCK9k+qNFUR5X+cKL9EIR+ZOhtIloNl9GIKS57V1MyNsYpYcUrUeQc9vNfzsWfV28IaLL3i96P9sdNyeRssA==" crossorigin="anonymous" />
     <!-- Custom styles and scritps for this template -->
     <link href="{{ STATIC_URL }}main.css" rel="stylesheet">
     <script src="{{ STATIC_URL }}main.js"></script>
@@ -31,7 +38,7 @@
                 <span class="icon-bar"></span>
             </button>
             <a class="navbar-brand" href="{% url 'core:dashboard' %}">{% trans 'Seeder' %}</a>
-            <span class="navbar-brand" style="color:#777;font-size:1em;">{% version %}</span>
+            <span class="navbar-brand" style="color:#777;font-size:1em;">{% version %} ({% version_datetime %})</span>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
             <form class="navbar-form navbar-right" action="{% url 'search:search' %}" method="get">
@@ -99,8 +106,11 @@
 
                 <hr>
 
-                <li id="topic_collections">
-                    <a href="{% url 'harvests:topic_collection_list' %}">{% trans 'Topic collections' %}</a>
+                <li id="external_topic_collections">
+                    <a href="{% url 'harvests:external_collection_list' %}">{% trans 'External Topic Collections' %}</a>
+                </li>
+                <li id="internal_topic_collections">
+                    <a href="{% url 'harvests:internal_collection_list' %}">{% trans 'Internal Topic Collections' %}</a>
                 </li>
                 <li id="news">
                     <a href="{% url 'news:list' %}">{% trans 'News' %}</a>
@@ -111,6 +121,12 @@
                 <li id="harvests">
                     <a href="{% url 'harvests:calendar' %}">{% trans 'Harvests' %}</a>
                 </li>
+                {% user_in_group user "tech" as tech_user %}
+                {% if user.is_superuser or tech_user %}
+                <li id="harvest_configurations">
+                    <a href="{% url 'harvests:harvest_config_list' %}">{% trans 'Harvest Configurations' %}</a>
+                </li>
+                {% endif %}
                 <li><a href="{% url 'source:dump' %}" target="_blank">{% trans 'Seed DB dump' %}</a></li>
                 <li id="blacklists">
                     <a href="{% url 'blacklists:list' %}">{% trans 'Blacklists' %}</a>
@@ -121,6 +137,11 @@
                 <li id="searchlog">
                     <a href="{% url 'search:list' %}">{% trans 'Search logs' %}</a>
                 </li>
+                {% if user.is_superuser %}
+                <li id="json_constants">
+                    <a href="{% url 'core:json_constants' %}">{% trans 'Constants' %}</a>
+                </li>
+                {% endif %}
 
                 <hr>
 
@@ -129,6 +150,17 @@
                 <li><a href="https://seeder.readthedocs.org/en/latest/">{% trans 'Read the docs' %}</a></li>
                 <li id="harvest_catalogue"><a href="{% url 'harvests:catalogue' %}">{% trans 'Harvests urls' %}</a></li>
 
+                <hr>
+
+                <a href="#" class="btn text-center
+                {% if wayback_maintenance %} btn-danger{% else %} btn-primary{% endif %}" data-toggle="modal"
+                    data-target="#maintenanceModal" style="margin:0 8px; display:block;">
+                    {% if wayback_maintenance %}
+                    {% trans 'Turn off Wayback Maintenance' %}
+                    {% else %}
+                    {% trans 'Turn on Wayback Maintenance' %}
+                    {% endif %}
+                </a>
 
             </ul>
 
@@ -142,6 +174,36 @@
                 {% endblock %}
             </div>
         {% endblock %}
+    </div>
+</div>
+
+<div class="modal fade" id="maintenanceModal" tabindex="-1" role="dialog" aria-labelledby="maintenanceModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="maintenanceModalLabel">
+                    {% trans 'Do you really want to change the Wayback Maintenance status?' %}
+                </h5>
+            </div>
+            <div class="modal-body">
+                <form method="post" action="{% url 'core:toggle_wayback_maintenance' %}">
+                    {% csrf_token %}
+                    <input type="submit" class="btn btn-block
+                    {% if wayback_maintenance %} btn-danger{% else %} btn-primary{% endif %}" value="
+                        {% if wayback_maintenance %}
+                        {% trans 'Turn off Wayback Maintenance' %}
+                        {% else %}
+                        {% trans 'Turn on Wayback Maintenance' %}
+                        {% endif %}
+                    ">
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-success"
+                    data-dismiss="modal">{% trans 'Close' %}</button>
+            </div>
+        </div>
     </div>
 </div>
 

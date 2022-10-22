@@ -4,6 +4,7 @@
 
 from django.contrib import messages
 from django.http.response import HttpResponseRedirect, JsonResponse
+from django.contrib.auth.mixins import UserPassesTestMixin
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
 from django.views.generic.base import View, ContextMixin
@@ -25,6 +26,11 @@ class LoginMixin(object):
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)
+
+
+class SuperuserRequiredMixin(UserPassesTestMixin):
+    def test_func(self):
+        return self.request.user.is_superuser
 
 
 class MessageView(object):
@@ -117,7 +123,7 @@ class HistoryView(DetailView):
         if len(versions) >= 1:
             for i in range(len(versions) - 1):
                 new = versions[i]
-                old = versions[i+1]
+                old = versions[i + 1]
                 fields_changed = dict_diff(old.field_dict, new.field_dict)
                 if fields_changed:
                     diffs.append({

@@ -2,8 +2,35 @@
 - name: "Prepare configuration template"
   hosts: all
   tasks:
+    - name: "Prepare seeder operation directory"
+      file:
+        dest: /home/ansible/seeder
+        state: directory
+
+    - name: "Prepare configuration for static web."
+      copy:
+        dest: /home/ansible/seeder/static-nginx.conf
+        content: |
+          server {
+            location /static/ {
+                root /seeder;
+            }
+            location /media/ {
+                root /seeder;
+            }
+            listen 0.0.0.0:80;
+          }
 
     - name: "Prepare Seeder compose file."
       template:
         src: docker-compose.yaml
-        dest: docker-compose-{{ env }}.yml
+        dest: /home/ansible/seeder/docker-compose-{{ env }}.yml
+
+    - name: "Deployment script"
+      template:
+        src: "{{ item }}"
+        dest: /home/ansible/seeder/
+        mode: u+x
+      loop:
+        - run.sh
+        - dump-screenshots.sh

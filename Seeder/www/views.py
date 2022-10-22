@@ -7,7 +7,7 @@ from django.utils.html import strip_tags
 from django.views.generic.edit import FormView
 from django.views.generic.base import TemplateView, View
 from django.views.generic.detail import DetailView
-from django.http.response import HttpResponseRedirect, Http404
+from django.http.response import HttpResponse, HttpResponseRedirect, Http404
 from django.utils.translation import ugettext as _
 from django.db.models import Sum, When, Case, IntegerField, Q
 from django.core.paginator import EmptyPage
@@ -18,8 +18,8 @@ from contracts.models import Contract
 from search_blob.models import Blob
 from settings.base import WAYBACK_URL
 from source.models import Source, Category, SubCategory, KeyWord
-from source.constants import ARCHIVING_STATES
-from harvests.models import TopicCollection
+from source.constants import PUBLIC_STATES
+from harvests.models import ExternalTopicCollection
 from paginator.paginator import CustomPaginator
 from www.forms import NominationForm
 from www.models import Nomination, SearchLog
@@ -86,23 +86,32 @@ class TopicCollections(PaginatedView, TemplateView):
         return context
 
     def get_paginator_queryset(self):
-        return TopicCollection.objects.filter(active=True)
+        return ExternalTopicCollection.objects.filter(active=True)
 
 
-class CollectionDetail(PaginatedView, DetailView):
+class TopicCollectionDetail(PaginatedView, DetailView):
     template_name = 'topic_collections/detail.html'
     view_name = 'topic_collections'
 
-    model = TopicCollection
+    model = ExternalTopicCollection
     context_object_name = 'collection'
     per_page = 6
 
     def get_queryset(self):
-        qs = super(CollectionDetail, self).get_queryset()
+        qs = super(TopicCollectionDetail, self).get_queryset()
         return qs.filter(active=True)
 
     def get_paginator_queryset(self):
-        return self.get_object().custom_sources.all()
+        qs = self.get_object().custom_sources
+        # Manually first select the PUBLIC sources and then everything else
+        pks = list(
+            qs.filter(state__in=PUBLIC_STATES).values_list("pk", flat=True))
+        pks += list(
+            qs.exclude(state__in=PUBLIC_STATES).values_list("pk", flat=True))
+        # In order to return a real QS, must do some Case-When magic
+        preserved = Case(
+            *[When(pk=pk, then=pos) for pos, pk in enumerate(pks)])
+        return qs.filter(pk__in=pks).order_by(preserved)
 
     def get_context_data(self, **kwargs):
         """
@@ -150,6 +159,25 @@ class CollectionDetail(PaginatedView, DetailView):
         context['custom_seeds'] = seed_page
         context['bigger_paginator'] = bigger_paginator
         return context
+
+
+class TopicCollectionUrlsCsv(DetailView):
+    model = ExternalTopicCollection
+
+    def get_queryset(self):
+        qs = super().get_queryset()
+        return qs.filter(active=True)
+
+    def get(self, request, *args, **kwargs):
+        import csv
+        self.object = self.get_object()
+        # Create a CSV response and write each seed on a new row
+        res = HttpResponse(content_type="text/csv")
+        res["Content-Disposition"] = 'attachment; filename="urls.csv"'
+        writer = csv.writer(res)
+        for seed in self.object.get_seeds():
+            writer.writerow([seed])
+        return res
 
 
 class About(TemplateView):
@@ -214,7 +242,7 @@ class CategoryBaseView(PaginatedView):
             'categories': Category.objects.all().annotate(
                 num_sources=Sum(
                     Case(
-                        When(source__state__in=ARCHIVING_STATES, then=1),
+                        When(source__state__in=PUBLIC_STATES, then=1),
                         default=0, output_field=IntegerField()
                     )
                 )
@@ -226,7 +254,7 @@ class CategoryBaseView(PaginatedView):
             .annotate(
                 num_sources=Sum(
                     Case(
-                        When(source__state__in=ARCHIVING_STATES, then=1),
+                        When(source__state__in=PUBLIC_STATES, then=1),
                         default=0, output_field=IntegerField()
                     )
                 ))\
@@ -235,7 +263,7 @@ class CategoryBaseView(PaginatedView):
         return {
             'sub_categories': sub_categories,
             'cat_sources_total': category.source_set.filter(
-                state__in=ARCHIVING_STATES
+                state__in=PUBLIC_STATES
             ).count(),
         }
 
@@ -431,6 +459,7 @@ class Nominate(FormView):
     model = Nomination
     form_class = NominationForm
     view_name = 'nominate'
+    sub_view_name = 'nominate'
 
     template_name = 'nominate/nominate.html'
 
@@ -481,6 +510,7 @@ class Nominate(FormView):
 class NominateSuccess(TemplateView):
     template_name = 'nominate/nominate_success.html'
     view_name = 'nominate'
+    sub_view_name = 'nominate_success'
 
 
 class NominateContractView(TemplateView):
@@ -496,16 +526,19 @@ class NominateContractView(TemplateView):
 class NominateCooperationView(TemplateView):
     template_name = 'nominate/cooperation.html'
     view_name = 'nominate'
+    sub_view_name = 'nominate_cooperation'
 
 
 class NominateCreativeCommonsView(TemplateView):
     template_name = 'nominate/creative_commons.html'
     view_name = 'nominate'
+    sub_view_name = 'nominate_creative_commons'
 
 
 class NominateSourceSelectionView(TemplateView):
     template_name = 'nominate/source_selection.html'
     view_name = 'nominate'
+    sub_view_name = 'nominate_source_selection'
 
 
 class DisclaimerView(TemplateView):

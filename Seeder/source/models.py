@@ -442,7 +442,7 @@ class Source(SearchModel, SlugOrCreateModel, BaseModel):
         if self.state == constants.STATE_RUNNING:
             valid_contracts = [c.is_valid() for c in self.contract_set.all()]
             if not any(valid_contracts):
-                self.state = constants.STATE_CONTRACT_EXPIRED
+                self.state = constants.STATE_WITHOUT_PUBLISHER
                 self.save()
 
     def get_suggested_by(self):
@@ -475,6 +475,10 @@ class Source(SearchModel, SlugOrCreateModel, BaseModel):
     @property
     def has_creative_commons(self):
         return self.contract_set.valid().filter(is_cc=True).count() > 0
+
+    @property
+    def is_public(self):
+        return self.state in constants.PUBLIC_STATES
 
 
 @revisions.register(exclude=('last_changed',))

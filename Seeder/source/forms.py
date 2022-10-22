@@ -1,7 +1,7 @@
 from django import forms
 from django.utils.translation import ugettext_lazy as _
 
-from . import models
+from . import models, constants
 from dal import autocomplete
 from contracts.constants import OPEN_SOURCES_TYPES
 
@@ -23,7 +23,10 @@ class SourceForm(forms.ModelForm):
 
         widgets = {
             'publisher': autocomplete.ModelSelect2(
-                    url='publishers:autocomplete'
+                url='publishers:autocomplete'
+            ),
+            'category': autocomplete.ModelSelect2(
+                url='source:category_autocomplete'
             ),
             'keywords': autocomplete.ModelSelect2Multiple(url='source:keyword_autocomplete'),
         }
@@ -49,6 +52,23 @@ class DuplicityForm(forms.Form):
 
 
 class SourceEditForm(forms.ModelForm):
+    def clean(self):
+        cleaned_data = super().clean()
+
+        state = cleaned_data.get("state")
+        frequency = cleaned_data.get("frequency")
+        if (state in constants.ARCHIVING_STATES and
+                frequency is None):
+            error = forms.ValidationError(
+                _("Zdroje se stavem 'Archivován' a 'Archivován bez smlouvy'"
+                    " musí mít vybranou Frekvenci sklízení"),
+                code="archiving_no_frequency"
+            )
+            self.add_error("state", error)
+            self.add_error("frequency", error)
+
+        return cleaned_data
+
     class Meta:
         model = models.Source
         fields = ('owner', 'name', 'publisher', 'publisher_contact', 'state',
@@ -57,7 +77,7 @@ class SourceEditForm(forms.ModelForm):
 
         widgets = {
             'publisher': autocomplete.ModelSelect2(
-                    url='publishers:autocomplete'
+                url='publishers:autocomplete'
             ),
             'publisher_contact': autocomplete.ModelSelect2(
                 url='publishers:contact_autocomplete',

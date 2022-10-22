@@ -1,0 +1,7 @@
+<script>
+    // Add a clear button next to the topic collections label to clear TC selection
+    $("[for=id_topic_collections]").after(
+        `<a class="pull-right" style="font-weight:bold;text-decoration:none" href="#" 
+         onclick="event.preventDefault();document.getElementById('id_topic_collections').value = null">CLEAR</a>`
+    )
+</script>
