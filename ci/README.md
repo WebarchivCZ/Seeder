@@ -189,10 +189,12 @@ Polo automatický nástroj na katologizaci webů. Změna [WA-KAT](https://github
 3. Vedoucí webového archivu nebo vedoucí podpory aplikací schválí konkrétní build v (Jenkins)[https://jenkins.webarchiv.cz/job/webarchiv/job/Seeder/job/production/]
 
 ### Nasazení nové verze vývoj
-```
+přihlásit se na testovací nebo produkční prostředí
 ssh wa-{{ env }}-docker00
+
+```
 sudo su - ansible
-/home/ansible/seeder/update_vyvoj.sh
+sudo seeder/update_vyvoj.sh
 ```
 
 ### Zálohy produkčního prostředí
