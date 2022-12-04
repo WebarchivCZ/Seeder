@@ -163,8 +163,8 @@ V Docker Compose se služba jmenuje **static**. Image: **nginx:alpine**.
 Memcache pro cachovací potřeby Djanga.
 
 V Docker Compose se služba jmenuje **memcached**. Image: **memcached:latest**.
-## Statická HTML pro NAKI
-Několik statických HTML, které se časem integrují přímo do aplikace Seeder. Pro zatím jsou hostovány jako image. [NAKI informační stránka](https://github.com/WebarchivCZ/naki). Pokud dojde ke změně, repozitáře pošle image do dockerhub. Pak je potřeb redeploynout patřičné prostředí Seeder aby se nahrála nová verze vývoje.
+## Statická HTML pro NAKI (vyvoj)
+Několik statických HTML, které se časem integrují přímo do aplikace Seeder. Pro zatím jsou hostovány jako image. [NAKI informační stránka](https://github.com/WebarchivCZ/naki). Pokud dojde ke změně, repozitáře pošle image do dockerhub. Pak je potřeb redeploynout patřičné prostředí Seeder aby se nahrála nová verze vývoje. Viz standardní procedura [Nasazení nové verze vývoj](#Nasazení-nové-verze-vývoj).
 
 - Testovací prostředí: https://app.webarchiv.cz/vyvoj/
 - Produkční prostředí: https://webarchiv.cz/vyvoj/
@@ -188,6 +188,12 @@ Polo automatický nástroj na katologizaci webů. Změna [WA-KAT](https://github
 2. Merge PR do branch production spustí nasazení kódu na testovací prostředí
 3. Vedoucí webového archivu nebo vedoucí podpory aplikací schválí konkrétní build v (Jenkins)[https://jenkins.webarchiv.cz/job/webarchiv/job/Seeder/job/production/]
 
+### Nasazení nové verze vývoj
+```
+ssh wa-{{ env }}-docker00
+sudo su - ansible
+/home/ansible/seeder/update_vyvoj.sh
+```
 
 ### Zálohy produkčního prostředí
 #### Adresář media
