@@ -179,6 +179,11 @@ V Docker Compose se služba jmenuje **manet**. Image **bobey/manet:latest**.
 ## Katalogizační nástroj WaKat
 Polo automatický nástroj na katologizaci webů. Změna [WA-KAT](https://github.com/WebarchivCZ/WA-KAT) automaticky spouští aktualizaci testu nebo produkce. Nástroj je dostupný na adrese: [kat.webarchiv.cz](https://kat.webarchiv.cz/). Nástroj není součástí Docker Compose.
 
+# Ruční ovládání prostředí
+Automatizační nástroj vytváří v `/home/ansible/seeder` skripty, ktere volá při procesu nasazování. Tyto nástroje můžou být podle potřeby spouštěny.
+- run.sh -> Spustí seeder pomocí docker compose
+- update_vyvoj.sh -> Stáhne nejnovější docker image: 'webarchiv/vyvoj:naki' a aktualizuje docker compose službu vyvoj
+
 # Standardní procedury
 ## Nasazení nové verze Seeder na test
 1. Vytvořit PR vůči branch master
@@ -191,7 +196,7 @@ Polo automatický nástroj na katologizaci webů. Změna [WA-KAT](https://github
 ## Nasazení nové verze Vývoj na testovací prostředí
 1. Push do větve `main` v repozitáři [https://github.com/WebarchivCZ/naki](https://github.com/WebarchivCZ/naki) spustí nasazení kódu do testovacího prostředí.
 
-## Nasazení nové verze Vývoj na produkkční prostředí
+## Nasazení nové verze Vývoj na produkční prostředí
 1. Vytvořit Pull Request vůči větvi `production` v repozitáři [https://github.com/WebarchivCZ/naki](https://github.com/WebarchivCZ/naki)
 2. Merge Pull Request do větve `main` spustí nasazení nejdříve kódu na testovací prostředí
 3. Vedoucí webového archivu nebo vedoucí podpory aplikací schválí konkrétní build v (Jenkins)[https://jenkins.webarchiv.cz/job/webarchiv/job/Seeder/job/production/] a poté je teprve nasazen kód do produkčního prostředí.
