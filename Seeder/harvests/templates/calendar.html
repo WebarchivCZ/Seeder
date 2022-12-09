@@ -72,7 +72,9 @@
                 if(view == "month") {
                     $("#calendar").find(".cal-month-day").dblclick(function(e) {
                         var clicked_date = $(this).find('span').attr('data-cal-date');
-                        $('#{{ harvest_form.scheduled_on.auto_id }}').val(clicked_date);
+                        // Format date to a full ISO datetime with time set to noon
+                        var date_val = `${clicked_date}T12:00`;
+                        $('#{{ harvest_form.scheduled_on.auto_id }}').val(date_val);
                         $('#form-modal').modal('toggle');
                     });
                 }
