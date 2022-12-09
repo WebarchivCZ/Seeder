@@ -73,7 +73,7 @@
         <h3>{% trans 'Links to review' %}:</h3>
         <ul class="list-group">
             {% for seed in voting_round.source.seed_set.all %}
-                <li class="list-group-item"><a href="{{ seed.url }}">{{ seed }}</a></li>
+                <li class="list-group-item"><a href="{{ seed.url }}" target="_blank">{{ seed }}</a></li>
             {% endfor %}
         </ul>
     </div>
