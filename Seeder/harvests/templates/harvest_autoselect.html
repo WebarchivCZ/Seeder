@@ -1,0 +1,106 @@
+<script>
+    // Assign all relevant fields to constant variables
+    {% if harvest_form %}
+    // Harvest type
+    const harvest_type = $("#{{harvest_form.harvest_type.auto_id}}");
+    // Harvest properties
+    const archive_it = $("#{{harvest_form.archive_it.auto_id}}");
+    const tests = $("#{{harvest_form.tests.auto_id}}");
+    const paraharvest = $("#{{harvest_form.paraharvest.auto_id}}");
+    const manuals = $("#{{harvest_form.manuals.auto_id}}");
+    const combined = $("#{{harvest_form.combined.auto_id}}");
+    // Sections select + checkboxes (inputs, not form-groups)
+    const target_frequency = $("#{{harvest_form.target_frequency.auto_id}}");
+    const topic_collections = $("#{{harvest_form.topic_collections.auto_id}}");
+    const topic_collection_frequency = $("#{{harvest_form.topic_collection_frequency.auto_id}}");
+    {% else %}
+    // Harvest type
+    const harvest_type = $("#{{form.harvest_type.auto_id}}");
+    // Harvest properties
+    const archive_it = $("#{{form.archive_it.auto_id}}");
+    const tests = $("#{{form.tests.auto_id}}");
+    const paraharvest = $("#{{form.paraharvest.auto_id}}");
+    const manuals = $("#{{form.manuals.auto_id}}");
+    const combined = $("#{{form.combined.auto_id}}");
+    // Sections select + checkboxes (inputs, not form-groups)
+    const target_frequency = $("#{{form.target_frequency.auto_id}}");
+    const topic_collections = $("#{{form.topic_collections.auto_id}}");
+    const topic_collection_frequency = $("#{{form.topic_collection_frequency.auto_id}}");
+    {% endif %}
+
+    // Need a listener for any of the harvest properties
+    archive_it.addClass("harvest_properties");
+    tests.addClass("harvest_properties");
+    paraharvest.addClass("harvest_properties");
+    manuals.addClass("harvest_properties");
+    combined.addClass("harvest_properties");
+    // Make combined stand out a bit
+    combined.parent().addClass("text-info").css("font-weight", "bold");
+
+    // When Harvest Type changes, do stuff
+    function autoSelectCombined() {
+        // When multiple props are checked, also auto-check combined
+        // When less than that, uncheck combined -> it's a controlled field
+        if ($(`.harvest_properties[id!=${combined.attr('id')}]:checked`).length >= 2) {
+            combined.prop("checked", true);
+        } else {
+            combined.prop("checked", false);
+        }
+    }
+    function harvestTypeSelected(harvestType) {
+        // Reset things back to the default state – everything enabled, all sections shown
+        function defaults() {
+            $(".harvest_properties").prop("disabled", false);
+            target_frequency.parent().show();
+            topic_collections.parent().show();
+            topic_collection_frequency.parent().show();
+        }
+        
+        // Serials = check Archive-it, disable Test, hide sections 'topic_collections', 'topic_collection_frequency'
+        if (harvestType == "serials") {
+            defaults();
+            archive_it.prop("checked", true);
+            tests.prop("checked", false);
+            tests.prop("disabled", true);
+            autoSelectCombined()
+            topic_collections.val("");
+            topic_collections.parent().hide();
+            topic_collection_frequency.find("input").prop("checked", false)
+            topic_collection_frequency.parent().hide();
+            // Tests = check Test, disable Archive-it
+        } else if (harvestType == "tests") {
+            defaults();
+            tests.prop("checked", true);
+            archive_it.prop("checked", false);
+            archive_it.prop("disabled", true);
+            autoSelectCombined()
+            // Topics = disable Archive-it, hide section 'target_frequency'
+        } else if (harvestType == "topics") {
+            defaults();
+            archive_it.prop("checked", false);
+            archive_it.prop("disabled", true);
+            target_frequency.find("input").prop("checked", false);
+            target_frequency.parent().hide();
+            autoSelectCombined()
+            // Totals = hide section 'target_frequency', 'topic_collections', 'topic_collection_frequency'
+        } else if (harvestType == "totals") {
+            defaults();
+            target_frequency.find("input").prop("checked", false);
+            target_frequency.parent().hide();
+            topic_collections.val("");
+            topic_collections.parent().hide();
+            topic_collection_frequency.find("input").prop("checked", false)
+            topic_collection_frequency.parent().hide();
+            autoSelectCombined()
+        } else console.warn("Unknown harvest type", harvestType)
+    }
+    harvestTypeSelected(harvest_type.val()); // Set initially
+    harvest_type.on("change", (e) => {
+        harvestTypeSelected(e.currentTarget.value);
+    })
+
+    // When Harvest Properties are un/checked, do stuff
+    $(document).on("change", ".harvest_properties", (e) => {
+        autoSelectCombined();
+    })
+</script>
