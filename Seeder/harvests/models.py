@@ -589,6 +589,9 @@ class ExternalTopicCollection(BaseModel, OrderedModel):
     a part of a Harvest; the original internal TopicCollection is used for that.
     """
 
+    # Active is used for "Published" status, so set default to "Unpublished"
+    active = models.BooleanField(default=False)
+
     title = models.CharField(verbose_name=_('title'), max_length=255)
     slug = AutoSlugField(unique=True, populate_from='title_cs')
 
