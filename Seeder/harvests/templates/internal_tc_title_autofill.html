@@ -1,0 +1,19 @@
+<script>
+    const BASE_URL = "{% url 'external_tc-title' pk='__PK__' %}";
+
+    function load_external_tc_title(externalTcPk) {
+        const url = BASE_URL.replace("__PK__", externalTcPk);
+        $.get(url, (data, status) => {
+            if (status !== "success") return alert(
+                `Error while fetching title for External TC ${externalTcPk}`);
+            if (Object.keys(data).length > 0) {
+                $("#{{form.title_cs.auto_id}}").val(data.title_cs);
+                $("#{{form.title_en.auto_id}}").val(data.title_en);
+            } else console.error("Couldn't load External TC", externalTcPk, data);
+        })
+    }
+    // Whenever External TC is changed, load its CS/EN title as defaults for the Internal TC
+    $(document).on("change", "#{{form.external_collection.auto_id}}", (e) => {
+        load_external_tc_title(e.currentTarget.value)
+    })
+</script>
