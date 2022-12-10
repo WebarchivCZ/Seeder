@@ -5,6 +5,7 @@ import logging
 from itertools import chain
 from hashlib import md5
 from django.utils import timezone
+from datetime import date
 
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
@@ -13,7 +14,6 @@ from django.dispatch import receiver
 from django.db.models.signals import pre_save
 
 from reversion import revisions
-from ckeditor.fields import RichTextField
 from autoslug import AutoSlugField
 from ordered_model.models import OrderedModel
 
@@ -736,7 +736,7 @@ class TopicCollection(HarvestAbstractModel):
         _('All sources are under open license or contract')
     )
 
-    date_from = DatePickerField(_('Date from'), null=True)
+    date_from = DatePickerField(_('Date from'), null=True, default=date.today)
     date_to = DatePickerField(_('Date to'), null=True, blank=True)
 
     # Harvest-specific fields
