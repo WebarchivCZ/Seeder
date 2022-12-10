@@ -450,7 +450,7 @@ class InternalCollectionListView(
 
 class InternalCollectionAdd(InternalTCView, FormView):
     form_class = forms.InternalTopicCollectionForm
-    template_name = 'add_form.html'
+    template_name = 'internal_tc_add_form.html'
     title = _('Add TopicCollection')
 
     def form_valid(self, form):
