@@ -201,6 +201,12 @@ Automatizační nástroj vytváří v `/home/ansible/seeder` skripty, ktere vol�
 2. Merge Pull Request do větve `main` spustí nasazení nejdříve kódu na testovací prostředí
 3. Vedoucí webového archivu nebo vedoucí podpory aplikací schválí konkrétní build v (Jenkins)[https://jenkins.webarchiv.cz/job/webarchiv/job/Seeder/job/production/] a poté je teprve nasazen kód do produkčního prostředí.
 
+## Spuštění Produkčního Seeder přímo ze serveru
+1. Přihlásit si do produkčního prostředí pomocí ssh
+2. ```sudo su - ansible```
+3. ```seeder/run.sh```
+4. Chvilku počkat
+
 ## Zálohy produkčního prostředí
 ### Adresář media
 1. Přihlásit se na serveru ```ssh $(whoami)@10.3.0.50```
