@@ -1,5 +1,9 @@
 FROM python:3.7.3
 
+# Debian Stretch is no longer supported, so need to use archive sources
+RUN echo "deb http://archive.debian.org/debian/ stretch main\n\
+deb-src http://archive.debian.org/debian/ stretch main" > /etc/apt/sources.list
+
 RUN apt-get update && apt-get install -y \
     libjpeg-dev \
     libpq-dev \
