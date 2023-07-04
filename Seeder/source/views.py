@@ -243,19 +243,20 @@ class SourceList(SourceView, generic_views.FilteredListView):
     full_export_url = 'source:export'
 
 
-def download_source_xlsx(request):
-    """ Download all sources in an XLSX file """
-    from .models import Source
-    from django.http import HttpResponse
-    df = Source.export_all_sources()
-    # Export the DF straight into a downloading response
-    filename = f"sources_{datetime.now():%Y-%m-%d}.xlsx"
-    response = HttpResponse(
-        content_type=("application/vnd.openxmlformats-officedocument."
-                      "spreadsheetml.sheet"))
-    response["Content-Disposition"] = f"attachment; filename={filename}"
-    df.to_excel(response, index=False, engine="openpyxl")
-    return response
+class SourceExportAll(SourceView, View):
+    def get(self, request):
+        """ Download all sources in an XLSX file """
+        from .models import Source
+        from django.http import HttpResponse
+        df = Source.export_all_sources()
+        # Export the DF straight into a downloading response
+        filename = f"sources_{datetime.now():%Y-%m-%d}.xlsx"
+        response = HttpResponse(
+            content_type=("application/vnd.openxmlformats-officedocument."
+                          "spreadsheetml.sheet"))
+        response["Content-Disposition"] = f"attachment; filename={filename}"
+        df.to_excel(response, index=False, engine="openpyxl")
+        return response
 
 
 class CategoryAutocomplete(autocomplete.Select2QuerySetView):
