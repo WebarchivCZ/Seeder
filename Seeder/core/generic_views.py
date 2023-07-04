@@ -150,14 +150,16 @@ class FilteredListView(ExportMixin, SingleTableMixin, FilterView):
 
     add_link = None
     add_link_title = _('Add')
+    full_export_url = None
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['export_formats'] = ['csv', 'xls']
+        context['export_formats'] = ['csv', 'xlsx']
         context['filter'] = self.filterset_class(data=self.request.GET)
         context['filter_active'] = bool(self.request.GET)
         context['add_link'] = self.add_link
         context['add_link_title'] = self.add_link_title
+        context['full_export_url'] = self.full_export_url
         return context
 
 
