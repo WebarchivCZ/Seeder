@@ -16,6 +16,7 @@ from django.db.models.signals import pre_save
 from reversion import revisions
 from autoslug import AutoSlugField
 from ordered_model.models import OrderedModel
+from ckeditor.fields import RichTextField
 
 from blacklists.models import Blacklist
 from core.models import BaseModel, DatePickerField, DateTimePickerField
@@ -602,8 +603,9 @@ class ExternalTopicCollection(BaseModel, OrderedModel):
 
     keywords = models.ManyToManyField(KeyWord, verbose_name=_('keywords'))
 
-    annotation = models.TextField(
-        verbose_name=_('annotation')
+    annotation = RichTextField(
+        verbose_name=_('annotation'),
+        config_name='mini',
     )
     image = models.ImageField(
         verbose_name=_('image'),

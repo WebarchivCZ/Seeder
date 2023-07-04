@@ -26,12 +26,12 @@
 
                 <tr>
                     <td>{% trans 'annotation [cs]' %}</td>
-                    <td>{{ object.annotation_cs }}</td>
+                    <td>{{ object.annotation_cs|safe }}</td>
                 </tr>
 
                 <tr>
                     <td>{% trans 'annotation [en]' %}</td>
-                    <td>{{ object.annotation_en }}</td>
+                    <td>{{ object.annotation_en|safe }}</td>
                 </tr>
 
                 {% if object.image %}
