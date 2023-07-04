@@ -480,6 +480,31 @@ class Source(SearchModel, SlugOrCreateModel, BaseModel):
     def is_public(self):
         return self.state in constants.PUBLIC_STATES
 
+    @classmethod
+    def export_all_sources(cls):
+        from django.db.models.expressions import RawSQL
+        import pandas as pd
+        qs = cls.objects.prefetch_related(
+            "owner", "publisher", "category", "sub_category"
+            # string_agg is supported from Django 3
+        ).annotate(seed_urls=RawSQL(
+            "SELECT string_agg(url, ',') FROM source_seed WHERE "
+            "source_seed.source_id = source_source.id", ()))
+        df = pd.DataFrame.from_records(qs.values(
+            "id", "name", "owner__username", "state", "publisher__name",
+            "category__name", "sub_category__name", "suggested_by",
+            "dead_source", "created", "last_changed", "seed_urls",
+        ))
+        for col in df.columns:
+            # Make datetime fields timezone-naive
+            if df[col].dtype.name == "datetime64[ns, UTC]":
+                df[col] = df[col].dt.tz_convert("UTC").dt.tz_localize(None)
+            # Prefix problematic cols (formulas) with an apostrophe
+            if df[col].dtype == object:
+                df[col] = df[col].apply(lambda x: f"'{x}" if isinstance(
+                    x, str) and x.startswith(('=', '+', '-', '@')) else x)
+        return df
+
 
 @revisions.register(exclude=('last_changed',))
 class Seed(BaseModel):
