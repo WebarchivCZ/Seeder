@@ -12,6 +12,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.urls import reverse
 from django.dispatch import receiver
 from django.db.models.signals import pre_save
+from django.conf import settings
 
 from reversion import revisions
 from autoslug import AutoSlugField
@@ -764,6 +765,24 @@ class TopicCollection(HarvestAbstractModel):
             idCollection=self.pk,
             aggregationWithSameType=self.aggregation_with_same_type,
         )
+
+    def backup_custom_seeds(self):
+        """
+        Save all current custom seeds to a text file under media/seeds/backup
+        Filename: tc_{current datetime}_{TC id}_{15 chars of TC title}.txt
+        :return url: The media URL of the saved file
+        """
+        filename = (f"tc_{timezone.now():%Y-%m-%d_%H-%M}_{self.pk}_"
+                    f"{self.title[:15].replace(' ', '-')}.txt")
+        filepath = os.path.join(
+            settings.MEDIA_ROOT, settings.SEEDS_BACKUP_DIR, filename)
+        # Ensure folder exists
+        os.makedirs(os.path.dirname(filepath), exist_ok=True)
+        # Save seeds and return the media URL for download
+        with open(filepath, "w") as f:
+            f.write(self.custom_seeds)
+        return os.path.join(
+            settings.MEDIA_URL, settings.SEEDS_BACKUP_DIR, filename)
 
     def __str__(self):
         sign = '✔' if self.active else '✗'

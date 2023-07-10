@@ -287,6 +287,7 @@ WAYBACK_URL = "http://wayback.webarchiv.cz/wayback/query?type=urlquery&url={url}
 
 
 SEEDS_EXPORT_DIR = 'seeds'
+SEEDS_BACKUP_DIR = os.path.join(SEEDS_EXPORT_DIR, 'backup')
 MANET_URL = '127.0.0.1:8891'
 
 
