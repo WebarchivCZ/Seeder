@@ -90,7 +90,6 @@ INSTALLED_APPS = (
     'rest_framework.authtoken',
     'captcha',
     'ordered_model',
-    # 'haystack',
     # 'elasticstack',
 
     'core',
