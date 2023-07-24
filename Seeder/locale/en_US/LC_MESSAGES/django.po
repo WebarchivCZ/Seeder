@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Seeder\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-07-04 07:53+0000\n"
+"POT-Creation-Date: 2023-07-24 10:40+0000\n"
 "PO-Revision-Date: 2017-11-07 12:38+0100\n"
 "Last-Translator: Visgean Skeloru <visgean@gmail.com>, 2017\n"
 "Language-Team: English (United States) (https://www.transifex.com/"
@@ -152,7 +152,7 @@ msgid "This comment has been removed"
 msgstr "This comment has been removed"
 
 #: comments/models.py:168 qa/models.py:40 qa/templates/detail.html:30
-#: source/models.py:254 source/models.py:509 source/templates/source.html:83
+#: source/models.py:254 source/models.py:534 source/templates/source.html:83
 #: templates/history.html:14
 msgid "Comment"
 msgstr "Comment"
@@ -216,7 +216,7 @@ msgid "Narodni knihovna CR - archivace Vasich webovych stranek"
 msgstr "National library of the CR - archiving your web sites"
 
 #: contracts/models.py:55 contracts/templates/contract.html:21
-#: harvests/models.py:232 harvests/models.py:710 source/models.py:268
+#: harvests/models.py:233 harvests/models.py:711 source/models.py:268
 #: voting/models.py:27
 msgid "State"
 msgstr "State"
@@ -525,15 +525,33 @@ msgstr "dataLimit cannot be over 1TB"
 msgid "One URL per line"
 msgstr "One URL per line"
 
-#: harvests/models.py:49
+#: harvests/forms.py:204
+msgid ""
+"Provide a text file with one seed per line which will overwrite all "
+"custom_seeds. The original custom_seeds will be backed up to the media/seeds/"
+"backup folder."
+msgstr ""
+"Provide a text file with one seed per line which will overwrite all "
+"custom_seeds. The original custom_seeds will be backed up to the media/seeds/"
+"backup folder."
+
+#: harvests/forms.py:225
+msgid ""
+"Custom seeds field is disabled because there are too many seeds to be "
+"displayed in an HTML text field."
+msgstr ""
+"Custom seeds field is disabled because there are too many seeds to be "
+"displayed in an HTML text field."
+
+#: harvests/models.py:50
 msgid "Included sources"
 msgstr "Included sources"
 
-#: harvests/models.py:54
+#: harvests/models.py:55
 msgid "Custom seeds URL"
 msgstr "Custom seeds URL"
 
-#: harvests/models.py:55
+#: harvests/models.py:56
 msgid ""
 "Sem vložte všechna semínka, po uložení zde zůstanou zdroje bez záznamu v "
 "Seederu, ostatní budu v poli Přiřazené zdroje"
@@ -541,198 +559,198 @@ msgstr ""
 "Enter all your seeds here. After saving, unknown sources will stay here, "
 "while the rest will be assigned to Custom sources"
 
-#: harvests/models.py:204
+#: harvests/models.py:205
 msgid "Planned"
 msgstr "Planned"
 
-#: harvests/models.py:205
+#: harvests/models.py:206
 msgid "Ready to harvest"
 msgstr "Ready to harvest"
 
-#: harvests/models.py:206 harvests/models.py:687
+#: harvests/models.py:207 harvests/models.py:688
 msgid "Running"
 msgstr "Running"
 
-#: harvests/models.py:207
+#: harvests/models.py:208
 msgid "Success"
 msgstr "Success"
 
-#: harvests/models.py:208
+#: harvests/models.py:209
 msgid "Success with failures"
 msgstr "Success with failures"
 
-#: harvests/models.py:209
+#: harvests/models.py:210
 msgid "Cancelled"
 msgstr "Cancelled"
 
-#: harvests/models.py:210
+#: harvests/models.py:211
 msgid "Failed"
 msgstr "Failed"
 
-#: harvests/models.py:234 harvests/models.py:801
+#: harvests/models.py:235 harvests/models.py:820
 #: harvests/templates/harvest.html:19 harvests/templates/harvest_config.html:18
 msgid "Harvest type"
 msgstr "Harvest type"
 
-#: harvests/models.py:236 harvests/models.py:596 harvests/models.py:714
+#: harvests/models.py:237 harvests/models.py:597 harvests/models.py:715
 #: harvests/tables.py:76 harvests/tables.py:93 www/tables.py:13
 msgid "title"
 msgstr "Title"
 
-#: harvests/models.py:238 harvests/templates/harvest.html:17
+#: harvests/models.py:239 harvests/templates/harvest.html:17
 #: source/models.py:255 source/templates/source.html:87
 msgid "Annotation"
 msgstr "Annotation"
 
-#: harvests/models.py:240 harvests/models.py:729
+#: harvests/models.py:241 harvests/models.py:730
 msgid "Date of harvest"
 msgstr "Date of harvest"
 
-#: harvests/models.py:242
+#: harvests/models.py:243
 msgid "Seeds by frequency"
 msgstr "Seeds by frequency"
 
-#: harvests/models.py:254 harvests/templates/harvest.html:27
+#: harvests/models.py:255 harvests/templates/harvest.html:27
 msgid "Date frozen"
 msgstr "Date frozen"
 
-#: harvests/models.py:259
+#: harvests/models.py:260
 msgid "Topic collections"
 msgstr "Topic collections"
 
-#: harvests/models.py:264 harvests/templates/harvest.html:58
+#: harvests/models.py:265 harvests/templates/harvest.html:58
 msgid "Topic collections by frequency"
 msgstr "Topic collections by frequency"
 
-#: harvests/models.py:272 harvests/templates/harvest.html:37
+#: harvests/models.py:273 harvests/templates/harvest.html:37
 msgid "Paraharvest"
 msgstr "Paraharvest"
 
-#: harvests/models.py:275 harvests/templates/harvest.html:39
+#: harvests/models.py:276 harvests/templates/harvest.html:39
 msgid "Manuals"
 msgstr "Manuals"
 
-#: harvests/models.py:277 harvests/templates/harvest.html:51
+#: harvests/models.py:278 harvests/templates/harvest.html:51
 msgid "Combined"
 msgstr "Combined"
 
-#: harvests/models.py:279 harvests/views.py:382
+#: harvests/models.py:280 harvests/views.py:383
 msgid "ArchiveIt"
 msgstr "ArchiveIt"
 
-#: harvests/models.py:282 harvests/views.py:384
+#: harvests/models.py:283 harvests/views.py:385
 msgid "Tests"
 msgstr "Tests"
 
-#: harvests/models.py:286 harvests/models.py:803
+#: harvests/models.py:287 harvests/models.py:822
 #: harvests/templates/harvest.html:65 harvests/templates/harvest_config.html:20
 msgid "duration"
 msgstr "duration"
 
-#: harvests/models.py:288 harvests/models.py:805
+#: harvests/models.py:289 harvests/models.py:824
 #: harvests/templates/harvest.html:67 harvests/templates/harvest_config.html:22
 msgid "budget"
 msgstr "budget"
 
-#: harvests/models.py:290 harvests/models.py:807
+#: harvests/models.py:291 harvests/models.py:826
 #: harvests/templates/harvest.html:69 harvests/templates/harvest_config.html:24
 msgid "dataLimit"
 msgstr "dataLimit"
 
-#: harvests/models.py:292 harvests/models.py:809
+#: harvests/models.py:293 harvests/models.py:828
 #: harvests/templates/harvest.html:71 harvests/templates/harvest_config.html:26
 msgid "documentLimit"
 msgstr "documentLimit"
 
-#: harvests/models.py:294 harvests/models.py:811
+#: harvests/models.py:295 harvests/models.py:830
 #: harvests/templates/harvest.html:73 harvests/templates/harvest_config.html:28
 msgid "deduplication"
 msgstr "deduplication"
 
-#: harvests/models.py:298 harvests/templates/harvest.html:82
+#: harvests/models.py:299 harvests/templates/harvest.html:82
 msgid "Seeds not harvested"
 msgstr "Seeds not harvested"
 
-#: harvests/models.py:600 harvests/models.py:717 source/constants.py:124
+#: harvests/models.py:601 harvests/models.py:718 source/constants.py:124
 #: source/models.py:239
 msgid "Curator"
 msgstr "Curator"
 
-#: harvests/models.py:604 source/templates/source.html:91
+#: harvests/models.py:605 source/templates/source.html:91
 msgid "keywords"
 msgstr "Keywords"
 
-#: harvests/models.py:607 harvests/models.py:734
+#: harvests/models.py:608 harvests/models.py:735
 msgid "annotation"
 msgstr "annotation"
 
-#: harvests/models.py:611
+#: harvests/models.py:612
 msgid "image"
 msgstr "image"
 
-#: harvests/models.py:670 harvests/templates/topic_collection.html:13
+#: harvests/models.py:671 harvests/templates/topic_collection.html:13
 msgid "External Topic Collection"
 msgstr "External Topic Collection"
 
-#: harvests/models.py:671 templates/base.html:110
+#: harvests/models.py:672 templates/base.html:110
 msgid "External Topic Collections"
 msgstr "External Topic Collections"
 
-#: harvests/models.py:688
+#: harvests/models.py:689
 msgid "New"
 msgstr "New"
 
-#: harvests/models.py:689
+#: harvests/models.py:690
 msgid "Finished"
 msgstr "Finished"
 
-#: harvests/models.py:701 harvests/templates/topic_collection.html:49
+#: harvests/models.py:702 harvests/templates/topic_collection.html:49
 #: source/models.py:274 source/templates/source.html:56 templates/api.html:17
 msgid "Frequency"
 msgstr "Frequency"
 
-#: harvests/models.py:738
+#: harvests/models.py:739
 msgid "All sources are under open license or contract"
 msgstr "All sources are under open license or contract"
 
-#: harvests/models.py:741
+#: harvests/models.py:742
 msgid "Date from"
 msgstr "Date from"
 
-#: harvests/models.py:742
+#: harvests/models.py:743
 msgid "Date to"
 msgstr "Date to"
 
-#: harvests/models.py:746 harvests/templates/topic_collection.html:24
+#: harvests/models.py:747 harvests/templates/topic_collection.html:24
 msgid "Collection alias"
 msgstr "Collection alias"
 
-#: harvests/models.py:748 harvests/templates/topic_collection.html:82
+#: harvests/models.py:749 harvests/templates/topic_collection.html:82
 msgid "Aggregation with same type"
 msgstr "Aggregation with same type"
 
-#: harvests/models.py:773
+#: harvests/models.py:792
 msgid "Internal Topic Collection"
 msgstr "Internal Topic Collection"
 
-#: harvests/models.py:774 harvests/templates/external_topic_collection.html:82
+#: harvests/models.py:793 harvests/templates/external_topic_collection.html:82
 #: templates/base.html:113
 msgid "Internal Topic Collections"
 msgstr "Internal Topic Collections"
 
-#: harvests/models.py:780
+#: harvests/models.py:799
 msgid "file"
 msgstr "file"
 
-#: harvests/models.py:814
+#: harvests/models.py:833
 msgid "Harvest Configuration"
 msgstr "Harvest Configuration"
 
-#: harvests/models.py:815 harvests/views.py:397 templates/base.html:127
+#: harvests/models.py:834 harvests/views.py:398 templates/base.html:127
 msgid "Harvest Configurations"
 msgstr "Harvest Configurations"
 
-#: harvests/models.py:819
+#: harvests/models.py:838
 #, python-format
 msgid "Configuration for %(type)s Harvests"
 msgstr "Configuration for %(type)s Harvests"
@@ -927,61 +945,78 @@ msgid "All sources are open?"
 msgstr "All sources are open?"
 
 #: harvests/templates/topic_collection.html:94 qa/templates/qa_form.html:20
-#: source/models.py:538 source/templates/source.html:152
+#: source/models.py:563 source/templates/source.html:152
 msgid "Seeds"
 msgstr "Seeds"
 
-#: harvests/views.py:57 templates/base.html:122
+#: harvests/views.py:58 templates/base.html:122
 msgid "Harvests"
 msgstr "Harvests"
 
-#: harvests/views.py:112 harvests/views.py:130
+#: harvests/views.py:113 harvests/views.py:131
 msgid "Harvest contains no seeds!"
 msgstr ""
 "Harvest contains no seeds! This means it cannot be frozen (set as 'Ready to "
 "harvest')"
 
-#: harvests/views.py:352 harvests/views.py:371
+#: harvests/views.py:353 harvests/views.py:372
 msgid "Available URLs for date"
 msgstr "Available URLs for date"
 
-#: harvests/views.py:356
+#: harvests/views.py:357
 msgid "All seeds for Harvest"
 msgstr "All seeds for Harvest"
 
-#: harvests/views.py:383
+#: harvests/views.py:384
 msgid "VNC"
 msgstr "VNC: Custom seeds"
 
-#: harvests/views.py:385
+#: harvests/views.py:386
 msgid "Totals"
 msgstr "Totals: All seeds"
 
-#: harvests/views.py:444
+#: harvests/views.py:445
 msgid "TopicCollections"
 msgstr "Topic Collections"
 
-#: harvests/views.py:454
+#: harvests/views.py:455
 msgid "Add TopicCollection"
 msgstr "Add Topic Collection"
 
-#: harvests/views.py:530
+#: harvests/views.py:497
+msgid "Cannot decode file to UTF-8"
+msgstr "Cannot decode file to UTF-8"
+
+#: harvests/views.py:499
+#, python-format
+msgid ""
+"Original custom_seeds have been backed to: <a href='%(url)s' target='_blank'>"
+"%(url)s</a>"
+msgstr ""
+"Original custom_seeds have been backed to: <a href='%(url)s' target='_blank'>"
+"%(url)s</a>"
+
+#: harvests/views.py:503
+msgid "Uploaded custom seeds will not be paired automatically"
+msgstr "Uploaded custom seeds will not be paired automatically"
+
+#: harvests/views.py:558
 msgid "ExternalTopicCollections"
 msgstr "External Topic Collections"
 
-#: harvests/views.py:540
+#: harvests/views.py:568
 msgid "Add ExternalTopicCollection"
 msgstr "Add External Topic Collection"
 
-#: harvests/views.py:624
+#: harvests/views.py:652
 msgid "Topic collection published"
 msgstr "Topic collection published"
 
-#: harvests/views.py:626
+#: harvests/views.py:654
 msgid "Topic collection unpublished"
 msgstr "Topic collection unpublished"
 
-#: harvests/views.py:640
+#: harvests/views.py:668
 msgid "URL slug successfully updated"
 msgstr "URL slug successfully updated"
 
@@ -1265,63 +1300,63 @@ msgstr "Sub category"
 msgid "Source is dead"
 msgstr "Source is dead"
 
-#: source/models.py:490
+#: source/models.py:515
 msgid "default"
 msgstr "default"
 
-#: source/models.py:491
+#: source/models.py:516
 msgid "low"
 msgstr "low"
 
-#: source/models.py:492
+#: source/models.py:517
 msgid "very_low"
 msgstr "very_low"
 
-#: source/models.py:503
+#: source/models.py:528
 msgid "Main seed"
 msgstr "Main seed"
 
-#: source/models.py:504
+#: source/models.py:529
 msgid "Seed url"
 msgstr "Seed URL"
 
-#: source/models.py:510
+#: source/models.py:535
 msgid "From"
 msgstr "From"
 
-#: source/models.py:511
+#: source/models.py:536
 msgid "To"
 msgstr "To"
 
-#: source/models.py:514
+#: source/models.py:539
 msgid "Javascript"
 msgstr "Javascript"
 
-#: source/models.py:515
+#: source/models.py:540
 msgid "Global reject"
 msgstr "Global reject"
 
-#: source/models.py:516
+#: source/models.py:541
 msgid "Youtube"
 msgstr "YouTube"
 
-#: source/models.py:517
+#: source/models.py:542
 msgid "Calendars"
 msgstr "Calendars"
 
-#: source/models.py:518
+#: source/models.py:543
 msgid "Local traps"
 msgstr "Local traps"
 
-#: source/models.py:519
+#: source/models.py:544
 msgid "Redirect on seed"
 msgstr "Redirect on seed"
 
-#: source/models.py:520
+#: source/models.py:545
 msgid "Robots.txt active"
 msgstr "Robots.txt active"
 
-#: source/models.py:537
+#: source/models.py:562
 msgid "Seed"
 msgstr "Seed"
 
