@@ -34,6 +34,9 @@ ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '127.0.0.1').split(' ')
 
 INTERNAL_IPS = os.environ.get('INTERNAL_IPS', '127.0.0.1').split(' ')
 
+FILE_UPLOAD_MAX_MEMORY_SIZE = int(os.environ.get(
+    'FILE_UPLOAD_MAX_MEMORY_SIZE', 52428800))  # 50*1024*1024 = 50 MiB
+
 # Database
 # https://docs.djangoproject.com/en/1.7/ref/settings/#databases
 # since we use special PostgresSQL fields we cannot simply use any db.
