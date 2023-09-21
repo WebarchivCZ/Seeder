@@ -274,7 +274,7 @@
 
 			<script>
 				function copyCertificateHtml(id_cert, id_status) {
-						const copyText = document.getElementById(id_cert).textContent;
+						const copyText = document.getElementById(id_cert).value;
 						const copiedStatus = document.getElementById(id_status);
 						navigator.clipboard.writeText(copyText).then(
 							() => {
