@@ -74,52 +74,224 @@
 			</div>
 		</div>
 
-        <div class="row">
-            <div class="col-lg-2">
-                <p>{% if lang == "cs" %}certifikát v HTML{% else %}certificate in HTML{% endif %}</p>
-            </div>
-            <div class="col-lg-4">
-                {% spaceless %}
-                <textarea style="width:100%;min-height:200px" id="certificate-html" oninput="updateCertificateHtmlPreview()">
-                {% if lang == "cs" %}
-                <font face="Times" size="5"; style="color: blue"> <a href="http://www.webarchiv.cz/cs/certifikovano">Webarchiv</a>ováno <br/>Národní knihovnou<br/>ČR</font>
-                {% else %}
-                <font face="Times" size="5"; style="color: blue"> <a href="http://www.webarchiv.cz/en/disclaimer">Webarchived</a> <br/>by National Library<br/>of the Czech Republic</font>
-                {% endif %}
-                </textarea>
-                {% endspaceless %}
+		
+        	<div class="row">
+			<p>{% if lang == "cs" %}Certifikáty v HTML{% else %}Certificates in HTML{% endif %}</p>
+		</div>
 
-            </div>
-            <div class="col-lg-4">
-                <div id="certificate-html-preview">
-                    {% if lang == "cs" %}
-                    <font face="Times" size="5"; style="color: blue"> <a href="http://www.webarchiv.cz/cs/certifikovano">Webarchiv</a>ováno <br/>Národní knihovnou<br/>ČR</font>
-                    {% else %}
-                    <font face="Times" size="5"; style="color: blue"> <a href="http://www.webarchiv.cz/en/disclaimer">Webarchived</a> <br/>by National Library<br/>of the Czech Republic</font>
-                    {% endif %}
-                </div>
-                <button class="btn btn-default" onclick="copyCertificateHtml()">
-                    {% if lang == "cs" %}Zkopírovat HTML{% else %}Copy HTML{% endif %}
-                </button>
-                <p id="certificate-copied-status" style="margin-top:1em"></p>
-            </div>
-            <script>
-                function copyCertificateHtml() {
-                    const copyText = document.getElementById("certificate-html");
-                    copyText.select();
-                    copyText.setSelectionRange(0, 99999); /*For mobile devices*/
-                    document.execCommand("copy");
-                    const copiedStatus = document.getElementById("certificate-copied-status");
-                    copiedStatus.innerText = {% if lang == "cs" %}"HTML zkopírováno"{% else %}"HTML copied"{% endif %};
-                }
 
-                function updateCertificateHtmlPreview() {
-                    const html = document.getElementById("certificate-html");
-                    const htmlPreview = document.getElementById("certificate-html-preview");
-                    htmlPreview.innerHTML = html.value;
-                }
-            </script>
-        </div>
+				<!--row-1-->
+				<div class="row">
+					<div class="col-lg-2">
+							<p>{% if lang == "cs" %}Světlé pozadí{% else %}Light background{% endif %}</p>
+					</div>
+					<div class="col-lg-4">
+							{% spaceless %}
+							<textarea autocomplete="off" style="width:100%;min-height:200px" id="cert-1" oninput="updateCertificateHtmlPreview('cert-1','prev-1')">
+							{% if lang == "cs" %}
+							<div style="all:initial; display: flex; margin: 8px;"><p style="all:initial; border: 1px solid blue; margin: 0px; padding: 16px; background-color: white; color: blue; font-family: 'Times New Roman', Times, serif; font-size: 1.4em;"><a style="color:blue; text-decoration: none;"href="http://www.webarchiv.cz/cs/certifikovano"><span style="text-decoration: underline;">Webarchiv</span>ováno<br/>Národní knihovnou<br/>ČR</a></p></div>
+							{% else %}
+							<div style="all:initial; display: flex; margin: 8px;"><p style="all:initial; border: 1px solid blue; margin: 0px; padding: 16px; background-color: white; color: blue; font-family: 'Times New Roman', Times, serif; font-size: 1.4em;"><a style="color:blue; text-decoration: none;"href="http://www.webarchiv.cz/en/disclaimer"><span style="text-decoration: underline;">Webarchiv</span>ed<br/>by National Library<br/>of the Czech Republic</a></p></div>
+							{% endif %}
+							</textarea>
+							{% endspaceless %}
+
+					</div>
+					<div class="col-lg-6" style="background-color: #d5d5d5;">
+							<div id="prev-1">
+								{% if lang == "cs" %}
+								<div style="all:initial; display: flex; margin: 8px;"><p style="all:initial; border: 1px solid blue; margin: 0px; padding: 16px; background-color: white; color: blue; font-family: 'Times New Roman', Times, serif; font-size: 1.4em;"><a style="color:blue; text-decoration: none;"href="http://www.webarchiv.cz/cs/certifikovano"><span style="text-decoration: underline;">Webarchiv</span>ováno<br/>Národní knihovnou<br/>ČR</a></p></div>
+								{% else %}
+								<div style="all:initial; display: flex; margin: 8px;"><p style="all:initial; border: 1px solid blue; margin: 0px; padding: 16px; background-color: white; color: blue; font-family: 'Times New Roman', Times, serif; font-size: 1.4em;"><a style="color:blue; text-decoration: none;"href="http://www.webarchiv.cz/en/disclaimer"><span style="text-decoration: underline;">Webarchiv</span>ed<br/>by National Library<br/>of the Czech Republic</a></p></div>
+								{% endif %}
+							</div>
+							<button class="btn btn-default" onclick="copyCertificateHtml('cert-1', 'status-1')">
+								{% if lang == "cs" %}Zkopírovat HTML{% else %}Copy HTML{% endif %}
+							</button>
+							<p id="status-1" style="margin-top:1em"></p>
+					</div>
+			</div>
+
+			<!--row-2-->
+			<div class="row">
+				<div class="col-lg-2">
+						<p>{% if lang == "cs" %}Světlé pozadí, širší rámečky{% else %}Light background, wider borders{% endif %}</p>
+				</div>
+				<div class="col-lg-4">
+						{% spaceless %}
+						<textarea autocomplete="off" style="width:100%;min-height:200px" id="cert-2" oninput="updateCertificateHtmlPreview('cert-2','prev-2')">
+						{% if lang == "cs" %}
+						<div style="all:initial; display: flex; margin: 8px;"><p style="all:initial; border: 3px solid blue; margin: 0px; padding: 16px; background-color: white; color: blue; font-family: 'Times New Roman', Times, serif; font-size: 1.4em;"><a style="color:blue; text-decoration: none;" href="http://www.webarchiv.cz/cs/certifikovano"><span style="text-decoration: underline;">Webarchiv</span>ováno <br/>Národní knihovnou<br/>ČR</a></p></div>
+						{% else %}
+						<div style="all:initial; display: flex; margin: 8px;"><p style="all:initial; border: 3px solid blue; margin: 0px; padding: 16px; background-color: white; color: blue; font-family: 'Times New Roman', Times, serif; font-size: 1.4em;"><a style="color:blue; text-decoration: none;" href="http://www.webarchiv.cz/en/disclaimer"><span style="text-decoration: underline;">Webarchiv</span>ed<br/>by National Library<br/>of the Czech Republic</a></p></div>
+						{% endif %}
+						</textarea>
+						{% endspaceless %}
+
+				</div>
+				<div class="col-lg-6" style="background-color:#d5d5d5;">
+						<div id="prev-2">
+							{% if lang == "cs" %}
+							<div style="all:initial; display: flex; margin: 8px;"><p style="all:initial; border: 3px solid blue; margin: 0px; padding: 16px; background-color: white; color: blue; font-family: 'Times New Roman', Times, serif; font-size: 1.4em;"><a style="color:blue; text-decoration: none;" href="http://www.webarchiv.cz/cs/certifikovano"><span style="text-decoration: underline;">Webarchiv</span>ováno <br/>Národní knihovnou<br/>ČR</a></p></div>
+							{% else %}
+							<div style="all:initial; display: flex; margin: 8px;"><p style="all:initial; border: 3px solid blue; margin: 0px; padding: 16px; background-color: white; color: blue; font-family: 'Times New Roman', Times, serif; font-size: 1.4em;"><a style="color:blue; text-decoration: none;" href="http://www.webarchiv.cz/en/disclaimer"><span style="text-decoration: underline;">Webarchiv</span>ed<br/>by National Library<br/>of the Czech Republic</a></p></div>
+							{% endif %}
+						</div>
+						<button class="btn btn-default" onclick="copyCertificateHtml('cert-2', 'status-2')">
+							{% if lang == "cs" %}Zkopírovat HTML{% else %}Copy HTML{% endif %}
+						</button>
+						<p id="status-2" style="margin-top:1em"></p>
+				</div>
+			</div>
+
+			<!--row-5-->
+			<div class="row">
+				<div class="col-lg-2">
+						<p>{% if lang == "cs" %}Modré pozadí, dvojité rámečky{% else %}Blue background, double borders{% endif %}</p>
+				</div>
+				<div class="col-lg-4">
+						{% spaceless %}
+						<textarea autocomplete="off" style="width:100%;min-height:200px" id="cert-5" oninput="updateCertificateHtmlPreview('cert-5','prev-5')">
+						{% if lang == "cs" %}
+						<div style="all:initial; display: flex; margin: 8px;"><div style="all:initial; display: flex; background-color: white; padding: 9px;"><p style="all:initial; border: 3px solid blue; margin: 0px; padding: 16px; background-color: white; color: blue; font-family: 'Times New Roman', Times, serif; font-size: 1.4em;"><a style="color:blue; text-decoration: none;" href="http://www.webarchiv.cz/cs/certifikovano"><span style="text-decoration: underline;">Webarchiv</span>ováno <br/>Národní knihovnou<br/>ČR</a></p></div></div>
+						{% else %}
+						<div style="all:initial; display: flex; margin: 8px;"><div style="all:initial; display: flex; background-color: white; padding: 9px;"><p style="all:initial; border: 3px solid blue; margin: 0px; padding: 16px; background-color: white; color: blue; font-family: 'Times New Roman', Times, serif; font-size: 1.4em;"><a style="color:blue; text-decoration: none;" href="http://www.webarchiv.cz/en/disclaimer"><span style="text-decoration: underline;">Webarchiv</span>ed<br/>by National Library<br/>of the Czech Republic</a></p></div></div>
+						{% endif %}
+						</textarea>
+						{% endspaceless %}
+
+				</div>
+				<div class="col-lg-6"  style="background-color:#d5d5d5;">
+						<div id="prev-5">
+							{% if lang == "cs" %}
+							<div style="all:initial; display: flex; margin: 8px;"><div style="all:initial; display: flex; background-color: white; padding: 9px;"><p style="all:initial; border: 3px solid blue; margin: 0px; padding: 16px; background-color: white; color: blue; font-family: 'Times New Roman', Times, serif; font-size: 1.4em;"><a style="color:blue; text-decoration: none;" href="http://www.webarchiv.cz/cs/certifikovano"><span style="text-decoration: underline;">Webarchiv</span>ováno <br/>Národní knihovnou<br/>ČR</a></p></div></div>
+							{% else %}
+							<div style="all:initial; display: flex; margin: 8px;"><div style="all:initial; display: flex; background-color: white; padding: 9px;"><p style="all:initial; border: 3px solid blue; margin: 0px; padding: 16px; background-color: white; color: blue; font-family: 'Times New Roman', Times, serif; font-size: 1.4em;"><a style="color:blue; text-decoration: none;" href="http://www.webarchiv.cz/en/disclaimer"><span style="text-decoration: underline;">Webarchiv</span>ed<br/>by National Library<br/>of the Czech Republic</a></p></div></div>
+							{% endif %}
+						</div>
+						<button class="btn btn-default" onclick="copyCertificateHtml('cert-5', 'status-5')">
+							{% if lang == "cs" %}Zkopírovat HTML{% else %}Copy HTML{% endif %}
+						</button>
+						<p id="status-5" style="margin-top:1em"></p>
+				</div>
+			</div>
+
+			<!--row-3-->
+			<div class="row">
+				<div class="col-lg-2">
+						<p>{% if lang == "cs" %}Modré pozadí{% else %}Blue background{% endif %}</p>
+				</div>
+				<div class="col-lg-4">
+						{% spaceless %}
+						<textarea autocomplete="off" style="width:100%;min-height:200px" id="cert-3" oninput="updateCertificateHtmlPreview('cert-3','prev-3')">
+						{% if lang == "cs" %}
+						<div style="all:initial; display: flex; margin: 8px;"><p style="all:initial; border: 1px solid white; margin: 0px; padding: 16px; background-color: blue; color: white; font-family: 'Times New Roman', Times, serif; font-size: 1.4em;"><a style="color:white; text-decoration: none;" href="http://www.webarchiv.cz/cs/certifikovano"><span style="text-decoration: underline;">Webarchiv</span>ováno <br/>Národní knihovnou<br/>ČR</a></p></div>
+						{% else %}
+						<div style="all:initial; display: flex; margin: 8px;"><p style="all:initial; border: 1px solid white; margin: 0px; padding: 16px; background-color: blue; color: white; font-family: 'Times New Roman', Times, serif; font-size: 1.4em;"><a style="color:white; text-decoration: none;" href="http://www.webarchiv.cz/en/disclaimer"><span style="text-decoration: underline;">Webarchiv</span>ed<br/>by National Library<br/>of the Czech Republic</a></p></div>
+						{% endif %}
+						</textarea>
+						{% endspaceless %}
+
+				</div>
+				<div class="col-lg-6" style="background-color: #d5d5d5;">
+						<div id="prev-3">
+							{% if lang == "cs" %}
+							<div style="all:initial; display: flex; margin: 8px;"><p style="all:initial; border: 1px solid white; margin: 0px; padding: 16px; background-color: blue; color: white; font-family: 'Times New Roman', Times, serif; font-size: 1.4em;"><a style="color:white; text-decoration: none;" href="http://www.webarchiv.cz/cs/certifikovano"><span style="text-decoration: underline;">Webarchiv</span>ováno <br/>Národní knihovnou<br/>ČR</a></p></div>
+							{% else %}
+							<div style="all:initial; display: flex; margin: 8px;"><p style="all:initial; border: 1px solid white; margin: 0px; padding: 16px; background-color: blue; color: white; font-family: 'Times New Roman', Times, serif; font-size: 1.4em;"><a style="color:white; text-decoration: none;" href="http://www.webarchiv.cz/en/disclaimer"><span style="text-decoration: underline;">Webarchiv</span>ed<br/>by National Library<br/>of the Czech Republic</a></p></div>
+							{% endif %}
+						</div>
+						<button class="btn btn-default" onclick="copyCertificateHtml('cert-3', 'status-3')">
+							{% if lang == "cs" %}Zkopírovat HTML{% else %}Copy HTML{% endif %}
+						</button>
+						<p id="status-3" style="margin-top:1em"></p>
+				</div>
+			</div>
+
+			<!--row-4-->
+			<div class="row">
+				<div class="col-lg-2">
+						<p>{% if lang == "cs" %}Modré pozadí, širší rámečky{% else %}Blue background, wider borders{% endif %}</p>
+				</div>
+				<div class="col-lg-4">
+						{% spaceless %}
+						<textarea autocomplete="off" style="width:100%;min-height:200px" id="cert-4" oninput="updateCertificateHtmlPreview('cert-4','prev-4')">
+						{% if lang == "cs" %}
+						<div style="all:initial; display: flex; margin: 8px;"><p style="all:initial; border: 3px solid white; margin: 0px; padding: 16px; background-color: blue; color: white; font-family: 'Times New Roman', Times, serif; font-size: 1.4em;"><a style="color:white; text-decoration: none;" href="http://www.webarchiv.cz/cs/certifikovano"><span style="text-decoration: underline;">Webarchiv</span>ováno <br/>Národní knihovnou<br/>ČR</a></p></div>
+						{% else %}
+						<div style="all:initial; display: flex; margin: 8px;"><p style="all:initial; border: 3px solid white; margin: 0px; padding: 16px; background-color: blue; color: white; font-family: 'Times New Roman', Times, serif; font-size: 1.4em;"><a style="color:white; text-decoration: none;" href="http://www.webarchiv.cz/en/disclaimer"><span style="text-decoration: underline;">Webarchiv</span>ed<br/>by National Library<br/>of the Czech Republic</a></p></div>
+						{% endif %}
+						</textarea>
+						{% endspaceless %}
+
+				</div>
+				<div class="col-lg-6" style="background-color:#d5d5d5;">
+						<div id="prev-4">
+							{% if lang == "cs" %}
+							<div style="all:initial; display: flex; margin: 8px;"><p style="all:initial; border: 3px solid white; margin: 0px; padding: 16px; background-color: blue; color: white; font-family: 'Times New Roman', Times, serif; font-size: 1.4em;"><a style="color:white; text-decoration: none;" href="http://www.webarchiv.cz/cs/certifikovano"><span style="text-decoration: underline;">Webarchiv</span>ováno <br/>Národní knihovnou<br/>ČR</a></p></div>
+							{% else %}
+							<div style="all:initial; display: flex; margin: 8px;"><p style="all:initial; border: 3px solid white; margin: 0px; padding: 16px; background-color: blue; color: white; font-family: 'Times New Roman', Times, serif; font-size: 1.4em;"><a style="color:white; text-decoration: none;" href="http://www.webarchiv.cz/en/disclaimer"><span style="text-decoration: underline;">Webarchiv</span>ed<br/>by National Library<br/>of the Czech Republic</a></p></div>
+							{% endif %}
+						</div>
+						<button class="btn btn-default" onclick="copyCertificateHtml('cert-4', 'status-4')">
+							{% if lang == "cs" %}Zkopírovat HTML{% else %}Copy HTML{% endif %}
+						</button>
+						<p id="status-4" style="margin-top:1em"></p>
+				</div>
+			</div>
+
+			<!--row-6-->
+			<div class="row">
+				<div class="col-lg-2">
+						<p>{% if lang == "cs" %}Světlé pozadí, dvojité rámečky{% else %}Light background, double borders{% endif %}</p>
+				</div>
+				<div class="col-lg-4">
+						{% spaceless %}
+						<textarea autocomplete="off" style="width:100%;min-height:200px" id="cert-6" oninput="updateCertificateHtmlPreview('cert-6','prev-6')">
+						{% if lang == "cs" %}
+						<div style="all:initial; display: flex; margin: 8px;"><div style="all:initial; display: flex; background-color: blue; padding: 9px;"><p style="all:initial; border: 3px solid white; margin: 0px; padding: 16px; background-color: blue; color: white; font-family: 'Times New Roman', Times, serif; font-size: 1.4em;"><a style="color:white; text-decoration: none;" href="http://www.webarchiv.cz/cs/certifikovano"><span style="text-decoration: underline;">Webarchiv</span>ováno <br/>Národní knihovnou<br/>ČR</a></p></div></div>
+						{% else %}
+						<div style="all:initial; display: flex; margin: 8px;"><div style="all:initial; display: flex; background-color: blue; padding: 9px;"><p style="all:initial; border: 3px solid white; margin: 0px; padding: 16px; background-color: blue; color: white; font-family: 'Times New Roman', Times, serif; font-size: 1.4em;"><a style="color:white; text-decoration: none;" href="http://www.webarchiv.cz/en/disclaimer"><span style="text-decoration: underline;">Webarchiv</span>ed<br/>by National Library<br/>of the Czech Republic</a></p></div></div>
+						{% endif %}
+						</textarea>
+						{% endspaceless %}
+
+				</div>
+				<div class="col-lg-6" style="background-color:#d5d5d5;">
+						<div id="prev-6">
+							{% if lang == "cs" %}
+							<div style="all:initial; display: flex; margin: 8px;"><div style="all:initial; display: flex; background-color: blue; padding: 9px;"><p style="all:initial; border: 3px solid white; margin: 0px; padding: 16px; background-color: blue; color: white; font-family: 'Times New Roman', Times, serif; font-size: 1.4em;"><a style="color:white; text-decoration: none;" href="http://www.webarchiv.cz/cs/certifikovano"><span style="text-decoration: underline;">Webarchiv</span>ováno <br/>Národní knihovnou<br/>ČR</a></p></div></div>
+							{% else %}
+							<div style="all:initial; display: flex; margin: 8px;"><div style="all:initial; display: flex; background-color: blue; padding: 9px;"><p style="all:initial; border: 3px solid white; margin: 0px; padding: 16px; background-color: blue; color: white; font-family: 'Times New Roman', Times, serif; font-size: 1.4em;"><a style="color:white; text-decoration: none;" href="http://www.webarchiv.cz/en/disclaimer"><span style="text-decoration: underline;">Webarchiv</span>ed<br/>by National Library<br/>of the Czech Republic</a></p></div></div>
+							{% endif %}
+						</div>
+						<button class="btn btn-default" onclick="copyCertificateHtml('cert-6', 'status-6')">
+							{% if lang == "cs" %}Zkopírovat HTML{% else %}Copy HTML{% endif %}
+						</button>
+						<p id="status-6" style="margin-top:1em"></p>
+				</div>
+			</div>
+
+			<script>
+				function copyCertificateHtml(id_cert, id_status) {
+						const copyText = document.getElementById(id_cert).textContent;
+						const copiedStatus = document.getElementById(id_status);
+						navigator.clipboard.writeText(copyText).then(
+							() => {
+								copiedStatus.innerText = {% if lang == "cs" %}"zkopírováno"{% else %}"copied"{% endif %};
+							},
+							() => {
+								copiedStatus.innerText = {% if lang == "cs" %}"chyba"{% else %}"error"{% endif %};
+							},
+						);
+				}
+
+				function updateCertificateHtmlPreview(id_certificate, id_preview) {
+						const html = document.getElementById(id_certificate);
+						const htmlPreview = document.getElementById(id_preview);
+						htmlPreview.innerHTML = html.value;
+				}
+		</script>
 
 		<div class="row">
 			<div class="col-lg-2">
