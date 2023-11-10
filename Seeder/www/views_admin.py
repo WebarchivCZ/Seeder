@@ -1,7 +1,9 @@
 from django.views.generic import DetailView, FormView
 from django.utils.translation import ugettext_lazy as _
-from django.http.response import HttpResponseRedirect
+from django.contrib.auth.decorators import login_required
+from django.http.response import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
+from django.shortcuts import redirect
 
 from dal import autocomplete
 
@@ -10,7 +12,13 @@ from comments.views import CommentViewGeneric
 from . import models, forms, tables, field_filters
 
 
-class NewsView(generic_views.LoginMixin):
+class WWWAdminView(generic_views.LoginMixin):
+    pass
+
+# Originally in news_admin_views.py
+
+
+class NewsView(WWWAdminView):
     view_name = 'news'
     model = models.NewsObject
 
@@ -60,3 +68,13 @@ class ListView(NewsView, generic_views.FilteredListView):
     filterset_class = field_filters.NewsFilter
 
     add_link = 'news:add'
+
+# Extinct Websites admin views
+
+
+@login_required
+def reload_extinct_websites_view(request):
+    print(request)
+    models.ExtinctWebsite.reload_objects()
+    return HttpResponse("OK") # ! DEBUG
+    # return redirect("core:dashboard")
