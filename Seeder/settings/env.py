@@ -74,6 +74,9 @@ WAYBACK_URL = os.environ.get(
 RECAPTCHA_PUBLIC_KEY = os.environ.get('RECAPTCHA_PUBLIC_KEY')
 RECAPTCHA_PRIVATE_KEY = os.environ.get('RECAPTCHA_PRIVATE_KEY')
 
+EXTINCT_WEBSITES_URL = os.environ.get(
+    "EXTINCT_WEBSITES_URL", 'http://10.3.0.24/api/v2')
+
 RAVEN_CONFIG = {
     'dsn': os.environ.get('SENTRY_DSN'),
 }

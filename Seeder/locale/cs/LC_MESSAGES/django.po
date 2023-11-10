@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Seeder\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-07-24 10:40+0000\n"
+"POT-Creation-Date: 2023-11-10 16:04+0000\n"
 "PO-Revision-Date: 2018-04-16 13:40+0200\n"
 "Last-Translator: mariehaskovcova <marie.haskovcova@nkp.cz>, 2017\n"
 "Language-Team: Czech (https://www.transifex.com/webarchivecz/teams/43032/"
@@ -537,8 +537,8 @@ msgid ""
 "Custom seeds field is disabled because there are too many seeds to be "
 "displayed in an HTML text field."
 msgstr ""
-"Pole mimosystémových semínek je nyní schováno jelikož kolekce má příliš mnoho "
-"semínek pro zobrazení v HTML textovém poli."
+"Pole mimosystémových semínek je nyní schováno jelikož kolekce má příliš "
+"mnoho semínek pro zobrazení v HTML textovém poli."
 
 #: harvests/models.py:50
 msgid "Included sources"
@@ -990,8 +990,8 @@ msgid ""
 "Original custom_seeds have been backed to: <a href='%(url)s' target='_blank'>"
 "%(url)s</a>"
 msgstr ""
-"Původní mimosystémová semínka byla zálohována do "
-"<a href='%(url)s' target='_blank'>%(url)s</a>"
+"Původní mimosystémová semínka byla zálohována do <a href='%(url)s' "
+"target='_blank'>%(url)s</a>"
 
 #: harvests/views.py:503
 msgid "Uploaded custom seeds will not be paired automatically"
@@ -1032,7 +1032,7 @@ msgstr "Pozice"
 
 #: publishers/forms.py:57 publishers/models.py:24 publishers/models.py:57
 #: publishers/tables.py:9 source/models.py:253 source/tables.py:8
-#: www/models.py:79
+#: www/models.py:81
 msgid "Name"
 msgstr "Jméno"
 
@@ -1141,11 +1141,11 @@ msgstr "Kontrola kvality"
 msgid "Quality assurance reports"
 msgstr "Oznámení o kontrole kvality"
 
-#: settings/base.py:180
+#: settings/base.py:179
 msgid "Czech"
 msgstr "Česky"
 
-#: settings/base.py:181
+#: settings/base.py:180
 msgid "English"
 msgstr "Anglicky"
 
@@ -1375,7 +1375,7 @@ msgid ""
 "exist."
 msgstr "K tomuto zdroji je přiřazen screenshot, ale jeho soubor neexistuje"
 
-#: source/templates/source.html:48
+#: source/templates/source.html:48 www/models.py:127
 msgid "Dead"
 msgstr "Mrtvý"
 
@@ -1827,70 +1827,106 @@ msgstr "Hodnocení odloženo"
 msgid "Nelze nyní vyhledávat..."
 msgstr "Nelze nyní vyhledávat..."
 
-#: www/models.py:24
+#: www/models.py:26
 msgid "First source"
 msgstr "První zdroj"
 
-#: www/models.py:32
+#: www/models.py:34
 msgid "second source"
 msgstr "druhý zdroj"
 
-#: www/models.py:39
+#: www/models.py:41
 msgid "annotation for first source"
 msgstr "anotace pro první zdroj"
 
-#: www/models.py:46
+#: www/models.py:48
 msgid "annotation for second source"
 msgstr "anotace pro druhý zdroj"
 
-#: www/models.py:72
+#: www/models.py:74
 msgid "News article"
 msgstr "Aktualita"
 
-#: www/models.py:73
+#: www/models.py:75
 msgid "News articles"
 msgstr "Aktuality"
 
-#: www/models.py:77
+#: www/models.py:79
 msgid "URL"
 msgstr "URL"
 
-#: www/models.py:78
+#: www/models.py:80
 msgid "Contact email"
 msgstr "Kontaktní e-mail"
 
-#: www/models.py:82
+#: www/models.py:84
 msgid "Licensed under creative commons"
 msgstr "Vystaveno pod licencí Creative Commons"
 
-#: www/models.py:86
+#: www/models.py:88
 msgid "Note"
 msgstr "Poznámka"
 
-#: www/models.py:90
+#: www/models.py:92
 msgid "Nomination"
 msgstr "Návrh"
 
-#: www/models.py:91
+#: www/models.py:93
 msgid "Nominations"
 msgstr "Návrhy"
 
-#: www/news_admin_views.py:21
-msgid "Add news"
-msgstr "Přidat aktualitu"
+#: www/models.py:120
+msgid "Date started monitoring"
+msgstr "Web monitorumeme od"
 
-#: www/news_admin_views.py:58
-msgid "news"
-msgstr "aktuality"
+#: www/models.py:122
+msgid "Date extinct"
+msgstr "Datum úmrtí"
+
+#: www/models.py:124
+msgid "Status code"
+msgstr "Stavový kód"
+
+#: www/models.py:129
+msgid "Confirmed dead"
+msgstr "Potvrzeno mrtvý"
+
+#: www/models.py:131
+msgid "Requires confirmation"
+msgstr "Vyžaduje potvrzení"
+
+#: www/models.py:133
+msgid "Contains metadata"
+msgstr "Obsahuje metadata"
+
+#: www/models.py:135
+msgid "Death index"
+msgstr "Index mrtvosti"
+
+#: www/models.py:137
+msgid "Contains whois"
+msgstr "Obsahuje whois"
+
+#: www/models.py:139
+msgid "Datum poslední kontroly"
+msgstr "Datum poslední kontroly"
+
+#: www/models.py:142
+msgid "Extinct Website"
+msgstr "Extinct Website"
+
+#: www/models.py:143
+msgid "Extinct Websites"
+msgstr "Extinct Websites"
 
 #: www/templates/about/graphics.html:41 www/templates/about/graphics.html:62
-#: www/templates/about/graphics.html:131 www/templates/about/graphics.html:140
-#: www/templates/about/graphics.html:156 www/templates/about/graphics.html:159
-#: www/templates/about/graphics.html:162 www/templates/about/graphics.html:165
-#: www/templates/about/graphics.html:174 www/templates/about/graphics.html:179
-#: www/templates/about/graphics.html:184 www/templates/about/graphics.html:193
-#: www/templates/about/graphics.html:198 www/templates/about/graphics.html:203
-#: www/templates/about/graphics.html:216 www/templates/about/graphics.html:233
+#: www/templates/about/graphics.html:303 www/templates/about/graphics.html:312
+#: www/templates/about/graphics.html:328 www/templates/about/graphics.html:331
+#: www/templates/about/graphics.html:334 www/templates/about/graphics.html:337
+#: www/templates/about/graphics.html:346 www/templates/about/graphics.html:351
+#: www/templates/about/graphics.html:356 www/templates/about/graphics.html:365
+#: www/templates/about/graphics.html:370 www/templates/about/graphics.html:375
+#: www/templates/about/graphics.html:388 www/templates/about/graphics.html:405
 msgid "Webarchiv certificate"
 msgstr "Webarchiv certificate"
 
@@ -2072,3 +2108,11 @@ msgstr "Webarchiv.cz - archivace webových stránek %(url)s"
 #, python-format
 msgid "New nomination %(url)s"
 msgstr "Nový návrh %(url)s"
+
+#: www/views_admin.py:29
+msgid "Add news"
+msgstr "Přidat aktualitu"
+
+#: www/views_admin.py:66
+msgid "news"
+msgstr "aktuality"
