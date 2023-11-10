@@ -1,4 +1,5 @@
 import re
+from typing import Any
 from urllib.parse import urlparse
 
 from django.core.mail import send_mail
@@ -552,3 +553,12 @@ class EmbedView(TemplateView):
         c = super(EmbedView, self).get_context_data(**kwargs)
         c['url'] = self.request.GET.get('img', '')
         return c
+
+
+class ExtinctWebsitesView(TemplateView):
+    template_name = "extinct_websites/summary.html"
+
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        ctx["x"] = "..."
+        return ctx

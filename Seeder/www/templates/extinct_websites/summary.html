@@ -1,0 +1,17 @@
+{% extends "base_www.html" %}
+{% load bootstrap3 i18n %}
+
+{% block title %}Mrtvé weby{% endblock title %}
+
+{% block content %}
+<div class="container">
+    <section>
+
+        <h1>Zpráva o mrtvých webech</h1>
+
+        <h2>Od {{x}} evidujeme v naší databázi {{x}} mrtvých webů, z toho {{x}} vykazuje kód 404.</h2>
+        <p>{% trans "aktualizováno" %} {{x}}</p>
+
+    </section>
+</div>
+{% endblock content %}
