@@ -1,7 +1,9 @@
+import requests
 from uuid import uuid4
 
+from django.conf import settings
 from django.db import models
-from django.utils import timezone
+from django.utils import timezone, dateparse
 from django.utils.translation import ugettext_lazy as _
 from django.utils.text import slugify
 from django.urls import reverse
@@ -102,3 +104,140 @@ class SearchLog(models.Model):
 
     def __str__(self):
         return self.search_term
+
+
+class ExtinctWebsite(BaseModel):
+    """
+    Representation of data from Extinct Websites, loaded over JSON API.
+    """
+    # Redefined primary key so it's not auto-created by Django, instead will be
+    # set to API value on each data load.
+    id = models.IntegerField("ID", primary_key=True)
+    uuid = models.CharField("UUID", max_length=128)
+    url = models.TextField("URL")
+
+    date_monitoring_start = models.DateTimeField(  # Web monitorumeme od
+        _("Date started monitoring"), null=True, blank=True)
+    date_extinct = models.DateTimeField(  # Datum úmrtí
+        _("Date extinct"), null=True, blank=True)
+    status_code = models.IntegerField(  # Stavový kód
+        _("Status code"), null=True, blank=True)
+
+    status_dead = models.BooleanField(
+        _("Dead"))
+    status_confirmed = models.BooleanField(
+        _("Confirmed dead"))
+    status_requires = models.BooleanField(
+        _("Requires confirmation"))
+    status_metadata = models.BooleanField(
+        _("Contains metadata"))
+    status_metadata_match = models.IntegerField(  # Index úmrtí
+        _("Death index"))
+    status_whois = models.BooleanField(
+        _("Contains whois"))
+    status_date = models.DateTimeField(
+        _("Datum poslední kontroly"))
+
+    class Meta:
+        verbose_name = _("Extinct Website")
+        verbose_name_plural = _("Extinct Websites")
+
+    @property
+    def wayback_url(self):
+        return settings.WAYBACK_URL.format(url=self.url)
+
+    @classmethod
+    def load_new_data(cls):
+        PER_PAGE = 10000
+        entries = []
+        total_entries = None
+        page = 0
+        # Deal with pagination, raise if count doesn't make sense
+        while total_entries is None or len(entries) < total_entries:
+            res = requests.get(settings.EXTINCT_WEBSITES_URL, params={
+                "type": "seeder",
+                "limit": PER_PAGE,
+                "page": page,
+            })
+            res.raise_for_status()
+            data = res.json()
+            entries.extend(data["data"])
+            if total_entries is None:  # only set once on first request
+                total_entries = data["stats"]["sum"]
+            # All entries should have already been loaded, prevent endless loop
+            if (page + 1) * PER_PAGE >= total_entries:
+                break
+            page += 1  # update page counter
+        if len(entries) != total_entries:
+            raise ValueError(
+                f"All data loaded but {len(entries)} != {total_entries}")
+        return entries
+
+    @classmethod
+    def parse_json_entry(cls, entry):
+        """
+        JSON object: {
+            "id": "1",
+            "UUID": "6e659745f5e8ba289e2d7dbe96e20e338e31962f",
+            "url": "mzk.cz",
+            "status": {
+                "dead": "0",                        # || null
+                "confirmed": "0",                   # || null
+                "requires": "0",                    # || null
+                "metadata": "1",                    # || null
+                "metadata_match": "0",              # || null
+                "whois": "0",                       # || null
+                "date": "2023-11-10T01:02:24+01:00" # ISO Datetime
+            },
+            "extinct": {
+                "date": null                        # ISO Datetime || null
+            },
+            "date_monitoring_start": "2022-09-03T00:00:00+02:00", # ISO Datetime
+            "status_code": "200"                    # str(int) || null
+        }
+        """
+        status_code = str(entry["status_code"]) or ""  # normalize None to ""
+        status_code = int(status_code) if status_code.isnumeric() else None
+
+        def parse_status_field(val):
+            """
+            val: "0" -> False || "1" -> True || null -> False
+            :raise ValueError: if there's val is an unexpected value
+            """
+            return bool(int(val or "0"))
+
+        def parse_datetime(val):
+            """ Deal with datetimes not in ISO format (w/o timezone) """
+            if val is None:  # allow null datetimes
+                return None
+            dt = dateparse.parse_datetime(val)
+            if dt and dt.tzinfo is None:
+                tz = timezone.get_current_timezone()
+                dt = timezone.make_aware(dt, tz, True)
+            return dt
+
+        return cls(
+            id=int(entry["id"]),
+            uuid=entry.get("UUID", entry.get("uuid")),  # try both cases
+            url=entry["url"],
+            date_monitoring_start=parse_datetime(
+                entry["date_monitoring_start"]),
+            date_extinct=parse_datetime(entry["extinct"]["date"]),
+            status_code=status_code,
+            status_dead=parse_status_field(entry["status"]["dead"]),
+            status_confirmed=parse_status_field(entry["status"]["confirmed"]),
+            status_requires=parse_status_field(entry["status"]["requires"]),
+            status_metadata=parse_status_field(entry["status"]["metadata"]),
+            status_metadata_match=int(
+                entry["status"]["metadata_match"] or "0"),
+            status_whois=parse_status_field(entry["status"]["whois"]),
+            status_date=parse_datetime(entry["status"]["date"]),
+        )
+
+    @classmethod
+    def reload_objects(cls):
+        entries = cls.load_new_data()
+        new_objects = [cls.parse_json_entry(entry) for entry in entries]
+        # Delete all current objects, bulk_create new ones
+        cls.objects.all().delete()
+        return cls.objects.bulk_create(new_objects)

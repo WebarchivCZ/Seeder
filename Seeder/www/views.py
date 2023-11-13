@@ -1,4 +1,5 @@
 import re
+from typing import Any
 from urllib.parse import urlparse
 
 from django.core.mail import send_mail
@@ -9,7 +10,7 @@ from django.views.generic.base import TemplateView, View
 from django.views.generic.detail import DetailView
 from django.http.response import HttpResponse, HttpResponseRedirect, Http404
 from django.utils.translation import ugettext as _
-from django.db.models import Sum, When, Case, IntegerField, Q
+from django.db.models import Sum, When, Case, IntegerField, Q, Min, Max
 from django.core.paginator import EmptyPage
 from django.urls import reverse
 from django.conf import settings
@@ -23,10 +24,12 @@ from harvests.models import ExternalTopicCollection
 from paginator.paginator import CustomPaginator
 from www.forms import NominationForm
 from www.models import Nomination, SearchLog
+from django_tables2.views import MultiTableMixin
 
 from . import models
 from . import forms
 from . import constants
+from .tables import ExtinctWebsitesTable
 
 ITEMS_PER_PAGE = 12
 
@@ -552,3 +555,47 @@ class EmbedView(TemplateView):
         c = super(EmbedView, self).get_context_data(**kwargs)
         c['url'] = self.request.GET.get('img', '')
         return c
+
+
+class ExtinctWebsitesView(MultiTableMixin, TemplateView):
+    template_name = "extinct_websites/summary.html"
+
+    tables = [
+        ExtinctWebsitesTable(
+            models.ExtinctWebsite.objects.filter(status_dead=True)),
+        ExtinctWebsitesTable(models.ExtinctWebsite.objects.all()),
+    ]
+    table_pagination = {"per_page": 15}
+
+    # TODO: multi table export doesn't seem to be supported
+
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        EW = models.ExtinctWebsite  # shortcut
+
+        ew_dead = EW.objects.filter(status_dead=True)
+
+        ctx["lead_start_date"] = EW.objects.aggregate(
+            x=Min("date_monitoring_start"))["x"]
+        ctx["lead_num_dead"] = ew_dead.count()
+        ctx["lead_percentage_404"] = (
+            ew_dead.filter(status_code=404).count() / ew_dead.count()) * 100
+        ctx["lead_updated_date"] = EW.objects.aggregate(
+            x=Max("status_date"))["x"]
+
+
+        from django.db.models.functions import TruncDay
+        from django.db.models import Count
+
+        data = (EW.objects
+                .filter(date_extinct__isnull=False)
+                .annotate(date=TruncDay('date_extinct'))
+                .values('date')
+                .annotate(count=Count('id'))
+                .order_by('date'))
+
+        chart_data = [{'date': entry['date'].strftime('%Y-%m-%d'), 'count': entry['count']} for entry in data]
+
+        ctx['chart_data'] = chart_data
+
+        return ctx

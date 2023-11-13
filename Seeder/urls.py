@@ -7,7 +7,7 @@ from django.urls.base import reverse_lazy
 from django.views.generic import RedirectView
 from django.conf.urls.i18n import i18n_patterns
 
-from www import news_admin_views as naw
+from www import views_admin as naw
 from www import views_non_localized as vnl
 
 from rest_framework.authtoken import views as token_views
@@ -45,6 +45,8 @@ seeder_urlpatterns = [
         namespace='blacklists')),  # noqa
     path('qa/', include(('qa.urls', 'qa'), namespace='qa')),
     path('news/', include((urlpatterns_news_admin, 'www'), namespace='news')),
+
+    path('extinct-websites/reload/', naw.reload_extinct_websites_view),
 
     path('', include(('core.urls', 'core'), namespace='core'))
 ]
