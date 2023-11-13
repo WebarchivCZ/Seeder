@@ -18,6 +18,8 @@
         </h2>
         <p>{% trans "aktualizováno" %} {{ lead_updated_date|date:"d.m.Y" }}</p>
 
+        {% include "extinct_websites/chart_extinct.html" %}
+
         <style>
             .pager {
                 display: flex

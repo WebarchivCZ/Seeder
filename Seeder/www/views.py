@@ -583,4 +583,19 @@ class ExtinctWebsitesView(MultiTableMixin, TemplateView):
         ctx["lead_updated_date"] = EW.objects.aggregate(
             x=Max("status_date"))["x"]
 
+
+        from django.db.models.functions import TruncDay
+        from django.db.models import Count
+
+        data = (EW.objects
+                .filter(date_extinct__isnull=False)
+                .annotate(date=TruncDay('date_extinct'))
+                .values('date')
+                .annotate(count=Count('id'))
+                .order_by('date'))
+
+        chart_data = [{'date': entry['date'].strftime('%Y-%m-%d'), 'count': entry['count']} for entry in data]
+
+        ctx['chart_data'] = chart_data
+
         return ctx
