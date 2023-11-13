@@ -1877,7 +1877,7 @@ msgstr "Návrhy"
 
 #: www/models.py:120
 msgid "Date started monitoring"
-msgstr "Web monitorumeme od"
+msgstr "Web monitorujeme od"
 
 #: www/models.py:122
 msgid "Date extinct"

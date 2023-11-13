@@ -142,6 +142,10 @@ class ExtinctWebsite(BaseModel):
         verbose_name = _("Extinct Website")
         verbose_name_plural = _("Extinct Websites")
 
+    @property
+    def wayback_url(self):
+        return settings.WAYBACK_URL.format(url=self.url)
+
     @classmethod
     def load_new_data(cls):
         PER_PAGE = 10000

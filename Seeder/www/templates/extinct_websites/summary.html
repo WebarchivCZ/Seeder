@@ -1,17 +1,34 @@
 {% extends "base_www.html" %}
-{% load bootstrap3 i18n %}
+{% load bootstrap3 i18n django_tables2 %}
 
-{% block title %}Mrtvé weby{% endblock title %}
+{% block title %}{% trans "Mrtvé weby" %}{% endblock title %}
 
 {% block content %}
 <div class="container">
     <section>
 
-        <h1>Zpráva o mrtvých webech</h1>
+        <h1>{% trans "Zpráva o mrtvých webech" %}</h1>
 
-        <h2>Od {{x}} evidujeme v naší databázi {{x}} mrtvých webů, z toho {{x}} vykazuje kód 404.</h2>
-        <p>{% trans "aktualizováno" %} {{x}}</p>
+        <h2>
+            {% blocktrans with start_date=lead_start_date|date:"d.m.Y" percentage_404=lead_percentage_404|floatformat:0 %}
+            Od <u>{{ start_date }}</u> evidujeme v naší databázi <u>{{ lead_num_dead }}</u> mrtvých webů, z toho
+            <u>{{ percentage_404 }}%</u> vykazuje kód
+            404.
+            {% endblocktrans %}
+        </h2>
+        <p>{% trans "aktualizováno" %} {{ lead_updated_date|date:"d.m.Y" }}</p>
 
+        <style>
+            .pager {
+                display: flex
+            }
+        </style>
+
+        <h2>{% trans "Všechny aktuálně mrtvé weby" %}</h2>
+        {% render_table tables.0 %}
+
+        <h2>{% trans "Všechny aktuálně trackované weby" %}</h2>
+        {% render_table tables.1 %}
     </section>
 </div>
 {% endblock content %}
