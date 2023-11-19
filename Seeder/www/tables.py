@@ -47,4 +47,4 @@ class ExtinctWebsitesTable(tables.Table):
             'class': 'table table-sm table-striped table-hover'
         }
         order_by = ("id",)
-        template_name = "django_tables2/bootstrap-responsive.html"
+        # template_name = "django_tables2/bootstrap-responsive.html"

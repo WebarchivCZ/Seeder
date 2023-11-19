@@ -26,10 +26,10 @@
             }
         </style>
 
-        <h2>{% trans "Všechny aktuálně mrtvé weby" %}</h2>
+        <h2>{% trans "Všechny aktuálně mrtvé weby" %} ({{ tables.0.data|length }})</h2>
         {% render_table tables.0 %}
 
-        <h2>{% trans "Všechny aktuálně trackované weby" %}</h2>
+        <h2>{% trans "Všechny aktuálně trackované weby" %} ({{ tables.1.data|length }})</h2>
         {% render_table tables.1 %}
     </section>
 </div>
