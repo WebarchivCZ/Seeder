@@ -10,7 +10,8 @@ from django.views.generic.base import TemplateView, View
 from django.views.generic.detail import DetailView
 from django.http.response import HttpResponse, HttpResponseRedirect, Http404
 from django.utils.translation import ugettext as _
-from django.db.models import Sum, When, Case, IntegerField, Q, Min, Max
+from django.db.models import Sum, When, Case, IntegerField, Q, Min, Max, Count
+from django.db.models.functions import TruncDay
 from django.core.paginator import EmptyPage
 from django.urls import reverse
 from django.conf import settings
@@ -578,14 +579,14 @@ class ExtinctWebsitesView(MultiTableMixin, TemplateView):
         ctx["lead_start_date"] = EW.objects.aggregate(
             x=Min("date_monitoring_start"))["x"]
         ctx["lead_num_dead"] = ew_dead.count()
-        ctx["lead_percentage_404"] = (
-            ew_dead.filter(status_code=404).count() / ew_dead.count()) * 100
+        if ctx["lead_num_dead"] == 0:
+            ctx["lead_percentage_404"] = 0
+        else:
+            ctx["lead_percentage_404"] = (
+                ew_dead.filter(status_code=404).count()
+                / ctx["lead_num_dead"]) * 100
         ctx["lead_updated_date"] = EW.objects.aggregate(
             x=Max("status_date"))["x"]
-
-
-        from django.db.models.functions import TruncDay
-        from django.db.models import Count
 
         data = (EW.objects
                 .filter(date_extinct__isnull=False)
@@ -594,7 +595,8 @@ class ExtinctWebsitesView(MultiTableMixin, TemplateView):
                 .annotate(count=Count('id'))
                 .order_by('date'))
 
-        chart_data = [{'date': entry['date'].strftime('%Y-%m-%d'), 'count': entry['count']} for entry in data]
+        chart_data = [{'date': entry['date'].strftime('%Y-%m-%d'),
+                       'count': entry['count']} for entry in data]
 
         ctx['chart_data'] = chart_data
 
