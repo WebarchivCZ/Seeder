@@ -34,6 +34,11 @@ class ExtinctWebsitesTable(tables.Table):
     def render_date_monitoring_start(self, value):
         return f"{value:%d.%m.%Y}" if value else "—"
 
+    def render_status_metadata_match(self, value):
+        if value == 0:
+            return "✖"
+        return value
+
     class Meta:
         model = models.ExtinctWebsite
         fields = (

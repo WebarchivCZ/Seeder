@@ -20,3 +20,5 @@ class ExtinctWebsiteAdmin(admin.ModelAdmin):
     list_display = (
         "id", "uuid", "url", "date_monitoring_start", "date_extinct", "status_code", "status_dead", "status_metadata_match",)
     ordering = ("id",)
+    search_fields = ("id", "uuid", "url")
+    list_filter = ("status_code", "status_dead")
