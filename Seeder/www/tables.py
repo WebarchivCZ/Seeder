@@ -49,7 +49,7 @@ class ExtinctWebsitesTable(tables.Table):
             "status_metadata_match",
         )
         attrs = {
-            'class': 'table table-sm table-striped table-hover'
+            'class': 'table table-responsive table-sm table-striped table-hover'
         }
         order_by = ("id",)
-        # template_name = "django_tables2/bootstrap-responsive.html"
+        template_name = "django_tables2/bootstrap4.html"

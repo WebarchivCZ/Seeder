@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Seeder\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-11-10 16:04+0000\n"
+"POT-Creation-Date: 2023-11-27 12:26+0000\n"
 "PO-Revision-Date: 2018-04-16 13:40+0200\n"
 "Last-Translator: mariehaskovcova <marie.haskovcova@nkp.cz>, 2017\n"
 "Language-Team: Czech (https://www.transifex.com/webarchivecz/teams/43032/"
@@ -590,7 +590,7 @@ msgid "Harvest type"
 msgstr "Typ sklizně"
 
 #: harvests/models.py:237 harvests/models.py:597 harvests/models.py:715
-#: harvests/tables.py:76 harvests/tables.py:93 www/tables.py:13
+#: harvests/tables.py:76 harvests/tables.py:93 www/tables.py:14
 msgid "title"
 msgstr "Název"
 
@@ -1934,6 +1934,82 @@ msgstr "Webarchiv certificate"
 msgid "Můžete hledat i abecedně"
 msgstr "Můžete hledat i abecedně"
 
+#: www/templates/extinct_websites/chart_extinct.html:25
+msgid "Počet úmrtí webů k datu"
+msgstr "Počet úmrtí webů k datu"
+
+#: www/templates/extinct_websites/summary.html:4
+msgid "Mrtvé weby"
+msgstr "Mrtvé weby"
+
+#: www/templates/extinct_websites/summary.html:10
+msgid "Zpráva o mrtvých webech"
+msgstr "Zpráva o mrtvých webech"
+
+#: www/templates/extinct_websites/summary.html:11
+msgid "Databáze mrtvých webových zdrojů"
+msgstr "Databáze mrtvých webových zdrojů"
+
+#: www/templates/extinct_websites/summary.html:14
+#, python-format
+msgid ""
+"Web je mimořádně dynamické a efemérní médium. Z mezinárodních <a href="
+"\"https://ahrefs.com/blog/link-rot-study/\" target=\"_blank\">studií</a> "
+"vyplývá, že za dobu deseti let zanikne více jak 50 %% sledovaných webů. "
+"Zpráva o mrtvých webech je aktivitou Webarchivu, která by měla přispět k "
+"přehledu o tuzemské webové krajině. Data sbíráme pomocí naší aplikace <a "
+"href=\"https://github.com/WebarchivCZ/extinct-websites\" target=\"_blank"
+"\">Extinct Webstites</a>, kde jsou podrobněji popsané zkoumané parametry. "
+"Jako vzorek nám slouží katalogizovaný <a href=\"https://www.webarchiv.cz/cs/"
+"katalog-stranek\" target=\"_blank\">korpus</a> bohemikálních webových "
+"zdrojů, který je rozšiřován o další zdroje. Definování pojmu „mrtvý webový "
+"zdroj“ je důležitou součástí probíhajícího výzkumu."
+msgstr ""
+"Web je mimořádně dynamické a efemérní médium. Z mezinárodních <a href="
+"\"https://ahrefs.com/blog/link-rot-study/\" target=\"_blank\">studií</a> "
+"vyplývá, že za dobu deseti let zanikne více jak 50 %% sledovaných webů. "
+"Zpráva o mrtvých webech je aktivitou Webarchivu, která by měla přispět k "
+"přehledu o tuzemské webové krajině. Data sbíráme pomocí naší aplikace <a "
+"href=\"https://github.com/WebarchivCZ/extinct-websites\" target=\"_blank"
+"\">Extinct Webstites</a>, kde jsou podrobněji popsané zkoumané parametry. "
+"Jako vzorek nám slouží katalogizovaný <a href=\"https://www.webarchiv.cz/cs/"
+"katalog-stranek\" target=\"_blank\">korpus</a> bohemikálních webových "
+"zdrojů, který je rozšiřován o další zdroje. Definování pojmu „mrtvý webový "
+"zdroj“ je důležitou součástí probíhajícího výzkumu."
+
+#: www/templates/extinct_websites/summary.html:18
+#, python-format
+msgid ""
+"Od <u>%(lead_start_date)s</u> evidujeme v naší databázi <u>%(num_dead)s</u> "
+"mrtvých webů (%(lead_percentage_dead)s&nbsp;%%) ze %(total_records)s "
+"trackovaných webů."
+msgstr ""
+"Od <u>%(lead_start_date)s</u> evidujeme v naší databázi <u>%(num_dead)s</u> "
+"mrtvých webů (%(lead_percentage_dead)s&nbsp;%%) ze %(total_records)s "
+"trackovaných webů."
+
+#: www/templates/extinct_websites/summary.html:20
+msgid "aktualizováno"
+msgstr "aktualizováno"
+
+#: www/templates/extinct_websites/summary.html:30
+msgid "Všechny aktuálně mrtvé weby"
+msgstr "Všechny aktuálně mrtvé weby"
+
+#: www/templates/extinct_websites/summary.html:33
+msgid "Všechny aktuálně trackované weby"
+msgstr "Všechny aktuálně trackované weby"
+
+#: www/templates/extinct_websites/summary.html:37
+msgid ""
+"Realizováno v rámci institucionálního výzkumu Národní knihovny České "
+"republiky financovaného Ministerstvem kultury ČR v rámci Dlouhodobého "
+"koncepčního rozvoje výzkumné organizace."
+msgstr ""
+"Realizováno v rámci institucionálního výzkumu Národní knihovny České "
+"republiky financovaného Ministerstvem kultury ČR v rámci Dlouhodobého "
+"koncepčního rozvoje výzkumné organizace."
+
 #: www/templates/news_admin_detail.html:32
 msgid "source 1 "
 msgstr "první zdroj "
@@ -2094,17 +2170,21 @@ msgstr "^certifikovano/$"
 msgid "^embed_url$"
 msgstr "^embed$"
 
-#: www/views.py:470
+#: www/urls.py:79
+msgid "^mrtve-weby$"
+msgstr "^mrtve-weby$"
+
+#: www/views.py:474
 #, python-format
 msgid "Webarchiv.cz - archivace vasich webovych stranek %(url)s"
 msgstr "Webarchiv.cz - archivace Vašich webových stránek %(url)s"
 
-#: www/views.py:474
+#: www/views.py:478
 #, python-format
 msgid "Webarchiv.cz - archivace webovych stranek %(url)s"
 msgstr "Webarchiv.cz - archivace webových stránek %(url)s"
 
-#: www/views.py:496
+#: www/views.py:500
 #, python-format
 msgid "New nomination %(url)s"
 msgstr "Nový návrh %(url)s"

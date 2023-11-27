@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Seeder\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-11-10 16:04+0000\n"
+"POT-Creation-Date: 2023-11-27 12:26+0000\n"
 "PO-Revision-Date: 2017-11-07 12:38+0100\n"
 "Last-Translator: Visgean Skeloru <visgean@gmail.com>, 2017\n"
 "Language-Team: English (United States) (https://www.transifex.com/"
@@ -593,7 +593,7 @@ msgid "Harvest type"
 msgstr "Harvest type"
 
 #: harvests/models.py:237 harvests/models.py:597 harvests/models.py:715
-#: harvests/tables.py:76 harvests/tables.py:93 www/tables.py:13
+#: harvests/tables.py:76 harvests/tables.py:93 www/tables.py:14
 msgid "title"
 msgstr "Title"
 
@@ -1883,11 +1883,11 @@ msgstr "Nominations"
 
 #: www/models.py:120
 msgid "Date started monitoring"
-msgstr "Date started monitoring"
+msgstr "Website monitored since"
 
 #: www/models.py:122
 msgid "Date extinct"
-msgstr "Date extinct"
+msgstr "Date of recorded death"
 
 #: www/models.py:124
 msgid "Status code"
@@ -1939,6 +1939,82 @@ msgstr "Webarchiv certificate"
 #: www/templates/categories/menu.html:50
 msgid "Můžete hledat i abecedně"
 msgstr "You can also search alphabetically"
+
+#: www/templates/extinct_websites/chart_extinct.html:25
+msgid "Počet úmrtí webů k datu"
+msgstr "Number of recorded deaths for date"
+
+#: www/templates/extinct_websites/summary.html:4
+msgid "Mrtvé weby"
+msgstr "Dead Websites"
+
+#: www/templates/extinct_websites/summary.html:10
+msgid "Zpráva o mrtvých webech"
+msgstr "The Dead Websites Report"
+
+#: www/templates/extinct_websites/summary.html:11
+msgid "Databáze mrtvých webových zdrojů"
+msgstr "Dead Web Resources Database"
+
+#: www/templates/extinct_websites/summary.html:14
+#, python-format
+msgid ""
+"Web je mimořádně dynamické a efemérní médium. Z mezinárodních <a href="
+"\"https://ahrefs.com/blog/link-rot-study/\" target=\"_blank\">studií</a> "
+"vyplývá, že za dobu deseti let zanikne více jak 50 %% sledovaných webů. "
+"Zpráva o mrtvých webech je aktivitou Webarchivu, která by měla přispět k "
+"přehledu o tuzemské webové krajině. Data sbíráme pomocí naší aplikace <a "
+"href=\"https://github.com/WebarchivCZ/extinct-websites\" target=\"_blank"
+"\">Extinct Webstites</a>, kde jsou podrobněji popsané zkoumané parametry. "
+"Jako vzorek nám slouží katalogizovaný <a href=\"https://www.webarchiv.cz/cs/"
+"katalog-stranek\" target=\"_blank\">korpus</a> bohemikálních webových "
+"zdrojů, který je rozšiřován o další zdroje. Definování pojmu „mrtvý webový "
+"zdroj“ je důležitou součástí probíhajícího výzkumu."
+msgstr ""
+"The web is an extremely dynamic and ephemeral medium. International <a href="
+"\"https://ahrefs.com/blog/link-rot-study/\" target=\"_blank\">studies</a> show "
+"that more than 50%% of websites disappear within a decade. The Dead Websites "
+"Report is an activity of the Webarchiv that should contribute to an overview "
+"of the Czech web landscape. We collect data using our <a "
+"href=\"https://github.com/WebarchivCZ/extinct-websites\" target=\"_blank"
+"\">Extinct Websites</a> app, which details the parameters under investigation. "
+"Our sample is a catalogued <a href=\"https://www.webarchiv.cz/cs/"
+"katalog-stranek\" target=\"_blank\">corpus</a> of bohemian web resources, "
+"which is being expanded to include additional resources. Defining the term "
+"\"dead web resource\" is an important part of the ongoing research."
+
+#: www/templates/extinct_websites/summary.html:18
+#, python-format
+msgid ""
+"Od <u>%(lead_start_date)s</u> evidujeme v naší databázi <u>%(num_dead)s</u> "
+"mrtvých webů (%(lead_percentage_dead)s&nbsp;%%) ze %(total_records)s "
+"trackovaných webů."
+msgstr ""
+"Since <u>%(lead_start_date)s</u>, we have <u>%(num_dead)s</u> "
+"dead sites (%(lead_percentage_dead)s&nbsp;%%) out of %(total_records)s "
+"tracked sites in our database."
+
+#: www/templates/extinct_websites/summary.html:20
+msgid "aktualizováno"
+msgstr "updated"
+
+#: www/templates/extinct_websites/summary.html:30
+msgid "Všechny aktuálně mrtvé weby"
+msgstr "All currently dead websites"
+
+#: www/templates/extinct_websites/summary.html:33
+msgid "Všechny aktuálně trackované weby"
+msgstr "All currently tracked websites"
+
+#: www/templates/extinct_websites/summary.html:37
+msgid ""
+"Realizováno v rámci institucionálního výzkumu Národní knihovny České "
+"republiky financovaného Ministerstvem kultury ČR v rámci Dlouhodobého "
+"koncepčního rozvoje výzkumné organizace."
+msgstr ""
+"Realized within the institutional research of the National Library of the Czech Republic "
+"financed by the Ministry of Culture of the Czech Republic within the framework of the "
+"Long-term conceptual development of the research organization."
 
 #: www/templates/news_admin_detail.html:32
 msgid "source 1 "
@@ -2100,17 +2176,21 @@ msgstr "^disclaimer/$"
 msgid "^embed_url$"
 msgstr "^embed$"
 
-#: www/views.py:470
+#: www/urls.py:79
+msgid "^mrtve-weby$"
+msgstr "^mrtve-weby$"
+
+#: www/views.py:474
 #, python-format
 msgid "Webarchiv.cz - archivace vasich webovych stranek %(url)s"
 msgstr "Webarchiv.cz - web archiving your pages %(url)s"
 
-#: www/views.py:474
+#: www/views.py:478
 #, python-format
 msgid "Webarchiv.cz - archivace webovych stranek %(url)s"
 msgstr "Webarchiv.cz - web archiving %(url)s"
 
-#: www/views.py:496
+#: www/views.py:500
 #, python-format
 msgid "New nomination %(url)s"
 msgstr "New nomination %(url)s"

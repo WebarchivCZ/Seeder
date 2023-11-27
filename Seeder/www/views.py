@@ -566,7 +566,7 @@ class ExtinctWebsitesView(MultiTableMixin, TemplateView):
             models.ExtinctWebsite.objects.filter(status_dead=True)),
         ExtinctWebsitesTable(models.ExtinctWebsite.objects.all()),
     ]
-    table_pagination = {"per_page": 15}
+    table_pagination = {"per_page": 20}
 
     # TODO: multi table export doesn't seem to be supported
 
