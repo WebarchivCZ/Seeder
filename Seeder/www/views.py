@@ -576,16 +576,14 @@ class ExtinctWebsitesView(MultiTableMixin, TemplateView):
 
         ew_dead = EW.objects.filter(status_dead=True)
 
-        ctx["lead_start_date"] = EW.objects.aggregate(
+        ctx["start_date"] = EW.objects.aggregate(
             x=Min("date_monitoring_start"))["x"]
-        ctx["lead_num_dead"] = ew_dead.count()
-        if ctx["lead_num_dead"] == 0:
-            ctx["lead_percentage_404"] = 0
-        else:
-            ctx["lead_percentage_404"] = (
-                ew_dead.filter(status_code=404).count()
-                / ctx["lead_num_dead"]) * 100
-        ctx["lead_updated_date"] = EW.objects.aggregate(
+        ctx["total_records"] = EW.objects.all().count()
+        ctx["num_dead"] = ew_dead.count()
+        ctx["percentage_dead"] = (
+            (ctx["num_dead"]/ctx["total_records"])*100
+            if ctx["total_records"] > 0 else 0)
+        ctx["last_updated_date"] = EW.objects.aggregate(
             x=Max("status_date"))["x"]
 
         data = (EW.objects

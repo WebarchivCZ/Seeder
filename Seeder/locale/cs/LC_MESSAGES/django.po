@@ -1881,7 +1881,7 @@ msgstr "Web monitorujeme od"
 
 #: www/models.py:122
 msgid "Date extinct"
-msgstr "Datum úmrtí"
+msgstr "Datum zjištěného úmrtí"
 
 #: www/models.py:124
 msgid "Status code"

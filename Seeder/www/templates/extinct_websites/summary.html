@@ -8,15 +8,18 @@
     <section>
 
         <h1>{% trans "Zpráva o mrtvých webech" %}</h1>
+        <h4 class="mb-4">{% trans "Databáze mrtvých webových zdrojů" %}</h4>
+
+        <p style="color:blue">{% blocktrans %}
+            Web je mimořádně dynamické a efemérní médium. Z mezinárodních <a href="https://ahrefs.com/blog/link-rot-study/" target="_blank">studií</a> vyplývá, že za dobu deseti let zanikne více jak 50 % sledovaných webů. Zpráva o mrtvých webech je aktivitou Webarchivu, která by měla přispět k přehledu o tuzemské webové krajině. Data sbíráme pomocí naší aplikace <a href="https://github.com/WebarchivCZ/extinct-websites" target="_blank">Extinct Webstites</a>, kde jsou podrobněji popsané zkoumané parametry. Jako vzorek nám slouží katalogizovaný <a href="https://www.webarchiv.cz/cs/katalog-stranek" target="_blank">korpus</a> bohemikálních webových zdrojů, který je rozšiřován o další zdroje. Definování pojmu „mrtvý webový zdroj“ je důležitou součástí probíhajícího výzkumu.
+        {% endblocktrans %}</p>
 
         <h2>
-            {% blocktrans with start_date=lead_start_date|date:"d.m.Y" percentage_404=lead_percentage_404|floatformat:0 %}
-            Od <u>{{ start_date }}</u> evidujeme v naší databázi <u>{{ lead_num_dead }}</u> mrtvých webů, z toho
-            <u>{{ percentage_404 }}%</u> vykazuje kód
-            404.
+            {% blocktrans with lead_start_date=start_date|date:"d.m.Y" lead_percentage_dead=percentage_dead|floatformat:1 %}
+            Od <u>{{ lead_start_date }}</u> evidujeme v naší databázi <u>{{ num_dead }}</u> mrtvých webů ({{ lead_percentage_dead }}&nbsp;%) ze {{ total_records }} trackovaných webů.
             {% endblocktrans %}
         </h2>
-        <p>{% trans "aktualizováno" %} {{ lead_updated_date|date:"d.m.Y" }}</p>
+        <p>{% trans "aktualizováno" %} {{ last_updated_date|date:"d.m.Y" }}</p>
 
         {% include "extinct_websites/chart_extinct.html" %}
 
