@@ -1,6 +1,7 @@
 import re
 from typing import Any
 from urllib.parse import urlparse
+from datetime import date
 
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
@@ -28,6 +29,7 @@ from www.models import Nomination, SearchLog
 from django_tables2.views import MultiTableMixin
 
 from . import models
+from .models import ExtinctWebsite as EW
 from . import forms
 from . import constants
 from .tables import ExtinctWebsitesTable
@@ -558,7 +560,7 @@ class EmbedView(TemplateView):
         return c
 
 
-class ExtinctWebsitesView(MultiTableMixin, TemplateView):
+class ExtinctWebsitesSummaryView(MultiTableMixin, TemplateView):
     template_name = "extinct_websites/summary.html"
 
     tables = [
@@ -572,8 +574,6 @@ class ExtinctWebsitesView(MultiTableMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
-        EW = models.ExtinctWebsite  # shortcut
-
         ew_dead = EW.objects.filter(status_dead=True)
 
         ctx["start_date"] = EW.objects.aggregate(
@@ -585,6 +585,8 @@ class ExtinctWebsitesView(MultiTableMixin, TemplateView):
             if ctx["total_records"] > 0 else 0)
         ctx["last_updated_date"] = EW.objects.aggregate(
             x=Max("status_date"))["x"]
+        # List of years from {last year} to 2020, reversed
+        ctx["history_years"] = range(date.today().year - 1, 2019, -1)
 
         data = (EW.objects
                 .filter(date_extinct__isnull=False)
@@ -599,3 +601,29 @@ class ExtinctWebsitesView(MultiTableMixin, TemplateView):
         ctx['chart_data'] = chart_data
 
         return ctx
+
+
+class ExtinctWebsitesHistoryView(MultiTableMixin, TemplateView):
+    template_name = "extinct_websites/history.html"
+
+    def get(self, request, **kwargs):
+        self.year = kwargs.get("year")
+        return super().get(request, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        ctx["year"] = self.year
+        ctx["last_updated_date"] = EW.objects.aggregate(
+            x=Max("status_date"))["x"]
+        return ctx
+
+    def get_tables(self):
+        return [
+            ExtinctWebsitesTable(
+                models.ExtinctWebsite.objects.filter(
+                    date_monitoring_start__year__lte=self.year,
+                    status_dead=True, date_extinct__year=self.year)),
+            ExtinctWebsitesTable(
+                models.ExtinctWebsite.objects.filter(
+                    date_monitoring_start__year__lte=self.year)),
+        ]

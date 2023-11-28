@@ -1,0 +1,23 @@
+{% extends "base_www.html" %}
+{% load bootstrap3 i18n django_tables2 %}
+
+{% block title %}{% trans "Mrtvé weby" %}{% endblock title %}
+
+
+{% block content %}
+<div class="container">
+    <section>
+        <a href="{% url 'www:extinct_websites_summary' %}">← {% trans "Zpět na přehled mrtvých webů" %}</a>
+
+        <h1 class="mt-3">{% blocktrans %}Mrtvé weby za rok {{ year }}{% endblocktrans %}</h1>
+        <p>{% trans "aktualizováno" %} {{ last_updated_date|date:"d.m.Y" }}</p>
+
+        <h2>{% trans "Všechny mrtvé weby tento rok" %} ({{ tables.0.data|length }})</h2>
+        {% render_table tables.0 %}
+
+        <h2>{% trans "Všechny weby trackované tento rok" %} ({{ tables.1.data|length }})</h2>
+        {% render_table tables.1 %}
+
+    </section>
+</div>
+{% endblock content %}
