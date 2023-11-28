@@ -146,6 +146,12 @@ class ExtinctWebsite(BaseModel):
     def wayback_url(self):
         return settings.WAYBACK_URL.format(url=self.url)
 
+    def get_status_metadata_match_display(self):
+        if self.status_metadata:
+            return self.status_metadata_match
+        else:
+            return "✖"
+
     @classmethod
     def load_new_data(cls):
         PER_PAGE = 10000
