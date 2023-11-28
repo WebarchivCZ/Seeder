@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Seeder\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-11-27 12:26+0000\n"
+"POT-Creation-Date: 2023-11-28 16:13+0000\n"
 "PO-Revision-Date: 2017-11-07 12:38+0100\n"
 "Last-Translator: Visgean Skeloru <visgean@gmail.com>, 2017\n"
 "Language-Team: English (United States) (https://www.transifex.com/"
@@ -1944,17 +1944,41 @@ msgstr "You can also search alphabetically"
 msgid "Počet úmrtí webů k datu"
 msgstr "Number of recorded deaths for date"
 
+#: www/templates/extinct_websites/history.html:4
 #: www/templates/extinct_websites/summary.html:4
 msgid "Mrtvé weby"
-msgstr "Dead Websites"
+msgstr "Extinct Websites"
+
+#: www/templates/extinct_websites/history.html:10
+msgid "Zpět na přehled mrtvých webů"
+msgstr "Back to extinct websites summary"
+
+#: www/templates/extinct_websites/history.html:12
+#: www/templates/extinct_websites/summary.html:52
+#, python-format
+msgid "Mrtvé weby za rok %(year)s"
+msgstr "Extinct websites for year %(year)s"
+
+#: www/templates/extinct_websites/history.html:13
+#: www/templates/extinct_websites/summary.html:20
+msgid "aktualizováno"
+msgstr "updated"
+
+#: www/templates/extinct_websites/history.html:15
+msgid "Všechny mrtvé weby tento rok"
+msgstr "All extinct websites this year"
+
+#: www/templates/extinct_websites/history.html:18
+msgid "Všechny weby trackované tento rok"
+msgstr "All tracked websites this year"
 
 #: www/templates/extinct_websites/summary.html:10
 msgid "Zpráva o mrtvých webech"
-msgstr "The Dead Websites Report"
+msgstr "The Extinct Websites Report"
 
 #: www/templates/extinct_websites/summary.html:11
 msgid "Databáze mrtvých webových zdrojů"
-msgstr "Dead Web Resources Database"
+msgstr "Extinct Web Resources Database"
 
 #: www/templates/extinct_websites/summary.html:14
 #, python-format
@@ -1972,14 +1996,14 @@ msgid ""
 "zdroj“ je důležitou součástí probíhajícího výzkumu."
 msgstr ""
 "The web is an extremely dynamic and ephemeral medium. International <a href="
-"\"https://ahrefs.com/blog/link-rot-study/\" target=\"_blank\">studies</a> show "
-"that more than 50%% of websites disappear within a decade. The Dead Websites "
-"Report is an activity of the Webarchiv that should contribute to an overview "
-"of the Czech web landscape. We collect data using our <a "
-"href=\"https://github.com/WebarchivCZ/extinct-websites\" target=\"_blank"
-"\">Extinct Websites</a> app, which details the parameters under investigation. "
-"Our sample is a catalogued <a href=\"https://www.webarchiv.cz/cs/"
-"katalog-stranek\" target=\"_blank\">corpus</a> of bohemian web resources, "
+"\"https://ahrefs.com/blog/link-rot-study/\" target=\"_blank\">studies</a> "
+"show that more than 50%% of websites disappear within a decade. The Dead "
+"Websites Report is an activity of the Webarchiv that should contribute to an "
+"overview of the Czech web landscape. We collect data using our <a href="
+"\"https://github.com/WebarchivCZ/extinct-websites\" target=\"_blank"
+"\">Extinct Websites</a> app, which details the parameters under "
+"investigation. Our sample is a catalogued <a href=\"https://www.webarchiv.cz/"
+"cs/katalog-stranek\" target=\"_blank\">corpus</a> of bohemian web resources, "
 "which is being expanded to include additional resources. Defining the term "
 "\"dead web resource\" is an important part of the ongoing research."
 
@@ -1990,31 +2014,35 @@ msgid ""
 "mrtvých webů (%(lead_percentage_dead)s&nbsp;%%) ze %(total_records)s "
 "trackovaných webů."
 msgstr ""
-"Since <u>%(lead_start_date)s</u>, we have <u>%(num_dead)s</u> "
-"dead sites (%(lead_percentage_dead)s&nbsp;%%) out of %(total_records)s "
-"tracked sites in our database."
+"Since <u>%(lead_start_date)s</u>, we have <u>%(num_dead)s</u> dead sites "
+"(%(lead_percentage_dead)s&nbsp;%%) out of %(total_records)s tracked sites in "
+"our database."
 
-#: www/templates/extinct_websites/summary.html:20
-msgid "aktualizováno"
-msgstr "updated"
-
-#: www/templates/extinct_websites/summary.html:30
+#: www/templates/extinct_websites/summary.html:31
 msgid "Všechny aktuálně mrtvé weby"
-msgstr "All currently dead websites"
+msgstr "All currently extinct websites"
 
 #: www/templates/extinct_websites/summary.html:33
+#: www/templates/extinct_websites/summary.html:35
+#: www/templates/extinct_websites/summary.html:42
+#: www/templates/extinct_websites/summary.html:44
+msgid "Stáhnout"
+msgstr "Download"
+
+#: www/templates/extinct_websites/summary.html:40
 msgid "Všechny aktuálně trackované weby"
 msgstr "All currently tracked websites"
 
-#: www/templates/extinct_websites/summary.html:37
+#: www/templates/extinct_websites/summary.html:57
 msgid ""
 "Realizováno v rámci institucionálního výzkumu Národní knihovny České "
 "republiky financovaného Ministerstvem kultury ČR v rámci Dlouhodobého "
 "koncepčního rozvoje výzkumné organizace."
 msgstr ""
-"Realized within the institutional research of the National Library of the Czech Republic "
-"financed by the Ministry of Culture of the Czech Republic within the framework of the "
-"Long-term conceptual development of the research organization."
+"Realized within the institutional research of the National Library of the "
+"Czech Republic financed by the Ministry of Culture of the Czech Republic "
+"within the framework of the Long-term conceptual development of the research "
+"organization."
 
 #: www/templates/news_admin_detail.html:32
 msgid "source 1 "
@@ -2178,19 +2206,24 @@ msgstr "^embed$"
 
 #: www/urls.py:79
 msgid "^mrtve-weby$"
-msgstr "^mrtve-weby$"
+msgstr "^extinct-websites$"
 
-#: www/views.py:474
+#: www/urls.py:82
+#, python-brace-format
+msgid "^mrtve-weby-historie/(?P<year>\\d{4})$"
+msgstr "^extinct-websites-history/(?P<year>\\d{4})$"
+
+#: www/views.py:477
 #, python-format
 msgid "Webarchiv.cz - archivace vasich webovych stranek %(url)s"
 msgstr "Webarchiv.cz - web archiving your pages %(url)s"
 
-#: www/views.py:478
+#: www/views.py:481
 #, python-format
 msgid "Webarchiv.cz - archivace webovych stranek %(url)s"
 msgstr "Webarchiv.cz - web archiving %(url)s"
 
-#: www/views.py:500
+#: www/views.py:503
 #, python-format
 msgid "New nomination %(url)s"
 msgstr "New nomination %(url)s"

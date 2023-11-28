@@ -23,7 +23,7 @@
             datasets: [{
                 label: "{% trans 'Počet úmrtí webů k datu' %}",
                 data: formattedData,
-                backgroundColor: 'rgba(0, 123, 255, 0.5)'
+                backgroundColor: 'rgba(0, 0, 255, 0.8)'
             }]
         },
         options: {
@@ -31,8 +31,25 @@
                 x: {
                     type: 'time',
                     time: {
-                        unit: 'day',
-                        tooltipFormat: 'DD.MM.YYYY' // Format for the tooltip
+                        unit: 'month',
+                        tooltipFormat: 'DD.MM.YYYY', // Format for the tooltip
+                        displayFormats: {
+                            month: 'MMM YYYY',
+                            day: 'DD.MM.YYYY',
+                        }
+                    },
+                    ticks:{
+                        maxTicksLimit: 20,
+                    },
+                    grid: {
+                        display: true,
+                        drawOnChartArea: false, // Only draw grid lines for the scale, not the full chart area
+                        drawBorder: true,
+                        drawTicks: true,
+                        tickLength: 10,
+                        lineWidth: 2,
+                        offset: false,
+                        color: "#999",
                     }
                 },
                 y: {
