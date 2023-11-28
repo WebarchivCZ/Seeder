@@ -33,6 +33,14 @@
         <h2>{% trans "Všechny aktuálně trackované weby" %} ({{ tables.1.data|length }})</h2>
         {% render_table tables.1 %}
 
+        <hr />
+
+        {% for year in history_years  %}
+        <a href="{% url 'www:extinct_websites_history' year=year %}">
+            <h2 class="mt-4">{% blocktrans %}Mrtvé weby za rok {{ year }}{% endblocktrans %}</h2>
+        </a>
+        {% endfor %}
+
         <p class="mt-5">
             {% blocktrans %}Realizováno v rámci institucionálního výzkumu Národní knihovny České republiky financovaného Ministerstvem kultury ČR v rámci Dlouhodobého koncepčního rozvoje výzkumné organizace.{% endblocktrans %}
         </p>
