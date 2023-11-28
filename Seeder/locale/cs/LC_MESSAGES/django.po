@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Seeder\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-11-27 12:26+0000\n"
+"POT-Creation-Date: 2023-11-28 16:13+0000\n"
 "PO-Revision-Date: 2018-04-16 13:40+0200\n"
 "Last-Translator: mariehaskovcova <marie.haskovcova@nkp.cz>, 2017\n"
 "Language-Team: Czech (https://www.transifex.com/webarchivecz/teams/43032/"
@@ -1938,9 +1938,33 @@ msgstr "Můžete hledat i abecedně"
 msgid "Počet úmrtí webů k datu"
 msgstr "Počet úmrtí webů k datu"
 
+#: www/templates/extinct_websites/history.html:4
 #: www/templates/extinct_websites/summary.html:4
 msgid "Mrtvé weby"
 msgstr "Mrtvé weby"
+
+#: www/templates/extinct_websites/history.html:10
+msgid "Zpět na přehled mrtvých webů"
+msgstr "Zpět na přehled mrtvých webů"
+
+#: www/templates/extinct_websites/history.html:12
+#: www/templates/extinct_websites/summary.html:52
+#, python-format
+msgid "Mrtvé weby za rok %(year)s"
+msgstr "Mrtvé weby za rok %(year)s"
+
+#: www/templates/extinct_websites/history.html:13
+#: www/templates/extinct_websites/summary.html:20
+msgid "aktualizováno"
+msgstr "aktualizováno"
+
+#: www/templates/extinct_websites/history.html:15
+msgid "Všechny mrtvé weby tento rok"
+msgstr "Všechny mrtvé weby tento rok"
+
+#: www/templates/extinct_websites/history.html:18
+msgid "Všechny weby trackované tento rok"
+msgstr "Všechny weby trackované tento rok"
 
 #: www/templates/extinct_websites/summary.html:10
 msgid "Zpráva o mrtvých webech"
@@ -1988,19 +2012,22 @@ msgstr ""
 "mrtvých webů (%(lead_percentage_dead)s&nbsp;%%) ze %(total_records)s "
 "trackovaných webů."
 
-#: www/templates/extinct_websites/summary.html:20
-msgid "aktualizováno"
-msgstr "aktualizováno"
-
-#: www/templates/extinct_websites/summary.html:30
+#: www/templates/extinct_websites/summary.html:31
 msgid "Všechny aktuálně mrtvé weby"
 msgstr "Všechny aktuálně mrtvé weby"
 
 #: www/templates/extinct_websites/summary.html:33
+#: www/templates/extinct_websites/summary.html:35
+#: www/templates/extinct_websites/summary.html:42
+#: www/templates/extinct_websites/summary.html:44
+msgid "Stáhnout"
+msgstr "Stáhnout"
+
+#: www/templates/extinct_websites/summary.html:40
 msgid "Všechny aktuálně trackované weby"
 msgstr "Všechny aktuálně trackované weby"
 
-#: www/templates/extinct_websites/summary.html:37
+#: www/templates/extinct_websites/summary.html:57
 msgid ""
 "Realizováno v rámci institucionálního výzkumu Národní knihovny České "
 "republiky financovaného Ministerstvem kultury ČR v rámci Dlouhodobého "
@@ -2174,17 +2201,22 @@ msgstr "^embed$"
 msgid "^mrtve-weby$"
 msgstr "^mrtve-weby$"
 
-#: www/views.py:474
+#: www/urls.py:82
+#, python-brace-format
+msgid "^mrtve-weby-historie/(?P<year>\\d{4})$"
+msgstr "^mrtve-weby-historie/(?P<year>\\d{4})$"
+
+#: www/views.py:477
 #, python-format
 msgid "Webarchiv.cz - archivace vasich webovych stranek %(url)s"
 msgstr "Webarchiv.cz - archivace Vašich webových stránek %(url)s"
 
-#: www/views.py:478
+#: www/views.py:481
 #, python-format
 msgid "Webarchiv.cz - archivace webovych stranek %(url)s"
 msgstr "Webarchiv.cz - archivace webových stránek %(url)s"
 
-#: www/views.py:500
+#: www/views.py:503
 #, python-format
 msgid "New nomination %(url)s"
 msgstr "Nový návrh %(url)s"
