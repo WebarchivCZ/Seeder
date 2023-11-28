@@ -254,6 +254,7 @@ CRONJOBS = [
     ('10 * * * *', 'voting.cron.revive_postponed_rounds'),
     ('20 * * * *', 'contracts.cron.expire_contracts'),
     ('30 * * * *', 'contracts.cron.send_emails'),
+    ('40 0 * * *', 'www.cron.reload_extinct_websites'),
 ]
 
 # *     *     *   *    *        command to be executed
