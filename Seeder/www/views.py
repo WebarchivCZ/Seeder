@@ -1,4 +1,5 @@
 import re
+import pandas as pd
 from typing import Any
 from urllib.parse import urlparse
 from datetime import date
@@ -570,7 +571,38 @@ class ExtinctWebsitesSummaryView(MultiTableMixin, TemplateView):
     ]
     table_pagination = {"per_page": 20}
 
-    # TODO: multi table export doesn't seem to be supported
+    def get(self, request, **kwargs):
+        """
+        Enable selected table export with Pandas
+        """
+        export = request.GET.get("export")
+        export_format = request.GET.get("format", "csv").lower()
+        # Ensure export filename will be safe
+        if export_format not in ["csv", "xlsx"]:
+            raise Http404()
+        if export:
+            try:
+                # Raises if non-int or out-of-range is passed
+                table = self.tables[int(export)]
+                df = pd.DataFrame(table.as_values())
+                # Use first row as columns
+                df.columns = df.iloc[0]
+                df = df.iloc[1:].sort_index()
+                # Generate response filled with CSV data
+                response = HttpResponse(content_type="text/csv")
+                filename = (f"export-{export}_{date.today():%Y-%m-%d}"
+                            f".{export_format}")
+                response["Content-Disposition"] = \
+                    f"attachment; filename={filename}"
+                if export_format == "xlsx":
+                    df.to_excel(response, index=False)
+                else:
+                    df.to_csv(response, index=False)
+                return response
+            except:
+                raise Http404()
+        else:
+            return super().get(request, **kwargs)
 
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
