@@ -28,6 +28,9 @@ class ExtinctWebsitesTable(tables.Table):
         return format_html(
             f"<a href='{record.wayback_url}' target='_blank'>{value}</a>")
 
+    def value_url(self, value):
+        return value
+
     def render_date_extinct(self, value):
         return f"{value:%d.%m.%Y}" if value else "—"
 
