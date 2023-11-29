@@ -564,6 +564,10 @@ class EmbedView(TemplateView):
 class ExtinctWebsitesView(MultiTableMixin, TemplateView):
     table_pagination = {"per_page": 20}
 
+    TABLE_ATTRS = {
+        'class': 'table table-sm table-striped table-hover'
+    }
+
     def get(self, request, **kwargs):
         """
         Enable selected table export with Pandas
@@ -603,8 +607,13 @@ class ExtinctWebsitesSummaryView(ExtinctWebsitesView):
 
     tables = [
         ExtinctWebsitesTable(
-            models.ExtinctWebsite.objects.filter(status_dead=True)),
-        ExtinctWebsitesTable(models.ExtinctWebsite.objects.all()),
+            models.ExtinctWebsite.objects.filter(status_dead=True),
+            attrs={**ExtinctWebsitesView.TABLE_ATTRS,
+                   "pagination_id": "extinct"}),
+        ExtinctWebsitesTable(
+            models.ExtinctWebsite.objects.all(),
+            attrs={**ExtinctWebsitesView.TABLE_ATTRS,
+                   "pagination_id": "all"}),
     ]
 
     def get_context_data(self, **kwargs):
@@ -658,8 +667,12 @@ class ExtinctWebsitesHistoryView(ExtinctWebsitesView):
             ExtinctWebsitesTable(
                 models.ExtinctWebsite.objects.filter(
                     date_monitoring_start__year__lte=self.year,
-                    status_dead=True, date_extinct__year=self.year)),
+                    status_dead=True, date_extinct__year=self.year),
+                attrs={**ExtinctWebsitesView.TABLE_ATTRS,
+                       "pagination_id": "extinct"}),
             ExtinctWebsitesTable(
                 models.ExtinctWebsite.objects.filter(
-                    date_monitoring_start__year__lte=self.year)),
+                    date_monitoring_start__year__lte=self.year),
+                attrs={**ExtinctWebsitesView.TABLE_ATTRS,
+                       "pagination_id": "all"}),
         ]

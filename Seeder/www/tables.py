@@ -49,8 +49,6 @@ class ExtinctWebsitesTable(tables.Table):
             "date_monitoring_start",
             "status_metadata_match",
         )
-        attrs = {
-            'class': 'table table-sm table-striped table-hover'
-        }
         order_by = ("id",)
-        template_name = "django_tables2/bootstrap4.html"
+        # * Custom template, attrs set on initialization because of pagination
+        template_name = "bootstrap4_table.html"
