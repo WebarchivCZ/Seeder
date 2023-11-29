@@ -561,14 +561,7 @@ class EmbedView(TemplateView):
         return c
 
 
-class ExtinctWebsitesSummaryView(MultiTableMixin, TemplateView):
-    template_name = "extinct_websites/summary.html"
-
-    tables = [
-        ExtinctWebsitesTable(
-            models.ExtinctWebsite.objects.filter(status_dead=True)),
-        ExtinctWebsitesTable(models.ExtinctWebsite.objects.all()),
-    ]
+class ExtinctWebsitesView(MultiTableMixin, TemplateView):
     table_pagination = {"per_page": 20}
 
     def get(self, request, **kwargs):
@@ -604,6 +597,16 @@ class ExtinctWebsitesSummaryView(MultiTableMixin, TemplateView):
         else:
             return super().get(request, **kwargs)
 
+
+class ExtinctWebsitesSummaryView(ExtinctWebsitesView):
+    template_name = "extinct_websites/summary.html"
+
+    tables = [
+        ExtinctWebsitesTable(
+            models.ExtinctWebsite.objects.filter(status_dead=True)),
+        ExtinctWebsitesTable(models.ExtinctWebsite.objects.all()),
+    ]
+
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
         ew_dead = EW.objects.filter(status_dead=True)
@@ -635,11 +638,12 @@ class ExtinctWebsitesSummaryView(MultiTableMixin, TemplateView):
         return ctx
 
 
-class ExtinctWebsitesHistoryView(MultiTableMixin, TemplateView):
+class ExtinctWebsitesHistoryView(ExtinctWebsitesView):
     template_name = "extinct_websites/history.html"
 
     def get(self, request, **kwargs):
         self.year = kwargs.get("year")
+        self.tables = self.get_tables()  # must evaluate
         return super().get(request, **kwargs)
 
     def get_context_data(self, **kwargs):
