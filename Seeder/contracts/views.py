@@ -17,6 +17,7 @@ from django.contrib import messages
 
 from comments.views import CommentViewGeneric
 from source.models import Source
+import source.constants as source_constants
 from core.generic_views import (ObjectMixinFixed, LoginMixin, EditView,
                                 HistoryView, FilteredListView, MessageView)
 
@@ -77,6 +78,9 @@ class Assign(LoginMixin, FormView, ObjectMixinFixed):
     def form_valid(self, form):
         contract = form.cleaned_data['contract']
         contract.sources.add(self.object)
+        # When assigned to a contract, source should be marked as "archiving"
+        self.object.state = source_constants.STATE_RUNNING
+        self.object.save()
         return HttpResponseRedirect(contract.get_absolute_url())
 
 

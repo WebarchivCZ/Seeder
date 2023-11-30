@@ -20,6 +20,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.views.generic.base import TemplateView
 from django.views.generic import DetailView, FormView, View
 from django.conf import settings
+from django.utils.safestring import mark_safe
 
 from core import generic_views
 from comments.views import CommentViewGeneric
@@ -450,7 +451,7 @@ class InternalCollectionListView(
 
 class InternalCollectionAdd(InternalTCView, FormView):
     form_class = forms.InternalTopicCollectionForm
-    template_name = 'add_form.html'
+    template_name = 'internal_tc_add_form.html'
     title = _('Add TopicCollection')
 
     def form_valid(self, form):
@@ -475,19 +476,46 @@ class InternalCollectionEdit(InternalTCView, generic_views.EditView):
         return form_class(files, **self.get_form_kwargs())
 
     def form_valid(self, form):
-        topic = form.save()
-        topic.pair_custom_seeds()
-
+        topic = form.save(commit=False)
+        form.save_m2m()  # must save m2m when commit=False
+        # Create and delete attachments
         ids_to_delete = form.cleaned_data['files_to_delete']
         for att in models.Attachment.objects.filter(id__in=ids_to_delete):
             att.file.delete()
             att.delete()
-
         for each in form.cleaned_data["attachments"]:
             models.Attachment.objects.create(
-                file=each,
-                topic_collection=topic
-            )
+                file=each, topic_collection=topic)
+        # If a custom seeds file is uploaded, backup and replace TC.custom_seeds
+        new_custom_seeds = form.cleaned_data.get("custom_seeds_file")
+        if new_custom_seeds:
+            url = topic.backup_custom_seeds()
+            try:
+                topic.custom_seeds = new_custom_seeds.read().decode("utf-8")
+                topic.save()  # full save, including new large custom seeds
+            except UnicodeDecodeError:
+                messages.error(self.request, _("Cannot decode file to UTF-8"))
+            messages.success(self.request, mark_safe(_(
+                "Original custom_seeds have been backed to: <a href='%(url)s' "
+                "target='_blank'>%(url)s</a>"
+            ) % {"url": url}))
+            messages.warning(self.request, _(
+                "Uploaded custom seeds will not be paired automatically"))
+        else:
+            # Small edits shouldn't touch custom_seeds because it'll never load
+            if form.custom_seeds_too_large:
+                topic.save(update_fields=(
+                    set(form.fields.keys()) - set([
+                        "custom_seeds", "custom_sources", "attachments",
+                        "files_to_delete", "custom_seeds_file",
+                    ])
+                ))
+            # Only pair custom seeds if there aren't too many of them and they
+            # haven't just been imported
+            else:
+                topic.save()  # full save, not many custom seeds
+                topic.pair_custom_seeds()
+
         return HttpResponseRedirect(topic.get_absolute_url())
 
 

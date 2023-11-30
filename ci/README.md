@@ -163,8 +163,8 @@ V Docker Compose se služba jmenuje **static**. Image: **nginx:alpine**.
 Memcache pro cachovací potřeby Djanga.
 
 V Docker Compose se služba jmenuje **memcached**. Image: **memcached:latest**.
-## Statická HTML pro NAKI
-Několik statických HTML, které se časem integrují přímo do aplikace Seeder. Pro zatím jsou hostovány jako image. [NAKI informační stránka](https://github.com/WebarchivCZ/naki). Pokud dojde ke změně, repozitáře pošle image do dockerhub. Pak je potřeb redeploynout patřičné prostředí Seeder aby se nahrála nová verze vývoje.
+## Statická HTML pro NAKI (vyvoj)
+Několik statických HTML, které se časem integrují přímo do aplikace Seeder. Pro zatím jsou hostovány jako image. [NAKI informační stránka](https://github.com/WebarchivCZ/naki). Pokud dojde ke změně, repozitáře pošle image do dockerhub. Pak je potřeb redeploynout patřičné prostředí Seeder aby se nahrála nová verze vývoje. Viz standardní procedury [Nasazení nové verze Vývoj na produkční prostředí](#Nasazení-nové-verze-vývoj-na-produkční-prostředí) a [Nasazení nové verze Vývoj na testovací prostředí](#Nasazení-nové-verze-vývoj-na-testovací-prostředí).
 
 - Testovací prostředí: https://app.webarchiv.cz/vyvoj/
 - Produkční prostředí: https://webarchiv.cz/vyvoj/
@@ -179,24 +179,42 @@ V Docker Compose se služba jmenuje **manet**. Image **bobey/manet:latest**.
 ## Katalogizační nástroj WaKat
 Polo automatický nástroj na katologizaci webů. Změna [WA-KAT](https://github.com/WebarchivCZ/WA-KAT) automaticky spouští aktualizaci testu nebo produkce. Nástroj je dostupný na adrese: [kat.webarchiv.cz](https://kat.webarchiv.cz/). Nástroj není součástí Docker Compose.
 
+# Ruční ovládání prostředí
+Automatizační nástroj vytváří v `/home/ansible/seeder` skripty, ktere volá při procesu nasazování. Tyto nástroje můžou být podle potřeby spouštěny.
+- run.sh -> Spustí seeder pomocí docker compose
+- update_vyvoj.sh -> Stáhne nejnovější docker image: 'webarchiv/vyvoj:naki' a aktualizuje docker compose službu vyvoj
+
 # Standardní procedury
-### Nasazení nové verze na test
+## Nasazení nové verze Seeder na test
 1. Vytvořit PR vůči branch master
 2. Merge PR do branch master spustí nasazení kódu na testovací prostředí
-### Nasazení nové verze na produkci
+## Nasazení nové verze Seeder na produkci
 1. Vytvořit PR vůči branch production
 2. Merge PR do branch production spustí nasazení kódu na testovací prostředí
 3. Vedoucí webového archivu nebo vedoucí podpory aplikací schválí konkrétní build v (Jenkins)[https://jenkins.webarchiv.cz/job/webarchiv/job/Seeder/job/production/]
 
+## Nasazení nové verze Vývoj na testovací prostředí
+1. Push do větve `main` v repozitáři [https://github.com/WebarchivCZ/naki](https://github.com/WebarchivCZ/naki) spustí nasazení kódu do testovacího prostředí.
 
-### Zálohy produkčního prostředí
-#### Adresář media
+## Nasazení nové verze Vývoj na produkční prostředí
+1. Vytvořit Pull Request vůči větvi `production` v repozitáři [https://github.com/WebarchivCZ/naki](https://github.com/WebarchivCZ/naki)
+2. Merge Pull Request do větve `main` spustí nasazení nejdříve kódu na testovací prostředí
+3. Vedoucí webového archivu nebo vedoucí podpory aplikací schválí konkrétní build v (Jenkins)[https://jenkins.webarchiv.cz/job/webarchiv/job/Seeder/job/production/] a poté je teprve nasazen kód do produkčního prostředí.
+
+## Spuštění Produkčního Seeder přímo ze serveru
+1. Přihlásit si do produkčního prostředí pomocí ssh
+2. ```sudo su - ansible```
+3. ```seeder/run.sh```
+4. Chvilku počkat
+
+## Zálohy produkčního prostředí
+### Adresář media
 1. Přihlásit se na serveru ```ssh $(whoami)@10.3.0.50```
 2. Vykopírovat adresář media z kontejneru do aktuální cesty /home/$(whoami) ```sudo docker cp seeder_web_1:/code/Seeder/media ./media-prod-$(date -Iminutes)```
 3. Změnit práva ```chown $(whoami):$(whoami) ./media-[datum vytvoření složky]```
 4. Odpojit se ze serveru ```exit```
 5. Zkopírovat vzniklý adresář z bezpečného místa ```scp $(whoami)@10.3.0.50:/$(whoami)/media-[datum vytvoření složky] .```
-#### Záloha databáze z Postgres
+### Záloha databáze z Postgres
 
 Export databáze Seeder
 ```bash
@@ -207,9 +225,9 @@ Záloha celého Postgres
 sudo docker exec -u postgres seeder_seeder_db_1 pg_dumpall > postgres-prod-$(date -Iminutes).sql
 ```
 
-#### Vykopírování záloh ze severu.
+### Vykopírování záloh ze severu.
 `scp -r wa-docker00:"/home/{{ vlastník_záloh }}/*-prod-[datum-vytvoření-složky]*" .`
-#### Importu databáze
+### Importu databáze
 ```bash
 sudo docker-compose -f docker-compose-prod.yml -p seeder stop web
 Stopping seeder_web_1 ... done

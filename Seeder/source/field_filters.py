@@ -58,6 +58,9 @@ class SourceFilter(BaseFilterSet):
                                           method=filter_has_cc)
     contract_number = django_filters.CharFilter(label=_('Contract number'),
                                                 method=filter_contract_number)
+    seed_url = django_filters.CharFilter(label=_("Seed url contains"),
+                                         field_name="seed__url",
+                                         lookup_expr="icontains")
 
     created = DateRangeFilter()
     last_changed = DateRangeFilter()

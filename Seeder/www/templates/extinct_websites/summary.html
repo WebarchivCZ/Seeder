@@ -1,0 +1,61 @@
+{% extends "base_www.html" %}
+{% load bootstrap3 i18n django_tables2 %}
+
+{% block title %}{% trans "Mrtvé weby" %}{% endblock title %}
+
+{% block content %}
+<div class="container">
+    <section>
+
+        <h1>{% trans "Zpráva o mrtvých webech" %}</h1>
+        <h4 class="mb-4">{% trans "Databáze mrtvých webových zdrojů" %}</h4>
+
+        <p style="color:blue">
+            {% blocktrans %}Web je mimořádně dynamické a efemérní médium. Z mezinárodních <a href="https://ahrefs.com/blog/link-rot-study/" target="_blank">studií</a> vyplývá, že za dobu deseti let zanikne více jak 50 % sledovaných webů. Zpráva o mrtvých webech je aktivitou Webarchivu, která by měla přispět k přehledu o tuzemské webové krajině. Data sbíráme pomocí naší aplikace <a href="https://github.com/WebarchivCZ/extinct-websites" target="_blank">Extinct Webstites</a>, kde jsou podrobněji popsané zkoumané parametry. Jako vzorek nám slouží katalogizovaný <a href="https://www.webarchiv.cz/cs/katalog-stranek" target="_blank">korpus</a> bohemikálních webových zdrojů, který je rozšiřován o další zdroje. Definování pojmu „mrtvý webový zdroj“ je důležitou součástí probíhajícího výzkumu.{% endblocktrans %}
+        </p>
+
+        <h2>
+            {% blocktrans with lead_start_date=start_date|date:"d.m.Y" lead_percentage_dead=percentage_dead|floatformat:1 %}Od <u>{{ lead_start_date }}</u> evidujeme v naší databázi <u>{{ num_dead }}</u> mrtvých webů ({{ lead_percentage_dead }}&nbsp;%) ze {{ total_records }} trackovaných webů.{% endblocktrans %}
+        </h2>
+        <p>{% trans "aktualizováno" %} {{ last_updated_date|date:"d.m.Y" }}</p>
+
+        {% include "extinct_websites/chart_extinct.html" %}
+
+        <style>
+            .pager {
+                display: flex
+            }
+        </style>
+
+        <div class="d-flex align-items-center mt-4" id="extinct">
+            <h2 class="mt-3">{% trans "Všechny aktuálně mrtvé weby" %} ({{ tables.0.data|length }})</h2>
+            <a class="btn btn-light border-dark ml-auto" href="?export=0&format=csv" target="_blank"
+                title="{% trans 'Stáhnout' %}">CSV</a>
+            <a class="btn btn-light border-dark ml-2" href="?export=0&format=xlsx" target="_blank"
+                title="{% trans 'Stáhnout' %}">XLSX</a>
+        </div>
+        {% render_table tables.0 %}
+
+        <div class="d-flex align-items-center mt-4" id="all">
+            <h2 class="mt-3">{% trans "Všechny aktuálně trackované weby" %} ({{ tables.1.data|length }})</h2>
+            <a class="btn btn-light border-dark ml-auto" href="?export=1&format=csv" target="_blank"
+                title="{% trans 'Stáhnout' %}">CSV</a>
+            <a class="btn btn-light border-dark ml-2" href="?export=1&format=xlsx" target="_blank"
+                title="{% trans 'Stáhnout' %}">XLSX</a>
+        </div>
+        {% render_table tables.1 %}
+
+        <hr />
+
+        {% for year in history_years  %}
+        <a href="{% url 'www:extinct_websites_history' year=year %}">
+            <h2 class="mt-4">{% blocktrans %}Mrtvé weby za rok {{ year }}{% endblocktrans %}</h2>
+        </a>
+        {% endfor %}
+
+        <p class="mt-5">
+            {% blocktrans %}Realizováno v rámci institucionálního výzkumu Národní knihovny České republiky financovaného Ministerstvem kultury ČR v rámci Dlouhodobého koncepčního rozvoje výzkumné organizace.{% endblocktrans %}
+        </p>
+    </section>
+</div>
+{% endblock content %}

@@ -10,6 +10,7 @@ urlpatterns = [
     path('seed/<int:pk>', SeedEdit.as_view(), name='seed_edit'),
     path('history/<int:pk>', History.as_view(), name='history'),
     path('list', SourceList.as_view(), name='list'),
+    path('export', SourceExportAll.as_view(), name='export'),
     path('category_autocomplete', CategoryAutocomplete.as_view(),
          name='category_autocomplete'),
     path('subcategory_autocomplete', SubcategoryAutocomplete.as_view(),

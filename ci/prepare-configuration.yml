@@ -18,6 +18,10 @@
             location /media/ {
                 root /seeder;
             }
+
+            # Increase max upload size to ~50MB
+            client_max_body_size 53M;
+
             listen 0.0.0.0:80;
           }
 
@@ -26,7 +30,7 @@
         src: docker-compose.yaml
         dest: /home/ansible/seeder/docker-compose-{{ env }}.yml
 
-    - name: "Deployment script"
+    - name: "Deployment scripts"
       template:
         src: "{{ item }}"
         dest: /home/ansible/seeder/
@@ -34,3 +38,4 @@
       loop:
         - run.sh
         - dump-screenshots.sh
+        - update_vyvoj.sh

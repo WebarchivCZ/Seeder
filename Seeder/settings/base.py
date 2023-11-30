@@ -90,7 +90,6 @@ INSTALLED_APPS = (
     'rest_framework.authtoken',
     'captcha',
     'ordered_model',
-    # 'haystack',
     # 'elasticstack',
 
     'core',
@@ -255,6 +254,7 @@ CRONJOBS = [
     ('10 * * * *', 'voting.cron.revive_postponed_rounds'),
     ('20 * * * *', 'contracts.cron.expire_contracts'),
     ('30 * * * *', 'contracts.cron.send_emails'),
+    ('40 0 * * *', 'www.cron.reload_extinct_websites'),
 ]
 
 # *     *     *   *    *        command to be executed
@@ -288,6 +288,7 @@ WAYBACK_URL = "http://wayback.webarchiv.cz/wayback/query?type=urlquery&url={url}
 
 
 SEEDS_EXPORT_DIR = 'seeds'
+SEEDS_BACKUP_DIR = os.path.join(SEEDS_EXPORT_DIR, 'backup')
 MANET_URL = '127.0.0.1:8891'
 
 

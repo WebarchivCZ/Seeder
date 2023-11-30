@@ -1,5 +1,8 @@
 import re
+import pandas as pd
+from typing import Any
 from urllib.parse import urlparse
+from datetime import date
 
 from django.core.mail import send_mail
 from django.template.loader import render_to_string
@@ -9,7 +12,8 @@ from django.views.generic.base import TemplateView, View
 from django.views.generic.detail import DetailView
 from django.http.response import HttpResponse, HttpResponseRedirect, Http404
 from django.utils.translation import ugettext as _
-from django.db.models import Sum, When, Case, IntegerField, Q
+from django.db.models import Sum, When, Case, IntegerField, Q, Min, Max, Count
+from django.db.models.functions import TruncDay
 from django.core.paginator import EmptyPage
 from django.urls import reverse
 from django.conf import settings
@@ -23,10 +27,13 @@ from harvests.models import ExternalTopicCollection
 from paginator.paginator import CustomPaginator
 from www.forms import NominationForm
 from www.models import Nomination, SearchLog
+from django_tables2.views import MultiTableMixin
 
 from . import models
+from .models import ExtinctWebsite as EW
 from . import forms
 from . import constants
+from .tables import ExtinctWebsitesTable
 
 ITEMS_PER_PAGE = 12
 
@@ -127,7 +134,7 @@ class TopicCollectionDetail(PaginatedView, DetailView):
                 'url': url,
                 'wayback_url': WAYBACK_URL.format(url=url)
             }
-            for url in self.get_object().custom_seeds.splitlines()
+            for url in set(self.get_object().custom_seeds.splitlines())
         ]
 
         page = self.get_page_num()
@@ -552,3 +559,120 @@ class EmbedView(TemplateView):
         c = super(EmbedView, self).get_context_data(**kwargs)
         c['url'] = self.request.GET.get('img', '')
         return c
+
+
+class ExtinctWebsitesView(MultiTableMixin, TemplateView):
+    table_pagination = {"per_page": 20}
+
+    TABLE_ATTRS = {
+        'class': 'table table-sm table-striped table-hover'
+    }
+
+    def get(self, request, **kwargs):
+        """
+        Enable selected table export with Pandas
+        """
+        export = request.GET.get("export")
+        export_format = request.GET.get("format", "csv").lower()
+        # Ensure export filename will be safe
+        if export_format not in ["csv", "xlsx"]:
+            raise Http404()
+        if export:
+            try:
+                # Raises if non-int or out-of-range is passed
+                table = self.tables[int(export)]
+                df = pd.DataFrame(table.as_values())
+                # Use first row as columns
+                df.columns = df.iloc[0]
+                df = df.iloc[1:].sort_index()
+                # Generate response filled with CSV data
+                response = HttpResponse(content_type="text/csv")
+                filename = (f"export-{export}_{date.today():%Y-%m-%d}"
+                            f".{export_format}")
+                response["Content-Disposition"] = \
+                    f"attachment; filename={filename}"
+                if export_format == "xlsx":
+                    df.to_excel(response, index=False)
+                else:
+                    df.to_csv(response, index=False)
+                return response
+            except:
+                raise Http404()
+        else:
+            return super().get(request, **kwargs)
+
+
+class ExtinctWebsitesSummaryView(ExtinctWebsitesView):
+    template_name = "extinct_websites/summary.html"
+
+    tables = [
+        ExtinctWebsitesTable(
+            models.ExtinctWebsite.objects.filter(status_dead=True),
+            attrs={**ExtinctWebsitesView.TABLE_ATTRS,
+                   "pagination_id": "extinct"}),
+        ExtinctWebsitesTable(
+            models.ExtinctWebsite.objects.all(),
+            attrs={**ExtinctWebsitesView.TABLE_ATTRS,
+                   "pagination_id": "all"}),
+    ]
+
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        ew_dead = EW.objects.filter(status_dead=True)
+
+        ctx["start_date"] = EW.objects.aggregate(
+            x=Min("date_monitoring_start"))["x"]
+        ctx["total_records"] = EW.objects.all().count()
+        ctx["num_dead"] = ew_dead.count()
+        ctx["percentage_dead"] = (
+            (ctx["num_dead"]/ctx["total_records"])*100
+            if ctx["total_records"] > 0 else 0)
+        ctx["last_updated_date"] = EW.objects.aggregate(
+            x=Max("status_date"))["x"]
+        # List of years from {last year} to 2020, reversed
+        ctx["history_years"] = range(date.today().year - 1, 2019, -1)
+
+        data = (EW.objects
+                .filter(date_extinct__isnull=False)
+                .annotate(date=TruncDay('date_extinct'))
+                .values('date')
+                .annotate(count=Count('id'))
+                .order_by('date'))
+
+        chart_data = [{'date': entry['date'].strftime('%Y-%m-%d'),
+                       'count': entry['count']} for entry in data]
+
+        ctx['chart_data'] = chart_data
+
+        return ctx
+
+
+class ExtinctWebsitesHistoryView(ExtinctWebsitesView):
+    template_name = "extinct_websites/history.html"
+
+    def get(self, request, **kwargs):
+        self.year = kwargs.get("year")
+        self.tables = self.get_tables()  # must evaluate
+        return super().get(request, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        ctx = super().get_context_data(**kwargs)
+        ctx["year"] = self.year
+        ctx["last_updated_date"] = EW.objects.aggregate(
+            x=Max("status_date"))["x"]
+        return ctx
+
+    def get_tables(self):
+        return [
+            ExtinctWebsitesTable(
+                models.ExtinctWebsite.objects.filter(
+                    date_monitoring_start__year__lte=self.year,
+                    status_dead=True, date_extinct__year=self.year),
+                attrs={**ExtinctWebsitesView.TABLE_ATTRS,
+                       "pagination_id": "extinct"}),
+            ExtinctWebsitesTable(
+                models.ExtinctWebsite.objects.filter(
+                    date_monitoring_start__year__lte=self.year),
+                attrs={**ExtinctWebsitesView.TABLE_ATTRS,
+                       "pagination_id": "all"}),
+        ]

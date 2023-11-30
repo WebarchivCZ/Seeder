@@ -28,6 +28,9 @@
                 {% for format in export_formats %}
                 <li><a href="{% export_url format %}">.{{format}}</a></li>
                 {% endfor %}
+                {% if full_export_url %}
+                <li><a href="{% url full_export_url %}">Full XLSX</a></li>
+                {% endif %}
             </ul>
         </div>
         </h1>

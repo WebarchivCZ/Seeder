@@ -75,4 +75,11 @@ urlpatterns = [
     re_path(_('^embed_url$'),
             www.EmbedView.as_view(),
             name='embed'),
+
+    re_path(_('^mrtve-weby$'),
+            www.ExtinctWebsitesSummaryView.as_view(),
+            name='extinct_websites_summary'),
+    re_path(_('^mrtve-weby-historie/(?P<year>\d{4})$'),
+            www.ExtinctWebsitesHistoryView.as_view(),
+            name='extinct_websites_history'),
 ]

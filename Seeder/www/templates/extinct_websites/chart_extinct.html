@@ -1,0 +1,71 @@
+{% load i18n %}
+{% get_current_language as lang %}
+
+{% comment %} Necessary Chart.js imports {% endcomment %}
+<script type="text/javascript" cookie-consent="strictly-necessary" src="{{ STATIC_URL }}js/chart.js"></script>
+<script type="text/javascript" cookie-consent="strictly-necessary" src="{{ STATIC_URL }}js/moment.js"></script>
+<script type="text/javascript" cookie-consent="strictly-necessary" src="{{ STATIC_URL }}js/moment-cs.js"></script>
+<script type="text/javascript" cookie-consent="strictly-necessary" src="{{ STATIC_URL }}js/chartjs-adapter-moment.js"></script>
+<canvas id="extinctWebsitesChart"></canvas>
+<script>
+    
+    moment.locale('{{ lang }}');
+    const rawData = {{ chart_data|safe }};
+    const formattedData = rawData.map(entry => ({
+        x: entry.date,
+        y: entry.count
+    }));
+
+    const ctx = document.getElementById('extinctWebsitesChart').getContext('2d');
+    const chart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            datasets: [{
+                label: "{% trans 'Počet úmrtí webů k datu' %}",
+                data: formattedData,
+                backgroundColor: 'rgba(0, 0, 255, 0.8)'
+            }]
+        },
+        options: {
+            scales: {
+                x: {
+                    type: 'time',
+                    time: {
+                        unit: 'month',
+                        tooltipFormat: 'DD.MM.YYYY', // Format for the tooltip
+                        displayFormats: {
+                            month: 'MMM YYYY',
+                            day: 'DD.MM.YYYY',
+                        }
+                    },
+                    ticks:{
+                        maxTicksLimit: 20,
+                    },
+                    grid: {
+                        display: true,
+                        drawOnChartArea: false, // Only draw grid lines for the scale, not the full chart area
+                        drawBorder: true,
+                        drawTicks: true,
+                        tickLength: 10,
+                        lineWidth: 2,
+                        offset: false,
+                        color: "#999",
+                    }
+                },
+                y: {
+                    beginAtZero: true
+                }
+            },
+            plugins: {
+                tooltip: {
+                    callbacks: {
+                        title: function(context) {
+                            var date = context[0].parsed.x; // Get the date
+                            return moment(date).format('DD.MM.YYYY'); // Format the date
+                        }
+                    }
+                }
+            }
+        }
+    });
+</script>
