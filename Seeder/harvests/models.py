@@ -153,12 +153,14 @@ class HarvestAbstractModel(BaseModel):
             source__in=self.custom_sources.all())
         return set(seeds.values_list('url', flat=True)) - self.get_blacklisted()
 
-    def get_seeds(self, blacklisted=None):
+    def get_seeds(self, blacklisted=None, frozen_only=False):
         """
         :return: set of urls
         """
         if self.seeds_frozen and self.seeds_frozen != '':
             return set(self.seeds_frozen.splitlines())
+        if frozen_only:  # Prematurely return so seeds aren't computed
+            return set()
 
         seeds = set(
             chain(
@@ -314,7 +316,8 @@ class Harvest(HarvestAbstractModel):
                 scheduled_on__lt=self.scheduled_on,
                 status__in=Harvest.PREVIOUSLY_HARVESTED_STATES
             ):
-                seeds.update(h.get_seeds())
+                # Only retrieve frozen seeds, otherwise we're in recursive hell
+                seeds.update(h.get_seeds(frozen_only=True))
             self.previously_harvested = seeds
         return self.previously_harvested
 
@@ -414,7 +417,6 @@ class Harvest(HarvestAbstractModel):
         return {
             "idHarvest": self.pk,
             "dateGenerated": timezone.now().isoformat(),
-            # TODO: implement json freezing, still can be None though
             "dateFrozen": (self.date_frozen.isoformat()
                            if self.date_frozen else None),
             "plannedStart": self.scheduled_on.isoformat(),
@@ -499,9 +501,11 @@ class Harvest(HarvestAbstractModel):
         blacklisted = self.get_blacklisted()
         return seeds - blacklisted
 
-    def get_seeds(self, blacklisted=None):
+    def get_seeds(self, blacklisted=None, frozen_only=False):
         if self.seeds_frozen and self.seeds_frozen != '':
             return set(self.seeds_frozen.splitlines())
+        if frozen_only:  # Prematurely return so seeds aren't computed
+            return set()
 
         # Pre-compute blacklisted and pass down to TopicCollection functions
         if blacklisted is None:
@@ -533,8 +537,8 @@ class Harvest(HarvestAbstractModel):
         seeds = self.get_seeds()
         if len(seeds) > 0:
             self.seeds_frozen = '\n'.join(seeds)
-            self.json_frozen = json.dumps(self.get_json())
             self.date_frozen = timezone.now()
+            self.json_frozen = json.dumps(self.get_json())
             self.save()
             return True     # frozen correctly
         return False        # not frozen
@@ -641,11 +645,11 @@ class ExternalTopicCollection(BaseModel, OrderedModel):
         self.slug = unique_slug
         self.save()
 
-    def get_seeds(self, blacklisted=None):
+    def get_seeds(self, blacklisted=None, frozen_only=False):
         """ Get seeds from all internal collections """
         seeds = set()
         for internal in self.internal_collections.all():
-            seeds = seeds.union(internal.get_seeds())
+            seeds = seeds.union(internal.get_seeds(frozen_only=frozen_only))
         return seeds
 
     def get_www_url(self):
