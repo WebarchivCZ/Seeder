@@ -110,6 +110,9 @@ class ExtinctWebsite(BaseModel):
     """
     Representation of data from Extinct Websites, loaded over JSON API.
     """
+    # Constants
+    PER_PAGE = 2000
+
     # Redefined primary key so it's not auto-created by Django, instead will be
     # set to API value on each data load.
     id = models.IntegerField("ID", primary_key=True)
@@ -153,8 +156,7 @@ class ExtinctWebsite(BaseModel):
             return "✖"
 
     @classmethod
-    def load_new_data(cls):
-        PER_PAGE = 10000
+    def load_new_data(cls, per_page=PER_PAGE):
         entries = []
         total_entries = None
         page = 0
@@ -162,7 +164,7 @@ class ExtinctWebsite(BaseModel):
         while total_entries is None or len(entries) < total_entries:
             res = requests.get(settings.EXTINCT_WEBSITES_URL, params={
                 "type": "seeder",
-                "limit": PER_PAGE,
+                "limit": per_page,
                 "page": page,
             })
             res.raise_for_status()
@@ -171,7 +173,7 @@ class ExtinctWebsite(BaseModel):
             if total_entries is None:  # only set once on first request
                 total_entries = data["stats"]["sum"]
             # All entries should have already been loaded, prevent endless loop
-            if (page + 1) * PER_PAGE >= total_entries:
+            if (page + 1) * per_page >= total_entries:
                 break
             page += 1  # update page counter
         if len(entries) != total_entries:
@@ -222,15 +224,17 @@ class ExtinctWebsite(BaseModel):
                 dt = timezone.make_aware(dt, tz, True)
             return dt
 
+        date_extinct = parse_datetime(entry["extinct"]["date"])
         return cls(
             id=int(entry["id"]),
             uuid=entry.get("UUID", entry.get("uuid")),  # try both cases
             url=entry["url"],
             date_monitoring_start=parse_datetime(
                 entry["date_monitoring_start"]),
-            date_extinct=parse_datetime(entry["extinct"]["date"]),
+            date_extinct=date_extinct,
             status_code=status_code,
-            status_dead=parse_status_field(entry["status"]["dead"]),
+            status_dead=(parse_status_field(
+                entry["status"]["dead"]) or date_extinct is not None),
             status_confirmed=parse_status_field(entry["status"]["confirmed"]),
             status_requires=parse_status_field(entry["status"]["requires"]),
             status_metadata=parse_status_field(entry["status"]["metadata"]),
@@ -241,8 +245,8 @@ class ExtinctWebsite(BaseModel):
         )
 
     @classmethod
-    def reload_objects(cls):
-        entries = cls.load_new_data()
+    def reload_objects(cls, per_page=PER_PAGE):
+        entries = cls.load_new_data(per_page=per_page)
         new_objects = [cls.parse_json_entry(entry) for entry in entries]
         # Delete all current objects, bulk_create new ones
         cls.objects.all().delete()
