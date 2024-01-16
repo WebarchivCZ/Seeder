@@ -248,13 +248,14 @@ DEBUG_TOOLBAR_CONFIG = {
     'SHOW_TOOLBAR_CALLBACK': 'core.utils.show_toolbar',
 }
 
-
+# Log output from all CRON jobs to /var/log/cron.log
+CRON_LOG = ">> /var/log/cron.log 2>&1"
 CRONJOBS = [
-    ('1 * * * *', 'source.screenshots.take_screenshots'),
-    ('10 * * * *', 'voting.cron.revive_postponed_rounds'),
-    ('20 * * * *', 'contracts.cron.expire_contracts'),
-    ('30 * * * *', 'contracts.cron.send_emails'),
-    ('40 0 * * *', 'www.cron.reload_extinct_websites'),
+    ('1 * * * *', 'source.screenshots.take_screenshots', CRON_LOG),
+    ('10 * * * *', 'voting.cron.revive_postponed_rounds', CRON_LOG),
+    ('20 * * * *', 'contracts.cron.expire_contracts', CRON_LOG),
+    ('30 * * * *', 'contracts.cron.send_emails', CRON_LOG),
+    ('40 0 * * *', 'www.cron.reload_extinct_websites', CRON_LOG),
 ]
 
 # *     *     *   *    *        command to be executed

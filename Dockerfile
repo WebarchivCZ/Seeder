@@ -20,6 +20,9 @@ RUN apt-get update && apt-get install -y \
 ADD . /code
 WORKDIR /code
 
+# Create default log file for cron
+RUN touch /var/log/cron.log
+
 RUN pip3 install -r requirements.txt --upgrade
 
 RUN export DJANGO_SETTINGS_MODULE=settings.env \
