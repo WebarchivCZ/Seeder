@@ -770,6 +770,19 @@ class TopicCollection(HarvestAbstractModel):
             aggregationWithSameType=self.aggregation_with_same_type,
         )
 
+    def freeze_seeds(self, commit=True):
+        """
+        Freezes the seeds to preserve them for later use.
+        Don't save if commit == False
+        """
+        seeds = self.get_seeds()
+        if len(seeds) > 0:
+            self.seeds_frozen = '\n'.join(seeds)
+            if commit:
+                self.save()
+            return True     # frozen correctly
+        return False        # not frozen
+
     def backup_custom_seeds(self):
         """
         Save all current custom seeds to a text file under media/seeds/backup
@@ -873,3 +886,11 @@ def freeze_urls(sender, instance, **kwargs):
         instance.date_frozen = None
         instance.seeds_frozen = None
         instance.json_frozen = None
+
+@receiver(pre_save, sender=TopicCollection)
+def freeze_tc_urls(sender, instance, **kwargs):
+    """
+    Signal that freezes TopicCollection seeds on every save
+    """
+    # Avoid recursive save by not committing in pre_save
+    instance.freeze_seeds(commit=False)
