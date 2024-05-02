@@ -323,7 +323,7 @@ class Harvest(HarvestAbstractModel):
 
     def get_serials_frequency_json(self, frequency):
         # Disregard OneShot seeds, should be dealt with separately
-        if frequency == 0:
+        if str(frequency) == "0":
             return None
         seeds = set(Seed.objects.archiving().filter(
             source__frequency=frequency).values_list('url', flat=True))
@@ -440,8 +440,10 @@ class Harvest(HarvestAbstractModel):
     def get_seeds_by_frequency(self):
         if not self.target_frequency:
             return set()
+        # Ignore "0" frequency, oneshot dealt with separately
         seeds = Seed.objects.archiving().filter(
-            source__frequency__in=self.target_frequency)
+            source__frequency__in=self.target_frequency
+        ).exclude(source__frequency=0)
         blacklisted = self.get_blacklisted()
         return set(seeds.values_list('url', flat=True)) - blacklisted
 
