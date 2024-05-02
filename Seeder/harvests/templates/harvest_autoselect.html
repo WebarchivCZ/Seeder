@@ -1,4 +1,6 @@
 <script>
+    // Are we in an edit/add form?
+    const editing = `{{ editing }}`.toLowerCase() === "true";
     // Assign all relevant fields to constant variables
     {% if harvest_form %}
     // Harvest type
@@ -47,7 +49,10 @@
             combined.prop("checked", false);
         }
     }
-    function harvestTypeSelected(harvestType) {
+    /**
+    updateValues: if true, update values such as archive_it. Used for edit form.
+    */
+    function harvestTypeSelected(harvestType, updateValues) {
         // Reset things back to the default state – everything enabled, all sections shown
         function defaults() {
             $(".harvest_properties").prop("disabled", false);
@@ -59,7 +64,9 @@
         // Serials = check Archive-it, disable Test, hide sections 'topic_collections', 'topic_collection_frequency'
         if (harvestType == "serials") {
             defaults();
-            archive_it.prop("checked", true);
+            if (updateValues) {
+                archive_it.prop("checked", true);
+            }
             tests.prop("checked", false);
             tests.prop("disabled", true);
             autoSelectCombined()
@@ -94,9 +101,9 @@
             autoSelectCombined()
         } else console.warn("Unknown harvest type", harvestType)
     }
-    harvestTypeSelected(harvest_type.val()); // Set initially
+    harvestTypeSelected(harvest_type.val(), !editing); // Set initially, don't update values when editing
     harvest_type.on("change", (e) => {
-        harvestTypeSelected(e.currentTarget.value);
+        harvestTypeSelected(e.currentTarget.value, true);
     })
 
     // When Harvest Properties are un/checked, do stuff
