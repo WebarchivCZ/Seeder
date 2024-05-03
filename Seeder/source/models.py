@@ -19,6 +19,7 @@ from reversion import revisions
 from . import constants
 from contracts.constants import CREATIVE_COMMONS_TYPES
 from core.models import BaseModel, DatePickerField
+from core.utils import get_wayback_url
 from publishers.models import Publisher, ContactPerson
 from legacy_db.models import TransferRecord
 from search_blob.models import SearchModel, update_search
@@ -368,7 +369,7 @@ class Source(SearchModel, SlugOrCreateModel, BaseModel):
 
     @property
     def wayback_url(self):
-        return settings.WAYBACK_URL.format(url=self.url)
+        return get_wayback_url(self.url)
 
     @main_seed.setter
     def main_seed(self, value):
