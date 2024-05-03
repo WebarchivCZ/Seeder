@@ -12,6 +12,7 @@ from reversion import revisions
 from ckeditor.fields import RichTextField
 
 from core.models import BaseModel, DatePickerField
+from core.utils import get_wayback_url
 from source.models import Source
 
 
@@ -147,7 +148,7 @@ class ExtinctWebsite(BaseModel):
 
     @property
     def wayback_url(self):
-        return settings.WAYBACK_URL.format(url=self.url)
+        return get_wayback_url(self.url)
 
     def get_status_metadata_match_display(self):
         if self.status_metadata:

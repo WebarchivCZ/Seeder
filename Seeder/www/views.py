@@ -18,6 +18,7 @@ from django.core.paginator import EmptyPage
 from django.urls import reverse
 from django.conf import settings
 
+from core.utils import get_wayback_url
 from contracts.models import Contract
 from search_blob.models import Blob
 from settings.base import WAYBACK_URL
@@ -132,7 +133,7 @@ class TopicCollectionDetail(PaginatedView, DetailView):
             {
                 'name': urlparse(url).netloc,
                 'url': url,
-                'wayback_url': WAYBACK_URL.format(url=url)
+                'wayback_url': get_wayback_url(url)
             }
             for url in set(self.get_object().custom_seeds.splitlines())
         ]
@@ -397,7 +398,7 @@ class SearchRedirectView(View):
         )
 
         if re.match(regex_is_url, query.lower()):
-            redirect_url = settings.WAYBACK_URL.format(url=query)
+            redirect_url = get_wayback_url(query)
         else:
             redirect_url = reverse('www:search', kwargs={'query': query})
         return HttpResponseRedirect(redirect_url)
