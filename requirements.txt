@@ -45,7 +45,7 @@ Pillow==9.3.0
 psycopg2==2.7.3.1
 pycodestyle==2.5.0
 Pygments==2.15.0
-PyMySQL==1.0.2
+PyMySQL==1.1.1
 python-dateutil==2.8.1
 python-memcached==1.58
 pytz==2020.1
