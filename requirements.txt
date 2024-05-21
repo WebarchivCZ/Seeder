@@ -51,7 +51,7 @@ python-memcached==1.58
 pytz==2020.1
 PyYAML==5.4
 raven==6.10.0
-requests==2.31.0
+requests==2.32.0
 six==1.14.0
 snowballstemmer==2.0.0
 sorl-thumbnail==12.5.0
