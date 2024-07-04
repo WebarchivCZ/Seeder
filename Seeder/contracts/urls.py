@@ -3,6 +3,7 @@ from .views import *
 
 urlpatterns = [
     path('<int:pk>/detail', Detail.as_view(), name='detail'),
+    path('autocomplete', ContractAutocomplete.as_view(), name='autocomplete'),
     path('<int:pk>/create', Create.as_view(), name='create'),
     path('<int:pk>/assign', Assign.as_view(), name='assign'),
     path('<int:pk>/edit', Edit.as_view(), name='edit'),

@@ -7,7 +7,10 @@ from . import field_filters
 from . import constants
 
 from datetime import timedelta, date
+from dal import autocomplete
 
+from django.db.models.functions import Cast
+from django.db.models import CharField
 from django.views.generic import DetailView, FormView
 from django.utils.translation import ugettext_lazy as _
 from django.template.loader import render_to_string
@@ -29,6 +32,27 @@ class ContractView(LoginMixin):
 
 class Detail(ContractView, DetailView, CommentViewGeneric):
     template_name = 'contract.html'
+
+
+class ContractAutocomplete(autocomplete.Select2QuerySetView):
+
+    def get_queryset(self):
+        if not self.request.user.is_authenticated:
+            return models.Contract.objects.none()
+        # Annotate as strings so we can use icontains
+        qs = models.Contract.objects.all().annotate(
+            contract_number_s=Cast("contract_number", output_field=CharField()),
+            year_s=Cast("year", output_field=CharField())
+        ).order_by("contract_number", "year")
+        # Allow searching by "{contract_number} / {year}"
+        if self.q:
+            q_split = str(self.q or "").replace(" ", "").split("/")
+            if len(q_split) == 1:
+                qs = qs.filter(contract_number_s__icontains=q_split[0])
+            elif len(q_split) == 2:
+                qs = qs.filter(contract_number_s__icontains=q_split[0],
+                               year_s__icontains=q_split[1])
+        return qs
 
 
 class Create(LoginMixin, FormView, ObjectMixinFixed):
