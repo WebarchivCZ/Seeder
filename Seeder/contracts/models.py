@@ -107,6 +107,7 @@ class Contract(BaseModel):
 
     parent_contract = models.ForeignKey(
         'self',
+        verbose_name=_("Parent"),
         null=True,
         blank=True,
         on_delete=models.DO_NOTHING,
