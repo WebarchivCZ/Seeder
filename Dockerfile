@@ -4,6 +4,10 @@ FROM python:3.8.19
 RUN echo "deb http://archive.debian.org/debian/ stretch main\n\
 deb-src http://archive.debian.org/debian/ stretch main" > /etc/apt/sources.list
 
+# Fix missing keys for debian packages
+RUN mv -i /etc/apt/trusted.gpg.d/debian-archive-*.asc  /root/
+RUN ln -s /usr/share/keyrings/debian-archive-* /etc/apt/trusted.gpg.d/
+
 RUN apt-get update && apt-get install -y \
     libjpeg-dev \
     libpq-dev \
