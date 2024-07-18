@@ -135,7 +135,7 @@ class TopicCollectionDetail(PaginatedView, DetailView):
                 'url': url,
                 'wayback_url': get_wayback_url(url)
             }
-            for url in set(self.get_object().custom_seeds.splitlines())
+            for url in set(self.get_object().custom_seeds.split())
         ]
 
         page = self.get_page_num()
