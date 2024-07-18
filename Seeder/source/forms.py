@@ -95,6 +95,13 @@ class SourceEditForm(forms.ModelForm):
 
 
 class SeedEdit(forms.ModelForm):
+    def clean_url(self):
+        """ Ensure URL is stripped of whitespace even in older browsers """
+        url = self.cleaned_data["url"]
+        if isinstance(url, str):
+            url = url.strip()
+        return url
+
     class Meta:
         model = models.Seed
         exclude = ['source', 'active']
