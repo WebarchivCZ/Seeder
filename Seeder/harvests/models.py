@@ -69,7 +69,7 @@ class HarvestAbstractModel(BaseModel):
 
         return u'FRQ: {0}, custom seeds: {1}, custom sources: {2}'.format(
             self.get_target_frequency_display(),
-            len(self.custom_seeds.splitlines()),
+            len(self.custom_seeds.split()),
             self.custom_sources.count()
         )
 
@@ -118,7 +118,7 @@ class HarvestAbstractModel(BaseModel):
         ## Still takes a lot of time due to 'icontains'
         ## Potentially can return wrong things because of the 'icontains'
         query = Q()
-        for seed_url in self.custom_seeds.splitlines():
+        for seed_url in self.custom_seeds.split():
             query |= Q(seed__url__icontains=seed_url)
         sources = Source.objects.filter(
             query, seed__state=source_constants.SEED_STATE_INCLUDE)
@@ -146,7 +146,7 @@ class HarvestAbstractModel(BaseModel):
         if not self.custom_seeds:
             return set()
         # Unwanted tabs and newlines can appear when entering as text
-        return set(map(str.strip, self.custom_seeds.splitlines())) - set([""])
+        return set(self.custom_seeds.split()) - set([""])
 
     def get_custom_sources_seeds(self):
         seeds = Seed.objects.filter(
@@ -158,7 +158,7 @@ class HarvestAbstractModel(BaseModel):
         :return: set of urls
         """
         if self.seeds_frozen and self.seeds_frozen != '':
-            return set(self.seeds_frozen.splitlines())
+            return set(self.seeds_frozen.split())
         if frozen_only:  # Prematurely return so seeds aren't computed
             return set()
 
@@ -505,7 +505,7 @@ class Harvest(HarvestAbstractModel):
 
     def get_seeds(self, blacklisted=None, frozen_only=False):
         if self.seeds_frozen and self.seeds_frozen != '':
-            return set(self.seeds_frozen.splitlines())
+            return set(self.seeds_frozen.split())
         if frozen_only:  # Prematurely return so seeds aren't computed
             return set()
 

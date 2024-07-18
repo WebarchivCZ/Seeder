@@ -46,7 +46,7 @@ class Blacklist(BaseModel):
             blacklist_type=blacklist_type
         ).values_list('url_list', flat=True)
         # blacklist urls is now list of contents
-        urls_parsed = map(str.splitlines, blacklist_urls)
+        urls_parsed = map(str.split, blacklist_urls)
         return reduce(operator.add, urls_parsed, [])
 
     @classmethod
@@ -57,6 +57,6 @@ class Blacklist(BaseModel):
     @classmethod
     def dump(cls):
         blacklist_urls = cls.objects.all().values_list('url_list', flat=True)
-        urls_parsed = map(str.splitlines, blacklist_urls)
+        urls_parsed = map(str.split, blacklist_urls)
         # Remove duplicates
         return list(set(reduce(operator.add, urls_parsed, [])))
