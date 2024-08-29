@@ -1,8 +1,9 @@
 import time
 import re
 from datetime import date
-
+from dal import autocomplete
 import datetime
+from django.db.models import Q
 from django.urls import reverse
 from django.http import Http404
 from django.contrib import messages
@@ -547,6 +548,19 @@ class InternalCollectionHistory(InternalTCView, generic_views.HistoryView):
         History of changes to TopicCollections
     """
     pass
+
+
+class InternalCollectionAutocomplete(autocomplete.Select2QuerySetView):
+    def get_queryset(self):
+        if not self.request.user.is_authenticated:
+            return models.TopicCollection.objects.none()
+        qs = models.TopicCollection.objects.all()
+        if self.q:
+            qs = qs.filter(
+                Q(title__icontains=self.q) |
+                Q(collection_alias__icontains=self.q)
+            )
+        return qs.distinct()
 
 # ========================== #
 # External Topic Collections #
