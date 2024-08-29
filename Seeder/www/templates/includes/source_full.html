@@ -6,7 +6,7 @@
 <div class="item-visual">
 <div class="img-wrapper thumb">
     {% if source.screenshot_file_exists %}
-	    {% thumbnail source.screenshot "206x156" crop="center" as im %}
+	    {% thumbnail source.screenshot "660x500" crop="center" as im %}
 	        <img src="{{ im.url }}" class="aspect-ratio" width="{{ im.width }}" height="{{ im.height }}">
 	    {% endthumbnail %}
 	{% else %}
