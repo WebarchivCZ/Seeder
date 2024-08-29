@@ -21,6 +21,9 @@ class TopicCollectionAdmin(TranslationAdmin):
     form = TopicCollectionForm
     # prepopulated_fields = {"slug": ("title_cs",)}
 
+    def has_delete_permission(self, request, obj=None):
+        return request.user.is_superuser
+
 
 class ExternalTopicCollectionForm(forms.ModelForm):
     class Meta:
@@ -32,6 +35,9 @@ class ExternalTopicCollectionForm(forms.ModelForm):
 class ExternalTopicCollectionAdmin(TranslationAdmin):
     form = ExternalTopicCollectionForm
     list_display = ("order", "__str__")
+
+    def has_delete_permission(self, request, obj=None):
+        return request.user.is_superuser
 
 
 class HarvestConfigurationForm(forms.ModelForm):
