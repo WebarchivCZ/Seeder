@@ -225,6 +225,22 @@ class SeedAdd(SourceView, generic_views.ObjectMixinFixed, FormView):
 class SeedEdit(SourceView, generic_views.EditView):
     form_class = forms.SeedEdit
     model = models.Seed
+    template_name = "edit_seed.html"
+
+class SeedDelete(View, SourceView, ObjectMixinFixed):
+    model = models.Seed
+
+    def post(self, request, *args, **kwargs):
+        s = self.get_object()
+        redirect_url = s.get_absolute_url()
+        if not request.user.is_superuser:
+            self.add_message(
+                _("You dont have permission for deleting seeds"),
+                messages.ERROR)
+            return HttpResponseRedirect(redirect_url)
+        s.delete()
+        self.add_message(_('Seed deleted.'), messages.SUCCESS )
+        return HttpResponseRedirect(redirect_url)
 
 
 class History(SourceView, generic_views.HistoryView):

@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Seeder\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-11-28 16:13+0000\n"
+"POT-Creation-Date: 2024-08-29 10:04+0000\n"
 "PO-Revision-Date: 2018-04-16 13:40+0200\n"
 "Last-Translator: mariehaskovcova <marie.haskovcova@nkp.cz>, 2017\n"
 "Language-Team: Czech (https://www.transifex.com/webarchivecz/teams/43032/"
@@ -151,7 +151,7 @@ msgid "This comment has been removed"
 msgstr "Komentář byl odstraněn"
 
 #: comments/models.py:168 qa/models.py:40 qa/templates/detail.html:30
-#: source/models.py:254 source/models.py:534 source/templates/source.html:83
+#: source/models.py:255 source/models.py:535 source/templates/source.html:83
 #: templates/history.html:14
 msgid "Comment"
 msgstr "Komentář"
@@ -215,7 +215,7 @@ msgid "Narodni knihovna CR - archivace Vasich webovych stranek"
 msgstr "Narodni knihovna CR - archivace Vasich webovych stranek"
 
 #: contracts/models.py:55 contracts/templates/contract.html:21
-#: harvests/models.py:233 harvests/models.py:711 source/models.py:268
+#: harvests/models.py:235 harvests/models.py:717 source/models.py:269
 #: voting/models.py:27
 msgid "State"
 msgstr "Stav"
@@ -256,17 +256,21 @@ msgstr "Odpověděl vydavatel na emaily?"
 msgid "Description"
 msgstr "Popis"
 
-#: contracts/models.py:124
+#: contracts/models.py:110 contracts/templates/contract.html:59
+msgid "Parent"
+msgstr "Zdroj"
+
+#: contracts/models.py:125
 #, python-brace-format
 msgid "Contract in negotiation with {0}"
 msgstr "Smlouva v jednání s  {0}"
 
-#: contracts/models.py:134
+#: contracts/models.py:135
 #, python-brace-format
 msgid "Contract with {0}"
 msgstr "Smlouva s {0}"
 
-#: contracts/models.py:226
+#: contracts/models.py:227
 msgid "When to send this message"
 msgstr "Kdy chcete odeslat tuto zprávu?"
 
@@ -303,14 +307,10 @@ msgid "Creative commons"
 msgstr "Creative Commons"
 
 #: contracts/templates/contract.html:43 publishers/models.py:30
-#: source/constants.py:121 source/models.py:243 source/tables.py:10
+#: source/constants.py:121 source/models.py:244 source/tables.py:10
 #: source/templates/duplicity_check.html:20 source/templates/source.html:72
 msgid "Publisher"
 msgstr "Vydavatel"
-
-#: contracts/templates/contract.html:59
-msgid "Parent"
-msgstr "Zdroj"
 
 #: contracts/templates/contract.html:67
 msgid "Sub contracts"
@@ -349,15 +349,18 @@ msgid "Links"
 msgstr "Odkazy"
 
 #: contracts/templates/contract.html:118 contracts/templates/contract.html:136
+#: source/templates/edit_seed.html:9 source/templates/edit_seed.html:23
 msgid "Delete"
 msgstr "Smazat"
 
-#: contracts/templates/contract.html:131 source/templates/source.html:210
+#: contracts/templates/contract.html:131 source/templates/edit_seed.html:16
+#: source/templates/source.html:210
 msgid "Proceed with deletion?"
 msgstr "Pokračovat se smazáním?"
 
 #: contracts/templates/contract.html:140 harvests/templates/calendar.html:51
-#: source/templates/source.html:221 templates/base.html:204
+#: source/templates/edit_seed.html:28 source/templates/source.html:221
+#: templates/base.html:204
 msgid "Close"
 msgstr "Zavřít"
 
@@ -400,32 +403,32 @@ msgstr ""
 msgid "Send"
 msgstr "Odeslat"
 
-#: contracts/views.py:40
+#: contracts/views.py:64
 msgid "Add contract"
 msgstr "Přidat smlouvu"
 
-#: contracts/views.py:62
+#: contracts/views.py:86
 msgid "Assign contract"
 msgstr "Přiřadit smlouvu"
 
-#: contracts/views.py:96
+#: contracts/views.py:120
 msgid "Contract number assigned."
 msgstr "Smlouvě bylo přiřazeno číslo."
 
-#: contracts/views.py:110 source/templates/source.html:189
+#: contracts/views.py:134 source/templates/source.html:189
 #: templates/base.html:100
 msgid "Contracts"
 msgstr "Smlouvy"
 
-#: contracts/views.py:117
+#: contracts/views.py:141
 msgid "Schedule emails"
 msgstr "Naplánování e-mailů"
 
-#: contracts/views.py:183
+#: contracts/views.py:207
 msgid "Can't delete contract with number"
 msgstr "Nelze smazat smlouvu s číslem"
 
-#: contracts/views.py:191
+#: contracts/views.py:215
 msgid "Contract deleted."
 msgstr "Smlouva smazána"
 
@@ -556,198 +559,198 @@ msgstr ""
 "Sem vložte všechna semínka, po uložení zde zůstanou zdroje bez záznamu v "
 "Seederu, ostatní budu v poli Přiřazené zdroje"
 
-#: harvests/models.py:205
+#: harvests/models.py:207
 msgid "Planned"
 msgstr "Plánované"
 
-#: harvests/models.py:206
+#: harvests/models.py:208
 msgid "Ready to harvest"
 msgstr "Připraveno na sklízení"
 
-#: harvests/models.py:207 harvests/models.py:688
+#: harvests/models.py:209 harvests/models.py:694
 msgid "Running"
 msgstr "Probíhající"
 
-#: harvests/models.py:208
+#: harvests/models.py:210
 msgid "Success"
 msgstr "Úspěšné"
 
-#: harvests/models.py:209
+#: harvests/models.py:211
 msgid "Success with failures"
 msgstr "Úspěšné se závadami"
 
-#: harvests/models.py:210
+#: harvests/models.py:212
 msgid "Cancelled"
 msgstr "Zrušené"
 
-#: harvests/models.py:211
+#: harvests/models.py:213
 msgid "Failed"
 msgstr "Neúspěšné"
 
-#: harvests/models.py:235 harvests/models.py:820
+#: harvests/models.py:237 harvests/models.py:839
 #: harvests/templates/harvest.html:19 harvests/templates/harvest_config.html:18
 msgid "Harvest type"
 msgstr "Typ sklizně"
 
-#: harvests/models.py:237 harvests/models.py:597 harvests/models.py:715
+#: harvests/models.py:239 harvests/models.py:603 harvests/models.py:721
 #: harvests/tables.py:76 harvests/tables.py:93 www/tables.py:14
 msgid "title"
 msgstr "Název"
 
-#: harvests/models.py:239 harvests/templates/harvest.html:17
-#: source/models.py:255 source/templates/source.html:87
+#: harvests/models.py:241 harvests/templates/harvest.html:17
+#: source/models.py:256 source/templates/source.html:87
 msgid "Annotation"
 msgstr "Anotace"
 
-#: harvests/models.py:241 harvests/models.py:730
+#: harvests/models.py:243 harvests/models.py:736
 msgid "Date of harvest"
 msgstr "Datum sklizně"
 
-#: harvests/models.py:243
+#: harvests/models.py:245
 msgid "Seeds by frequency"
 msgstr "Semínka podle frekvence"
 
-#: harvests/models.py:255 harvests/templates/harvest.html:27
+#: harvests/models.py:257 harvests/templates/harvest.html:27
 msgid "Date frozen"
 msgstr "Datum zmrazení"
 
-#: harvests/models.py:260
+#: harvests/models.py:262
 msgid "Topic collections"
 msgstr "Tematické kolekce"
 
-#: harvests/models.py:265 harvests/templates/harvest.html:58
+#: harvests/models.py:267 harvests/templates/harvest.html:58
 msgid "Topic collections by frequency"
 msgstr "Tematické kolekce podle frekvence"
 
-#: harvests/models.py:273 harvests/templates/harvest.html:37
+#: harvests/models.py:275 harvests/templates/harvest.html:37
 msgid "Paraharvest"
 msgstr "Parasklizeň"
 
-#: harvests/models.py:276 harvests/templates/harvest.html:39
+#: harvests/models.py:278 harvests/templates/harvest.html:39
 msgid "Manuals"
 msgstr "Manuals"
 
-#: harvests/models.py:278 harvests/templates/harvest.html:51
+#: harvests/models.py:280 harvests/templates/harvest.html:51
 msgid "Combined"
 msgstr "Combined"
 
-#: harvests/models.py:280 harvests/views.py:383
+#: harvests/models.py:282 harvests/views.py:383
 msgid "ArchiveIt"
 msgstr "ArchiveIt"
 
-#: harvests/models.py:283 harvests/views.py:385
+#: harvests/models.py:285 harvests/views.py:385
 msgid "Tests"
 msgstr "Tests"
 
-#: harvests/models.py:287 harvests/models.py:822
+#: harvests/models.py:289 harvests/models.py:841
 #: harvests/templates/harvest.html:65 harvests/templates/harvest_config.html:20
 msgid "duration"
 msgstr "duration"
 
-#: harvests/models.py:289 harvests/models.py:824
+#: harvests/models.py:291 harvests/models.py:843
 #: harvests/templates/harvest.html:67 harvests/templates/harvest_config.html:22
 msgid "budget"
 msgstr "budget"
 
-#: harvests/models.py:291 harvests/models.py:826
+#: harvests/models.py:293 harvests/models.py:845
 #: harvests/templates/harvest.html:69 harvests/templates/harvest_config.html:24
 msgid "dataLimit"
 msgstr "dataLimit"
 
-#: harvests/models.py:293 harvests/models.py:828
+#: harvests/models.py:295 harvests/models.py:847
 #: harvests/templates/harvest.html:71 harvests/templates/harvest_config.html:26
 msgid "documentLimit"
 msgstr "documentLimit"
 
-#: harvests/models.py:295 harvests/models.py:830
+#: harvests/models.py:297 harvests/models.py:849
 #: harvests/templates/harvest.html:73 harvests/templates/harvest_config.html:28
 msgid "deduplication"
 msgstr "deduplication"
 
-#: harvests/models.py:299 harvests/templates/harvest.html:82
+#: harvests/models.py:301 harvests/templates/harvest.html:82
 msgid "Seeds not harvested"
 msgstr "Nesklizená semínka"
 
-#: harvests/models.py:601 harvests/models.py:718 source/constants.py:124
-#: source/models.py:239
+#: harvests/models.py:607 harvests/models.py:724 source/constants.py:124
+#: source/models.py:240
 msgid "Curator"
 msgstr "Kurátor"
 
-#: harvests/models.py:605 source/templates/source.html:91
+#: harvests/models.py:611 source/templates/source.html:91
 msgid "keywords"
 msgstr "Klíčová slova"
 
-#: harvests/models.py:608 harvests/models.py:735
+#: harvests/models.py:614 harvests/models.py:741
 msgid "annotation"
 msgstr "anotace"
 
-#: harvests/models.py:612
+#: harvests/models.py:618
 msgid "image"
 msgstr "obrázek"
 
-#: harvests/models.py:671 harvests/templates/topic_collection.html:13
+#: harvests/models.py:677 harvests/templates/topic_collection.html:13
 msgid "External Topic Collection"
 msgstr "Externí tematická kolekce"
 
-#: harvests/models.py:672 templates/base.html:110
+#: harvests/models.py:678 templates/base.html:110
 msgid "External Topic Collections"
 msgstr "Externí tematické kolekce"
 
-#: harvests/models.py:689
+#: harvests/models.py:695
 msgid "New"
 msgstr "Aktualita"
 
-#: harvests/models.py:690
+#: harvests/models.py:696
 msgid "Finished"
 msgstr "Hotovo"
 
-#: harvests/models.py:702 harvests/templates/topic_collection.html:49
-#: source/models.py:274 source/templates/source.html:56 templates/api.html:17
+#: harvests/models.py:708 harvests/templates/topic_collection.html:49
+#: source/models.py:275 source/templates/source.html:56 templates/api.html:17
 msgid "Frequency"
 msgstr "Frekvence"
 
-#: harvests/models.py:739
+#: harvests/models.py:745
 msgid "All sources are under open license or contract"
 msgstr "Všechny zdroje jsou nasmlouvány nebo vystaveny pod otevřenou licencí"
 
-#: harvests/models.py:742
+#: harvests/models.py:748
 msgid "Date from"
 msgstr "Od"
 
-#: harvests/models.py:743
+#: harvests/models.py:749
 msgid "Date to"
 msgstr "Do"
 
-#: harvests/models.py:747 harvests/templates/topic_collection.html:24
+#: harvests/models.py:753 harvests/templates/topic_collection.html:24
 msgid "Collection alias"
 msgstr "Alias kolekce"
 
-#: harvests/models.py:749 harvests/templates/topic_collection.html:82
+#: harvests/models.py:755 harvests/templates/topic_collection.html:82
 msgid "Aggregation with same type"
 msgstr "Agregovat se stejným typem"
 
-#: harvests/models.py:792
+#: harvests/models.py:811
 msgid "Internal Topic Collection"
 msgstr "Interní tematická kolekce"
 
-#: harvests/models.py:793 harvests/templates/external_topic_collection.html:82
+#: harvests/models.py:812 harvests/templates/external_topic_collection.html:82
 #: templates/base.html:113
 msgid "Internal Topic Collections"
 msgstr "Interní tematické kolekce"
 
-#: harvests/models.py:799
+#: harvests/models.py:818
 msgid "file"
 msgstr "pole"
 
-#: harvests/models.py:833
+#: harvests/models.py:852
 msgid "Harvest Configuration"
 msgstr "Konfigurace sklizní"
 
-#: harvests/models.py:834 harvests/views.py:398 templates/base.html:127
+#: harvests/models.py:853 harvests/views.py:398 templates/base.html:127
 msgid "Harvest Configurations"
 msgstr "Konfigurace sklizní"
 
-#: harvests/models.py:838
+#: harvests/models.py:857
 #, python-format
 msgid "Configuration for %(type)s Harvests"
 msgstr "Konfigurace pro %(type)s Sklizně"
@@ -811,7 +814,7 @@ msgstr "anotace (ČJ)"
 msgid "annotation [en]"
 msgstr "anotace (AJ)"
 
-#: harvests/templates/external_topic_collection.html:39 source/models.py:289
+#: harvests/templates/external_topic_collection.html:39 source/models.py:290
 #: source/templates/source.html:32
 msgid "Screenshot"
 msgstr "Screenshot"
@@ -942,7 +945,7 @@ msgid "All sources are open?"
 msgstr "Všechny zdroje jsou otevřené?"
 
 #: harvests/templates/topic_collection.html:94 qa/templates/qa_form.html:20
-#: source/models.py:563 source/templates/source.html:152
+#: source/models.py:564 source/templates/source.html:152
 msgid "Seeds"
 msgstr "Semínka"
 
@@ -987,8 +990,8 @@ msgstr "Nelze dekódovat soubor do UTF-8"
 #: harvests/views.py:499
 #, python-format
 msgid ""
-"Original custom_seeds have been backed to: <a href='%(url)s' target='_blank'>"
-"%(url)s</a>"
+"Original custom_seeds have been backed to: <a href='%(url)s' "
+"target='_blank'>%(url)s</a>"
 msgstr ""
 "Původní mimosystémová semínka byla zálohována do <a href='%(url)s' "
 "target='_blank'>%(url)s</a>"
@@ -1031,8 +1034,8 @@ msgid "Position"
 msgstr "Pozice"
 
 #: publishers/forms.py:57 publishers/models.py:24 publishers/models.py:57
-#: publishers/tables.py:9 source/models.py:253 source/tables.py:8
-#: www/models.py:81
+#: publishers/tables.py:9 source/models.py:254 source/tables.py:8
+#: www/models.py:82
 msgid "Name"
 msgstr "Jméno"
 
@@ -1080,8 +1083,8 @@ msgstr "Kontakty:"
 msgid "Edit contacts"
 msgstr "Editovat kontakty"
 
-#: publishers/templates/publisher.html:24 source/models.py:306
-#: source/views.py:238 templates/base.html:94
+#: publishers/templates/publisher.html:24 source/models.py:307
+#: source/views.py:254 templates/base.html:94
 msgid "Sources"
 msgstr "Zdroje"
 
@@ -1089,7 +1092,7 @@ msgstr "Zdroje"
 msgid "Add publisher"
 msgstr "Přidat vydavatele"
 
-#: qa/models.py:18 qa/templates/detail.html:13 source/models.py:305
+#: qa/models.py:18 qa/templates/detail.html:13 source/models.py:306
 msgid "Source"
 msgstr "Zdroj"
 
@@ -1281,79 +1284,79 @@ msgstr ""
 "Zdroje se stavem 'Archivován' a 'Archivován bez smlouvy' musí mít vybranou "
 "Frekvenci sklízení"
 
-#: source/models.py:258 source/templates/source.html:68
+#: source/models.py:259 source/templates/source.html:68
 msgid "Suggested by"
 msgstr "Navrženo"
 
-#: source/models.py:279 source/templates/source.html:98
+#: source/models.py:280 source/templates/source.html:98
 msgid "Category"
 msgstr "Kategorie"
 
-#: source/models.py:284 source/templates/source.html:102
+#: source/models.py:285 source/templates/source.html:102
 msgid "Sub category"
 msgstr "Podkategorie"
 
-#: source/models.py:296
+#: source/models.py:297
 msgid "Source is dead"
 msgstr "Mrtvý web"
 
-#: source/models.py:515
+#: source/models.py:516
 msgid "default"
 msgstr "výchozí"
 
-#: source/models.py:516
+#: source/models.py:517
 msgid "low"
 msgstr "low"
 
-#: source/models.py:517
+#: source/models.py:518
 msgid "very_low"
 msgstr "very low"
 
-#: source/models.py:528
+#: source/models.py:529
 msgid "Main seed"
 msgstr "Hlavní semínko"
 
-#: source/models.py:529
+#: source/models.py:530
 msgid "Seed url"
 msgstr "URL semínko"
 
-#: source/models.py:535
+#: source/models.py:536
 msgid "From"
 msgstr "Od"
 
-#: source/models.py:536
+#: source/models.py:537
 msgid "To"
 msgstr "Do"
 
-#: source/models.py:539
+#: source/models.py:540
 msgid "Javascript"
 msgstr "Javascript"
 
-#: source/models.py:540
+#: source/models.py:541
 msgid "Global reject"
 msgstr "Odmítnuto"
 
-#: source/models.py:541
+#: source/models.py:542
 msgid "Youtube"
 msgstr "Youtube"
 
-#: source/models.py:542
+#: source/models.py:543
 msgid "Calendars"
 msgstr "Kalendáře"
 
-#: source/models.py:543
+#: source/models.py:544
 msgid "Local traps"
 msgstr "Local traps"
 
-#: source/models.py:544
+#: source/models.py:545
 msgid "Redirect on seed"
 msgstr "Přesměrováno na semínko"
 
-#: source/models.py:545
+#: source/models.py:546
 msgid "Robots.txt active"
 msgstr "aktivní Robots.txt"
 
-#: source/models.py:562
+#: source/models.py:563
 msgid "Seed"
 msgstr "Semínko"
 
@@ -1369,13 +1372,17 @@ msgstr "Možné duplicity"
 msgid "Sorry, we could not find any duplicities"
 msgstr "Duplicity nenalezeny"
 
+#: source/templates/edit_seed.html:19
+msgid "If you proceed the seed will be deleted forever."
+msgstr "Pokud budete pokračovat, semínko bude navždy smazáno."
+
 #: source/templates/source.html:41
 msgid ""
 "There is a screenshot associated with this source but the file does not "
 "exist."
 msgstr "K tomuto zdroji je přiřazen screenshot, ale jeho soubor neexistuje"
 
-#: source/templates/source.html:48 www/models.py:127
+#: source/templates/source.html:48 www/models.py:131
 msgid "Dead"
 msgstr "Mrtvý"
 
@@ -1467,6 +1474,14 @@ msgstr "Zdroj byl deaktivován, možná se stále zobrazí ve vyhledávání."
 msgid "Add seed"
 msgstr "Přidat semínko"
 
+#: source/views.py:238
+msgid "You dont have permission for deleting seeds"
+msgstr "Nemáte dostatečná práva pro mazání semínek"
+
+#: source/views.py:242
+msgid "Seed deleted."
+msgstr "Semínko smazáno."
+
 #: templates/api.html:6
 msgid ""
 "\n"
@@ -1557,6 +1572,14 @@ msgstr "Zapnout Wayback Údržbu"
 #: templates/base.html:186
 msgid "Do you really want to change the Wayback Maintenance status?"
 msgstr "Opravdu chcete změnit status Wayback Údržby?"
+
+#: templates/bootstrap4_table.html:66
+msgid "previous"
+msgstr "předchozí"
+
+#: templates/bootstrap4_table.html:86
+msgid "next"
+msgstr "další"
 
 #: templates/bootstrap_comments_threaded.html:13
 msgid "Respond"
@@ -1827,95 +1850,95 @@ msgstr "Hodnocení odloženo"
 msgid "Nelze nyní vyhledávat..."
 msgstr "Nelze nyní vyhledávat..."
 
-#: www/models.py:26
+#: www/models.py:27
 msgid "First source"
 msgstr "První zdroj"
 
-#: www/models.py:34
+#: www/models.py:35
 msgid "second source"
 msgstr "druhý zdroj"
 
-#: www/models.py:41
+#: www/models.py:42
 msgid "annotation for first source"
 msgstr "anotace pro první zdroj"
 
-#: www/models.py:48
+#: www/models.py:49
 msgid "annotation for second source"
 msgstr "anotace pro druhý zdroj"
 
-#: www/models.py:74
+#: www/models.py:75
 msgid "News article"
 msgstr "Aktualita"
 
-#: www/models.py:75
+#: www/models.py:76
 msgid "News articles"
 msgstr "Aktuality"
 
-#: www/models.py:79
+#: www/models.py:80
 msgid "URL"
 msgstr "URL"
 
-#: www/models.py:80
+#: www/models.py:81
 msgid "Contact email"
 msgstr "Kontaktní e-mail"
 
-#: www/models.py:84
+#: www/models.py:85
 msgid "Licensed under creative commons"
 msgstr "Vystaveno pod licencí Creative Commons"
 
-#: www/models.py:88
+#: www/models.py:89
 msgid "Note"
 msgstr "Poznámka"
 
-#: www/models.py:92
+#: www/models.py:93
 msgid "Nomination"
 msgstr "Návrh"
 
-#: www/models.py:93
+#: www/models.py:94
 msgid "Nominations"
 msgstr "Návrhy"
 
-#: www/models.py:120
+#: www/models.py:124
 msgid "Date started monitoring"
 msgstr "Web monitorujeme od"
 
-#: www/models.py:122
+#: www/models.py:126
 msgid "Date extinct"
 msgstr "Datum zjištěného úmrtí"
 
-#: www/models.py:124
+#: www/models.py:128
 msgid "Status code"
 msgstr "Stavový kód"
 
-#: www/models.py:129
+#: www/models.py:133
 msgid "Confirmed dead"
 msgstr "Potvrzeno mrtvý"
 
-#: www/models.py:131
+#: www/models.py:135
 msgid "Requires confirmation"
 msgstr "Vyžaduje potvrzení"
 
-#: www/models.py:133
+#: www/models.py:137
 msgid "Contains metadata"
 msgstr "Obsahuje metadata"
 
-#: www/models.py:135
+#: www/models.py:139
 msgid "Death index"
 msgstr "Index mrtvosti"
 
-#: www/models.py:137
+#: www/models.py:141
 msgid "Contains whois"
 msgstr "Obsahuje whois"
 
-#: www/models.py:139
+#: www/models.py:143
 msgid "Datum poslední kontroly"
 msgstr "Datum poslední kontroly"
 
-#: www/models.py:142
+#: www/models.py:146
 msgid "Extinct Website"
 msgstr "Extinct Website"
 
-#: www/models.py:143
+#: www/models.py:147
 msgid "Extinct Websites"
 msgstr "Extinct Websites"
 
@@ -1958,11 +1981,22 @@ msgstr "Mrtvé weby za rok %(year)s"
 msgid "aktualizováno"
 msgstr "aktualizováno"
 
-#: www/templates/extinct_websites/history.html:15
+#: www/templates/extinct_websites/history.html:16
 msgid "Všechny mrtvé weby tento rok"
 msgstr "Všechny mrtvé weby tento rok"
 
 #: www/templates/extinct_websites/history.html:18
+#: www/templates/extinct_websites/history.html:20
+#: www/templates/extinct_websites/history.html:27
+#: www/templates/extinct_websites/history.html:29
+#: www/templates/extinct_websites/summary.html:33
+#: www/templates/extinct_websites/summary.html:35
+#: www/templates/extinct_websites/summary.html:42
+#: www/templates/extinct_websites/summary.html:44
+msgid "Stáhnout"
+msgstr "Stáhnout"
+
+#: www/templates/extinct_websites/history.html:25
 msgid "Všechny weby trackované tento rok"
 msgstr "Všechny weby trackované tento rok"
 
@@ -1977,29 +2011,31 @@ msgstr "Databáze mrtvých webových zdrojů"
 #: www/templates/extinct_websites/summary.html:14
 #, python-format
 msgid ""
-"Web je mimořádně dynamické a efemérní médium. Z mezinárodních <a href="
-"\"https://ahrefs.com/blog/link-rot-study/\" target=\"_blank\">studií</a> "
-"vyplývá, že za dobu deseti let zanikne více jak 50 %% sledovaných webů. "
+"Web je mimořádně dynamické a efemérní médium. Z mezinárodních <a "
+"href=\"https://ahrefs.com/blog/link-rot-study/\" target=\"_blank\">studií</"
+"a> vyplývá, že za dobu deseti let zanikne více jak 50 %% sledovaných webů. "
 "Zpráva o mrtvých webech je aktivitou Webarchivu, která by měla přispět k "
 "přehledu o tuzemské webové krajině. Data sbíráme pomocí naší aplikace <a "
-"href=\"https://github.com/WebarchivCZ/extinct-websites\" target=\"_blank"
-"\">Extinct Webstites</a>, kde jsou podrobněji popsané zkoumané parametry. "
-"Jako vzorek nám slouží katalogizovaný <a href=\"https://www.webarchiv.cz/cs/"
-"katalog-stranek\" target=\"_blank\">korpus</a> bohemikálních webových "
-"zdrojů, který je rozšiřován o další zdroje. Definování pojmu „mrtvý webový "
-"zdroj“ je důležitou součástí probíhajícího výzkumu."
+"href=\"https://github.com/WebarchivCZ/extinct-websites\" "
+"target=\"_blank\">Extinct Webstites</a>, kde jsou podrobněji popsané "
+"zkoumané parametry. Jako vzorek nám slouží katalogizovaný <a href=\"https://"
+"www.webarchiv.cz/cs/katalog-stranek\" target=\"_blank\">korpus</a> "
+"bohemikálních webových zdrojů, který je rozšiřován o další zdroje. "
+"Definování pojmu „mrtvý webový zdroj“ je důležitou součástí probíhajícího "
+"výzkumu."
 msgstr ""
-"Web je mimořádně dynamické a efemérní médium. Z mezinárodních <a href="
-"\"https://ahrefs.com/blog/link-rot-study/\" target=\"_blank\">studií</a> "
-"vyplývá, že za dobu deseti let zanikne více jak 50 %% sledovaných webů. "
+"Web je mimořádně dynamické a efemérní médium. Z mezinárodních <a "
+"href=\"https://ahrefs.com/blog/link-rot-study/\" target=\"_blank\">studií</"
+"a> vyplývá, že za dobu deseti let zanikne více jak 50 %% sledovaných webů. "
 "Zpráva o mrtvých webech je aktivitou Webarchivu, která by měla přispět k "
 "přehledu o tuzemské webové krajině. Data sbíráme pomocí naší aplikace <a "
-"href=\"https://github.com/WebarchivCZ/extinct-websites\" target=\"_blank"
-"\">Extinct Webstites</a>, kde jsou podrobněji popsané zkoumané parametry. "
-"Jako vzorek nám slouží katalogizovaný <a href=\"https://www.webarchiv.cz/cs/"
-"katalog-stranek\" target=\"_blank\">korpus</a> bohemikálních webových "
-"zdrojů, který je rozšiřován o další zdroje. Definování pojmu „mrtvý webový "
-"zdroj“ je důležitou součástí probíhajícího výzkumu."
+"href=\"https://github.com/WebarchivCZ/extinct-websites\" "
+"target=\"_blank\">Extinct Webstites</a>, kde jsou podrobněji popsané "
+"zkoumané parametry. Jako vzorek nám slouží katalogizovaný <a href=\"https://"
+"www.webarchiv.cz/cs/katalog-stranek\" target=\"_blank\">korpus</a> "
+"bohemikálních webových zdrojů, který je rozšiřován o další zdroje. "
+"Definování pojmu „mrtvý webový zdroj“ je důležitou součástí probíhajícího "
+"výzkumu."
 
 #: www/templates/extinct_websites/summary.html:18
 #, python-format
@@ -2015,13 +2051,6 @@ msgstr ""
 #: www/templates/extinct_websites/summary.html:31
 msgid "Všechny aktuálně mrtvé weby"
 msgstr "Všechny aktuálně mrtvé weby"
-
-#: www/templates/extinct_websites/summary.html:33
-#: www/templates/extinct_websites/summary.html:35
-#: www/templates/extinct_websites/summary.html:42
-#: www/templates/extinct_websites/summary.html:44
-msgid "Stáhnout"
-msgstr "Stáhnout"
 
 #: www/templates/extinct_websites/summary.html:40
 msgid "Všechny aktuálně trackované weby"
@@ -2206,17 +2235,17 @@ msgstr "^mrtve-weby$"
 msgid "^mrtve-weby-historie/(?P<year>\\d{4})$"
 msgstr "^mrtve-weby-historie/(?P<year>\\d{4})$"
 
-#: www/views.py:477
+#: www/views.py:478
 #, python-format
 msgid "Webarchiv.cz - archivace vasich webovych stranek %(url)s"
 msgstr "Webarchiv.cz - archivace Vašich webových stránek %(url)s"
 
-#: www/views.py:481
+#: www/views.py:482
 #, python-format
 msgid "Webarchiv.cz - archivace webovych stranek %(url)s"
 msgstr "Webarchiv.cz - archivace webových stránek %(url)s"
 
-#: www/views.py:503
+#: www/views.py:504
 #, python-format
 msgid "New nomination %(url)s"
 msgstr "Nový návrh %(url)s"
