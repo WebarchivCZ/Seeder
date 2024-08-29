@@ -455,7 +455,12 @@ class InternalCollectionAdd(InternalTCView, FormView):
     title = _('Add TopicCollection')
 
     def form_valid(self, form):
-        topic = form.save()
+        # Do this monstrosity to actually freeze custom sources on TC creation
+        topic = form.save(commit=False)
+        topic.save()
+        form.save_m2m()
+        topic._saved_once_ = False
+        topic.save()
         topic.pair_custom_seeds()
 
         for each in form.cleaned_data["attachments"]:

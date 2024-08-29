@@ -894,5 +894,10 @@ def freeze_tc_urls(sender, instance, **kwargs):
     """
     Signal that freezes TopicCollection seeds on every save
     """
-    # Avoid recursive save by not committing in pre_save
-    instance.freeze_seeds(commit=False)
+    # In order to freeze seeds, the TC must have an ID, so it needs to be saved
+    if not getattr(instance, '_saved_once_', False):
+        instance._saved_once_ = True
+        instance.save()
+        # Avoid recursive save by not committing in pre_save
+        instance.seeds_frozen = "" # delete so they're recomputed
+        instance.freeze_seeds(commit=False)
