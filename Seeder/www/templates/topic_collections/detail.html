@@ -22,7 +22,7 @@
                 {% if collection.image_file_exists %}
                 <div class="item-visual">
                     <div class="img-wrapper thumb">
-                        {% thumbnail collection.image "206x156" crop="center" as im %}
+                        {% thumbnail collection.image "660x500" crop="center" as im %}
                         <img src="{{ im.url }}" class="aspect-ratio" width="{{ im.width }}" height="{{ im.height }}">
                         {% endthumbnail %}
                     </div>
