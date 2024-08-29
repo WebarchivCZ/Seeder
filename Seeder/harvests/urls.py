@@ -35,6 +35,9 @@ internal_collections_urlpatterns = [
          name='internal_collection_urls'),
     path('<int:pk>/history', InternalCollectionHistory.as_view(),
          name='internal_collection_history'),
+    path('internal_collection_autocomplete',
+         InternalCollectionAutocomplete.as_view(),
+         name="internal_collection_autocomplete")
 ]
 
 # External Topic Collections

@@ -32,6 +32,9 @@ harvest_widgets = {
     "custom_sources": autocomplete.ModelSelect2Multiple(
         url="source:source_autocomplete"
     ),
+    "topic_collections": autocomplete.ModelSelect2Multiple(
+        url="harvests:internal_collection_autocomplete",
+    ),
     **custom_seeds_widget,
 }
 
