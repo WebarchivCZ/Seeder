@@ -8,6 +8,7 @@ urlpatterns = [
     path('<int:pk>/delete', DeleteView.as_view(), name='delete'),
     path('add_seed/<int:pk>', SeedAdd.as_view(), name='add_seed'),
     path('seed/<int:pk>', SeedEdit.as_view(), name='seed_edit'),
+    path('seed/<int:pk>/delete', SeedDelete.as_view(), name='seed_delete'),
     path('history/<int:pk>', History.as_view(), name='history'),
     path('list', SourceList.as_view(), name='list'),
     path('export', SourceExportAll.as_view(), name='export'),
