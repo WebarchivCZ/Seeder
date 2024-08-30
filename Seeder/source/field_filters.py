@@ -78,4 +78,5 @@ class SourceFilter(BaseFilterSet):
             'dead_source': ('exact',),
             'created': ('exact',),
             'last_changed': ('exact',),
+            'issn': ('contains',),
         }
