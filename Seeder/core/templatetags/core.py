@@ -1,6 +1,7 @@
 from django import template
 from django.conf import settings
 from django.utils.html import format_html
+from core.models import SiteConfiguration
 
 register = template.Library()
 
@@ -32,3 +33,11 @@ def user_in_group(user, group):
     ''' Check the provided user belongs to the provided group; all lowered '''
     return (str.lower(group)
             in map(str.lower, user.groups.values_list("name", flat=True)))
+
+@register.simple_tag
+def config(key):
+    """
+    Retrieve a saved constant - returns a default/None if key doesn't exist
+    """
+    config = SiteConfiguration.get_solo()
+    return getattr(config, key)

@@ -1,5 +1,5 @@
-{% load bootstrap3 i18n raven core static json_constants %}
-{% json_constant "wayback_maintenance" as wayback_maintenance%}
+{% load bootstrap3 i18n raven core static %}
+{% config "wayback_maintenance" as wayback_maintenance%}
 <!DOCTYPE html>
 <html lang="{{ LANGUAGE_CODE }}" data-date-format="{{ js_format }}">
 <head>
@@ -138,8 +138,8 @@
                     <a href="{% url 'search:list' %}">{% trans 'Search logs' %}</a>
                 </li>
                 {% if user.is_superuser %}
-                <li id="json_constants">
-                    <a href="{% url 'core:json_constants' %}">{% trans 'Constants' %}</a>
+                <li id="site_configuration">
+                    <a href="{% url 'core:site_configuration' %}">{% trans 'Site Configuration' %}</a>
                 </li>
                 {% endif %}
 

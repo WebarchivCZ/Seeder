@@ -4,7 +4,7 @@ from django.utils.translation import gettext as _
 
 from dal import autocomplete
 from . import models
-from core.json_constants import get_constant
+from core.models import SiteConfiguration
 
 
 class BigSearchForm(forms.Form):
@@ -14,7 +14,7 @@ class BigSearchForm(forms.Form):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         # If wayback maintenance is on, disable the search box
-        maintenance = get_constant("wayback_maintenance") or False
+        maintenance = SiteConfiguration.get_solo().wayback_maintenance or False
         self.fields["query"].disabled = maintenance
         if maintenance:
             self.fields["query"].widget.attrs["placeholder"] = _(

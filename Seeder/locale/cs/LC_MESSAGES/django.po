@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Seeder\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-08-29 10:04+0000\n"
+"POT-Creation-Date: 2024-08-30 09:19+0000\n"
 "PO-Revision-Date: 2018-04-16 13:40+0200\n"
 "Last-Translator: mariehaskovcova <marie.haskovcova@nkp.cz>, 2017\n"
 "Language-Team: Czech (https://www.transifex.com/webarchivecz/teams/43032/"
@@ -358,7 +358,7 @@ msgstr "Smazat"
 msgid "Proceed with deletion?"
 msgstr "Pokračovat se smazáním?"
 
-#: contracts/templates/contract.html:140 harvests/templates/calendar.html:51
+#: contracts/templates/contract.html:140 harvests/templates/calendar.html:50
 #: source/templates/edit_seed.html:28 source/templates/source.html:221
 #: templates/base.html:204
 msgid "Close"
@@ -468,7 +468,7 @@ msgstr "Rozpracovaná kontrola kvality"
 msgid "Sources needing QA"
 msgstr "Zdroje ke kontrole"
 
-#: core/forms.py:22
+#: core/forms.py:21
 msgid "Check this to delete this object"
 msgstr "Potvrďte pro odstranění"
 
@@ -485,39 +485,40 @@ msgstr "Akce {0} nepovolena."
 msgid "Changes successfully saved."
 msgstr "Změny uloženy."
 
-#: core/views.py:20 templates/base.html:88 templates/card_detail.html:9
+#: core/models.py:65 core/models.py:68 core/views.py:133
+#: templates/base.html:142
+msgid "Site Configuration"
+msgstr "Konfigurace Webu"
+
+#: core/views.py:17 templates/base.html:88 templates/card_detail.html:9
 msgid "Dashboard"
 msgstr "Hlavní stránka"
 
-#: core/views.py:77
+#: core/views.py:74
 msgid "Change user information"
 msgstr "Změnit uživatelské informace"
 
-#: core/views.py:85
+#: core/views.py:82
 msgid "Profile changed."
 msgstr "Profil změněn."
 
-#: core/views.py:95
+#: core/views.py:92
 msgid "Password changed successfully."
 msgstr "Heslo bylo úspěšně změněno."
 
-#: core/views.py:132 templates/base.html:142
-msgid "Constants"
-msgstr "Konstanty"
+#: core/views.py:137
+msgid "Site Configuration successfully updated"
+msgstr "Konfigurace Webu byla úspěšně aktualizována"
 
-#: core/views.py:138
-msgid "Constants successfully updated"
-msgstr "Konstanty byly úspěšně změněny"
-
-#: core/views.py:152
+#: core/views.py:154
 msgid "Wayback maintenance turned OFF"
 msgstr "Údržba Wayback byla vypnuta"
 
-#: core/views.py:155
+#: core/views.py:157
 msgid "Wayback maintenance turned ON"
 msgstr "Údržba Wayback byla zapnuta"
 
-#: harvests/admin.py:54 harvests/forms.py:57 harvests/forms.py:141
+#: harvests/admin.py:60 harvests/forms.py:60 harvests/forms.py:144
 msgid "dataLimit cannot be over 1TB"
 msgstr "dataLimit nesmí být přes 1TB"
 
@@ -525,7 +526,7 @@ msgstr "dataLimit nesmí být přes 1TB"
 msgid "One URL per line"
 msgstr "Jedna URL na řádku"
 
-#: harvests/forms.py:204
+#: harvests/forms.py:207
 msgid ""
 "Provide a text file with one seed per line which will overwrite all "
 "custom_seeds. The original custom_seeds will be backed up to the media/seeds/"
@@ -535,7 +536,7 @@ msgstr ""
 "mimosystémová semínka. Původní semínka budou zálohována do media/seeds/"
 "backup složky."
 
-#: harvests/forms.py:225
+#: harvests/forms.py:228
 msgid ""
 "Custom seeds field is disabled because there are too many seeds to be "
 "displayed in an HTML text field."
@@ -634,11 +635,11 @@ msgstr "Manuals"
 msgid "Combined"
 msgstr "Combined"
 
-#: harvests/models.py:282 harvests/views.py:383
+#: harvests/models.py:282 harvests/views.py:384
 msgid "ArchiveIt"
 msgstr "ArchiveIt"
 
-#: harvests/models.py:285 harvests/views.py:385
+#: harvests/models.py:285 harvests/views.py:386
 msgid "Tests"
 msgstr "Tests"
 
@@ -746,7 +747,7 @@ msgstr "pole"
 msgid "Harvest Configuration"
 msgstr "Konfigurace sklizní"
 
-#: harvests/models.py:853 harvests/views.py:398 templates/base.html:127
+#: harvests/models.py:853 harvests/views.py:399 templates/base.html:127
 msgid "Harvest Configurations"
 msgstr "Konfigurace sklizní"
 
@@ -949,45 +950,45 @@ msgstr "Všechny zdroje jsou otevřené?"
 msgid "Seeds"
 msgstr "Semínka"
 
-#: harvests/views.py:58 templates/base.html:122
+#: harvests/views.py:59 templates/base.html:122
 msgid "Harvests"
 msgstr "Sklizně"
 
-#: harvests/views.py:113 harvests/views.py:131
+#: harvests/views.py:114 harvests/views.py:132
 msgid "Harvest contains no seeds!"
 msgstr ""
 "Sklizeň neobsahuje žádná semínka! Tím pádem nemůže být zmrazena (stav "
 "nastaven na 'Připraveno na sklízení')"
 
-#: harvests/views.py:353 harvests/views.py:372
+#: harvests/views.py:354 harvests/views.py:373
 msgid "Available URLs for date"
 msgstr "Seznam URL pro datum"
 
-#: harvests/views.py:357
+#: harvests/views.py:358
 msgid "All seeds for Harvest"
 msgstr "Všechna semínka pro sklizeň"
 
-#: harvests/views.py:384
+#: harvests/views.py:385
 msgid "VNC"
 msgstr "VNC: Výběrové custom"
 
-#: harvests/views.py:386
+#: harvests/views.py:387
 msgid "Totals"
 msgstr "Totals: Všechna semínka"
 
-#: harvests/views.py:445
+#: harvests/views.py:446
 msgid "TopicCollections"
 msgstr "Tematické kolekce"
 
-#: harvests/views.py:455
+#: harvests/views.py:456
 msgid "Add TopicCollection"
 msgstr "Přidat tematickou kolekci"
 
-#: harvests/views.py:497
+#: harvests/views.py:503
 msgid "Cannot decode file to UTF-8"
 msgstr "Nelze dekódovat soubor do UTF-8"
 
-#: harvests/views.py:499
+#: harvests/views.py:505
 #, python-format
 msgid ""
 "Original custom_seeds have been backed to: <a href='%(url)s' "
@@ -996,27 +997,27 @@ msgstr ""
 "Původní mimosystémová semínka byla zálohována do <a href='%(url)s' "
 "target='_blank'>%(url)s</a>"
 
-#: harvests/views.py:503
+#: harvests/views.py:509
 msgid "Uploaded custom seeds will not be paired automatically"
 msgstr "Nahraná mimosystémová semínka nebudou automaticky párována"
 
-#: harvests/views.py:558
+#: harvests/views.py:577
 msgid "ExternalTopicCollections"
 msgstr "Externí tematické kolekce"
 
-#: harvests/views.py:568
+#: harvests/views.py:587
 msgid "Add ExternalTopicCollection"
 msgstr "Přidat Externí tematickou kolekci"
 
-#: harvests/views.py:652
+#: harvests/views.py:671
 msgid "Topic collection published"
 msgstr "Tematická kolekce publikována"
 
-#: harvests/views.py:654
+#: harvests/views.py:673
 msgid "Topic collection unpublished"
 msgstr "Tematická kolekce nepublikována"
 
-#: harvests/views.py:668
+#: harvests/views.py:687
 msgid "URL slug successfully updated"
 msgstr "URL byla úspěšné změněna"
 
