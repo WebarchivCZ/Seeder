@@ -10,8 +10,8 @@ class NewsTable(tables.Table):
     created = NaturalDatetimeColumn()
     last_changed = NaturalDatetimeColumn()
     title = AbsoluteURLColumn(
-        accessor='__str__',
-        verbose_name=_('title')
+        verbose_name=_('title'),
+        text=lambda record: str(record), # str() has checkmark
     )
 
     class Meta:
