@@ -1,6 +1,6 @@
-{% load i18n raven core json_constants %}
+{% load i18n raven core %}
 {% get_current_language as lang %}
-{% json_constant "wayback_maintenance" as wayback_maintenance%}
+{% config "wayback_maintenance" as wayback_maintenance%}
 <!DOCTYPE html>
 <html lang="{{ lang }}">
 
@@ -110,9 +110,9 @@
     <section id="error">
         <div class="container" style="padding: 40px 0 40px 0;">
             {% if lang == "cs" %}
-                {% json_constant "wayback_maintenance_text_cs" as text %}
+                {% config "wayback_maintenance_text_cs" as text %}
             {% else %}
-                {% json_constant "wayback_maintenance_text_en" as text %}
+                {% config "wayback_maintenance_text_en" as text %}
             {% endif %}
             {{ text|safe }}
         </div>
