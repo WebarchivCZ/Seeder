@@ -10,8 +10,8 @@ urlpatterns = [
     path('profile', UserProfileEdit.as_view(), name='user_edit'),
     path('crash_test', CrashTestView.as_view(), name='crash_test'),
     path('dev', DevNotesView.as_view(), name='dev_notes'),
-    path('json_constants', EditJsonConstantsView.as_view(),
-         name='json_constants'),
+    path('site_configuration', EditSiteConfigurationView.as_view(),
+         name='site_configuration'),
     path('toggle-wayback-maintenance', ToggleWaybackMaintenanceView.as_view(),
          name='toggle_wayback_maintenance'),
 ]

@@ -482,9 +482,8 @@ class Harvest(HarvestAbstractModel):
     def get_archiveit_seeds(self):
         if not self.archive_it:
             return set()
-        # Get all potential ArchiveIt seeds
-        archiveit = Seed.objects.archiving().filter(
-            source__frequency__in=[1, 2, 4, 6])
+        # Get all potential ArchiveIt seeds across all source frequencies
+        archiveit = Seed.objects.archiving()
         archiveit = set(archiveit.values_list('url', flat=True))
         # Get all harvested seeds up to this Harvest's scheduled date
         previously_harvested = self.get_previously_harvested()
