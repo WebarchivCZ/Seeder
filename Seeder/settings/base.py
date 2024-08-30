@@ -90,8 +90,8 @@ INSTALLED_APPS = (
     'rest_framework.authtoken',
     'captcha',
     'ordered_model',
+    'solo',
     # 'elasticstack',
-
     'core',
     'publishers',
     'source',
@@ -235,7 +235,7 @@ CKEDITOR_CONFIGS = {
         'width': 800,
         'height': 100,
     },
-    'json_constants': {
+    'site_configuration': {
         'toolbar': 'Custom',
         'toolbar_Custom': [
             ['Bold', 'Italic', 'Underline', 'FontSize'],

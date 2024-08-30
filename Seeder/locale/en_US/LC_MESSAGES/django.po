@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Seeder\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-08-29 10:04+0000\n"
+"POT-Creation-Date: 2024-08-30 09:19+0000\n"
 "PO-Revision-Date: 2017-11-07 12:38+0100\n"
 "Last-Translator: Visgean Skeloru <visgean@gmail.com>, 2017\n"
 "Language-Team: English (United States) (https://www.transifex.com/"
@@ -359,7 +359,7 @@ msgstr "Delete"
 msgid "Proceed with deletion?"
 msgstr "Proceed with deletion?"
 
-#: contracts/templates/contract.html:140 harvests/templates/calendar.html:51
+#: contracts/templates/contract.html:140 harvests/templates/calendar.html:50
 #: source/templates/edit_seed.html:28 source/templates/source.html:221
 #: templates/base.html:204
 msgid "Close"
@@ -471,7 +471,7 @@ msgstr "Opened QAs"
 msgid "Sources needing QA"
 msgstr "Sources needing QA"
 
-#: core/forms.py:22
+#: core/forms.py:21
 msgid "Check this to delete this object"
 msgstr "Check this to delete this object"
 
@@ -488,39 +488,40 @@ msgstr "Action {0} not allowed."
 msgid "Changes successfully saved."
 msgstr "Changes successfully saved."
 
-#: core/views.py:20 templates/base.html:88 templates/card_detail.html:9
+#: core/models.py:65 core/models.py:68 core/views.py:133
+#: templates/base.html:142
+msgid "Site Configuration"
+msgstr "Site Configuration"
+
+#: core/views.py:17 templates/base.html:88 templates/card_detail.html:9
 msgid "Dashboard"
 msgstr "Dashboard"
 
-#: core/views.py:77
+#: core/views.py:74
 msgid "Change user information"
 msgstr "Change user information"
 
-#: core/views.py:85
+#: core/views.py:82
 msgid "Profile changed."
 msgstr "Profile changed."
 
-#: core/views.py:95
+#: core/views.py:92
 msgid "Password changed successfully."
 msgstr "Password changed successfully."
 
-#: core/views.py:132 templates/base.html:142
-msgid "Constants"
-msgstr "Constants"
+#: core/views.py:137
+msgid "Site Configuration successfully updated"
+msgstr "Site Configuration successfully updated"
 
-#: core/views.py:138
-msgid "Constants successfully updated"
-msgstr "Constants successfully updated"
-
-#: core/views.py:152
+#: core/views.py:154
 msgid "Wayback maintenance turned OFF"
 msgstr "Wayback maintenance turned OFF"
 
-#: core/views.py:155
+#: core/views.py:157
 msgid "Wayback maintenance turned ON"
 msgstr "Wayback maintenance turned ON"
 
-#: harvests/admin.py:54 harvests/forms.py:57 harvests/forms.py:141
+#: harvests/admin.py:60 harvests/forms.py:60 harvests/forms.py:144
 msgid "dataLimit cannot be over 1TB"
 msgstr "dataLimit cannot be over 1TB"
 
@@ -528,7 +529,7 @@ msgstr "dataLimit cannot be over 1TB"
 msgid "One URL per line"
 msgstr "One URL per line"
 
-#: harvests/forms.py:204
+#: harvests/forms.py:207
 msgid ""
 "Provide a text file with one seed per line which will overwrite all "
 "custom_seeds. The original custom_seeds will be backed up to the media/seeds/"
@@ -538,7 +539,7 @@ msgstr ""
 "custom_seeds. The original custom_seeds will be backed up to the media/seeds/"
 "backup folder."
 
-#: harvests/forms.py:225
+#: harvests/forms.py:228
 msgid ""
 "Custom seeds field is disabled because there are too many seeds to be "
 "displayed in an HTML text field."
@@ -637,11 +638,11 @@ msgstr "Manuals"
 msgid "Combined"
 msgstr "Combined"
 
-#: harvests/models.py:282 harvests/views.py:383
+#: harvests/models.py:282 harvests/views.py:384
 msgid "ArchiveIt"
 msgstr "ArchiveIt"
 
-#: harvests/models.py:285 harvests/views.py:385
+#: harvests/models.py:285 harvests/views.py:386
 msgid "Tests"
 msgstr "Tests"
 
@@ -749,7 +750,7 @@ msgstr "file"
 msgid "Harvest Configuration"
 msgstr "Harvest Configuration"
 
-#: harvests/models.py:853 harvests/views.py:398 templates/base.html:127
+#: harvests/models.py:853 harvests/views.py:399 templates/base.html:127
 msgid "Harvest Configurations"
 msgstr "Harvest Configurations"
 
@@ -952,45 +953,45 @@ msgstr "All sources are open?"
 msgid "Seeds"
 msgstr "Seeds"
 
-#: harvests/views.py:58 templates/base.html:122
+#: harvests/views.py:59 templates/base.html:122
 msgid "Harvests"
 msgstr "Harvests"
 
-#: harvests/views.py:113 harvests/views.py:131
+#: harvests/views.py:114 harvests/views.py:132
 msgid "Harvest contains no seeds!"
 msgstr ""
 "Harvest contains no seeds! This means it cannot be frozen (set as 'Ready to "
 "harvest')"
 
-#: harvests/views.py:353 harvests/views.py:372
+#: harvests/views.py:354 harvests/views.py:373
 msgid "Available URLs for date"
 msgstr "Available URLs for date"
 
-#: harvests/views.py:357
+#: harvests/views.py:358
 msgid "All seeds for Harvest"
 msgstr "All seeds for Harvest"
 
-#: harvests/views.py:384
+#: harvests/views.py:385
 msgid "VNC"
 msgstr "VNC: Custom seeds"
 
-#: harvests/views.py:386
+#: harvests/views.py:387
 msgid "Totals"
 msgstr "Totals: All seeds"
 
-#: harvests/views.py:445
+#: harvests/views.py:446
 msgid "TopicCollections"
 msgstr "Topic Collections"
 
-#: harvests/views.py:455
+#: harvests/views.py:456
 msgid "Add TopicCollection"
 msgstr "Add Topic Collection"
 
-#: harvests/views.py:497
+#: harvests/views.py:503
 msgid "Cannot decode file to UTF-8"
 msgstr "Cannot decode file to UTF-8"
 
-#: harvests/views.py:499
+#: harvests/views.py:505
 #, python-format
 msgid ""
 "Original custom_seeds have been backed to: <a href='%(url)s' "
@@ -999,27 +1000,27 @@ msgstr ""
 "Original custom_seeds have been backed to: <a href='%(url)s' "
 "target='_blank'>%(url)s</a>"
 
-#: harvests/views.py:503
+#: harvests/views.py:509
 msgid "Uploaded custom seeds will not be paired automatically"
 msgstr "Uploaded custom seeds will not be paired automatically"
 
-#: harvests/views.py:558
+#: harvests/views.py:577
 msgid "ExternalTopicCollections"
 msgstr "External Topic Collections"
 
-#: harvests/views.py:568
+#: harvests/views.py:587
 msgid "Add ExternalTopicCollection"
 msgstr "Add External Topic Collection"
 
-#: harvests/views.py:652
+#: harvests/views.py:671
 msgid "Topic collection published"
 msgstr "Topic collection published"
 
-#: harvests/views.py:654
+#: harvests/views.py:673
 msgid "Topic collection unpublished"
 msgstr "Topic collection unpublished"
 
-#: harvests/views.py:668
+#: harvests/views.py:687
 msgid "URL slug successfully updated"
 msgstr "URL slug successfully updated"
 
