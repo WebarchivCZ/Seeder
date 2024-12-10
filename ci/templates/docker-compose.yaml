@@ -9,7 +9,7 @@ volumes:
 services:
   reverse-proxy:
     # The official v2 Traefik docker image
-    image: traefik:v2.8
+    image: traefik:v3.2
     # Enables the web UI and tells Traefik to listen to docker
     command:
       - "--providers.docker"
@@ -90,7 +90,7 @@ services:
       - web
 
   seeder_db:
-    image: postgres:9.6
+    image: postgres:17.2
     volumes:
       - "seeder_db_data:/var/lib/postgresql/data"
     logging:  
