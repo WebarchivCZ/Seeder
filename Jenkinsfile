@@ -36,7 +36,7 @@ pipeline {
 
             cd ci
             ansible-playbook -i test --private-key ${SSH_CREDS} -u ${SSH_CREDS_USR} prepare-configuration.yml
-            ssh -o "StrictHostKeyChecking=no" -i ${SSH_CREDS} ${SSH_CREDS_USR}@10.3.0.110 sudo /home/ansible/seeder/run.sh
+            ssh -o "StrictHostKeyChecking=no" -i ${SSH_CREDS} ${SSH_CREDS_USR}@10.3.0.122 sudo /home/ansible/seeder/run.sh
           '''
         }
       }
