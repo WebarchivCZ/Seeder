@@ -49,6 +49,10 @@
                     <td>{{ source.dead_source|fa_boolean }}</td>
                 </tr>
                 <tr>
+                    <td>{% trans 'Priority source' %}</td>
+                    <td>{{ source.priority_source|fa_boolean }}</td>
+                </tr>
+                <tr>
                     <td>{% trans 'Owner' %}</td>
                     <td>{{ source.owner.get_full_name }}</td>
                 </tr>
