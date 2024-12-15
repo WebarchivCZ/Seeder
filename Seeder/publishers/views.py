@@ -1,6 +1,8 @@
 from django.views.generic import DetailView, FormView
+from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext_lazy as _
 from django.http.response import HttpResponseRedirect
+from django.contrib import messages
 
 from dal import autocomplete
 
@@ -63,7 +65,19 @@ class EditContacts(PublisherView, FormView, generic_views.ObjectMixinFixed):  # 
             contact.publisher = self.object
             contact.save()
         for obj in form.deleted_objects:
-            obj.delete()
+            if (isinstance(obj, models.ContactPerson)
+                    and obj.source_set.exists()):
+                messages.add_message(self.request, messages.ERROR, mark_safe(_(
+                    "Contact person %(person)s is still set as contact on: "
+                    "%(sources)s, please remove them there first.") % {
+                        "person": f"{obj.name} (#{obj.id})",
+                        "sources": ", ".join([
+                            f"<a href='{s.get_absolute_url()}' "
+                            f"target='_blank'>{s}</a>"
+                            for s in obj.source_set.all()]),
+                }))
+            else:
+                obj.delete()
 
         return HttpResponseRedirect(self.object.get_absolute_url())
 
