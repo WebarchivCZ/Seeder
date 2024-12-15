@@ -73,7 +73,8 @@ class SourceEditForm(forms.ModelForm):
         model = models.Source
         fields = ('owner', 'name', 'publisher', 'publisher_contact', 'state',
                   'frequency', 'keywords', 'category', 'sub_category', 'annotation',
-                  'screenshot', 'comment', 'aleph_id', 'issn', 'dead_source')
+                  'screenshot', 'comment', 'aleph_id', 'issn', 
+                  'dead_source', 'priority_source')
 
         widgets = {
             'publisher': autocomplete.ModelSelect2(

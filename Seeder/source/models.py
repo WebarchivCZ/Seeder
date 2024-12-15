@@ -295,6 +295,7 @@ class Source(SearchModel, SlugOrCreateModel, BaseModel):
     screenshot_date = models.DateTimeField(null=True, blank=True)
     keywords = models.ManyToManyField(KeyWord, blank=True)
     dead_source = models.BooleanField(_('Source is dead'), default=False)
+    priority_source = models.BooleanField(_('Priority source'), default=False)
 
     slug = models.SlugField(unique=True, blank=True, null=True)
     from_field = 'stripped_main_url'
@@ -494,7 +495,8 @@ class Source(SearchModel, SlugOrCreateModel, BaseModel):
         df = pd.DataFrame.from_records(qs.values(
             "id", "name", "owner__username", "state", "publisher__name",
             "category__name", "sub_category__name", "suggested_by",
-            "dead_source", "created", "last_changed", "seed_urls",
+            "dead_source", "priority_source", "created", "last_changed", 
+            "seed_urls",
         ))
         for col in df.columns:
             # Make datetime fields timezone-naive

@@ -76,6 +76,7 @@ class SourceFilter(BaseFilterSet):
             'sub_category': ('exact',),
             'suggested_by': ('exact',),
             'dead_source': ('exact',),
+            'priority_source': ('exact',),
             'created': ('exact',),
             'last_changed': ('exact',),
             'issn': ('contains',),
