@@ -58,7 +58,7 @@ sorl-thumbnail==12.8.0
 Sphinx==1.4.4
 sqlparse==0.4.4
 tablib[all]==3.4.0
-tld==0.7.6
+tld==0.13
 unicodecsv==0.14.1
 Unidecode==1.1.1
 uritemplate==4.1.1
