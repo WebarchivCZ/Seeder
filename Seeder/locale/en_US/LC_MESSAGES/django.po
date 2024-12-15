@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Seeder\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-12-15 15:19+0000\n"
+"POT-Creation-Date: 2024-12-15 15:59+0000\n"
 "PO-Revision-Date: 2017-11-07 12:38+0100\n"
 "Last-Translator: Visgean Skeloru <visgean@gmail.com>, 2017\n"
 "Language-Team: English (United States) (https://www.transifex.com/"
@@ -162,7 +162,7 @@ msgstr "Comment"
 #: harvests/templates/harvest.html:110
 #: harvests/templates/topic_collection.html:112
 #: publishers/templates/publisher.html:39 qa/templates/detail.html:41
-#: source/templates/source.html:204 voting/templates/voting_round.html:118
+#: source/templates/source.html:207 voting/templates/voting_round.html:118
 #: www/templates/news_admin_detail.html:90
 msgid "Comments"
 msgstr "Comments"
@@ -355,12 +355,12 @@ msgid "Delete"
 msgstr "Delete"
 
 #: contracts/templates/contract.html:131 source/templates/edit_seed.html:16
-#: source/templates/source.html:214
+#: source/templates/source.html:217
 msgid "Proceed with deletion?"
 msgstr "Proceed with deletion?"
 
 #: contracts/templates/contract.html:140 harvests/templates/calendar.html:50
-#: source/templates/edit_seed.html:28 source/templates/source.html:225
+#: source/templates/edit_seed.html:28 source/templates/source.html:228
 #: templates/base.html:204
 msgid "Close"
 msgstr "Close"
@@ -406,32 +406,53 @@ msgstr ""
 msgid "Send"
 msgstr "Send"
 
-#: contracts/views.py:64
+#: contracts/views.py:65
 msgid "Add contract"
 msgstr "Add contract"
 
-#: contracts/views.py:86
+#: contracts/views.py:87
 msgid "Assign contract"
 msgstr "Assign contract"
 
-#: contracts/views.py:120
+#: contracts/views.py:119 source/templates/source.html:202
+msgid "Unassign contract"
+msgstr "Unassign contract"
+
+#: contracts/views.py:130
+msgid "The source doesn't have any contracts assigned."
+msgstr "The source doesn't have any contracts assigned."
+
+#: contracts/views.py:140
+#, python-format
+msgid ""
+"All contracts have been unassigned so the source state was changed to "
+"'%(state)s'"
+msgstr ""
+"All contracts have been unassigned so the source state was changed to "
+"'%(state)s'"
+
+#: contracts/views.py:142 source/constants.py:29
+msgid "Archiving without publisher consent"
+msgstr "Archiving without publisher consent"
+
+#: contracts/views.py:158
 msgid "Contract number assigned."
 msgstr "Contract number assigned."
 
-#: contracts/views.py:134 source/templates/source.html:193
+#: contracts/views.py:172 source/templates/source.html:193
 #: templates/base.html:100
 msgid "Contracts"
 msgstr "Contracts"
 
-#: contracts/views.py:141
+#: contracts/views.py:179
 msgid "Schedule emails"
 msgstr "Schedule e-mails"
 
-#: contracts/views.py:207
+#: contracts/views.py:245
 msgid "Can't delete contract with number"
 msgstr "Can't delete contract with number"
 
-#: contracts/views.py:215
+#: contracts/views.py:253
 msgid "Contract deleted."
 msgstr "Contract deleted."
 
@@ -1188,10 +1209,6 @@ msgstr "Declined by staff"
 msgid "Archiving accepted"
 msgstr "Archiving accepted"
 
-#: source/constants.py:29
-msgid "Archiving without publisher consent"
-msgstr "Archiving without publisher consent"
-
 #: source/constants.py:30
 msgid "Declined by publisher"
 msgstr "Declined by publisher"
@@ -1432,7 +1449,7 @@ msgstr "WA-KAT"
 msgid "QA check"
 msgstr "QA check"
 
-#: source/templates/source.html:178 source/templates/source.html:221
+#: source/templates/source.html:178 source/templates/source.html:224
 msgid "Deactivate"
 msgstr "Deactivate"
 
@@ -1456,7 +1473,7 @@ msgstr "Create"
 msgid "Assign"
 msgstr "Assign"
 
-#: source/templates/source.html:217
+#: source/templates/source.html:220
 msgid "If you proceed it will be very hard to reactivate this source."
 msgstr "If you proceed it will be very hard to reactivate this source."
 

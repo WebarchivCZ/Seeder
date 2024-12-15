@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Seeder\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-12-15 15:19+0000\n"
+"POT-Creation-Date: 2024-12-15 15:59+0000\n"
 "PO-Revision-Date: 2018-04-16 13:40+0200\n"
 "Last-Translator: mariehaskovcova <marie.haskovcova@nkp.cz>, 2017\n"
 "Language-Team: Czech (https://www.transifex.com/webarchivecz/teams/43032/"
@@ -161,7 +161,7 @@ msgstr "Komentář"
 #: harvests/templates/harvest.html:110
 #: harvests/templates/topic_collection.html:112
 #: publishers/templates/publisher.html:39 qa/templates/detail.html:41
-#: source/templates/source.html:204 voting/templates/voting_round.html:118
+#: source/templates/source.html:207 voting/templates/voting_round.html:118
 #: www/templates/news_admin_detail.html:90
 msgid "Comments"
 msgstr "Komentáře"
@@ -354,12 +354,12 @@ msgid "Delete"
 msgstr "Smazat"
 
 #: contracts/templates/contract.html:131 source/templates/edit_seed.html:16
-#: source/templates/source.html:214
+#: source/templates/source.html:217
 msgid "Proceed with deletion?"
 msgstr "Pokračovat se smazáním?"
 
 #: contracts/templates/contract.html:140 harvests/templates/calendar.html:50
-#: source/templates/edit_seed.html:28 source/templates/source.html:225
+#: source/templates/edit_seed.html:28 source/templates/source.html:228
 #: templates/base.html:204
 msgid "Close"
 msgstr "Zavřít"
@@ -403,32 +403,53 @@ msgstr ""
 msgid "Send"
 msgstr "Odeslat"
 
-#: contracts/views.py:64
+#: contracts/views.py:65
 msgid "Add contract"
 msgstr "Přidat smlouvu"
 
-#: contracts/views.py:86
+#: contracts/views.py:87
 msgid "Assign contract"
 msgstr "Přiřadit smlouvu"
 
-#: contracts/views.py:120
+#: contracts/views.py:119 source/templates/source.html:202
+msgid "Unassign contract"
+msgstr "Odpojit smlouvu"
+
+#: contracts/views.py:130
+msgid "The source doesn't have any contracts assigned."
+msgstr "Zdroj nemá přiřazené žádné smlouvy"
+
+#: contracts/views.py:140
+#, python-format
+msgid ""
+"All contracts have been unassigned so the source state was changed to "
+"'%(state)s'"
+msgstr ""
+"Všechny smlouvy byly odpojeny, stav zdroje byl tedy nastaven na "
+"'%(state)s'"
+
+#: contracts/views.py:142 source/constants.py:29
+msgid "Archiving without publisher consent"
+msgstr "Archivován bez smlouvy"
+
+#: contracts/views.py:158
 msgid "Contract number assigned."
 msgstr "Smlouvě bylo přiřazeno číslo."
 
-#: contracts/views.py:134 source/templates/source.html:193
+#: contracts/views.py:172 source/templates/source.html:193
 #: templates/base.html:100
 msgid "Contracts"
 msgstr "Smlouvy"
 
-#: contracts/views.py:141
+#: contracts/views.py:179
 msgid "Schedule emails"
 msgstr "Naplánování e-mailů"
 
-#: contracts/views.py:207
+#: contracts/views.py:245
 msgid "Can't delete contract with number"
 msgstr "Nelze smazat smlouvu s číslem"
 
-#: contracts/views.py:215
+#: contracts/views.py:253
 msgid "Contract deleted."
 msgstr "Smlouva smazána"
 
@@ -1185,10 +1206,6 @@ msgstr "Odmítnuto Webarchivem"
 msgid "Archiving accepted"
 msgstr "Archivován"
 
-#: source/constants.py:29
-msgid "Archiving without publisher consent"
-msgstr "Archivován bez smlouvy"
-
 #: source/constants.py:30
 msgid "Declined by publisher"
 msgstr "Odmítnuto vydavatelem"
@@ -1427,7 +1444,7 @@ msgstr "WA-KAT"
 msgid "QA check"
 msgstr "Provedení kontroly kvality"
 
-#: source/templates/source.html:178 source/templates/source.html:221
+#: source/templates/source.html:178 source/templates/source.html:224
 msgid "Deactivate"
 msgstr "Deaktivovat"
 
@@ -1451,7 +1468,7 @@ msgstr "Vytvořit"
 msgid "Assign"
 msgstr "Přiřadit"
 
-#: source/templates/source.html:217
+#: source/templates/source.html:220
 msgid "If you proceed it will be very hard to reactivate this source."
 msgstr "Pokud budete pokračovat, bude velmi těžké zdroj znovu aktivovat."
 

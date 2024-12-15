@@ -198,6 +198,9 @@
         {% endfor %}
         <a href="{% url 'contracts:create' pk=source.pk %}" class="btn btn-primary btn-block">{% trans 'Create' %}</a>
         <a href="{% url 'contracts:assign' pk=source.pk %}" class="btn btn-primary btn-block">{% trans 'Assign' %}</a>
+        {% if source.contract_set.exists and request.user.is_superuser %}
+        <a href="{% url 'contracts:unassign' pk=source.pk %}" class="btn btn-danger btn-block">{% trans 'Unassign contract' %}</a>
+        {% endif %}
     </div>
 
     <div class="col-xs-12 col-md-12">
