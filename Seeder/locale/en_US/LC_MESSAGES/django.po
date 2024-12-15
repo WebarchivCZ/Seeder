@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Seeder\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-12-15 15:59+0000\n"
+"POT-Creation-Date: 2024-12-15 16:40+0000\n"
 "PO-Revision-Date: 2017-11-07 12:38+0100\n"
 "Last-Translator: Visgean Skeloru <visgean@gmail.com>, 2017\n"
 "Language-Team: English (United States) (https://www.transifex.com/"
@@ -152,7 +152,7 @@ msgid "This comment has been removed"
 msgstr "This comment has been removed"
 
 #: comments/models.py:168 qa/models.py:40 qa/templates/detail.html:30
-#: source/models.py:255 source/models.py:537 source/templates/source.html:87
+#: source/models.py:256 source/models.py:538 source/templates/source.html:87
 #: templates/history.html:14
 msgid "Comment"
 msgstr "Comment"
@@ -216,7 +216,7 @@ msgid "Narodni knihovna CR - archivace Vasich webovych stranek"
 msgstr "National library of the CR - archiving your web sites"
 
 #: contracts/models.py:55 contracts/templates/contract.html:21
-#: harvests/models.py:235 harvests/models.py:716 source/models.py:269
+#: harvests/models.py:235 harvests/models.py:716 source/models.py:270
 #: voting/models.py:27
 msgid "State"
 msgstr "State"
@@ -623,7 +623,7 @@ msgid "title"
 msgstr "Title"
 
 #: harvests/models.py:241 harvests/templates/harvest.html:17
-#: source/models.py:256 source/templates/source.html:91
+#: source/models.py:257 source/templates/source.html:91
 msgid "Annotation"
 msgstr "Annotation"
 
@@ -730,7 +730,7 @@ msgid "Finished"
 msgstr "Finished"
 
 #: harvests/models.py:707 harvests/templates/topic_collection.html:49
-#: source/models.py:275 source/templates/source.html:60 templates/api.html:17
+#: source/models.py:276 source/templates/source.html:60 templates/api.html:17
 msgid "Frequency"
 msgstr "Frequency"
 
@@ -839,7 +839,7 @@ msgstr "annotation [cs]"
 msgid "annotation [en]"
 msgstr "annotation [en]"
 
-#: harvests/templates/external_topic_collection.html:39 source/models.py:290
+#: harvests/templates/external_topic_collection.html:39 source/models.py:291
 #: source/templates/source.html:32
 msgid "Screenshot"
 msgstr "Screenshot"
@@ -970,7 +970,7 @@ msgid "All sources are open?"
 msgstr "All sources are open?"
 
 #: harvests/templates/topic_collection.html:94 qa/templates/qa_form.html:20
-#: source/models.py:566 source/templates/source.html:156
+#: source/models.py:567 source/templates/source.html:156
 msgid "Seeds"
 msgstr "Seeds"
 
@@ -1059,7 +1059,7 @@ msgid "Position"
 msgstr "Position"
 
 #: publishers/forms.py:57 publishers/models.py:24 publishers/models.py:57
-#: publishers/tables.py:9 source/models.py:254 source/tables.py:8
+#: publishers/tables.py:9 source/models.py:255 source/tables.py:8
 #: www/models.py:82
 msgid "Name"
 msgstr "Name"
@@ -1076,7 +1076,7 @@ msgstr "You can't use old contact and create new at the same time"
 msgid "Please fill-out the email"
 msgstr "Please fill-out the e-mail"
 
-#: publishers/models.py:31 publishers/views.py:43 templates/base.html:97
+#: publishers/models.py:31 publishers/views.py:45 templates/base.html:97
 msgid "Publishers"
 msgstr "Publishers"
 
@@ -1092,7 +1092,7 @@ msgstr "Phone"
 msgid "Address"
 msgstr "Address"
 
-#: publishers/models.py:65 source/templates/source.html:80
+#: publishers/models.py:65 source/models.py:250 source/templates/source.html:80
 msgid "Publisher contact"
 msgstr "Publisher contact"
 
@@ -1104,20 +1104,29 @@ msgstr "Publisher contacts"
 msgid "Contacts:"
 msgstr "Contacts:"
 
-#: publishers/templates/publisher.html:20 publishers/views.py:53
+#: publishers/templates/publisher.html:20 publishers/views.py:55
 msgid "Edit contacts"
 msgstr "Edit contacts"
 
-#: publishers/templates/publisher.html:24 source/models.py:308
+#: publishers/templates/publisher.html:24 source/models.py:309
 #: source/views.py:254 templates/base.html:94
 msgid "Sources"
 msgstr "Sources"
 
-#: publishers/views.py:20 source/views.py:80
+#: publishers/views.py:22 source/views.py:80
 msgid "Add publisher"
 msgstr "Add publisher"
 
-#: qa/models.py:18 qa/templates/detail.html:13 source/models.py:307
+#: publishers/views.py:71
+#, python-format
+msgid ""
+"Contact person %(person)s is still set as contact on: %(sources)s, please "
+"remove them there first."
+msgstr ""
+"Contact person %(person)s is still set as contact on: %(sources)s, please "
+"remove them there first."
+
+#: qa/models.py:18 qa/templates/detail.html:13 source/models.py:308
 msgid "Source"
 msgstr "Source"
 
@@ -1305,83 +1314,83 @@ msgstr ""
 "Sources with status 'Archiving accepted' and 'Archiving without publisher "
 "consent' must have a selected Harvest Frequency"
 
-#: source/models.py:259 source/templates/source.html:72
+#: source/models.py:260 source/templates/source.html:72
 msgid "Suggested by"
 msgstr "Suggested by"
 
-#: source/models.py:280 source/templates/source.html:102
+#: source/models.py:281 source/templates/source.html:102
 msgid "Category"
 msgstr "Category"
 
-#: source/models.py:285 source/templates/source.html:106
+#: source/models.py:286 source/templates/source.html:106
 msgid "Sub category"
 msgstr "Sub category"
 
-#: source/models.py:297
+#: source/models.py:298
 msgid "Source is dead"
 msgstr "Source is dead"
 
-#: source/models.py:298 source/templates/source.html:52
+#: source/models.py:299 source/templates/source.html:52
 msgid "Priority source"
 msgstr "Priority source"
 
-#: source/models.py:518
+#: source/models.py:519
 msgid "default"
 msgstr "default"
 
-#: source/models.py:519
+#: source/models.py:520
 msgid "low"
 msgstr "low"
 
-#: source/models.py:520
+#: source/models.py:521
 msgid "very_low"
 msgstr "very_low"
 
-#: source/models.py:531
+#: source/models.py:532
 msgid "Main seed"
 msgstr "Main seed"
 
-#: source/models.py:532
+#: source/models.py:533
 msgid "Seed url"
 msgstr "Seed URL"
 
-#: source/models.py:538
+#: source/models.py:539
 msgid "From"
 msgstr "From"
 
-#: source/models.py:539
+#: source/models.py:540
 msgid "To"
 msgstr "To"
 
-#: source/models.py:542
+#: source/models.py:543
 msgid "Javascript"
 msgstr "Javascript"
 
-#: source/models.py:543
+#: source/models.py:544
 msgid "Global reject"
 msgstr "Global reject"
 
-#: source/models.py:544
+#: source/models.py:545
 msgid "Youtube"
 msgstr "YouTube"
 
-#: source/models.py:545
+#: source/models.py:546
 msgid "Calendars"
 msgstr "Calendars"
 
-#: source/models.py:546
+#: source/models.py:547
 msgid "Local traps"
 msgstr "Local traps"
 
-#: source/models.py:547
+#: source/models.py:548
 msgid "Redirect on seed"
 msgstr "Redirect on seed"
 
-#: source/models.py:548
+#: source/models.py:549
 msgid "Robots.txt active"
 msgstr "Robots.txt active"
 
-#: source/models.py:565
+#: source/models.py:566
 msgid "Seed"
 msgstr "Seed"
 

@@ -247,7 +247,8 @@ class Source(SearchModel, SlugOrCreateModel, BaseModel):
         on_delete=models.DO_NOTHING)
 
     publisher_contact = models.ForeignKey(
-        ContactPerson,
+        verbose_name=_('Publisher contact'),
+        to=ContactPerson,
         null=True, blank=True,
         on_delete=models.DO_NOTHING)
 

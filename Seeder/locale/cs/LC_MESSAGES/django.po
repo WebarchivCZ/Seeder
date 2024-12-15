@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Seeder\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-12-15 15:59+0000\n"
+"POT-Creation-Date: 2024-12-15 16:40+0000\n"
 "PO-Revision-Date: 2018-04-16 13:40+0200\n"
 "Last-Translator: mariehaskovcova <marie.haskovcova@nkp.cz>, 2017\n"
 "Language-Team: Czech (https://www.transifex.com/webarchivecz/teams/43032/"
@@ -151,7 +151,7 @@ msgid "This comment has been removed"
 msgstr "Komentář byl odstraněn"
 
 #: comments/models.py:168 qa/models.py:40 qa/templates/detail.html:30
-#: source/models.py:255 source/models.py:537 source/templates/source.html:87
+#: source/models.py:256 source/models.py:538 source/templates/source.html:87
 #: templates/history.html:14
 msgid "Comment"
 msgstr "Komentář"
@@ -215,7 +215,7 @@ msgid "Narodni knihovna CR - archivace Vasich webovych stranek"
 msgstr "Narodni knihovna CR - archivace Vasich webovych stranek"
 
 #: contracts/models.py:55 contracts/templates/contract.html:21
-#: harvests/models.py:235 harvests/models.py:716 source/models.py:269
+#: harvests/models.py:235 harvests/models.py:716 source/models.py:270
 #: voting/models.py:27
 msgid "State"
 msgstr "Stav"
@@ -425,8 +425,7 @@ msgid ""
 "All contracts have been unassigned so the source state was changed to "
 "'%(state)s'"
 msgstr ""
-"Všechny smlouvy byly odpojeny, stav zdroje byl tedy nastaven na "
-"'%(state)s'"
+"Všechny smlouvy byly odpojeny, stav zdroje byl tedy nastaven na '%(state)s'"
 
 #: contracts/views.py:142 source/constants.py:29
 msgid "Archiving without publisher consent"
@@ -620,7 +619,7 @@ msgid "title"
 msgstr "Název"
 
 #: harvests/models.py:241 harvests/templates/harvest.html:17
-#: source/models.py:256 source/templates/source.html:91
+#: source/models.py:257 source/templates/source.html:91
 msgid "Annotation"
 msgstr "Anotace"
 
@@ -727,7 +726,7 @@ msgid "Finished"
 msgstr "Hotovo"
 
 #: harvests/models.py:707 harvests/templates/topic_collection.html:49
-#: source/models.py:275 source/templates/source.html:60 templates/api.html:17
+#: source/models.py:276 source/templates/source.html:60 templates/api.html:17
 msgid "Frequency"
 msgstr "Frekvence"
 
@@ -836,7 +835,7 @@ msgstr "anotace (ČJ)"
 msgid "annotation [en]"
 msgstr "anotace (AJ)"
 
-#: harvests/templates/external_topic_collection.html:39 source/models.py:290
+#: harvests/templates/external_topic_collection.html:39 source/models.py:291
 #: source/templates/source.html:32
 msgid "Screenshot"
 msgstr "Screenshot"
@@ -967,7 +966,7 @@ msgid "All sources are open?"
 msgstr "Všechny zdroje jsou otevřené?"
 
 #: harvests/templates/topic_collection.html:94 qa/templates/qa_form.html:20
-#: source/models.py:566 source/templates/source.html:156
+#: source/models.py:567 source/templates/source.html:156
 msgid "Seeds"
 msgstr "Semínka"
 
@@ -1056,7 +1055,7 @@ msgid "Position"
 msgstr "Pozice"
 
 #: publishers/forms.py:57 publishers/models.py:24 publishers/models.py:57
-#: publishers/tables.py:9 source/models.py:254 source/tables.py:8
+#: publishers/tables.py:9 source/models.py:255 source/tables.py:8
 #: www/models.py:82
 msgid "Name"
 msgstr "Jméno"
@@ -1073,7 +1072,7 @@ msgstr "Nemůžete použít již existující kontakt a zároveň vytvářet nov
 msgid "Please fill-out the email"
 msgstr "Vyplňte email"
 
-#: publishers/models.py:31 publishers/views.py:43 templates/base.html:97
+#: publishers/models.py:31 publishers/views.py:45 templates/base.html:97
 msgid "Publishers"
 msgstr "Vydavatelé"
 
@@ -1089,7 +1088,7 @@ msgstr "Telefon"
 msgid "Address"
 msgstr "Adresa"
 
-#: publishers/models.py:65 source/templates/source.html:80
+#: publishers/models.py:65 source/models.py:250 source/templates/source.html:80
 msgid "Publisher contact"
 msgstr "Kontakt na vydavatele"
 
@@ -1101,20 +1100,29 @@ msgstr "Kontakty na vydavatele"
 msgid "Contacts:"
 msgstr "Kontakty:"
 
-#: publishers/templates/publisher.html:20 publishers/views.py:53
+#: publishers/templates/publisher.html:20 publishers/views.py:55
 msgid "Edit contacts"
 msgstr "Editovat kontakty"
 
-#: publishers/templates/publisher.html:24 source/models.py:308
+#: publishers/templates/publisher.html:24 source/models.py:309
 #: source/views.py:254 templates/base.html:94
 msgid "Sources"
 msgstr "Zdroje"
 
-#: publishers/views.py:20 source/views.py:80
+#: publishers/views.py:22 source/views.py:80
 msgid "Add publisher"
 msgstr "Přidat vydavatele"
 
-#: qa/models.py:18 qa/templates/detail.html:13 source/models.py:307
+#: publishers/views.py:71
+#, python-format
+msgid ""
+"Contact person %(person)s is still set as contact on: %(sources)s, please "
+"remove them there first."
+msgstr ""
+"Kontaktní osoba %(person)s je stále nastavena jako kontakt na: %(sources)s, "
+"nejdříve je tam prosím odeberte."
+
+#: qa/models.py:18 qa/templates/detail.html:13 source/models.py:308
 msgid "Source"
 msgstr "Zdroj"
 
@@ -1302,83 +1310,83 @@ msgstr ""
 "Zdroje se stavem 'Archivován' a 'Archivován bez smlouvy' musí mít vybranou "
 "Frekvenci sklízení"
 
-#: source/models.py:259 source/templates/source.html:72
+#: source/models.py:260 source/templates/source.html:72
 msgid "Suggested by"
 msgstr "Navrženo"
 
-#: source/models.py:280 source/templates/source.html:102
+#: source/models.py:281 source/templates/source.html:102
 msgid "Category"
 msgstr "Kategorie"
 
-#: source/models.py:285 source/templates/source.html:106
+#: source/models.py:286 source/templates/source.html:106
 msgid "Sub category"
 msgstr "Podkategorie"
 
-#: source/models.py:297
+#: source/models.py:298
 msgid "Source is dead"
 msgstr "Mrtvý web"
 
-#: source/models.py:298 source/templates/source.html:52
+#: source/models.py:299 source/templates/source.html:52
 msgid "Priority source"
 msgstr "Prioritní zdroj"
 
-#: source/models.py:518
+#: source/models.py:519
 msgid "default"
 msgstr "výchozí"
 
-#: source/models.py:519
+#: source/models.py:520
 msgid "low"
 msgstr "low"
 
-#: source/models.py:520
+#: source/models.py:521
 msgid "very_low"
 msgstr "very low"
 
-#: source/models.py:531
+#: source/models.py:532
 msgid "Main seed"
 msgstr "Hlavní semínko"
 
-#: source/models.py:532
+#: source/models.py:533
 msgid "Seed url"
 msgstr "URL semínko"
 
-#: source/models.py:538
+#: source/models.py:539
 msgid "From"
 msgstr "Od"
 
-#: source/models.py:539
+#: source/models.py:540
 msgid "To"
 msgstr "Do"
 
-#: source/models.py:542
+#: source/models.py:543
 msgid "Javascript"
 msgstr "Javascript"
 
-#: source/models.py:543
+#: source/models.py:544
 msgid "Global reject"
 msgstr "Odmítnuto"
 
-#: source/models.py:544
+#: source/models.py:545
 msgid "Youtube"
 msgstr "Youtube"
 
-#: source/models.py:545
+#: source/models.py:546
 msgid "Calendars"
 msgstr "Kalendáře"
 
-#: source/models.py:546
+#: source/models.py:547
 msgid "Local traps"
 msgstr "Local traps"
 
-#: source/models.py:547
+#: source/models.py:548
 msgid "Redirect on seed"
 msgstr "Přesměrováno na semínko"
 
-#: source/models.py:548
+#: source/models.py:549
 msgid "Robots.txt active"
 msgstr "aktivní Robots.txt"
 
-#: source/models.py:565
+#: source/models.py:566
 msgid "Seed"
 msgstr "Semínko"
 
