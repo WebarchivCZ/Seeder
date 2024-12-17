@@ -21,7 +21,7 @@ pipeline {
       }
       stage('Deploy to test') {
         when {
-          anyOf { branch 'master'; branch 'production'; branch 'feature/*' }
+          anyOf { branch 'master'; branch 'production'; branch 'feature/*'; branch 'feature-*' }
         }
         environment {
                 SSH_CREDS = credentials('ansible')
