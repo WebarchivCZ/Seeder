@@ -3,7 +3,7 @@ pipeline {
     stages {
       stage('Build images and push them to Dockerhub') {
         when {
-          anyOf { branch 'master'; branch 'production'; branch 'feature/*' }
+          anyOf { branch 'master'; branch 'production'; branch 'feature/*'; branch 'feature-*' }
         }
         steps {
           sh '''#!/usr/bin/env bash
