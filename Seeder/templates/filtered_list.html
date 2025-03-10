@@ -9,18 +9,26 @@
 {% endblock %}
 
 {% block content_raw %}
-    <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-        <h1 class="page-header">{% block page_header %}{{ view.title }}, {{ table.rows | length }} {% trans 'records' %}{% endblock %}
-        <button class="btn btn-primary btn-{{ filter_active|yesno:'danger,success' }} pull-right" type="button" data-toggle="collapse" data-target="#filter-collapse" aria-controls="filter-collapse">
-          {% trans 'Toggle filters' %}
+<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+    <h1 class="page-header">
+        {% if back_link %}
+        <a class="btn btn-default" href="{% url back_link %}">
+            {{ back_link_title }}
+        </a>
+        {% endif %}
+        {% block page_header %}{{ view.title }}, {{ table.rows | length }} {% trans 'records' %}{% endblock %}
+        <button class="btn btn-primary btn-{{ filter_active|yesno:'danger,success' }} pull-right" type="button"
+            data-toggle="collapse" data-target="#filter-collapse" aria-controls="filter-collapse">
+            {% trans 'Toggle filters' %}
         </button>
         {% if add_link %}
-            <a class="btn btn-primary pull-right"  aria-controls="filter-collapse" href="{% url add_link %}">
-                {{ add_link_title }}
-            </a>
+        <a class="btn btn-primary pull-right" aria-controls="filter-collapse" href="{% url add_link %}">
+            {{ add_link_title }}
+        </a>
         {% endif %}
         <div class="btn dropdown pull-right" style="padding: 0 !important;">
-            <button class="btn btn-info dropdown-toggle" type="button" id="exportDropdown" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+            <button class="btn btn-info dropdown-toggle" type="button" id="exportDropdown" data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="true">
                 Export
                 <span class="caret"></span>
             </button>
@@ -28,20 +36,20 @@
                 {% for format in export_formats %}
                 <li><a href="{% export_url format %}">.{{format}}</a></li>
                 {% endfor %}
-                {% if full_export_url %}
-                <li><a href="{% url full_export_url %}">Full XLSX</a></li>
+                {% if full_export_enabled %}
+                <li><a href="?full_export=true">Full XLSX</a></li>
                 {% endif %}
             </ul>
         </div>
-        </h1>
-        <div class="collapse" id="filter-collapse">
-          <div class="well">
+    </h1>
+    <div class="collapse" id="filter-collapse">
+        <div class="well">
             <form method="get" class="form">
                 {% bootstrap_form filter.form %}
-                <input class="btn btn-primary btn-block" type="submit"/>
+                <input class="btn btn-primary btn-block" type="submit" />
             </form>
-          </div>
         </div>
-        {% render_table table 'bootstrap_table.html' %}
     </div>
+    {% render_table table 'bootstrap_table.html' %}
+</div>
 {% endblock %}
