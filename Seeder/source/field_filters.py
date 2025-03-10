@@ -21,12 +21,12 @@ def filter_not_empty(queryset, name, value):
 
 
 def filter_has_cc(queryset, name, value):
-    return models.Source.objects.has_cc(value)
+    return queryset.has_cc(value)
 
 
 def filter_contract_number(queryset, name, value):
     # value in format e.g. '64 / 2017'
-    return models.Source.objects.contains_contract_number(value)
+    return queryset.contains_contract_number(value)
 
 
 class SourceFilter(BaseFilterSet):

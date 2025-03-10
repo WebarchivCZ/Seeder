@@ -152,21 +152,14 @@ class SubCategory(models.Model, SlugOrCreateModel):
         ordering = ['name']
 
 
-class SourceManager(models.Manager):
-    """
-    Filters sources that needs quality assurance
-    """
-
-    def get_queryset(self):
-        return super(SourceManager, self).get_queryset().exclude(active=False)
-
+class SourceQuerySet(models.QuerySet):
     def archiving(self):
-        return self.get_queryset().filter(
+        return self.filter(
             state__in=constants.ARCHIVING_STATES
         )
 
     def public(self):
-        return self.get_queryset().filter(
+        return self.filter(
             state__in=constants.PUBLIC_STATES
         )
 
@@ -183,25 +176,32 @@ class SourceManager(models.Manager):
         )
 
     def has_cc(self, value=True):
-        with_contract = self.get_queryset().exclude(contract=None)
-        pks = [s.pk for s in with_contract
-               if s.contract_set.valid().filter(is_cc=True).count() > 0]
+        from contracts.models import Contract
+        with_cc = self.filter(
+            contract__in=Contract.objects.valid().filter(is_cc=True))
         # Can search for non-CC Sources as well
         if value:
-            return self.get_queryset().filter(pk__in=pks)
+            return with_cc
         else:
-            return self.get_queryset().exclude(pk__in=pks)
+            return self.exclude(pk__in=with_cc)
 
     def contains_contract_number(self, value):
+        from contracts.models import Contract
         try:
             contract_number, year = [int(s.strip()) for s in value.split('/')]
-            with_contract = self.get_queryset().exclude(contract=None)
-            pks = [s.pk for s in with_contract
-                   if s.contract_set.valid().filter(
-                       contract_number=contract_number, year=year).count() > 0]
-            return self.get_queryset().filter(pk__in=pks)
+            return self.filter(contract__in=Contract.objects.valid().filter(
+                contract_number=contract_number, year=year))
         except Exception:
-            return self.get_queryset().none()
+            return self.none()
+
+
+class SourceManager(models.Manager.from_queryset(SourceQuerySet)):
+    """
+    Filters sources that needs quality assurance
+    """
+
+    def get_queryset(self):
+        return super().get_queryset().exclude(active=False)
 
 
 class KeyWord(SlugOrCreateModel, models.Model):
@@ -496,7 +496,7 @@ class Source(SearchModel, SlugOrCreateModel, BaseModel):
         df = pd.DataFrame.from_records(qs.values(
             "id", "name", "owner__username", "state", "publisher__name",
             "category__name", "sub_category__name", "suggested_by",
-            "dead_source", "priority_source", "created", "last_changed", 
+            "dead_source", "priority_source", "created", "last_changed",
             "seed_urls",
         ))
         for col in df.columns:
