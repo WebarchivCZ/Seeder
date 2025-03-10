@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Seeder\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-12-15 16:40+0000\n"
+"POT-Creation-Date: 2025-03-10 17:26+0000\n"
 "PO-Revision-Date: 2017-11-07 12:38+0100\n"
 "Last-Translator: Visgean Skeloru <visgean@gmail.com>, 2017\n"
 "Language-Team: English (United States) (https://www.transifex.com/"
@@ -45,7 +45,7 @@ msgstr "Blacklist"
 msgid "Blacklists"
 msgstr "Blacklists"
 
-#: blacklists/templates/blacklists.html:5 core/generic_views.py:152
+#: blacklists/templates/blacklists.html:5 core/generic_views.py:155
 msgid "Add"
 msgstr "Add"
 
@@ -233,7 +233,7 @@ msgstr "Valid from"
 msgid "Valid to"
 msgstr "Valid to"
 
-#: contracts/models.py:79 harvests/templates/calendar.html:27
+#: contracts/models.py:79 harvests/templates/calendar.html:28
 msgid "Year"
 msgstr "Year"
 
@@ -359,7 +359,7 @@ msgstr "Delete"
 msgid "Proceed with deletion?"
 msgstr "Proceed with deletion?"
 
-#: contracts/templates/contract.html:140 harvests/templates/calendar.html:50
+#: contracts/templates/contract.html:140 harvests/templates/calendar.html:51
 #: source/templates/edit_seed.html:28 source/templates/source.html:228
 #: templates/base.html:204
 msgid "Close"
@@ -496,18 +496,22 @@ msgstr "Sources needing QA"
 msgid "Check this to delete this object"
 msgstr "Check this to delete this object"
 
-#: core/generic_views.py:81
+#: core/generic_views.py:82
 msgid "Insufficient permissions."
 msgstr "Insufficient permissions."
 
-#: core/generic_views.py:89
+#: core/generic_views.py:90
 #, python-brace-format
 msgid "Action {0} not allowed."
 msgstr "Action {0} not allowed."
 
-#: core/generic_views.py:99
+#: core/generic_views.py:100
 msgid "Changes successfully saved."
 msgstr "Changes successfully saved."
+
+#: core/generic_views.py:153
+msgid "Back"
+msgstr "Back"
 
 #: core/models.py:65 core/models.py:68 core/views.py:133
 #: templates/base.html:142
@@ -618,7 +622,8 @@ msgid "Harvest type"
 msgstr "Harvest type"
 
 #: harvests/models.py:239 harvests/models.py:602 harvests/models.py:720
-#: harvests/tables.py:75 harvests/tables.py:92 www/tables.py:13
+#: harvests/tables.py:44 harvests/tables.py:82 harvests/tables.py:99
+#: www/tables.py:13
 msgid "title"
 msgstr "Title"
 
@@ -659,11 +664,11 @@ msgstr "Manuals"
 msgid "Combined"
 msgstr "Combined"
 
-#: harvests/models.py:282 harvests/views.py:384
+#: harvests/models.py:282 harvests/views.py:402
 msgid "ArchiveIt"
 msgstr "ArchiveIt"
 
-#: harvests/models.py:285 harvests/views.py:386
+#: harvests/models.py:285 harvests/views.py:404
 msgid "Tests"
 msgstr "Tests"
 
@@ -771,7 +776,7 @@ msgstr "file"
 msgid "Harvest Configuration"
 msgstr "Harvest Configuration"
 
-#: harvests/models.py:852 harvests/views.py:399 templates/base.html:127
+#: harvests/models.py:852 harvests/views.py:417 templates/base.html:127
 msgid "Harvest Configurations"
 msgstr "Harvest Configurations"
 
@@ -780,28 +785,32 @@ msgstr "Harvest Configurations"
 msgid "Configuration for %(type)s Harvests"
 msgstr "Configuration for %(type)s Harvests"
 
-#: harvests/templates/calendar.html:22
+#: harvests/templates/calendar.html:20
+msgid "List of harvests"
+msgstr "List of harvests"
+
+#: harvests/templates/calendar.html:23
 msgid "Prev"
 msgstr "Prev"
 
-#: harvests/templates/calendar.html:23
+#: harvests/templates/calendar.html:24
 msgid "Today"
 msgstr "Today"
 
-#: harvests/templates/calendar.html:24 templates/bootstrap_table.html:52
+#: harvests/templates/calendar.html:25 templates/bootstrap_table.html:52
 #: templates/card_detail.html:37 templates/search/search.html:44
 msgid "Next"
 msgstr "Next"
 
-#: harvests/templates/calendar.html:28
+#: harvests/templates/calendar.html:29
 msgid "Month"
 msgstr "Month"
 
-#: harvests/templates/calendar.html:29
+#: harvests/templates/calendar.html:30
 msgid "Week"
 msgstr "Week"
 
-#: harvests/templates/calendar.html:40
+#: harvests/templates/calendar.html:41
 msgid "Add harvest"
 msgstr "Add harvest"
 
@@ -978,41 +987,45 @@ msgstr "Seeds"
 msgid "Harvests"
 msgstr "Harvests"
 
-#: harvests/views.py:114 harvests/views.py:132
+#: harvests/views.py:66
+msgid "Back to calendar"
+msgstr "Back to calendar"
+
+#: harvests/views.py:132 harvests/views.py:150
 msgid "Harvest contains no seeds!"
 msgstr ""
 "Harvest contains no seeds! This means it cannot be frozen (set as 'Ready to "
 "harvest')"
 
-#: harvests/views.py:354 harvests/views.py:373
+#: harvests/views.py:372 harvests/views.py:391
 msgid "Available URLs for date"
 msgstr "Available URLs for date"
 
-#: harvests/views.py:358
+#: harvests/views.py:376
 msgid "All seeds for Harvest"
 msgstr "All seeds for Harvest"
 
-#: harvests/views.py:385
+#: harvests/views.py:403
 msgid "VNC"
 msgstr "VNC: Custom seeds"
 
-#: harvests/views.py:387
+#: harvests/views.py:405
 msgid "Totals"
 msgstr "Totals: All seeds"
 
-#: harvests/views.py:446
+#: harvests/views.py:464
 msgid "TopicCollections"
 msgstr "Topic Collections"
 
-#: harvests/views.py:456
+#: harvests/views.py:474
 msgid "Add TopicCollection"
 msgstr "Add Topic Collection"
 
-#: harvests/views.py:503
+#: harvests/views.py:521
 msgid "Cannot decode file to UTF-8"
 msgstr "Cannot decode file to UTF-8"
 
-#: harvests/views.py:505
+#: harvests/views.py:523
 #, python-format
 msgid ""
 "Original custom_seeds have been backed to: <a href='%(url)s' "
@@ -1021,27 +1034,27 @@ msgstr ""
 "Original custom_seeds have been backed to: <a href='%(url)s' "
 "target='_blank'>%(url)s</a>"
 
-#: harvests/views.py:509
+#: harvests/views.py:527
 msgid "Uploaded custom seeds will not be paired automatically"
 msgstr "Uploaded custom seeds will not be paired automatically"
 
-#: harvests/views.py:577
+#: harvests/views.py:595
 msgid "ExternalTopicCollections"
 msgstr "External Topic Collections"
 
-#: harvests/views.py:587
+#: harvests/views.py:605
 msgid "Add ExternalTopicCollection"
 msgstr "Add External Topic Collection"
 
-#: harvests/views.py:671
+#: harvests/views.py:689
 msgid "Topic collection published"
 msgstr "Topic collection published"
 
-#: harvests/views.py:673
+#: harvests/views.py:691
 msgid "Topic collection unpublished"
 msgstr "Topic collection unpublished"
 
-#: harvests/views.py:687
+#: harvests/views.py:705
 msgid "URL slug successfully updated"
 msgstr "URL slug successfully updated"
 
@@ -1109,7 +1122,7 @@ msgid "Edit contacts"
 msgstr "Edit contacts"
 
 #: publishers/templates/publisher.html:24 source/models.py:309
-#: source/views.py:254 templates/base.html:94
+#: source/views.py:255 templates/base.html:94
 msgid "Sources"
 msgstr "Sources"
 
@@ -1510,11 +1523,11 @@ msgstr "Source deactivated, it might still appear in searches."
 msgid "Add seed"
 msgstr "Add seed"
 
-#: source/views.py:238
+#: source/views.py:239
 msgid "You dont have permission for deleting seeds"
 msgstr "You don't have permission for deleting seeds"
 
-#: source/views.py:242
+#: source/views.py:243
 msgid "Seed deleted."
 msgstr "Seed deleted."
 
@@ -1644,11 +1657,11 @@ msgstr "You are done, nothing more to do here."
 msgid "Reverse order"
 msgstr "Reverse order"
 
-#: templates/filtered_list.html:13
+#: templates/filtered_list.html:19
 msgid "records"
 msgstr "records"
 
-#: templates/filtered_list.html:15
+#: templates/filtered_list.html:22
 msgid "Toggle filters"
 msgstr "Toggle filters"
 
