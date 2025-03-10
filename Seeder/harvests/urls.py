@@ -84,6 +84,7 @@ harvest_config_urlpatterns = [
 
 urlpatterns = [
     path('', CalendarView.as_view(), name='calendar'),
+    path('list', HarvestListView.as_view(), name='list'),
     path('json', CalendarJsonView.as_view(), name='json_calendar'),
     path('add', AddView.as_view(), name='add'),
     path('<int:pk>/detail', Detail.as_view(), name='detail'),
