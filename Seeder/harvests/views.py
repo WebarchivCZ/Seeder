@@ -59,6 +59,24 @@ class HarvestView(generic_views.LoginMixin):
     title = _('Harvests')
 
 
+class HarvestListView(HarvestView, generic_views.FilteredListView):
+    table_class = tables.HarvestTable
+    filterset_class = field_filters.HarvestFilter
+    back_link = "harvests:calendar"
+    back_link_title = _('Back to calendar')
+
+    def get_df_for_full_export(self):
+        """ Prepare a DataFrame of all Harvests """
+        import pandas as pd
+        return pd.DataFrame.from_records(models.Harvest.objects.all().values(
+            "status", "harvest_type", "title", "annotation", "scheduled_on",
+            "target_frequency", "auto_created", "topic_collections",
+            "topic_collection_frequency", "paraharvest", "manuals", "combined",
+            "archive_it", "tests", "duration", "budget", "dataLimit",
+            "documentLimit", "deduplication",
+        ))
+
+
 class CalendarView(HarvestView, TemplateView):
     template_name = 'calendar.html'
 

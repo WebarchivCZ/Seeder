@@ -39,13 +39,20 @@ class ChangeOrderColumn(tables.Column):
 class HarvestTable(tables.Table):
     created = NaturalDatetimeColumn()
     last_changed = NaturalDatetimeColumn()
+    scheduled_on = NaturalDatetimeColumn()
+    title = AbsoluteURLColumn(
+        verbose_name=_('title'),
+        text=lambda record: str(record),  # str() has checkmark
+    )
 
     class Meta:
         model = models.Harvest
-        fields = ('scheduled_on', 'harvest_type', 'target_frequency')
+        fields = ("scheduled_on", "title", "status", "harvest_type",
+                  "created", "last_changed")
+        order_by = ("-scheduled_on",)
 
         attrs = {
-            'class': 'table table-striped table-hover'
+            "class": "table table-striped table-hover"
         }
 
 
@@ -73,7 +80,7 @@ class TopicCollectionTable(tables.Table):
     last_changed = NaturalDatetimeColumn()
     title = AbsoluteURLColumn(
         verbose_name=_('title'),
-        text=lambda record: str(record), # str() has checkmark
+        text=lambda record: str(record),  # str() has checkmark
     )
 
     class Meta:
@@ -90,7 +97,7 @@ class ExternalTopicCollectionTable(tables.Table):
     last_changed = NaturalDatetimeColumn()
     title = AbsoluteURLColumn(
         verbose_name=_('title'),
-        text=lambda record: str(record), # str() has checkmark
+        text=lambda record: str(record),  # str() has checkmark
     )
     change_order = ChangeOrderColumn(accessor='pk')
 
