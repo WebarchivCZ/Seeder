@@ -10,7 +10,8 @@ CONTRACT_STATE_EXPIRED = 'EXPIRED'
 
 CONTRACT_STATES = (
     (CONTRACT_STATE_NEGOTIATION, _('Contract in negotiation')),
-    (CONTRACT_STATE_DECLINED, _('Publisher declined')),
+    # ? Originally "Publisher declined" / "Odmítnuto vydavatelem"
+    (CONTRACT_STATE_DECLINED, _('Contract terminated')),
     (CONTRACT_STATE_VALID, _('Contract is valid')),
     (CONTRACT_STATE_EXPIRED, _('Contract expired')),
 )
