@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Seeder\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-03-10 17:26+0000\n"
+"POT-Creation-Date: 2025-07-25 12:14+0000\n"
 "PO-Revision-Date: 2018-04-16 13:40+0200\n"
 "Last-Translator: mariehaskovcova <marie.haskovcova@nkp.cz>, 2017\n"
 "Language-Team: Czech (https://www.transifex.com/webarchivecz/teams/43032/"
@@ -170,47 +170,47 @@ msgstr "Komentáře"
 msgid "Contract in negotiation"
 msgstr "Smlouva v jednání"
 
-#: contracts/constants.py:13
-msgid "Publisher declined"
-msgstr "Odmítnuto vydavatelem"
+#: contracts/constants.py:14 source/constants.py:32
+msgid "Contract terminated"
+msgstr "Vypovězená smlouva"
 
-#: contracts/constants.py:14
+#: contracts/constants.py:15
 msgid "Contract is valid"
 msgstr "Platná smlouva"
 
-#: contracts/constants.py:15
+#: contracts/constants.py:16
 msgid "Contract expired"
 msgstr "Bez smlouvy"
 
-#: contracts/constants.py:37
+#: contracts/constants.py:38
 msgid "CreativeCommons"
 msgstr "Creative Commons"
 
-#: contracts/constants.py:38
+#: contracts/constants.py:39
 msgid "Apache"
 msgstr "Apache"
 
-#: contracts/constants.py:39
+#: contracts/constants.py:40
 msgid "GPL"
 msgstr "GPL"
 
-#: contracts/constants.py:40
+#: contracts/constants.py:41
 msgid "MIT"
 msgstr "MIT"
 
-#: contracts/constants.py:41
+#: contracts/constants.py:42
 msgid "LGPL 2"
 msgstr "LGPL 2"
 
-#: contracts/constants.py:42
+#: contracts/constants.py:43
 msgid "LGPL 3"
 msgstr "LGPL 3"
 
-#: contracts/constants.py:43
+#: contracts/constants.py:44
 msgid "mozilla"
 msgstr "Mozilla"
 
-#: contracts/constants.py:46
+#: contracts/constants.py:47
 msgid "Narodni knihovna CR - archivace Vasich webovych stranek"
 msgstr "Narodni knihovna CR - archivace Vasich webovych stranek"
 
@@ -1234,10 +1234,6 @@ msgstr "Odmítnuto vydavatelem"
 #: source/constants.py:31
 msgid "Publisher ignored requests"
 msgstr "Bez odezvy vydavatele"
-
-#: source/constants.py:32
-msgid "Contract terminated"
-msgstr "Vypovězená smlouva"
 
 #: source/constants.py:60
 msgid "Once only"

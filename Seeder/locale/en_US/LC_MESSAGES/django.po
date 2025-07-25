@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Seeder\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-03-10 17:26+0000\n"
+"POT-Creation-Date: 2025-07-25 12:14+0000\n"
 "PO-Revision-Date: 2017-11-07 12:38+0100\n"
 "Last-Translator: Visgean Skeloru <visgean@gmail.com>, 2017\n"
 "Language-Team: English (United States) (https://www.transifex.com/"
@@ -171,47 +171,47 @@ msgstr "Comments"
 msgid "Contract in negotiation"
 msgstr "Contract in negotiation"
 
-#: contracts/constants.py:13
-msgid "Publisher declined"
-msgstr "Publisher declined"
+#: contracts/constants.py:14 source/constants.py:32
+msgid "Contract terminated"
+msgstr "Contract terminated"
 
-#: contracts/constants.py:14
+#: contracts/constants.py:15
 msgid "Contract is valid"
 msgstr "Contract is valid"
 
-#: contracts/constants.py:15
+#: contracts/constants.py:16
 msgid "Contract expired"
 msgstr "Contract expired"
 
-#: contracts/constants.py:37
+#: contracts/constants.py:38
 msgid "CreativeCommons"
 msgstr "Creative Commons"
 
-#: contracts/constants.py:38
+#: contracts/constants.py:39
 msgid "Apache"
 msgstr "Apache"
 
-#: contracts/constants.py:39
+#: contracts/constants.py:40
 msgid "GPL"
 msgstr "GPL"
 
-#: contracts/constants.py:40
+#: contracts/constants.py:41
 msgid "MIT"
 msgstr "MIT"
 
-#: contracts/constants.py:41
+#: contracts/constants.py:42
 msgid "LGPL 2"
 msgstr "LGPL 2"
 
-#: contracts/constants.py:42
+#: contracts/constants.py:43
 msgid "LGPL 3"
 msgstr "LGPL 3"
 
-#: contracts/constants.py:43
+#: contracts/constants.py:44
 msgid "mozilla"
 msgstr "Mozilla"
 
-#: contracts/constants.py:46
+#: contracts/constants.py:47
 msgid "Narodni knihovna CR - archivace Vasich webovych stranek"
 msgstr "National library of the CR - archiving your web sites"
 
@@ -1238,10 +1238,6 @@ msgstr "Declined by publisher"
 #: source/constants.py:31
 msgid "Publisher ignored requests"
 msgstr "Publisher ignored requests"
-
-#: source/constants.py:32
-msgid "Contract terminated"
-msgstr "Contract terminated"
 
 #: source/constants.py:60
 msgid "Once only"
