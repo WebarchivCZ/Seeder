@@ -1077,10 +1077,11 @@ footer .cc-link img {
 }
 
 
-.thumb img.aspect-ratio {
+.thumb img.aspect-ratio, .thumb svg.aspect-ratio {
 	width: 100%;
 	height: 100%;
 }
+
 .thumb div.aspect-ratio {
 	position: relative;
 	width: 100%;
