@@ -7,7 +7,9 @@
         <div class="item-visual">
             <a href="{{ collection.get_www_url }} ">
                 <div class="img-wrapper thumb">
-                    {% if collection.image_file_exists %}
+                    {% if collection.image_text|length > 0 %}
+                    {{ collection.get_svg_data|safe }}
+                    {% elif collection.image_file_exists %}
                     {% thumbnail collection.image "660x500" crop="center" as im %}
                     <img src="{{ im.url }}" class="aspect-ratio" width="{{ im.width }}" height="{{ im.height }}">
                     {% endthumbnail %}

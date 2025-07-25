@@ -618,6 +618,10 @@ class ExternalTopicCollection(BaseModel, OrderedModel):
         upload_to='photos',
         null=True, blank=True,
     )
+    image_text = models.CharField(
+        _("Image text"), max_length=32, blank=True, help_text=_(
+            "If image text is set, it will be used to generate an SVG image "
+            "for the website, otherwise image will be used."))
 
     @property
     def custom_seeds(self):
@@ -667,6 +671,56 @@ class ExternalTopicCollection(BaseModel, OrderedModel):
         except Exception:
             return False
         return True
+
+    def get_svg_data(self):
+        # Use default if empty
+        text = self.image_text if self.image_text else "TC"
+        text_length = len(text)
+        svg_width = 206
+        svg_height = 156
+        background_color = "#00f"
+        font_family = "Times New Roman, serif"
+        font_weight = "normal"
+
+        if text_length > 10:
+            # Split text approximately in half, preferring space
+            midpoint = text_length // 2
+            split_index = text.rfind(' ', 0, midpoint + 1)
+            if split_index == -1:
+                split_index = midpoint
+            line1 = text[:split_index].strip()
+            line2 = text[split_index:].strip()
+
+            # Calculate font size based on the longest line
+            max_line_length = max(len(line1), len(line2))
+            target_ratio = 0.85  # Slightly higher for multi-line to use more space
+            target_width = svg_width * target_ratio
+            font_size = (target_width * 2) / max_line_length
+            # Clamp between 10px and 72px
+            font_size = max(10, min(font_size, 72))
+
+            svg = f"""<svg class='aspect-ratio' width='{svg_width}' height='{svg_height}' viewBox='0 0 {svg_width} {svg_height}' xmlns='http://www.w3.org/2000/svg'>
+  <rect width='100%' height='100%' fill='{background_color}'/>
+  <text x='50%' y='35%' fill='#fff' font-family='{font_family}' font-weight='{font_weight}' text-anchor='middle' dominant-baseline='middle' style='font-size: {font_size}px;'>{line1}</text>
+  <text x='50%' y='65%' fill='#fff' font-family='{font_family}' font-weight='{font_weight}' text-anchor='middle' dominant-baseline='middle' style='font-size: {font_size}px;'>{line2}</text>
+</svg>"""
+        else:
+            # Single-line logic (unchanged)
+            if text_length <= 5:
+                target_ratio = 0.5
+            else:
+                target_ratio = 0.65
+            target_width = svg_width * target_ratio
+            font_size = (target_width * 2) / text_length
+            # Clamp between 10px and 72px
+            font_size = max(10, min(font_size, 72))
+
+            svg = f"""<svg class='aspect-ratio' width='{svg_width}' height='{svg_height}' viewBox='0 0 {svg_width} {svg_height}' xmlns='http://www.w3.org/2000/svg'>
+  <rect width='100%' height='100%' fill='{background_color}'/>
+  <text x='50%' y='50%' fill='#fff' font-family='{font_family}' font-weight='{font_weight}' text-anchor='middle' dominant-baseline='middle' style='font-size: {font_size}px;'>{text}</text>
+</svg>"""
+
+        return svg
 
     def __str__(self):
         sign = '✔' if self.active else '✗'
@@ -888,6 +942,7 @@ def freeze_urls(sender, instance, **kwargs):
         instance.seeds_frozen = None
         instance.json_frozen = None
 
+
 @receiver(pre_save, sender=TopicCollection)
 def freeze_tc_urls(sender, instance, **kwargs):
     """
@@ -898,5 +953,5 @@ def freeze_tc_urls(sender, instance, **kwargs):
         instance._saved_once_ = True
         instance.save()
         # Avoid recursive save by not committing in pre_save
-        instance.seeds_frozen = "" # delete so they're recomputed
+        instance.seeds_frozen = ""  # delete so they're recomputed
         instance.freeze_seeds(commit=False)

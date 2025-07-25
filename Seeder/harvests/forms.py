@@ -243,6 +243,7 @@ class ExternalTopicCollectionForm(forms.ModelForm):
             'title_en',
             'annotation_cs',
             'annotation_en',
+            'image_text',
             'image',
             # 'slug',
             'keywords',
