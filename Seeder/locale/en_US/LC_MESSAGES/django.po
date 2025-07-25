@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Seeder\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-07-25 12:14+0000\n"
+"POT-Creation-Date: 2025-07-25 13:37+0000\n"
 "PO-Revision-Date: 2017-11-07 12:38+0100\n"
 "Last-Translator: Visgean Skeloru <visgean@gmail.com>, 2017\n"
 "Language-Team: English (United States) (https://www.transifex.com/"
@@ -216,7 +216,7 @@ msgid "Narodni knihovna CR - archivace Vasich webovych stranek"
 msgstr "National library of the CR - archiving your web sites"
 
 #: contracts/models.py:55 contracts/templates/contract.html:21
-#: harvests/models.py:235 harvests/models.py:716 source/models.py:270
+#: harvests/models.py:235 harvests/models.py:770 source/models.py:270
 #: voting/models.py:27
 msgid "State"
 msgstr "State"
@@ -596,7 +596,7 @@ msgstr "Planned"
 msgid "Ready to harvest"
 msgstr "Ready to harvest"
 
-#: harvests/models.py:209 harvests/models.py:693
+#: harvests/models.py:209 harvests/models.py:747
 msgid "Running"
 msgstr "Running"
 
@@ -616,12 +616,12 @@ msgstr "Cancelled"
 msgid "Failed"
 msgstr "Failed"
 
-#: harvests/models.py:237 harvests/models.py:838
+#: harvests/models.py:237 harvests/models.py:892
 #: harvests/templates/harvest.html:19 harvests/templates/harvest_config.html:18
 msgid "Harvest type"
 msgstr "Harvest type"
 
-#: harvests/models.py:239 harvests/models.py:602 harvests/models.py:720
+#: harvests/models.py:239 harvests/models.py:602 harvests/models.py:774
 #: harvests/tables.py:44 harvests/tables.py:82 harvests/tables.py:99
 #: www/tables.py:13
 msgid "title"
@@ -632,7 +632,7 @@ msgstr "Title"
 msgid "Annotation"
 msgstr "Annotation"
 
-#: harvests/models.py:243 harvests/models.py:735
+#: harvests/models.py:243 harvests/models.py:789
 msgid "Date of harvest"
 msgstr "Date of harvest"
 
@@ -672,27 +672,27 @@ msgstr "ArchiveIt"
 msgid "Tests"
 msgstr "Tests"
 
-#: harvests/models.py:289 harvests/models.py:840
+#: harvests/models.py:289 harvests/models.py:894
 #: harvests/templates/harvest.html:65 harvests/templates/harvest_config.html:20
 msgid "duration"
 msgstr "duration"
 
-#: harvests/models.py:291 harvests/models.py:842
+#: harvests/models.py:291 harvests/models.py:896
 #: harvests/templates/harvest.html:67 harvests/templates/harvest_config.html:22
 msgid "budget"
 msgstr "budget"
 
-#: harvests/models.py:293 harvests/models.py:844
+#: harvests/models.py:293 harvests/models.py:898
 #: harvests/templates/harvest.html:69 harvests/templates/harvest_config.html:24
 msgid "dataLimit"
 msgstr "dataLimit"
 
-#: harvests/models.py:295 harvests/models.py:846
+#: harvests/models.py:295 harvests/models.py:900
 #: harvests/templates/harvest.html:71 harvests/templates/harvest_config.html:26
 msgid "documentLimit"
 msgstr "documentLimit"
 
-#: harvests/models.py:297 harvests/models.py:848
+#: harvests/models.py:297 harvests/models.py:902
 #: harvests/templates/harvest.html:73 harvests/templates/harvest_config.html:28
 msgid "deduplication"
 msgstr "deduplication"
@@ -701,7 +701,7 @@ msgstr "deduplication"
 msgid "Seeds not harvested"
 msgstr "Seeds not harvested"
 
-#: harvests/models.py:606 harvests/models.py:723 source/constants.py:124
+#: harvests/models.py:606 harvests/models.py:777 source/constants.py:124
 #: source/models.py:240
 msgid "Curator"
 msgstr "Curator"
@@ -710,7 +710,7 @@ msgstr "Curator"
 msgid "keywords"
 msgstr "Keywords"
 
-#: harvests/models.py:613 harvests/models.py:740
+#: harvests/models.py:613 harvests/models.py:794
 msgid "annotation"
 msgstr "annotation"
 
@@ -718,69 +718,81 @@ msgstr "annotation"
 msgid "image"
 msgstr "image"
 
-#: harvests/models.py:676 harvests/templates/topic_collection.html:13
+#: harvests/models.py:622
+msgid "Image text"
+msgstr "Image text"
+
+#: harvests/models.py:623
+msgid ""
+"If image text is set, it will be used to generate an SVG image for the "
+"website, otherwise image will be used."
+msgstr ""
+"If image text is set, it will be used to generate an SVG image for the "
+"website, otherwise image will be used."
+
+#: harvests/models.py:730 harvests/templates/topic_collection.html:13
 msgid "External Topic Collection"
 msgstr "External Topic Collection"
 
-#: harvests/models.py:677 templates/base.html:110
+#: harvests/models.py:731 templates/base.html:110
 msgid "External Topic Collections"
 msgstr "External Topic Collections"
 
-#: harvests/models.py:694
+#: harvests/models.py:748
 msgid "New"
 msgstr "New"
 
-#: harvests/models.py:695
+#: harvests/models.py:749
 msgid "Finished"
 msgstr "Finished"
 
-#: harvests/models.py:707 harvests/templates/topic_collection.html:49
+#: harvests/models.py:761 harvests/templates/topic_collection.html:49
 #: source/models.py:276 source/templates/source.html:60 templates/api.html:17
 msgid "Frequency"
 msgstr "Frequency"
 
-#: harvests/models.py:744
+#: harvests/models.py:798
 msgid "All sources are under open license or contract"
 msgstr "All sources are under open license or contract"
 
-#: harvests/models.py:747
+#: harvests/models.py:801
 msgid "Date from"
 msgstr "Date from"
 
-#: harvests/models.py:748
+#: harvests/models.py:802
 msgid "Date to"
 msgstr "Date to"
 
-#: harvests/models.py:752 harvests/templates/topic_collection.html:24
+#: harvests/models.py:806 harvests/templates/topic_collection.html:24
 msgid "Collection alias"
 msgstr "Collection alias"
 
-#: harvests/models.py:754 harvests/templates/topic_collection.html:82
+#: harvests/models.py:808 harvests/templates/topic_collection.html:82
 msgid "Aggregation with same type"
 msgstr "Aggregation with same type"
 
-#: harvests/models.py:810
+#: harvests/models.py:864
 msgid "Internal Topic Collection"
 msgstr "Internal Topic Collection"
 
-#: harvests/models.py:811 harvests/templates/external_topic_collection.html:82
+#: harvests/models.py:865 harvests/templates/external_topic_collection.html:82
 #: templates/base.html:113
 msgid "Internal Topic Collections"
 msgstr "Internal Topic Collections"
 
-#: harvests/models.py:817
+#: harvests/models.py:871
 msgid "file"
 msgstr "file"
 
-#: harvests/models.py:851
+#: harvests/models.py:905
 msgid "Harvest Configuration"
 msgstr "Harvest Configuration"
 
-#: harvests/models.py:852 harvests/views.py:417 templates/base.html:127
+#: harvests/models.py:906 harvests/views.py:417 templates/base.html:127
 msgid "Harvest Configurations"
 msgstr "Harvest Configurations"
 
-#: harvests/models.py:856
+#: harvests/models.py:910
 #, python-format
 msgid "Configuration for %(type)s Harvests"
 msgstr "Configuration for %(type)s Harvests"
