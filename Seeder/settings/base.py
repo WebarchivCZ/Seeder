@@ -283,6 +283,9 @@ if DEBUG:
     REST_FRAMEWORK['DEFAULT_PERMISSION_CLASSES'] = [
         'rest_framework.permissions.AllowAny'
     ]
+    MIDDLEWARE = (
+        'core.middleware.ProfilingMiddleware',  # Add profiling at the top
+     ) + MIDDLEWARE
 
 
 WAKAT_URL = 'http://forpsi.kitakitsune.org:8080/?url_id={id}'
