@@ -35,7 +35,15 @@ ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '127.0.0.1').split(' ')
 INTERNAL_IPS = os.environ.get('INTERNAL_IPS', '127.0.0.1').split(' ')
 
 FILE_UPLOAD_MAX_MEMORY_SIZE = int(os.environ.get(
-    'FILE_UPLOAD_MAX_MEMORY_SIZE', 52428800))  # 50*1024*1024 = 50 MiB
+    'FILE_UPLOAD_MAX_MEMORY_SIZE', 524288000))  # 500*1024*1024 = 500 MiB
+
+# POST data limits (for large custom seeds uploads)
+DATA_UPLOAD_MAX_MEMORY_SIZE = int(os.environ.get(
+    'DATA_UPLOAD_MAX_MEMORY_SIZE', 524288000))  # 500*1024*1024 = 500 MiB
+DATA_UPLOAD_MAX_NUMBER_FIELDS = int(os.environ.get(
+    'DATA_UPLOAD_MAX_NUMBER_FIELDS', 1000))  # Default Django limit
+DATA_UPLOAD_MAX_NUMBER_FILES = int(os.environ.get(
+    'DATA_UPLOAD_MAX_NUMBER_FILES', 100))  # Default Django limit
 
 # Database
 # https://docs.djangoproject.com/en/1.7/ref/settings/#databases
