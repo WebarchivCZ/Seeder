@@ -484,9 +484,9 @@ class Source(SearchModel, SlugOrCreateModel, BaseModel):
     def export_all_sources(cls):
         from django.db.models.expressions import RawSQL
         import pandas as pd
+        from django.urls import reverse
         qs = cls.objects.prefetch_related(
             "owner", "publisher", "category", "sub_category"
-            # string_agg is supported from Django 3
         ).annotate(seed_urls=RawSQL(
             "SELECT string_agg(url, ',') FROM source_seed WHERE "
             "source_seed.source_id = source_source.id", ()))
@@ -496,6 +496,11 @@ class Source(SearchModel, SlugOrCreateModel, BaseModel):
             "dead_source", "priority_source", "created", "last_changed",
             "seed_urls",
         ))
+        # Přidání sloupce s URL na detail v Seederu
+        if not df.empty:
+            # Získání slugu nebo id pro URL
+            # Pokud je ve view potřeba veřejná URL, použijte get_public_url
+            df["seeder_url"] = df["id"].apply(lambda pk: reverse('www:source_detail', args=[str(cls.objects.get(pk=pk).slug_safe)]))
         for col in df.columns:
             # Make datetime fields timezone-naive
             if df[col].dtype.name == "datetime64[ns, UTC]":
