@@ -502,6 +502,7 @@ class InternalCollectionEdit(InternalTCView, generic_views.EditView):
     def form_valid(self, form):
         topic = form.save(commit=False)
         form.save_m2m()  # must save m2m when commit=False
+
         # Create and delete attachments
         ids_to_delete = form.cleaned_data['files_to_delete']
         for att in models.Attachment.objects.filter(id__in=ids_to_delete):
@@ -510,6 +511,7 @@ class InternalCollectionEdit(InternalTCView, generic_views.EditView):
         for each in form.cleaned_data["attachments"]:
             models.Attachment.objects.create(
                 file=each, topic_collection=topic)
+
         # If a custom seeds file is uploaded, backup and replace TC.custom_seeds
         new_custom_seeds = form.cleaned_data.get("custom_seeds_file")
         if new_custom_seeds:
@@ -519,6 +521,8 @@ class InternalCollectionEdit(InternalTCView, generic_views.EditView):
                 topic.save()  # full save, including new large custom seeds
             except UnicodeDecodeError:
                 messages.error(self.request, _("Cannot decode file to UTF-8"))
+                return HttpResponseRedirect(topic.get_absolute_url())
+
             messages.success(self.request, mark_safe(_(
                 "Original custom_seeds have been backed to: <a href='%(url)s' "
                 "target='_blank'>%(url)s</a>"

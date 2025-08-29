@@ -5,31 +5,59 @@ volumes:
   media:
 
 services:
-  reverse-proxy:
-    # The official v2 Traefik docker image
-    image: traefik:v2.8
-    # Enables the web UI and tells Traefik to listen to docker
-    command: --api.insecure=true --providers.docker
+  # External reverse proxy that mimics production infrastructure
+  external-proxy:
+    image: nginx:alpine
     ports:
-      # The HTTP port
+      # The HTTP port (now this is the main entry point)
       - "80:80"
-      # The Web UI (enabled by --api.insecure=true)
-      - "8080:8080"
     volumes:
-      # So that Traefik can listen to the Docker events
-      - /var/run/docker.sock:/var/run/docker.sock
-    logging:  
+      - ./ci/nginx-reverse-proxy.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - reverse-proxy
+    logging:
       options:
         max-size: "10m"
         max-file: "3"
+
+  reverse-proxy:
+    # The official v2 Traefik docker image
+    image: traefik:v3.2
+    # Enables the web UI and tells Traefik to listen to docker
+    command:
+      - "--providers.docker"
+      - "--api=true"
+      - "--api.insecure=true"
+      - "--api.dashboard=true"
+      - "--entrypoints.web"
+      - "--entrypoints.web.address=:8000"
+      - "--entrypoints.traefik"
+      - "--entrypoints.traefik.address=:8080"
+    ports:
+      # Traefik now runs on 8001 (behind external-proxy)
+      - "8001:8000"
+      # The Web UI (enabled by --api.insecure=true)
+      - "8080:8080"
+    privileged: true
+    volumes:
+      # So that Traefik can listen to the Docker events
+      - /var/run/docker.sock:/var/run/docker.sock
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "3"
+    labels:
+      # API dashboard should only be accessible on dedicated port
+      traefik.http.routers.api.rule: "Host(`traefik.localhost`)"
+      traefik.http.routers.api.service: api@internal
 
   web:
     build:
       context: .
     volumes:
-     - .:/code
-     - "static:/code/Seeder/static_root"
-     - "media:/code/Seeder/media"
+      - .:/code
+      - "static:/code/Seeder/static_root"
+      - "media:/code/Seeder/media"
     command: bash run.sh
     working_dir: /code/Seeder
     labels:
@@ -39,10 +67,15 @@ services:
         max-size: "10m"
         max-file: "3"
     environment:
-      DEBUG: 'True'
-      THUMBNAIL_DEBUG: 'True'
+      DEBUG: "True"
+      THUMBNAIL_DEBUG: "True"
       DJANGO_SETTINGS_MODULE: settings.env
       ALLOWED_HOSTS: 127.0.0.1 localhost
+      # Keep local development database settings
+      DB_HOST: postgres
+      DB_NAME: postgres
+      DB_USER: postgres
+      DB_PASS: postgres
     depends_on:
       - postgres
       - manet
@@ -53,24 +86,24 @@ services:
     volumes:
       - static:/seeder/static:ro
       - media:/seeder/media:ro
-      - ./ci/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./ci/templates/nginx.conf:/etc/nginx/conf.d/default.conf:ro
     logging:
       options:
         max-size: "10m"
         max-file: "3"
     labels:
-      traefik.http.routers.static.rule: "PathPrefix(`/static`) || PathPrefix(`/media`)"
+      traefik.http.routers.static.rule: "Host(`localhost`) && (PathPrefix(`/static`) || PathPrefix(`/media`)) || Host(`127.0.0.1`) && (PathPrefix(`/static`) || PathPrefix(`/media`))"
     depends_on:
       - web
 
   vyvoj:
     image: webarchiv/vyvoj:naki
-    logging:  
+    logging:
       options:
         max-size: "10m"
         max-file: "3"
     labels:
-      traefik.http.routers.vyvoj.rule: Host(`localhost`) && PathPrefix(`/vyvoj`)
+      traefik.http.routers.vyvoj.rule: "Host(`localhost`) && PathPrefix(`/vyvoj`) || Host(`127.0.0.1`) && PathPrefix(`/vyvoj`)"
 
   postgres:
     image: postgres:9.6

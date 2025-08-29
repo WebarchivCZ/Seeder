@@ -8,22 +8,9 @@
         state: directory
 
     - name: "Prepare configuration for static web."
-      copy:
+      template:
+        src: nginx.conf
         dest: /home/ansible/seeder/static-nginx.conf
-        content: |
-          server {
-            location /static/ {
-                root /seeder;
-            }
-            location /media/ {
-                root /seeder;
-            }
-
-            # Increase max upload size to ~50MB
-            client_max_body_size 53M;
-
-            listen 0.0.0.0:80;
-          }
 
     - name: "Prepare Seeder compose file."
       template:
