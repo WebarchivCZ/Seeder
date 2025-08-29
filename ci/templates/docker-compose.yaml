@@ -61,7 +61,6 @@ services:
       EMAIL_BACKEND: {{ seeder_django_email_backend | default('django.core.mail.backends.console.EmailBackend') }}
       EMAIL_HOST: {{ seeder_django_email_host | default('localhost') }}
     depends_on:
-      - manet
       - memcached
       - seeder_db
 
@@ -107,11 +106,3 @@ services:
       options:
         max-size: "10m"
         max-file: "3"
-
-  manet:
-    image: bobey/manet:latest
-    logging:  
-      options:
-        max-size: "10m"
-        max-file: "3"
-  

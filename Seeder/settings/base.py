@@ -252,7 +252,7 @@ DEBUG_TOOLBAR_CONFIG = {
 CRONTAB_COMMAND_PREFIX = ". /code/.cronenv;"
 CRONTAB_COMMAND_SUFFIX = ">> /var/log/cron.log 2>&1"
 CRONJOBS = [
-    ('1 * * * *', 'source.screenshots.take_screenshots'),
+    ('0 1 * * *', 'source.screenshots.take_screenshots'),
     ('10 * * * *', 'voting.cron.revive_postponed_rounds'),
     ('20 * * * *', 'contracts.cron.expire_contracts'),
     ('30 * * * *', 'contracts.cron.send_emails'),
@@ -294,7 +294,6 @@ WAYBACK_URL = "http://wayback.webarchiv.cz/wayback/query?type=urlquery&url={url}
 
 SEEDS_EXPORT_DIR = 'seeds'
 SEEDS_BACKUP_DIR = os.path.join(SEEDS_EXPORT_DIR, 'backup')
-MANET_URL = '127.0.0.1:8891'
 
 
 QA_EVERY_N_MONTHS = 24

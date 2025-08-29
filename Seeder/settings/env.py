@@ -75,7 +75,6 @@ EMAIL_USE_TLS = os.environ.get('EMAIL_USE_TLS', 'False').lower() == 'true'
 DEFAULT_FROM_EMAIL = os.environ.get('DEFAULT_FROM_EMAIL', 'webarchiv@nkp.cz')
 SERVER_EMAIL = os.environ.get('SERVER_EMAIL', 'webarchiv@nkp.cz')
 
-MANET_URL = os.environ.get('MANET', 'http://manet:8891/')
 WAKAT_URL = os.environ.get('WAKAT_URL', 'http://kat.webarchiv.cz/?url_id={id}')
 WAYBACK_URL = os.environ.get(
     'WAYBACK_URL', 'https://wayback.webarchiv.cz/wayback/*/{url}')
