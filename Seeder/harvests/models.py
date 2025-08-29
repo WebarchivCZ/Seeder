@@ -607,7 +607,7 @@ class ExternalTopicCollection(BaseModel, OrderedModel):
         on_delete=models.PROTECT
     )
 
-    keywords = models.ManyToManyField(KeyWord, verbose_name=_('keywords'))
+    keywords = models.ManyToManyField(KeyWord, verbose_name=_('Keywords'))
 
     annotation = RichTextField(
         verbose_name=_('annotation'),

@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Seeder\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-07-25 13:37+0000\n"
+"POT-Creation-Date: 2025-08-29 14:06+0000\n"
 "PO-Revision-Date: 2018-04-16 13:40+0200\n"
 "Last-Translator: mariehaskovcova <marie.haskovcova@nkp.cz>, 2017\n"
 "Language-Team: Czech (https://www.transifex.com/webarchivecz/teams/43032/"
@@ -151,7 +151,7 @@ msgid "This comment has been removed"
 msgstr "Komentář byl odstraněn"
 
 #: comments/models.py:168 qa/models.py:40 qa/templates/detail.html:30
-#: source/models.py:256 source/models.py:538 source/templates/source.html:87
+#: source/models.py:260 source/models.py:542 source/templates/source.html:87
 #: templates/history.html:14
 msgid "Comment"
 msgstr "Komentář"
@@ -214,63 +214,63 @@ msgstr "Mozilla"
 msgid "Narodni knihovna CR - archivace Vasich webovych stranek"
 msgstr "Narodni knihovna CR - archivace Vasich webovych stranek"
 
-#: contracts/models.py:55 contracts/templates/contract.html:21
-#: harvests/models.py:235 harvests/models.py:770 source/models.py:270
+#: contracts/models.py:83 contracts/templates/contract.html:21
+#: harvests/models.py:235 harvests/models.py:770 source/models.py:274
 #: voting/models.py:27
 msgid "State"
 msgstr "Stav"
 
-#: contracts/models.py:61
+#: contracts/models.py:89
 msgid "Creative commons type"
 msgstr "Zdroj Creative Commons"
 
-#: contracts/models.py:68 contracts/templates/contract.html:47
+#: contracts/models.py:96 contracts/templates/contract.html:47
 msgid "Valid from"
 msgstr "Platný od"
 
-#: contracts/models.py:73 contracts/templates/contract.html:51
+#: contracts/models.py:101 contracts/templates/contract.html:51
 msgid "Valid to"
 msgstr "Platný do"
 
-#: contracts/models.py:79 harvests/templates/calendar.html:28
+#: contracts/models.py:107 harvests/templates/calendar.html:28
 msgid "Year"
 msgstr "Rok"
 
-#: contracts/models.py:84 contracts/templates/contract.html:76
+#: contracts/models.py:112 contracts/templates/contract.html:76
 msgid "Contract file"
 msgstr "Smlouva"
 
-#: contracts/models.py:91 source/field_filters.py:59
+#: contracts/models.py:119 source/field_filters.py:59
 msgid "Contract number"
 msgstr "Číslo smlouvy"
 
-#: contracts/models.py:97 source/constants.py:25
+#: contracts/models.py:125 source/constants.py:25
 msgid "In communication"
 msgstr "V jednání"
 
-#: contracts/models.py:98
+#: contracts/models.py:126
 msgid "Does the publisher responds to the emails?"
 msgstr "Odpověděl vydavatel na emaily?"
 
-#: contracts/models.py:103 contracts/templates/contract.html:55
+#: contracts/models.py:131 contracts/templates/contract.html:55
 msgid "Description"
 msgstr "Popis"
 
-#: contracts/models.py:110 contracts/templates/contract.html:59
+#: contracts/models.py:138 contracts/templates/contract.html:59
 msgid "Parent"
 msgstr "Zdroj"
 
-#: contracts/models.py:125
+#: contracts/models.py:153
 #, python-brace-format
 msgid "Contract in negotiation with {0}"
 msgstr "Smlouva v jednání s  {0}"
 
-#: contracts/models.py:135
+#: contracts/models.py:163
 #, python-brace-format
 msgid "Contract with {0}"
 msgstr "Smlouva s {0}"
 
-#: contracts/models.py:227
+#: contracts/models.py:255
 msgid "When to send this message"
 msgstr "Kdy chcete odeslat tuto zprávu?"
 
@@ -307,7 +307,7 @@ msgid "Creative commons"
 msgstr "Creative Commons"
 
 #: contracts/templates/contract.html:43 publishers/models.py:30
-#: source/constants.py:121 source/models.py:244 source/tables.py:10
+#: source/constants.py:121 source/models.py:248 source/tables.py:10
 #: source/templates/duplicity_check.html:20 source/templates/source.html:76
 msgid "Publisher"
 msgstr "Vydavatel"
@@ -546,20 +546,6 @@ msgstr "Údržba Wayback byla zapnuta"
 msgid "dataLimit cannot be over 1TB"
 msgstr "dataLimit nesmí být přes 1TB"
 
-#: harvests/forms.py:27
-msgid "One URL per line"
-msgstr "Jedna URL na řádku"
-
-#: harvests/forms.py:207
-msgid ""
-"Provide a text file with one seed per line which will overwrite all "
-"custom_seeds. The original custom_seeds will be backed up to the media/seeds/"
-"backup folder."
-msgstr ""
-"Přiložte textový soubor s jedním semínkem na řádek, který přepíše všechna "
-"mimosystémová semínka. Původní semínka budou zálohována do media/seeds/"
-"backup složky."
-
 #: harvests/forms.py:228
 msgid ""
 "Custom seeds field is disabled because there are too many seeds to be "
@@ -624,7 +610,7 @@ msgid "title"
 msgstr "Název"
 
 #: harvests/models.py:241 harvests/templates/harvest.html:17
-#: source/models.py:257 source/templates/source.html:91
+#: source/models.py:261 source/templates/source.html:91
 msgid "Annotation"
 msgstr "Anotace"
 
@@ -698,12 +684,13 @@ msgid "Seeds not harvested"
 msgstr "Nesklizená semínka"
 
 #: harvests/models.py:606 harvests/models.py:777 source/constants.py:124
-#: source/models.py:240
+#: source/models.py:244
 msgid "Curator"
 msgstr "Kurátor"
 
-#: harvests/models.py:610 source/templates/source.html:95
-msgid "keywords"
+#: harvests/models.py:610 harvests/templates/external_topic_collection.html:60
+#: source/models.py:229 source/templates/source.html:95
+msgid "Keywords"
 msgstr "Klíčová slova"
 
 #: harvests/models.py:613 harvests/models.py:794
@@ -723,8 +710,8 @@ msgid ""
 "If image text is set, it will be used to generate an SVG image for the "
 "website, otherwise image will be used."
 msgstr ""
-"Pokud je nastaven text obrázku, bude použit k vygenerování SVG obrázku "
-"pro web, jinak bude použit samotný obrázek."
+"Pokud je nastaven text obrázku, bude použit k vygenerování SVG obrázku pro "
+"web, jinak bude použit samotný obrázek."
 
 #: harvests/models.py:730 harvests/templates/topic_collection.html:13
 msgid "External Topic Collection"
@@ -743,7 +730,7 @@ msgid "Finished"
 msgstr "Hotovo"
 
 #: harvests/models.py:761 harvests/templates/topic_collection.html:49
-#: source/models.py:276 source/templates/source.html:60 templates/api.html:17
+#: source/models.py:280 source/templates/source.html:60 templates/api.html:17
 msgid "Frequency"
 msgstr "Frekvence"
 
@@ -856,7 +843,7 @@ msgstr "anotace (ČJ)"
 msgid "annotation [en]"
 msgstr "anotace (AJ)"
 
-#: harvests/templates/external_topic_collection.html:39 source/models.py:291
+#: harvests/templates/external_topic_collection.html:39 source/models.py:295
 #: source/templates/source.html:32
 msgid "Screenshot"
 msgstr "Screenshot"
@@ -871,10 +858,6 @@ msgstr "Vytvořeno"
 #: harvests/templates/topic_collection.html:69 source/templates/source.html:56
 msgid "Owner"
 msgstr "Kurátor"
-
-#: harvests/templates/external_topic_collection.html:60
-msgid "Keywords"
-msgstr "Klíčová slova"
 
 #: harvests/templates/external_topic_collection.html:66
 #: source/templates/source.html:134
@@ -987,7 +970,7 @@ msgid "All sources are open?"
 msgstr "Všechny zdroje jsou otevřené?"
 
 #: harvests/templates/topic_collection.html:94 qa/templates/qa_form.html:20
-#: source/models.py:567 source/templates/source.html:156
+#: source/models.py:571 source/templates/source.html:156
 msgid "Seeds"
 msgstr "Semínka"
 
@@ -1029,11 +1012,11 @@ msgstr "Tematické kolekce"
 msgid "Add TopicCollection"
 msgstr "Přidat tematickou kolekci"
 
-#: harvests/views.py:521
+#: harvests/views.py:523
 msgid "Cannot decode file to UTF-8"
 msgstr "Nelze dekódovat soubor do UTF-8"
 
-#: harvests/views.py:523
+#: harvests/views.py:527
 #, python-format
 msgid ""
 "Original custom_seeds have been backed to: <a href='%(url)s' "
@@ -1042,27 +1025,27 @@ msgstr ""
 "Původní mimosystémová semínka byla zálohována do <a href='%(url)s' "
 "target='_blank'>%(url)s</a>"
 
-#: harvests/views.py:527
+#: harvests/views.py:531
 msgid "Uploaded custom seeds will not be paired automatically"
 msgstr "Nahraná mimosystémová semínka nebudou automaticky párována"
 
-#: harvests/views.py:595
+#: harvests/views.py:599
 msgid "ExternalTopicCollections"
 msgstr "Externí tematické kolekce"
 
-#: harvests/views.py:605
+#: harvests/views.py:609
 msgid "Add ExternalTopicCollection"
 msgstr "Přidat Externí tematickou kolekci"
 
-#: harvests/views.py:689
+#: harvests/views.py:693
 msgid "Topic collection published"
 msgstr "Tematická kolekce publikována"
 
-#: harvests/views.py:691
+#: harvests/views.py:695
 msgid "Topic collection unpublished"
 msgstr "Tematická kolekce nepublikována"
 
-#: harvests/views.py:705
+#: harvests/views.py:709
 msgid "URL slug successfully updated"
 msgstr "URL byla úspěšné změněna"
 
@@ -1080,7 +1063,7 @@ msgid "Position"
 msgstr "Pozice"
 
 #: publishers/forms.py:57 publishers/models.py:24 publishers/models.py:57
-#: publishers/tables.py:9 source/models.py:255 source/tables.py:8
+#: publishers/tables.py:9 source/models.py:259 source/tables.py:8
 #: www/models.py:82
 msgid "Name"
 msgstr "Jméno"
@@ -1113,7 +1096,7 @@ msgstr "Telefon"
 msgid "Address"
 msgstr "Adresa"
 
-#: publishers/models.py:65 source/models.py:250 source/templates/source.html:80
+#: publishers/models.py:65 source/models.py:254 source/templates/source.html:80
 msgid "Publisher contact"
 msgstr "Kontakt na vydavatele"
 
@@ -1129,7 +1112,7 @@ msgstr "Kontakty:"
 msgid "Edit contacts"
 msgstr "Editovat kontakty"
 
-#: publishers/templates/publisher.html:24 source/models.py:309
+#: publishers/templates/publisher.html:24 source/models.py:313
 #: source/views.py:255 templates/base.html:94
 msgid "Sources"
 msgstr "Zdroje"
@@ -1147,7 +1130,7 @@ msgstr ""
 "Kontaktní osoba %(person)s je stále nastavena jako kontakt na: %(sources)s, "
 "nejdříve je tam prosím odeberte."
 
-#: qa/models.py:18 qa/templates/detail.html:13 source/models.py:308
+#: qa/models.py:18 qa/templates/detail.html:13 source/models.py:312
 msgid "Source"
 msgstr "Zdroj"
 
@@ -1331,83 +1314,95 @@ msgstr ""
 "Zdroje se stavem 'Archivován' a 'Archivován bez smlouvy' musí mít vybranou "
 "Frekvenci sklízení"
 
-#: source/models.py:260 source/templates/source.html:72
-msgid "Suggested by"
-msgstr "Navrženo"
-
-#: source/models.py:281 source/templates/source.html:102
+#: source/models.py:130 source/models.py:285 source/templates/source.html:102
 msgid "Category"
 msgstr "Kategorie"
 
-#: source/models.py:286 source/templates/source.html:106
+#: source/models.py:131
+msgid "Categories"
+msgstr "Kategorie"
+
+#: source/models.py:155 source/models.py:290 source/templates/source.html:106
 msgid "Sub category"
 msgstr "Podkategorie"
 
-#: source/models.py:298
+#: source/models.py:156
+msgid "Sub categories"
+msgstr "Podkategorie"
+
+#: source/models.py:228
+msgid "Keyword"
+msgstr "Klíčové slovo"
+
+#: source/models.py:264 source/templates/source.html:72
+msgid "Suggested by"
+msgstr "Navrženo"
+
+#: source/models.py:302
 msgid "Source is dead"
 msgstr "Mrtvý web"
 
-#: source/models.py:299 source/templates/source.html:52
+#: source/models.py:303 source/templates/source.html:52
 msgid "Priority source"
 msgstr "Prioritní zdroj"
 
-#: source/models.py:519
+#: source/models.py:523
 msgid "default"
 msgstr "výchozí"
 
-#: source/models.py:520
+#: source/models.py:524
 msgid "low"
 msgstr "low"
 
-#: source/models.py:521
+#: source/models.py:525
 msgid "very_low"
 msgstr "very low"
 
-#: source/models.py:532
+#: source/models.py:536
 msgid "Main seed"
 msgstr "Hlavní semínko"
 
-#: source/models.py:533
+#: source/models.py:537
 msgid "Seed url"
 msgstr "URL semínko"
 
-#: source/models.py:539
+#: source/models.py:543
 msgid "From"
 msgstr "Od"
 
-#: source/models.py:540
+#: source/models.py:544
 msgid "To"
 msgstr "Do"
 
-#: source/models.py:543
+#: source/models.py:547
 msgid "Javascript"
 msgstr "Javascript"
 
-#: source/models.py:544
+#: source/models.py:548
 msgid "Global reject"
 msgstr "Odmítnuto"
 
-#: source/models.py:545
+#: source/models.py:549
 msgid "Youtube"
 msgstr "Youtube"
 
-#: source/models.py:546
+#: source/models.py:550
 msgid "Calendars"
 msgstr "Kalendáře"
 
-#: source/models.py:547
+#: source/models.py:551
 msgid "Local traps"
 msgstr "Local traps"
 
-#: source/models.py:548
+#: source/models.py:552
 msgid "Redirect on seed"
 msgstr "Přesměrováno na semínko"
 
-#: source/models.py:549
+#: source/models.py:553
 msgid "Robots.txt active"
 msgstr "aktivní Robots.txt"
 
-#: source/models.py:566
+#: source/models.py:570
 msgid "Seed"
 msgstr "Semínko"
 
@@ -2308,3 +2303,18 @@ msgstr "Přidat aktualitu"
 #: www/views_admin.py:66
 msgid "news"
 msgstr "aktuality"
+
+#~ msgid "keywords"
+#~ msgstr "Klíčová slova"
+
+#~ msgid "One URL per line"
+#~ msgstr "Jedna URL na řádku"
+
+#~ msgid ""
+#~ "Provide a text file with one seed per line which will overwrite all "
+#~ "custom_seeds. The original custom_seeds will be backed up to the media/"
+#~ "seeds/backup folder."
+#~ msgstr ""
+#~ "Přiložte textový soubor s jedním semínkem na řádek, který přepíše všechna "
+#~ "mimosystémová semínka. Původní semínka budou zálohována do media/seeds/"
+#~ "backup složky."
