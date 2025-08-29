@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Seeder\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-08-29 14:06+0000\n"
+"POT-Creation-Date: 2025-08-29 14:25+0000\n"
 "PO-Revision-Date: 2018-04-16 13:40+0200\n"
 "Last-Translator: mariehaskovcova <marie.haskovcova@nkp.cz>, 2017\n"
 "Language-Team: Czech (https://www.transifex.com/webarchivecz/teams/43032/"
@@ -545,6 +545,20 @@ msgstr "Údržba Wayback byla zapnuta"
 #: harvests/admin.py:60 harvests/forms.py:60 harvests/forms.py:144
 msgid "dataLimit cannot be over 1TB"
 msgstr "dataLimit nesmí být přes 1TB"
+
+#: harvests/forms.py:27
+msgid "One URL per line"
+msgstr "Jedna URL na řádku"
+
+#: harvests/forms.py:207
+msgid ""
+"Provide a text file with one seed per line which will overwrite all "
+"custom_seeds. The original custom_seeds will be backed up to the media/seeds/"
+"backup folder."
+msgstr ""
+"Přiložte textový soubor s jedním semínkem na řádek, který přepíše všechna "
+"mimosystémová semínka. Původní semínka budou zálohována do media/seeds/"
+"backup složky."
 
 #: harvests/forms.py:228
 msgid ""
@@ -2303,18 +2317,3 @@ msgstr "Přidat aktualitu"
 #: www/views_admin.py:66
 msgid "news"
 msgstr "aktuality"
-
-#~ msgid "keywords"
-#~ msgstr "Klíčová slova"
-
-#~ msgid "One URL per line"
-#~ msgstr "Jedna URL na řádku"
-
-#~ msgid ""
-#~ "Provide a text file with one seed per line which will overwrite all "
-#~ "custom_seeds. The original custom_seeds will be backed up to the media/"
-#~ "seeds/backup folder."
-#~ msgstr ""
-#~ "Přiložte textový soubor s jedním semínkem na řádek, který přepíše všechna "
-#~ "mimosystémová semínka. Původní semínka budou zálohována do media/seeds/"
-#~ "backup složky."

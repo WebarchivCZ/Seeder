@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Seeder\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-08-29 14:06+0000\n"
+"POT-Creation-Date: 2025-08-29 14:25+0000\n"
 "PO-Revision-Date: 2017-11-07 12:38+0100\n"
 "Last-Translator: Visgean Skeloru <visgean@gmail.com>, 2017\n"
 "Language-Team: English (United States) (https://www.transifex.com/"
@@ -549,6 +549,20 @@ msgstr "Wayback maintenance turned ON"
 #: harvests/admin.py:60 harvests/forms.py:60 harvests/forms.py:144
 msgid "dataLimit cannot be over 1TB"
 msgstr "dataLimit cannot be over 1TB"
+
+#: harvests/forms.py:27
+msgid "One URL per line"
+msgstr "One URL per line"
+
+#: harvests/forms.py:207
+msgid ""
+"Provide a text file with one seed per line which will overwrite all "
+"custom_seeds. The original custom_seeds will be backed up to the media/seeds/"
+"backup folder."
+msgstr ""
+"Provide a text file with one seed per line which will overwrite all "
+"custom_seeds. The original custom_seeds will be backed up to the media/seeds/"
+"backup folder."
 
 #: harvests/forms.py:228
 msgid ""
