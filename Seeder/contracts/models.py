@@ -25,9 +25,43 @@ def this_year():
     return date.today().year
 
 
-class ContractManager(models.Manager):
+class ContractQuerySet(models.QuerySet):
     """
-        Custom manager for filtering active contracts
+    Custom QuerySet for Contract model with filtering methods
+    """
+
+    def valid(self):
+        """
+        Filter contracts that are valid and not expired
+        """
+        return self.filter(
+            Q(state=constants.CONTRACT_STATE_VALID) &
+            Q(Q(valid_to__gte=date.today()) | Q(valid_to=None))
+        )
+
+    def filter_by_contract_number(self, value):
+        """
+        Filter contracts by contract number. Supports both formats:
+        - Full contract number: '64 / 2017' (contract_number / year)
+        - Year only: '2017'
+        """
+        try:
+            # value in format e.g. '64 / 2017', i.e. entire contract number
+            if "/" in value:
+                contract_number, year = [int(s.strip())
+                                         for s in value.split('/')]
+                return self.filter(contract_number=contract_number, year=year)
+            # only year specified, e.g. '2017'
+            else:
+                year = int(value.strip())
+                return self.filter(year=year)
+        except Exception:
+            return self.none()
+
+
+class ContractManager(models.Manager.from_queryset(ContractQuerySet)):
+    """
+    Custom manager for filtering active contracts
     """
 
     def get_queryset(self):
@@ -37,12 +71,6 @@ class ContractManager(models.Manager):
             ~Q(creative_commons_type=None) & ~Q(creative_commons_type=''),
             output_field=BooleanField()
         ))
-
-    def valid(self):
-        return self.get_queryset().filter(
-            Q(state=constants.CONTRACT_STATE_VALID) &
-            Q(Q(valid_to__gte=date.today()) | Q(valid_to=None))
-        )
 
 
 @revisions.register(exclude=('last_changed',))
