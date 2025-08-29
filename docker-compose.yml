@@ -78,7 +78,6 @@ services:
       DB_PASS: postgres
     depends_on:
       - postgres
-      - manet
       - memcached
 
   static:
@@ -117,13 +116,6 @@ services:
 
   memcached:
     image: memcached:latest
-    logging:
-      options:
-        max-size: "10m"
-        max-file: "3"
-
-  manet:
-    image: bobey/manet:latest
     logging:
       options:
         max-size: "10m"
