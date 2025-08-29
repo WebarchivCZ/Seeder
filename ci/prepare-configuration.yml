@@ -7,6 +7,11 @@
         dest: /home/ansible/seeder
         state: directory
 
+    - name: "Prepare configuration for static web."
+      template:
+        src: nginx.conf
+        dest: /home/ansible/seeder/static-nginx.conf
+
     - name: "Prepare Seeder compose file."
       template:
         src: docker-compose.yaml
