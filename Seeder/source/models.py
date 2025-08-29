@@ -187,12 +187,9 @@ class SourceQuerySet(models.QuerySet):
 
     def contains_contract_number(self, value):
         from contracts.models import Contract
-        try:
-            contract_number, year = [int(s.strip()) for s in value.split('/')]
-            return self.filter(contract__in=Contract.objects.valid().filter(
-                contract_number=contract_number, year=year))
-        except Exception:
-            return self.none()
+        # Use the ContractQuerySet method for consistent filtering logic
+        contracts = Contract.objects.filter_by_contract_number(value)
+        return self.filter(contract__in=contracts)
 
 
 class SourceManager(models.Manager.from_queryset(SourceQuerySet)):
