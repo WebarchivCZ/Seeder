@@ -127,6 +127,8 @@ class Category(models.Model, SlugOrCreateModel):
 
     class Meta:
         ordering = ['name']
+        verbose_name = _('Category')
+        verbose_name_plural = _('Categories')
 
 
 class SubCategory(models.Model, SlugOrCreateModel):
@@ -150,6 +152,8 @@ class SubCategory(models.Model, SlugOrCreateModel):
 
     class Meta:
         ordering = ['name']
+        verbose_name = _('Sub category')
+        verbose_name_plural = _('Sub categories')
 
 
 class SourceQuerySet(models.QuerySet):
@@ -220,6 +224,9 @@ class KeyWord(SlugOrCreateModel, models.Model):
     def www_url(self):
         return reverse('www:keyword', kwargs={'slug': self.slug_safe})
 
+    class Meta:
+        verbose_name = _('Keyword')
+        verbose_name_plural = _('Keywords')
 
 @revisions.register(exclude=('last_changed',))
 class Source(SearchModel, SlugOrCreateModel, BaseModel):
