@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Seeder\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-07-25 13:37+0000\n"
+"POT-Creation-Date: 2025-08-29 14:06+0000\n"
 "PO-Revision-Date: 2017-11-07 12:38+0100\n"
 "Last-Translator: Visgean Skeloru <visgean@gmail.com>, 2017\n"
 "Language-Team: English (United States) (https://www.transifex.com/"
@@ -152,7 +152,7 @@ msgid "This comment has been removed"
 msgstr "This comment has been removed"
 
 #: comments/models.py:168 qa/models.py:40 qa/templates/detail.html:30
-#: source/models.py:256 source/models.py:538 source/templates/source.html:87
+#: source/models.py:260 source/models.py:542 source/templates/source.html:87
 #: templates/history.html:14
 msgid "Comment"
 msgstr "Comment"
@@ -215,63 +215,63 @@ msgstr "Mozilla"
 msgid "Narodni knihovna CR - archivace Vasich webovych stranek"
 msgstr "National library of the CR - archiving your web sites"
 
-#: contracts/models.py:55 contracts/templates/contract.html:21
-#: harvests/models.py:235 harvests/models.py:770 source/models.py:270
+#: contracts/models.py:83 contracts/templates/contract.html:21
+#: harvests/models.py:235 harvests/models.py:770 source/models.py:274
 #: voting/models.py:27
 msgid "State"
 msgstr "State"
 
-#: contracts/models.py:61
+#: contracts/models.py:89
 msgid "Creative commons type"
 msgstr "Creative Commons type"
 
-#: contracts/models.py:68 contracts/templates/contract.html:47
+#: contracts/models.py:96 contracts/templates/contract.html:47
 msgid "Valid from"
 msgstr "Valid from"
 
-#: contracts/models.py:73 contracts/templates/contract.html:51
+#: contracts/models.py:101 contracts/templates/contract.html:51
 msgid "Valid to"
 msgstr "Valid to"
 
-#: contracts/models.py:79 harvests/templates/calendar.html:28
+#: contracts/models.py:107 harvests/templates/calendar.html:28
 msgid "Year"
 msgstr "Year"
 
-#: contracts/models.py:84 contracts/templates/contract.html:76
+#: contracts/models.py:112 contracts/templates/contract.html:76
 msgid "Contract file"
 msgstr "Contract file"
 
-#: contracts/models.py:91 source/field_filters.py:59
+#: contracts/models.py:119 source/field_filters.py:59
 msgid "Contract number"
 msgstr "Contract number"
 
-#: contracts/models.py:97 source/constants.py:25
+#: contracts/models.py:125 source/constants.py:25
 msgid "In communication"
 msgstr "In communication"
 
-#: contracts/models.py:98
+#: contracts/models.py:126
 msgid "Does the publisher responds to the emails?"
 msgstr "Does the publisher responds to the e-mails?"
 
-#: contracts/models.py:103 contracts/templates/contract.html:55
+#: contracts/models.py:131 contracts/templates/contract.html:55
 msgid "Description"
 msgstr "Description"
 
-#: contracts/models.py:110 contracts/templates/contract.html:59
+#: contracts/models.py:138 contracts/templates/contract.html:59
 msgid "Parent"
 msgstr "Parent"
 
-#: contracts/models.py:125
+#: contracts/models.py:153
 #, python-brace-format
 msgid "Contract in negotiation with {0}"
 msgstr "Contract in negotiation with {0}"
 
-#: contracts/models.py:135
+#: contracts/models.py:163
 #, python-brace-format
 msgid "Contract with {0}"
 msgstr "Contract with {0}"
 
-#: contracts/models.py:227
+#: contracts/models.py:255
 msgid "When to send this message"
 msgstr "When to send this message"
 
@@ -308,7 +308,7 @@ msgid "Creative commons"
 msgstr "Creative Commons"
 
 #: contracts/templates/contract.html:43 publishers/models.py:30
-#: source/constants.py:121 source/models.py:244 source/tables.py:10
+#: source/constants.py:121 source/models.py:248 source/tables.py:10
 #: source/templates/duplicity_check.html:20 source/templates/source.html:76
 msgid "Publisher"
 msgstr "Publisher"
@@ -550,20 +550,6 @@ msgstr "Wayback maintenance turned ON"
 msgid "dataLimit cannot be over 1TB"
 msgstr "dataLimit cannot be over 1TB"
 
-#: harvests/forms.py:27
-msgid "One URL per line"
-msgstr "One URL per line"
-
-#: harvests/forms.py:207
-msgid ""
-"Provide a text file with one seed per line which will overwrite all "
-"custom_seeds. The original custom_seeds will be backed up to the media/seeds/"
-"backup folder."
-msgstr ""
-"Provide a text file with one seed per line which will overwrite all "
-"custom_seeds. The original custom_seeds will be backed up to the media/seeds/"
-"backup folder."
-
 #: harvests/forms.py:228
 msgid ""
 "Custom seeds field is disabled because there are too many seeds to be "
@@ -628,7 +614,7 @@ msgid "title"
 msgstr "Title"
 
 #: harvests/models.py:241 harvests/templates/harvest.html:17
-#: source/models.py:257 source/templates/source.html:91
+#: source/models.py:261 source/templates/source.html:91
 msgid "Annotation"
 msgstr "Annotation"
 
@@ -702,12 +688,13 @@ msgid "Seeds not harvested"
 msgstr "Seeds not harvested"
 
 #: harvests/models.py:606 harvests/models.py:777 source/constants.py:124
-#: source/models.py:240
+#: source/models.py:244
 msgid "Curator"
 msgstr "Curator"
 
-#: harvests/models.py:610 source/templates/source.html:95
-msgid "keywords"
+#: harvests/models.py:610 harvests/templates/external_topic_collection.html:60
+#: source/models.py:229 source/templates/source.html:95
+msgid "Keywords"
 msgstr "Keywords"
 
 #: harvests/models.py:613 harvests/models.py:794
@@ -747,7 +734,7 @@ msgid "Finished"
 msgstr "Finished"
 
 #: harvests/models.py:761 harvests/templates/topic_collection.html:49
-#: source/models.py:276 source/templates/source.html:60 templates/api.html:17
+#: source/models.py:280 source/templates/source.html:60 templates/api.html:17
 msgid "Frequency"
 msgstr "Frequency"
 
@@ -860,7 +847,7 @@ msgstr "annotation [cs]"
 msgid "annotation [en]"
 msgstr "annotation [en]"
 
-#: harvests/templates/external_topic_collection.html:39 source/models.py:291
+#: harvests/templates/external_topic_collection.html:39 source/models.py:295
 #: source/templates/source.html:32
 msgid "Screenshot"
 msgstr "Screenshot"
@@ -875,10 +862,6 @@ msgstr "Created at"
 #: harvests/templates/topic_collection.html:69 source/templates/source.html:56
 msgid "Owner"
 msgstr "Owner"
-
-#: harvests/templates/external_topic_collection.html:60
-msgid "Keywords"
-msgstr "Keywords"
 
 #: harvests/templates/external_topic_collection.html:66
 #: source/templates/source.html:134
@@ -991,7 +974,7 @@ msgid "All sources are open?"
 msgstr "All sources are open?"
 
 #: harvests/templates/topic_collection.html:94 qa/templates/qa_form.html:20
-#: source/models.py:567 source/templates/source.html:156
+#: source/models.py:571 source/templates/source.html:156
 msgid "Seeds"
 msgstr "Seeds"
 
@@ -1033,11 +1016,11 @@ msgstr "Topic Collections"
 msgid "Add TopicCollection"
 msgstr "Add Topic Collection"
 
-#: harvests/views.py:521
+#: harvests/views.py:523
 msgid "Cannot decode file to UTF-8"
 msgstr "Cannot decode file to UTF-8"
 
-#: harvests/views.py:523
+#: harvests/views.py:527
 #, python-format
 msgid ""
 "Original custom_seeds have been backed to: <a href='%(url)s' "
@@ -1046,27 +1029,27 @@ msgstr ""
 "Original custom_seeds have been backed to: <a href='%(url)s' "
 "target='_blank'>%(url)s</a>"
 
-#: harvests/views.py:527
+#: harvests/views.py:531
 msgid "Uploaded custom seeds will not be paired automatically"
 msgstr "Uploaded custom seeds will not be paired automatically"
 
-#: harvests/views.py:595
+#: harvests/views.py:599
 msgid "ExternalTopicCollections"
 msgstr "External Topic Collections"
 
-#: harvests/views.py:605
+#: harvests/views.py:609
 msgid "Add ExternalTopicCollection"
 msgstr "Add External Topic Collection"
 
-#: harvests/views.py:689
+#: harvests/views.py:693
 msgid "Topic collection published"
 msgstr "Topic collection published"
 
-#: harvests/views.py:691
+#: harvests/views.py:695
 msgid "Topic collection unpublished"
 msgstr "Topic collection unpublished"
 
-#: harvests/views.py:705
+#: harvests/views.py:709
 msgid "URL slug successfully updated"
 msgstr "URL slug successfully updated"
 
@@ -1084,7 +1067,7 @@ msgid "Position"
 msgstr "Position"
 
 #: publishers/forms.py:57 publishers/models.py:24 publishers/models.py:57
-#: publishers/tables.py:9 source/models.py:255 source/tables.py:8
+#: publishers/tables.py:9 source/models.py:259 source/tables.py:8
 #: www/models.py:82
 msgid "Name"
 msgstr "Name"
@@ -1117,7 +1100,7 @@ msgstr "Phone"
 msgid "Address"
 msgstr "Address"
 
-#: publishers/models.py:65 source/models.py:250 source/templates/source.html:80
+#: publishers/models.py:65 source/models.py:254 source/templates/source.html:80
 msgid "Publisher contact"
 msgstr "Publisher contact"
 
@@ -1133,7 +1116,7 @@ msgstr "Contacts:"
 msgid "Edit contacts"
 msgstr "Edit contacts"
 
-#: publishers/templates/publisher.html:24 source/models.py:309
+#: publishers/templates/publisher.html:24 source/models.py:313
 #: source/views.py:255 templates/base.html:94
 msgid "Sources"
 msgstr "Sources"
@@ -1151,7 +1134,7 @@ msgstr ""
 "Contact person %(person)s is still set as contact on: %(sources)s, please "
 "remove them there first."
 
-#: qa/models.py:18 qa/templates/detail.html:13 source/models.py:308
+#: qa/models.py:18 qa/templates/detail.html:13 source/models.py:312
 msgid "Source"
 msgstr "Source"
 
@@ -1335,83 +1318,95 @@ msgstr ""
 "Sources with status 'Archiving accepted' and 'Archiving without publisher "
 "consent' must have a selected Harvest Frequency"
 
-#: source/models.py:260 source/templates/source.html:72
-msgid "Suggested by"
-msgstr "Suggested by"
-
-#: source/models.py:281 source/templates/source.html:102
+#: source/models.py:130 source/models.py:285 source/templates/source.html:102
 msgid "Category"
 msgstr "Category"
 
-#: source/models.py:286 source/templates/source.html:106
+#: source/models.py:131
+msgid "Categories"
+msgstr "Categories"
+
+#: source/models.py:155 source/models.py:290 source/templates/source.html:106
 msgid "Sub category"
 msgstr "Sub category"
 
-#: source/models.py:298
+#: source/models.py:156
+msgid "Sub categories"
+msgstr "Sub categories"
+
+#: source/models.py:228
+msgid "Keyword"
+msgstr "Keyword"
+
+#: source/models.py:264 source/templates/source.html:72
+msgid "Suggested by"
+msgstr "Suggested by"
+
+#: source/models.py:302
 msgid "Source is dead"
 msgstr "Source is dead"
 
-#: source/models.py:299 source/templates/source.html:52
+#: source/models.py:303 source/templates/source.html:52
 msgid "Priority source"
 msgstr "Priority source"
 
-#: source/models.py:519
+#: source/models.py:523
 msgid "default"
 msgstr "default"
 
-#: source/models.py:520
+#: source/models.py:524
 msgid "low"
 msgstr "low"
 
-#: source/models.py:521
+#: source/models.py:525
 msgid "very_low"
 msgstr "very_low"
 
-#: source/models.py:532
+#: source/models.py:536
 msgid "Main seed"
 msgstr "Main seed"
 
-#: source/models.py:533
+#: source/models.py:537
 msgid "Seed url"
 msgstr "Seed URL"
 
-#: source/models.py:539
+#: source/models.py:543
 msgid "From"
 msgstr "From"
 
-#: source/models.py:540
+#: source/models.py:544
 msgid "To"
 msgstr "To"
 
-#: source/models.py:543
+#: source/models.py:547
 msgid "Javascript"
 msgstr "Javascript"
 
-#: source/models.py:544
+#: source/models.py:548
 msgid "Global reject"
 msgstr "Global reject"
 
-#: source/models.py:545
+#: source/models.py:549
 msgid "Youtube"
 msgstr "YouTube"
 
-#: source/models.py:546
+#: source/models.py:550
 msgid "Calendars"
 msgstr "Calendars"
 
-#: source/models.py:547
+#: source/models.py:551
 msgid "Local traps"
 msgstr "Local traps"
 
-#: source/models.py:548
+#: source/models.py:552
 msgid "Redirect on seed"
 msgstr "Redirect on seed"
 
-#: source/models.py:549
+#: source/models.py:553
 msgid "Robots.txt active"
 msgstr "Robots.txt active"
 
-#: source/models.py:566
+#: source/models.py:570
 msgid "Seed"
 msgstr "Seed"
 
