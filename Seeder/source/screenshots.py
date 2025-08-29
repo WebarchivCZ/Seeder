@@ -18,7 +18,9 @@ logger = getLogger('screenshots.generator')
 
 def take_screenshots():
     """
-    Downloads screenshots for sources that need them using Playwright
+    Downloads screenshots for sources that need them using Playwright.
+    Failed screenshots are retried at most once a month to avoid wasting
+    resources on dead sites.
     """
     now = timezone.now()
     sources = Source.objects.filter(
@@ -159,6 +161,10 @@ async def _take_single_screenshot(source, now, browser, semaphore):
                        f'{source.id}: {error_msg}')
                 print(msg)
                 logger.warning(msg)
+                # Set screenshot_date so it's retried after a month
+                source.screenshot_date = (now - constants.SCREENSHOT_MAX_AGE
+                                          + constants.SCREENSHOT_RETRY_DELTA)
+                source.save()
 
             finally:
                 await page.close()
@@ -171,3 +177,7 @@ async def _take_single_screenshot(source, now, browser, semaphore):
                    f'{source.id}: {error_msg}')
             print(msg)
             logger.error(msg)
+            # Set screenshot_date so it's retried after a month
+            source.screenshot_date = (now - constants.SCREENSHOT_MAX_AGE
+                                      + constants.SCREENSHOT_RETRY_DELTA)
+            source.save()
