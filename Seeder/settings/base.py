@@ -249,7 +249,8 @@ DEBUG_TOOLBAR_CONFIG = {
 }
 
 # Load cron env and log output from all CRON jobs to /var/log/cron.log
-CRONTAB_COMMAND_PREFIX = ". /code/.cronenv;"
+# * Must be set to export environment variables to the cron jobs
+CRONTAB_COMMAND_PREFIX = "set -a; . /code/.cronenv; set +a;"
 CRONTAB_COMMAND_SUFFIX = ">> /var/log/cron.log 2>&1"
 CRONJOBS = [
     ('0 1 * * *', 'source.screenshots.take_screenshots'),
