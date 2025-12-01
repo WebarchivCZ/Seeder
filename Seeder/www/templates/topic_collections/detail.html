@@ -19,15 +19,23 @@
 
         <div class="row">
             <div class="col-md-4 col-sm-6 col-xs-12 col-lg-4 annotation">
-                {% if collection.image_file_exists %}
                 <div class="item-visual">
                     <div class="img-wrapper thumb">
+                        {% if collection.image_text|length > 0 %}
+                        {{ collection.get_svg_data|safe }}
+                        {% elif collection.image_file_exists %}
                         {% thumbnail collection.image "660x500" crop="center" as im %}
                         <img src="{{ im.url }}" class="aspect-ratio" width="{{ im.width }}" height="{{ im.height }}">
                         {% endthumbnail %}
+                        {% else %}
+                        <div class="aspect-ratio">
+                            <div class="no-image">
+                                <span class="small">www</span>
+                            </div>
+                        </div>
+                        {% endif %}
                     </div>
                 </div>
-                {% endif %}
                 <br>
                 {{ collection.annotation|safe }}
 
