@@ -91,6 +91,7 @@ INSTALLED_APPS = (
     'captcha',
     'ordered_model',
     'solo',
+    'chunked_upload',
     # 'elasticstack',
     'core',
     'publishers',
