@@ -1,5 +1,3 @@
-version: "3"
-
 volumes:
   static:
   media:
@@ -52,6 +50,7 @@ services:
       traefik.http.routers.api.service: api@internal
 
   web:
+    container_name: seeder-web
     build:
       context: .
     volumes:
