@@ -19,8 +19,8 @@ services:
         max-file: "3"
 
   reverse-proxy:
-    # The official v2 Traefik docker image
-    image: traefik:v3.2
+    # Traefik reverse proxy (pinned to a version compatible with Docker 29+)
+    image: traefik:v3.6.2
     # Enables the web UI and tells Traefik to listen to docker
     command:
       - "--providers.docker"
