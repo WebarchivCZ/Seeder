@@ -25,7 +25,7 @@ def take_screenshots():
     now = timezone.now()
     sources = Source.objects.filter(
         Q(screenshot_date__lte=now - constants.SCREENSHOT_MAX_AGE) |
-        Q(screenshot__isnull=True)
+        Q(screenshot__isnull=True) | Q(screenshot="")
     )
 
     msg = (f'[{timezone.now().isoformat()}] Processing {sources.count()} '

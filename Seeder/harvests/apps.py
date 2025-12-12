@@ -11,4 +11,3 @@ class HarvestsConfig(AppConfig):
             HarvestConfiguration.create_defaults()
         except:
             print("!! Couldn't create HarvestConfiguration defaults !!")
-        print("HarvestConfiguration defaults created if they didn't exist")
