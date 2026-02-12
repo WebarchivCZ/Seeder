@@ -91,6 +91,7 @@ INSTALLED_APPS = (
     'captcha',
     'ordered_model',
     'solo',
+    'chunked_upload',
     # 'elasticstack',
     'core',
     'publishers',
@@ -254,6 +255,7 @@ CRONTAB_COMMAND_PREFIX = "set -a; . /code/.cronenv; set +a;"
 CRONTAB_COMMAND_SUFFIX = ">> /var/log/cron.log 2>&1"
 CRONJOBS = [
     ('0 1 * * *', 'source.screenshots.take_screenshots'),
+    ('5 1 * * *', 'harvests.cron.cleanup_expired_chunked_uploads'),
     ('10 * * * *', 'voting.cron.revive_postponed_rounds'),
     ('20 * * * *', 'contracts.cron.expire_contracts'),
     ('30 * * * *', 'contracts.cron.send_emails'),
