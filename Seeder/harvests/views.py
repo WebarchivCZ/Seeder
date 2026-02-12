@@ -1,22 +1,31 @@
 import time
 import re
+import logging
+from io import TextIOWrapper
 from datetime import date
 from dal import autocomplete
 import datetime
+from django.db import transaction
 from django.db.models import Q
 from django.urls import reverse
 from django.http import Http404
 from django.contrib import messages
 from django.contrib.auth.mixins import UserPassesTestMixin
 from django.views.generic.edit import CreateView
+from django.shortcuts import get_object_or_404
 
 from source import constants as source_constants
 from . import models
 from . import forms
 from . import tables
 from . import field_filters
+from chunked_upload.views import ChunkedUploadView, ChunkedUploadCompleteView
+from chunked_upload.models import ChunkedUpload
+from chunked_upload.constants import COMPLETE, http_status
+from chunked_upload.exceptions import ChunkedUploadError
 
 from django.http.response import Http404, HttpResponseRedirect, JsonResponse
+from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 from django.views.generic.base import TemplateView
 from django.views.generic import DetailView, FormView, View
@@ -26,6 +35,8 @@ from django.utils.safestring import mark_safe
 from core import generic_views
 from comments.views import CommentViewGeneric
 from core.generic_views import EditView
+
+log = logging.getLogger(__name__)
 
 
 def timestamp_to_datetime(ms_string):
@@ -459,6 +470,145 @@ class InternalTCView(generic_views.LoginMixin):
     model = models.TopicCollection
 
 
+INTERNAL_TC_CUSTOM_SEEDS_UPLOADS_SESSION_KEY = (
+    "internal_tc_custom_seeds_uploads"
+)
+
+
+def _get_internal_tc_upload_bindings(request):
+    bindings = request.session.get(
+        INTERNAL_TC_CUSTOM_SEEDS_UPLOADS_SESSION_KEY, {})
+    if isinstance(bindings, dict):
+        return bindings
+    return {}
+
+
+def _set_internal_tc_upload_binding(request, upload_id, topic_collection_pk):
+    bindings = _get_internal_tc_upload_bindings(request)
+    bindings[upload_id] = {
+        "topic_collection_pk": topic_collection_pk,
+        "user_pk": request.user.pk,
+    }
+    request.session[INTERNAL_TC_CUSTOM_SEEDS_UPLOADS_SESSION_KEY] = bindings
+
+
+def _pop_internal_tc_upload_binding(request, upload_id):
+    bindings = _get_internal_tc_upload_bindings(request)
+    if upload_id not in bindings:
+        return
+    del bindings[upload_id]
+    request.session[INTERNAL_TC_CUSTOM_SEEDS_UPLOADS_SESSION_KEY] = bindings
+
+
+def _cleanup_internal_tc_uploads_for_topic(
+        request, topic_collection_pk, keep_upload_id=None):
+    bindings = _get_internal_tc_upload_bindings(request)
+    removable_ids = []
+    for upload_id, binding in bindings.items():
+        if upload_id == keep_upload_id:
+            continue
+        if not isinstance(binding, dict):
+            removable_ids.append(upload_id)
+            continue
+        if (
+                binding.get("topic_collection_pk") == topic_collection_pk
+                and binding.get("user_pk") == request.user.pk):
+            removable_ids.append(upload_id)
+
+    if not removable_ids:
+        return 0
+
+    deleted_count = 0
+    uploads = ChunkedUpload.objects.filter(
+        upload_id__in=removable_ids, user=request.user)
+    for upload in uploads:
+        upload.delete()
+        deleted_count += 1
+
+    for upload_id in removable_ids:
+        bindings.pop(upload_id, None)
+    request.session[INTERNAL_TC_CUSTOM_SEEDS_UPLOADS_SESSION_KEY] = bindings
+    return deleted_count
+
+
+def _has_valid_internal_tc_upload_binding(request, upload_id, topic_collection_pk):
+    binding = _get_internal_tc_upload_bindings(request).get(upload_id)
+    if not isinstance(binding, dict):
+        return False
+    return (
+        binding.get("topic_collection_pk") == topic_collection_pk
+        and binding.get("user_pk") == request.user.pk
+    )
+
+
+class InternalCollectionChunkedUploadMixin(InternalTCView):
+    allowed_content_types = ("text/plain", "application/octet-stream")
+
+    def dispatch(self, request, *args, **kwargs):
+        self.topic_collection = get_object_or_404(
+            models.TopicCollection, pk=kwargs["pk"])
+        return super().dispatch(request, *args, **kwargs)
+
+    def validate_upload_binding(self, upload_id):
+        if _has_valid_internal_tc_upload_binding(
+                self.request, upload_id, self.topic_collection.pk):
+            return
+        raise ChunkedUploadError(
+            status=http_status.HTTP_403_FORBIDDEN,
+            detail="Upload does not belong to this collection context",
+        )
+
+
+class InternalCollectionCustomSeedsChunkUploadView(
+        InternalCollectionChunkedUploadMixin, ChunkedUploadView):
+    model = ChunkedUpload
+    max_bytes = getattr(settings, "CHUNKED_UPLOAD_MAX_BYTES", None)
+
+    def get_max_bytes(self, request):
+        return getattr(settings, "CHUNKED_UPLOAD_MAX_BYTES", self.max_bytes)
+
+    def validate(self, request):
+        chunk = request.FILES.get(self.field_name)
+        filename = request.POST.get("filename") or getattr(chunk, "name", "")
+        if not filename.lower().endswith(".txt"):
+            raise ChunkedUploadError(
+                status=http_status.HTTP_400_BAD_REQUEST,
+                detail="Only .txt files are allowed",
+            )
+
+        content_type = getattr(chunk, "content_type", "") or ""
+        content_type = content_type.split(";", 1)[0].strip().lower()
+        if content_type not in self.allowed_content_types:
+            raise ChunkedUploadError(
+                status=http_status.HTTP_400_BAD_REQUEST,
+                detail="Invalid content type",
+            )
+
+        upload_id = request.POST.get("upload_id")
+        if upload_id:
+            self.validate_upload_binding(upload_id)
+
+    def post_save(self, chunked_upload, request, new=False):
+        if new:
+            _cleanup_internal_tc_uploads_for_topic(
+                request,
+                self.topic_collection.pk,
+                keep_upload_id=chunked_upload.upload_id,
+            )
+        _set_internal_tc_upload_binding(
+            request, chunked_upload.upload_id, self.topic_collection.pk)
+
+
+class InternalCollectionCustomSeedsChunkCompleteView(
+        InternalCollectionChunkedUploadMixin, ChunkedUploadCompleteView):
+    model = ChunkedUpload
+
+    def validate(self, request):
+        upload_id = request.POST.get("upload_id")
+        if upload_id:
+            self.validate_upload_binding(upload_id)
+
+
 class InternalCollectionListView(
         InternalTCView, generic_views.FilteredListView):
     title = _('TopicCollections')
@@ -492,6 +642,7 @@ class InternalCollectionAdd(InternalTCView, FormView):
 
 class InternalCollectionEdit(InternalTCView, generic_views.EditView):
     form_class = forms.InternalTopicCollectionEditForm
+    template_name = 'internal_tc_edit_form.html'
 
     def get_form(self, form_class=None):
         if not form_class:
@@ -499,29 +650,152 @@ class InternalCollectionEdit(InternalTCView, generic_views.EditView):
         files = self.get_object().attachment_set.all()
         return form_class(files, **self.get_form_kwargs())
 
-    def form_valid(self, form):
-        topic = form.save(commit=False)
-        form.save_m2m()  # must save m2m when commit=False
-
-        # Create and delete attachments
+    def _save_attachments(self, topic, form):
         ids_to_delete = form.cleaned_data['files_to_delete']
-        for att in models.Attachment.objects.filter(id__in=ids_to_delete):
+        for att in models.Attachment.objects.filter(
+                id__in=ids_to_delete, topic_collection=topic):
             att.file.delete()
             att.delete()
         for each in form.cleaned_data["attachments"]:
             models.Attachment.objects.create(
                 file=each, topic_collection=topic)
 
+    def form_valid(self, form):
+        topic = form.save(commit=False)
+        model_field_names = {
+            field.name for field in topic._meta.get_fields()
+            if getattr(field, "concrete", False) and not field.many_to_many
+        }
+
         # If a custom seeds file is uploaded, backup and replace TC.custom_seeds
-        new_custom_seeds = form.cleaned_data.get("custom_seeds_file")
-        if new_custom_seeds:
-            url = topic.backup_custom_seeds()
+        custom_seeds_upload_id = form.cleaned_data.get("custom_seeds_upload_id")
+        if custom_seeds_upload_id:
+            upload_import_start = time.perf_counter()
+            if not _has_valid_internal_tc_upload_binding(
+                    self.request, custom_seeds_upload_id, topic.pk):
+                _pop_internal_tc_upload_binding(
+                    self.request, custom_seeds_upload_id)
+                messages.error(self.request, _(
+                    "Uploaded custom seeds file is invalid for this "
+                    "collection edit. Please upload the file again."
+                ))
+                return HttpResponseRedirect(topic.get_absolute_url())
+
+            chunked_upload = ChunkedUpload.objects.filter(
+                upload_id=custom_seeds_upload_id,
+                user=self.request.user,
+            ).first()
+            if not chunked_upload:
+                _pop_internal_tc_upload_binding(
+                    self.request, custom_seeds_upload_id)
+                messages.error(self.request, _(
+                    "Uploaded custom seeds file does not exist. "
+                    "Please upload the file again."
+                ))
+                return HttpResponseRedirect(topic.get_absolute_url())
+            if chunked_upload.expired or chunked_upload.status != COMPLETE:
+                _pop_internal_tc_upload_binding(
+                    self.request, custom_seeds_upload_id)
+                messages.error(self.request, _(
+                    "Uploaded custom seeds file is incomplete or expired. "
+                    "Please upload the file again."
+                ))
+                return HttpResponseRedirect(topic.get_absolute_url())
+
+            decode_start = time.perf_counter()
+            text_reader = None
+            chunked_upload.file.open(mode='rb')
             try:
-                topic.custom_seeds = new_custom_seeds.read().decode("utf-8")
-                topic.save()  # full save, including new large custom seeds
+                text_reader = TextIOWrapper(
+                    chunked_upload.file, encoding="utf-8")
+                new_custom_seeds = text_reader.read()
             except UnicodeDecodeError:
+                _pop_internal_tc_upload_binding(
+                    self.request, custom_seeds_upload_id)
                 messages.error(self.request, _("Cannot decode file to UTF-8"))
                 return HttpResponseRedirect(topic.get_absolute_url())
+            finally:
+                if text_reader is not None:
+                    try:
+                        text_reader.detach()
+                    except ValueError:
+                        pass
+                chunked_upload.file.close()
+            decode_elapsed = time.perf_counter() - decode_start
+            uploaded_bytes = getattr(chunked_upload, "offset", None)
+
+            with transaction.atomic():
+                # Lock topic row to serialize concurrent edits/consumes.
+                models.TopicCollection.objects.select_for_update().filter(
+                    pk=topic.pk
+                ).exists()
+                chunked_upload = ChunkedUpload.objects.select_for_update().filter(
+                    upload_id=custom_seeds_upload_id,
+                    user=self.request.user,
+                ).first()
+                if not chunked_upload:
+                    _pop_internal_tc_upload_binding(
+                        self.request, custom_seeds_upload_id)
+                    messages.error(self.request, _(
+                        "Uploaded custom seeds file does not exist. "
+                        "Please upload the file again."
+                    ))
+                    return HttpResponseRedirect(topic.get_absolute_url())
+                if chunked_upload.expired or chunked_upload.status != COMPLETE:
+                    _pop_internal_tc_upload_binding(
+                        self.request, custom_seeds_upload_id)
+                    messages.error(self.request, _(
+                        "Uploaded custom seeds file is incomplete or expired. "
+                        "Please upload the file again."
+                    ))
+                    return HttpResponseRedirect(topic.get_absolute_url())
+
+                form.save_m2m()  # must save m2m when commit=False
+                self._save_attachments(topic, form)
+
+                backup_start = time.perf_counter()
+                url = topic.backup_custom_seeds()
+                backup_elapsed = time.perf_counter() - backup_start
+
+                save_start = time.perf_counter()
+                changed_non_custom_seeds_fields = [
+                    field_name for field_name in form.changed_data
+                    if field_name in model_field_names and field_name != "custom_seeds"
+                ]
+
+                # Keep upload consume fast even for huge custom_seeds by avoiding
+                # model save/reversion serialization in this branch.
+                update_kwargs = {
+                    field_name: getattr(topic, field_name)
+                    for field_name in changed_non_custom_seeds_fields
+                }
+                update_kwargs["custom_seeds"] = new_custom_seeds
+                # Invalidate frozen cache to avoid stale seeds after queryset
+                # updates and avoid expensive full freeze in this hot path.
+                update_kwargs["seeds_frozen"] = ""
+                update_kwargs["last_changed"] = timezone.now()
+                models.TopicCollection.objects.filter(pk=topic.pk).update(
+                    **update_kwargs
+                )
+                save_elapsed = time.perf_counter() - save_start
+
+                cleanup_start = time.perf_counter()
+                chunked_upload.delete()
+                _pop_internal_tc_upload_binding(
+                    self.request, custom_seeds_upload_id)
+                cleanup_elapsed = time.perf_counter() - cleanup_start
+
+            log.info(
+                "Internal TC upload consume timings (pk=%s, bytes=%s): "
+                "decode=%.3fs backup=%.3fs save=%.3fs cleanup=%.3fs total=%.3fs",
+                topic.pk,
+                uploaded_bytes if uploaded_bytes is not None else len(new_custom_seeds),
+                decode_elapsed,
+                backup_elapsed,
+                save_elapsed,
+                cleanup_elapsed,
+                time.perf_counter() - upload_import_start,
+            )
 
             messages.success(self.request, mark_safe(_(
                 "Original custom_seeds have been backed to: <a href='%(url)s' "
@@ -530,19 +804,39 @@ class InternalCollectionEdit(InternalTCView, generic_views.EditView):
             messages.warning(self.request, _(
                 "Uploaded custom seeds will not be paired automatically"))
         else:
-            # Small edits shouldn't touch custom_seeds because it'll never load
-            if form.custom_seeds_too_large:
-                topic.save(update_fields=(
-                    set(form.fields.keys()) - set([
-                        "custom_seeds", "custom_sources", "attachments",
-                        "files_to_delete", "custom_seeds_file",
-                    ])
-                ))
-            # Only pair custom seeds if there aren't too many of them and they
-            # haven't just been imported
-            else:
-                topic.save()  # full save, not many custom seeds
-                topic.pair_custom_seeds()
+            changed_model_fields = [
+                field_name for field_name in form.changed_data
+                if field_name in model_field_names and field_name != "custom_seeds"
+            ]
+            has_custom_sources_change = "custom_sources" in form.changed_data
+            has_attachment_changes = bool(
+                form.cleaned_data.get('files_to_delete')
+                or form.cleaned_data.get("attachments")
+            )
+
+            if (
+                    not changed_model_fields
+                    and not has_custom_sources_change
+                    and not has_attachment_changes):
+                return HttpResponseRedirect(topic.get_absolute_url())
+
+            with transaction.atomic():
+                if has_custom_sources_change:
+                    form.save_m2m()  # must save m2m when commit=False
+                if has_attachment_changes:
+                    self._save_attachments(topic, form)
+                # Small edits shouldn't touch custom_seeds because it'll never load
+                if form.custom_seeds_too_large:
+                    update_fields = list(changed_model_fields)
+                    if has_custom_sources_change:
+                        update_fields.append("seeds_frozen")
+                    if update_fields:
+                        topic.save(update_fields=update_fields)
+                # Only pair custom seeds if there aren't too many of them and they
+                # haven't just been imported
+                else:
+                    topic.save()  # full save, not many custom seeds
+                    topic.pair_custom_seeds()
 
         return HttpResponseRedirect(topic.get_absolute_url())
 

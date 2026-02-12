@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load bootstrap3 static %}
+
+{% block title %}
+    {% trans 'Edit' %} {{ object }}
+{% endblock %}
+
+{% block page_header %}
+    {% trans 'Edit' %} {{ object }}
+{% endblock %}
+
+{% block extrahead %}
+{{ form.media }}
+{% endblock %}
+
+{% block content %}
+    <form
+        id="internal-tc-edit-form"
+        method="post"
+        enctype="multipart/form-data"
+        data-chunk-upload-url="{% url 'harvests:internal_collection_custom_seeds_chunk_upload' pk=object.pk %}"
+        data-chunk-complete-url="{% url 'harvests:internal_collection_custom_seeds_chunk_complete' pk=object.pk %}"
+        data-chunk-size="4194304"
+    >
+        {% csrf_token %}
+        {% bootstrap_form form exclude='custom_seeds_upload_id' %}
+        {{ form.custom_seeds_upload_id }}
+
+        <div class="form-group" id="custom-seeds-chunk-upload">
+            <label for="id_custom_seeds_chunk_file">
+                {% trans "Custom seeds upload (.txt)" %}
+            </label>
+            <input
+                id="id_custom_seeds_chunk_file"
+                type="file"
+                class="form-control"
+                accept=".txt,text/plain,application/octet-stream"
+            />
+            <p class="help-block">{{ form.custom_seeds_upload_id.help_text|safe }}</p>
+            <div class="progress">
+                <div
+                    id="custom-seeds-upload-progress"
+                    class="progress-bar"
+                    role="progressbar"
+                    aria-valuemin="0"
+                    aria-valuemax="100"
+                    aria-valuenow="0"
+                    style="width: 0%;"
+                >
+                    0%
+                </div>
+            </div>
+            <p
+                id="custom-seeds-upload-status"
+                class="help-block"
+                data-default-text="{% trans 'No upload in progress.' %}"
+            >
+                {% trans 'No upload in progress.' %}
+            </p>
+        </div>
+
+        <input
+            id="internal-tc-edit-submit"
+            type="submit"
+            class="btn btn-primary btn-block"
+            value="{% trans 'Send' %}"
+        />
+    </form>
+{% endblock %}
+
+{% block extrajs %}
+{{ block.super }}
+<script src="{% static 'harvests/vendor/spark-md5.min.js' %}"></script>
+<script src="{% static 'harvests/internal_tc_chunked_upload.js' %}"></script>
+{% include "internal_tc_title_autofill.html" %}
+{% endblock %}
