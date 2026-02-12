@@ -5,6 +5,7 @@ import logging
 from itertools import chain
 from hashlib import md5
 from django.utils import timezone
+from django.utils.text import slugify
 from datetime import date
 
 from django.db import models
@@ -732,7 +733,7 @@ class ExternalTopicCollection(BaseModel, OrderedModel):
         ordering = ('order',)
 
 
-@revisions.register(exclude=('last_changed',))
+@revisions.register(exclude=('last_changed', 'custom_seeds', 'seeds_frozen'))
 class TopicCollection(HarvestAbstractModel):
     """
     Internal representation of a Topic Collection, containing seeds and sources
@@ -844,15 +845,20 @@ class TopicCollection(HarvestAbstractModel):
         Filename: tc_{current datetime}_{TC id}_{15 chars of TC title}.txt
         :return url: The media URL of the saved file
         """
-        filename = (f"tc_{timezone.now():%Y-%m-%d_%H-%M}_{self.pk}_"
-                    f"{self.title[:15].replace(' ', '-')}.txt")
-        filepath = os.path.join(
-            settings.MEDIA_ROOT, settings.SEEDS_BACKUP_DIR, filename)
+        safe_title = slugify(self.title)[:15] or "topic-collection"
+        filename = (
+            f"tc_{timezone.now():%Y-%m-%d_%H-%M}_{self.pk}_{safe_title}.txt"
+        )
+        backup_dir = os.path.abspath(os.path.join(
+            settings.MEDIA_ROOT, settings.SEEDS_BACKUP_DIR))
+        filepath = os.path.abspath(os.path.join(backup_dir, filename))
+        if os.path.commonpath([backup_dir, filepath]) != backup_dir:
+            raise ValueError("Unsafe backup path")
         # Ensure folder exists
-        os.makedirs(os.path.dirname(filepath), exist_ok=True)
+        os.makedirs(backup_dir, exist_ok=True)
         # Save seeds and return the media URL for download
-        with open(filepath, "w") as f:
-            f.write(self.custom_seeds)
+        with open(filepath, "w", encoding="utf-8") as f:
+            f.write(self.custom_seeds or "")
         return os.path.join(
             settings.MEDIA_URL, settings.SEEDS_BACKUP_DIR, filename)
 
@@ -948,10 +954,17 @@ def freeze_tc_urls(sender, instance, **kwargs):
     """
     Signal that freezes TopicCollection seeds on every save
     """
-    # In order to freeze seeds, the TC must have an ID, so it needs to be saved
-    if not getattr(instance, '_saved_once_', False):
-        instance._saved_once_ = True
-        instance.save()
-        # Avoid recursive save by not committing in pre_save
-        instance.seeds_frozen = ""  # delete so they're recomputed
-        instance.freeze_seeds(commit=False)
+    # For creates, allow initial save first and freeze on subsequent save(s).
+    if instance.pk is None:
+        return
+
+    # Skip expensive seed freezing when save only touches unrelated fields.
+    update_fields = kwargs.get("update_fields")
+    if update_fields is not None:
+        touched = set(update_fields)
+        if touched.isdisjoint({"custom_seeds", "custom_sources", "seeds_frozen"}):
+            return
+
+    # Avoid recursive save by not committing in pre_save.
+    instance.seeds_frozen = ""
+    instance.freeze_seeds(commit=False)

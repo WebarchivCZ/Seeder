@@ -29,6 +29,16 @@ internal_collections_urlpatterns = [
          name='internal_collection_add'),
     path('<int:pk>/edit', InternalCollectionEdit.as_view(),
          name='internal_collection_edit'),
+    path(
+        '<int:pk>/custom-seeds/chunk-upload',
+        InternalCollectionCustomSeedsChunkUploadView.as_view(),
+        name='internal_collection_custom_seeds_chunk_upload',
+    ),
+    path(
+        '<int:pk>/custom-seeds/chunk-upload/complete',
+        InternalCollectionCustomSeedsChunkCompleteView.as_view(),
+        name='internal_collection_custom_seeds_chunk_complete',
+    ),
     path('<int:pk>', InternalCollectionDetail.as_view(),
          name='internal_collection_detail'),
     path('<int:pk>/urls', InternalCollectionListUrls.as_view(),
