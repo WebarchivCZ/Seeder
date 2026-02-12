@@ -3,7 +3,6 @@ import asyncio
 from pathlib import Path
 
 from logging import getLogger
-from datetime import datetime
 
 from django.db.models import Q
 from django.conf import settings
@@ -16,17 +15,45 @@ from source.models import Source
 logger = getLogger('screenshots.generator')
 
 
+def source_needs_screenshot(source, now=None, check_retry=True):
+    """
+    Decide whether screenshot generation should run for one source.
+    """
+    now = now or timezone.now()
+    if source.state not in constants.ARCHIVING_STATES:
+        return False
+    if source.screenshot:
+        return False
+    if not check_retry:
+        return True
+    return (
+        source.screenshot_date is None or
+        source.screenshot_date <= now - constants.SCREENSHOT_RETRY_DELTA
+    )
+
+
+def _missing_screenshot_sources(now, check_retry=True):
+    qs = Source.objects.filter(
+        state__in=constants.ARCHIVING_STATES
+    ).filter(
+        Q(screenshot__isnull=True) | Q(screenshot="")
+    )
+    if check_retry:
+        qs = qs.filter(
+            Q(screenshot_date__isnull=True) |
+            Q(screenshot_date__lte=now - constants.SCREENSHOT_RETRY_DELTA)
+        )
+    return qs
+
+
 def take_screenshots():
     """
-    Downloads screenshots for sources that need them using Playwright.
+    Downloads screenshots for archived sources that do not have a screenshot.
     Failed screenshots are retried at most once a month to avoid wasting
     resources on dead sites.
     """
     now = timezone.now()
-    sources = Source.objects.filter(
-        Q(screenshot_date__lte=now - constants.SCREENSHOT_MAX_AGE) |
-        Q(screenshot__isnull=True) | Q(screenshot="")
-    )
+    sources = _missing_screenshot_sources(now, check_retry=True)
 
     msg = (f'[{timezone.now().isoformat()}] Processing {sources.count()} '
            f'sources for screenshots using Playwright')
@@ -46,10 +73,44 @@ def take_screenshots():
     logger.info(msg)
 
 
+def take_screenshot_for_source(source_or_pk, ignore_retry=False):
+    """
+    Downloads screenshot for a single source if needed.
+    Returns True if generation was attempted, otherwise False.
+    """
+    source_pk = source_or_pk.pk if isinstance(source_or_pk, Source) else source_or_pk
+    source = Source.objects.filter(pk=source_pk).first()
+    if source is None:
+        return False
+
+    now = timezone.now()
+    if not source_needs_screenshot(
+            source, now=now, check_retry=not ignore_retry):
+        return False
+
+    screenshots_dir = os.path.join(
+        settings.MEDIA_ROOT, constants.SCREENSHOT_DIR)
+    Path(screenshots_dir).mkdir(parents=True, exist_ok=True)
+
+    try:
+        asyncio.run(_process_screenshots_async([source], now))
+    except Exception as e:
+        msg = (f'[{timezone.now().isoformat()}] Screenshot scheduling FAILED '
+               f'for {source.id}: {e}')
+        print(msg)
+        logger.error(msg)
+        return False
+    return True
+
+
 async def _process_screenshots_async(sources, now):
     """
     Process screenshots asynchronously to prevent blocking
     """
+    sources = list(sources)
+    if not sources:
+        return
+
     from playwright.async_api import async_playwright
 
     async with async_playwright() as p:
@@ -162,8 +223,7 @@ async def _take_single_screenshot(source, now, browser, semaphore):
                 print(msg)
                 logger.warning(msg)
                 # Set screenshot_date so it's retried after a month
-                source.screenshot_date = (now - constants.SCREENSHOT_MAX_AGE
-                                          + constants.SCREENSHOT_RETRY_DELTA)
+                source.screenshot_date = now
                 source.save()
 
             finally:
@@ -178,6 +238,5 @@ async def _take_single_screenshot(source, now, browser, semaphore):
             print(msg)
             logger.error(msg)
             # Set screenshot_date so it's retried after a month
-            source.screenshot_date = (now - constants.SCREENSHOT_MAX_AGE
-                                      + constants.SCREENSHOT_RETRY_DELTA)
+            source.screenshot_date = now
             source.save()

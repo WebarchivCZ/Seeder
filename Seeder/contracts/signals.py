@@ -15,6 +15,10 @@ def process_contract_change(instance, created, **kwargs):
         If the contract is marked as valid then source is accepted
     """
     if not created and instance.state in constants.STATE_CONVERSION:
-        instance.sources.filter(
+        target_state = constants.STATE_CONVERSION[instance.state]
+        sources = instance.sources.filter(
             state=source_constants.STATE_ACCEPTED_BY_STAFF
-        ).update(state = constants.STATE_CONVERSION[instance.state])
+        )
+        for source in sources:
+            source.state = target_state
+            source.save()
