@@ -594,3 +594,14 @@ class Seed(BaseModel):
 
 
 post_save.connect(update_search, sender=Source)
+
+
+def maybe_take_screenshot_for_source(sender, instance, created, **kwargs):
+    if created:
+        return
+    # Check performed directly in method
+    from source.screenshots import take_screenshot_for_source
+    take_screenshot_for_source(instance.pk)
+
+
+post_save.connect(maybe_take_screenshot_for_source, sender=Source)
