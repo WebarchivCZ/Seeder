@@ -43,5 +43,3 @@ CACHES = {
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 LEGACY_DB_CONNECTED = True
-
-MANET_URL = 'http://manet:8891/'

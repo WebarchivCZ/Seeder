@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Seeder\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-11-28 16:13+0000\n"
+"POT-Creation-Date: 2025-08-29 14:25+0000\n"
 "PO-Revision-Date: 2017-11-07 12:38+0100\n"
 "Last-Translator: Visgean Skeloru <visgean@gmail.com>, 2017\n"
 "Language-Team: English (United States) (https://www.transifex.com/"
@@ -45,7 +45,7 @@ msgstr "Blacklist"
 msgid "Blacklists"
 msgstr "Blacklists"
 
-#: blacklists/templates/blacklists.html:5 core/generic_views.py:152
+#: blacklists/templates/blacklists.html:5 core/generic_views.py:155
 msgid "Add"
 msgstr "Add"
 
@@ -59,8 +59,8 @@ msgstr "Dump"
 #: harvests/templates/harvest.html:9 harvests/templates/harvest_config.html:11
 #: harvests/templates/topic_collection.html:106
 #: publishers/templates/publisher.html:36 source/templates/edit_source.html:7
-#: source/templates/edit_source.html:11 source/templates/source.html:157
-#: source/templates/source.html:166 templates/edit_form.html:6
+#: source/templates/edit_source.html:11 source/templates/source.html:161
+#: source/templates/source.html:170 templates/edit_form.html:6
 #: templates/edit_form.html:10 www/templates/news_admin_detail.html:84
 msgid "Edit"
 msgstr "Edit"
@@ -70,7 +70,7 @@ msgstr "Edit"
 #: harvests/templates/external_topic_collection.html:97
 #: harvests/templates/harvest_config.html:13
 #: harvests/templates/topic_collection.html:107
-#: publishers/templates/publisher.html:35 source/templates/source.html:168
+#: publishers/templates/publisher.html:35 source/templates/source.html:172
 #: www/templates/news_admin_detail.html:86
 msgid "History"
 msgstr "History"
@@ -152,7 +152,7 @@ msgid "This comment has been removed"
 msgstr "This comment has been removed"
 
 #: comments/models.py:168 qa/models.py:40 qa/templates/detail.html:30
-#: source/models.py:254 source/models.py:534 source/templates/source.html:83
+#: source/models.py:260 source/models.py:542 source/templates/source.html:87
 #: templates/history.html:14
 msgid "Comment"
 msgstr "Comment"
@@ -162,7 +162,7 @@ msgstr "Comment"
 #: harvests/templates/harvest.html:110
 #: harvests/templates/topic_collection.html:112
 #: publishers/templates/publisher.html:39 qa/templates/detail.html:41
-#: source/templates/source.html:200 voting/templates/voting_round.html:118
+#: source/templates/source.html:207 voting/templates/voting_round.html:118
 #: www/templates/news_admin_detail.html:90
 msgid "Comments"
 msgstr "Comments"
@@ -171,103 +171,107 @@ msgstr "Comments"
 msgid "Contract in negotiation"
 msgstr "Contract in negotiation"
 
-#: contracts/constants.py:13
-msgid "Publisher declined"
-msgstr "Publisher declined"
+#: contracts/constants.py:14 source/constants.py:32
+msgid "Contract terminated"
+msgstr "Contract terminated"
 
-#: contracts/constants.py:14
+#: contracts/constants.py:15
 msgid "Contract is valid"
 msgstr "Contract is valid"
 
-#: contracts/constants.py:15
+#: contracts/constants.py:16
 msgid "Contract expired"
 msgstr "Contract expired"
 
-#: contracts/constants.py:37
+#: contracts/constants.py:38
 msgid "CreativeCommons"
 msgstr "Creative Commons"
 
-#: contracts/constants.py:38
+#: contracts/constants.py:39
 msgid "Apache"
 msgstr "Apache"
 
-#: contracts/constants.py:39
+#: contracts/constants.py:40
 msgid "GPL"
 msgstr "GPL"
 
-#: contracts/constants.py:40
+#: contracts/constants.py:41
 msgid "MIT"
 msgstr "MIT"
 
-#: contracts/constants.py:41
+#: contracts/constants.py:42
 msgid "LGPL 2"
 msgstr "LGPL 2"
 
-#: contracts/constants.py:42
+#: contracts/constants.py:43
 msgid "LGPL 3"
 msgstr "LGPL 3"
 
-#: contracts/constants.py:43
+#: contracts/constants.py:44
 msgid "mozilla"
 msgstr "Mozilla"
 
-#: contracts/constants.py:46
+#: contracts/constants.py:47
 msgid "Narodni knihovna CR - archivace Vasich webovych stranek"
 msgstr "National library of the CR - archiving your web sites"
 
-#: contracts/models.py:55 contracts/templates/contract.html:21
-#: harvests/models.py:233 harvests/models.py:711 source/models.py:268
+#: contracts/models.py:83 contracts/templates/contract.html:21
+#: harvests/models.py:235 harvests/models.py:770 source/models.py:274
 #: voting/models.py:27
 msgid "State"
 msgstr "State"
 
-#: contracts/models.py:61
+#: contracts/models.py:89
 msgid "Creative commons type"
 msgstr "Creative Commons type"
 
-#: contracts/models.py:68 contracts/templates/contract.html:47
+#: contracts/models.py:96 contracts/templates/contract.html:47
 msgid "Valid from"
 msgstr "Valid from"
 
-#: contracts/models.py:73 contracts/templates/contract.html:51
+#: contracts/models.py:101 contracts/templates/contract.html:51
 msgid "Valid to"
 msgstr "Valid to"
 
-#: contracts/models.py:79 harvests/templates/calendar.html:27
+#: contracts/models.py:107 harvests/templates/calendar.html:28
 msgid "Year"
 msgstr "Year"
 
-#: contracts/models.py:84 contracts/templates/contract.html:76
+#: contracts/models.py:112 contracts/templates/contract.html:76
 msgid "Contract file"
 msgstr "Contract file"
 
-#: contracts/models.py:91 source/field_filters.py:59
+#: contracts/models.py:119 source/field_filters.py:59
 msgid "Contract number"
 msgstr "Contract number"
 
-#: contracts/models.py:97 source/constants.py:25
+#: contracts/models.py:125 source/constants.py:25
 msgid "In communication"
 msgstr "In communication"
 
-#: contracts/models.py:98
+#: contracts/models.py:126
 msgid "Does the publisher responds to the emails?"
 msgstr "Does the publisher responds to the e-mails?"
 
-#: contracts/models.py:103 contracts/templates/contract.html:55
+#: contracts/models.py:131 contracts/templates/contract.html:55
 msgid "Description"
 msgstr "Description"
 
-#: contracts/models.py:124
+#: contracts/models.py:138 contracts/templates/contract.html:59
+msgid "Parent"
+msgstr "Parent"
+
+#: contracts/models.py:153
 #, python-brace-format
 msgid "Contract in negotiation with {0}"
 msgstr "Contract in negotiation with {0}"
 
-#: contracts/models.py:134
+#: contracts/models.py:163
 #, python-brace-format
 msgid "Contract with {0}"
 msgstr "Contract with {0}"
 
-#: contracts/models.py:226
+#: contracts/models.py:255
 msgid "When to send this message"
 msgstr "When to send this message"
 
@@ -304,14 +308,10 @@ msgid "Creative commons"
 msgstr "Creative Commons"
 
 #: contracts/templates/contract.html:43 publishers/models.py:30
-#: source/constants.py:121 source/models.py:243 source/tables.py:10
-#: source/templates/duplicity_check.html:20 source/templates/source.html:72
+#: source/constants.py:121 source/models.py:248 source/tables.py:10
+#: source/templates/duplicity_check.html:20 source/templates/source.html:76
 msgid "Publisher"
 msgstr "Publisher"
-
-#: contracts/templates/contract.html:59
-msgid "Parent"
-msgstr "Parent"
 
 #: contracts/templates/contract.html:67
 msgid "Sub contracts"
@@ -344,21 +344,24 @@ msgstr "Assigned sources"
 #: contracts/templates/contract.html:113
 #: harvests/templates/external_topic_collection.html:95
 #: harvests/templates/topic_collection.html:105
-#: publishers/templates/publisher.html:34 source/templates/source.html:165
+#: publishers/templates/publisher.html:34 source/templates/source.html:169
 #: www/templates/news_admin_detail.html:83
 msgid "Links"
 msgstr "Links"
 
 #: contracts/templates/contract.html:118 contracts/templates/contract.html:136
+#: source/templates/edit_seed.html:9 source/templates/edit_seed.html:23
 msgid "Delete"
 msgstr "Delete"
 
-#: contracts/templates/contract.html:131 source/templates/source.html:210
+#: contracts/templates/contract.html:131 source/templates/edit_seed.html:16
+#: source/templates/source.html:217
 msgid "Proceed with deletion?"
 msgstr "Proceed with deletion?"
 
 #: contracts/templates/contract.html:140 harvests/templates/calendar.html:51
-#: source/templates/source.html:221 templates/base.html:204
+#: source/templates/edit_seed.html:28 source/templates/source.html:228
+#: templates/base.html:204
 msgid "Close"
 msgstr "Close"
 
@@ -403,32 +406,53 @@ msgstr ""
 msgid "Send"
 msgstr "Send"
 
-#: contracts/views.py:40
+#: contracts/views.py:65
 msgid "Add contract"
 msgstr "Add contract"
 
-#: contracts/views.py:62
+#: contracts/views.py:87
 msgid "Assign contract"
 msgstr "Assign contract"
 
-#: contracts/views.py:96
+#: contracts/views.py:119 source/templates/source.html:202
+msgid "Unassign contract"
+msgstr "Unassign contract"
+
+#: contracts/views.py:130
+msgid "The source doesn't have any contracts assigned."
+msgstr "The source doesn't have any contracts assigned."
+
+#: contracts/views.py:140
+#, python-format
+msgid ""
+"All contracts have been unassigned so the source state was changed to "
+"'%(state)s'"
+msgstr ""
+"All contracts have been unassigned so the source state was changed to "
+"'%(state)s'"
+
+#: contracts/views.py:142 source/constants.py:29
+msgid "Archiving without publisher consent"
+msgstr "Archiving without publisher consent"
+
+#: contracts/views.py:158
 msgid "Contract number assigned."
 msgstr "Contract number assigned."
 
-#: contracts/views.py:110 source/templates/source.html:189
+#: contracts/views.py:172 source/templates/source.html:193
 #: templates/base.html:100
 msgid "Contracts"
 msgstr "Contracts"
 
-#: contracts/views.py:117
+#: contracts/views.py:179
 msgid "Schedule emails"
 msgstr "Schedule e-mails"
 
-#: contracts/views.py:183
+#: contracts/views.py:245
 msgid "Can't delete contract with number"
 msgstr "Can't delete contract with number"
 
-#: contracts/views.py:191
+#: contracts/views.py:253
 msgid "Contract deleted."
 msgstr "Contract deleted."
 
@@ -468,56 +492,61 @@ msgstr "Opened QAs"
 msgid "Sources needing QA"
 msgstr "Sources needing QA"
 
-#: core/forms.py:22
+#: core/forms.py:21
 msgid "Check this to delete this object"
 msgstr "Check this to delete this object"
 
-#: core/generic_views.py:81
+#: core/generic_views.py:82
 msgid "Insufficient permissions."
 msgstr "Insufficient permissions."
 
-#: core/generic_views.py:89
+#: core/generic_views.py:90
 #, python-brace-format
 msgid "Action {0} not allowed."
 msgstr "Action {0} not allowed."
 
-#: core/generic_views.py:99
+#: core/generic_views.py:100
 msgid "Changes successfully saved."
 msgstr "Changes successfully saved."
 
-#: core/views.py:20 templates/base.html:88 templates/card_detail.html:9
+#: core/generic_views.py:153
+msgid "Back"
+msgstr "Back"
+
+#: core/models.py:65 core/models.py:68 core/views.py:133
+#: templates/base.html:142
+msgid "Site Configuration"
+msgstr "Site Configuration"
+
+#: core/views.py:17 templates/base.html:88 templates/card_detail.html:9
 msgid "Dashboard"
 msgstr "Dashboard"
 
-#: core/views.py:77
+#: core/views.py:74
 msgid "Change user information"
 msgstr "Change user information"
 
-#: core/views.py:85
+#: core/views.py:82
 msgid "Profile changed."
 msgstr "Profile changed."
 
-#: core/views.py:95
+#: core/views.py:92
 msgid "Password changed successfully."
 msgstr "Password changed successfully."
 
-#: core/views.py:132 templates/base.html:142
-msgid "Constants"
-msgstr "Constants"
+#: core/views.py:137
+msgid "Site Configuration successfully updated"
+msgstr "Site Configuration successfully updated"
 
-#: core/views.py:138
-msgid "Constants successfully updated"
-msgstr "Constants successfully updated"
-
-#: core/views.py:152
+#: core/views.py:154
 msgid "Wayback maintenance turned OFF"
 msgstr "Wayback maintenance turned OFF"
 
-#: core/views.py:155
+#: core/views.py:157
 msgid "Wayback maintenance turned ON"
 msgstr "Wayback maintenance turned ON"
 
-#: harvests/admin.py:54 harvests/forms.py:57 harvests/forms.py:141
+#: harvests/admin.py:60 harvests/forms.py:60 harvests/forms.py:144
 msgid "dataLimit cannot be over 1TB"
 msgstr "dataLimit cannot be over 1TB"
 
@@ -525,7 +554,7 @@ msgstr "dataLimit cannot be over 1TB"
 msgid "One URL per line"
 msgstr "One URL per line"
 
-#: harvests/forms.py:204
+#: harvests/forms.py:207
 msgid ""
 "Provide a text file with one seed per line which will overwrite all "
 "custom_seeds. The original custom_seeds will be backed up to the media/seeds/"
@@ -535,7 +564,7 @@ msgstr ""
 "custom_seeds. The original custom_seeds will be backed up to the media/seeds/"
 "backup folder."
 
-#: harvests/forms.py:225
+#: harvests/forms.py:228
 msgid ""
 "Custom seeds field is disabled because there are too many seeds to be "
 "displayed in an HTML text field."
@@ -559,224 +588,242 @@ msgstr ""
 "Enter all your seeds here. After saving, unknown sources will stay here, "
 "while the rest will be assigned to Custom sources"
 
-#: harvests/models.py:205
+#: harvests/models.py:207
 msgid "Planned"
 msgstr "Planned"
 
-#: harvests/models.py:206
+#: harvests/models.py:208
 msgid "Ready to harvest"
 msgstr "Ready to harvest"
 
-#: harvests/models.py:207 harvests/models.py:688
+#: harvests/models.py:209 harvests/models.py:747
 msgid "Running"
 msgstr "Running"
 
-#: harvests/models.py:208
+#: harvests/models.py:210
 msgid "Success"
 msgstr "Success"
 
-#: harvests/models.py:209
+#: harvests/models.py:211
 msgid "Success with failures"
 msgstr "Success with failures"
 
-#: harvests/models.py:210
+#: harvests/models.py:212
 msgid "Cancelled"
 msgstr "Cancelled"
 
-#: harvests/models.py:211
+#: harvests/models.py:213
 msgid "Failed"
 msgstr "Failed"
 
-#: harvests/models.py:235 harvests/models.py:820
+#: harvests/models.py:237 harvests/models.py:892
 #: harvests/templates/harvest.html:19 harvests/templates/harvest_config.html:18
 msgid "Harvest type"
 msgstr "Harvest type"
 
-#: harvests/models.py:237 harvests/models.py:597 harvests/models.py:715
-#: harvests/tables.py:76 harvests/tables.py:93 www/tables.py:14
+#: harvests/models.py:239 harvests/models.py:602 harvests/models.py:774
+#: harvests/tables.py:44 harvests/tables.py:82 harvests/tables.py:99
+#: www/tables.py:13
 msgid "title"
 msgstr "Title"
 
-#: harvests/models.py:239 harvests/templates/harvest.html:17
-#: source/models.py:255 source/templates/source.html:87
+#: harvests/models.py:241 harvests/templates/harvest.html:17
+#: source/models.py:261 source/templates/source.html:91
 msgid "Annotation"
 msgstr "Annotation"
 
-#: harvests/models.py:241 harvests/models.py:730
+#: harvests/models.py:243 harvests/models.py:789
 msgid "Date of harvest"
 msgstr "Date of harvest"
 
-#: harvests/models.py:243
+#: harvests/models.py:245
 msgid "Seeds by frequency"
 msgstr "Seeds by frequency"
 
-#: harvests/models.py:255 harvests/templates/harvest.html:27
+#: harvests/models.py:257 harvests/templates/harvest.html:27
 msgid "Date frozen"
 msgstr "Date frozen"
 
-#: harvests/models.py:260
+#: harvests/models.py:262
 msgid "Topic collections"
 msgstr "Topic collections"
 
-#: harvests/models.py:265 harvests/templates/harvest.html:58
+#: harvests/models.py:267 harvests/templates/harvest.html:58
 msgid "Topic collections by frequency"
 msgstr "Topic collections by frequency"
 
-#: harvests/models.py:273 harvests/templates/harvest.html:37
+#: harvests/models.py:275 harvests/templates/harvest.html:37
 msgid "Paraharvest"
 msgstr "Paraharvest"
 
-#: harvests/models.py:276 harvests/templates/harvest.html:39
+#: harvests/models.py:278 harvests/templates/harvest.html:39
 msgid "Manuals"
 msgstr "Manuals"
 
-#: harvests/models.py:278 harvests/templates/harvest.html:51
+#: harvests/models.py:280 harvests/templates/harvest.html:51
 msgid "Combined"
 msgstr "Combined"
 
-#: harvests/models.py:280 harvests/views.py:383
+#: harvests/models.py:282 harvests/views.py:402
 msgid "ArchiveIt"
 msgstr "ArchiveIt"
 
-#: harvests/models.py:283 harvests/views.py:385
+#: harvests/models.py:285 harvests/views.py:404
 msgid "Tests"
 msgstr "Tests"
 
-#: harvests/models.py:287 harvests/models.py:822
+#: harvests/models.py:289 harvests/models.py:894
 #: harvests/templates/harvest.html:65 harvests/templates/harvest_config.html:20
 msgid "duration"
 msgstr "duration"
 
-#: harvests/models.py:289 harvests/models.py:824
+#: harvests/models.py:291 harvests/models.py:896
 #: harvests/templates/harvest.html:67 harvests/templates/harvest_config.html:22
 msgid "budget"
 msgstr "budget"
 
-#: harvests/models.py:291 harvests/models.py:826
+#: harvests/models.py:293 harvests/models.py:898
 #: harvests/templates/harvest.html:69 harvests/templates/harvest_config.html:24
 msgid "dataLimit"
 msgstr "dataLimit"
 
-#: harvests/models.py:293 harvests/models.py:828
+#: harvests/models.py:295 harvests/models.py:900
 #: harvests/templates/harvest.html:71 harvests/templates/harvest_config.html:26
 msgid "documentLimit"
 msgstr "documentLimit"
 
-#: harvests/models.py:295 harvests/models.py:830
+#: harvests/models.py:297 harvests/models.py:902
 #: harvests/templates/harvest.html:73 harvests/templates/harvest_config.html:28
 msgid "deduplication"
 msgstr "deduplication"
 
-#: harvests/models.py:299 harvests/templates/harvest.html:82
+#: harvests/models.py:301 harvests/templates/harvest.html:82
 msgid "Seeds not harvested"
 msgstr "Seeds not harvested"
 
-#: harvests/models.py:601 harvests/models.py:718 source/constants.py:124
-#: source/models.py:239
+#: harvests/models.py:606 harvests/models.py:777 source/constants.py:124
+#: source/models.py:244
 msgid "Curator"
 msgstr "Curator"
 
-#: harvests/models.py:605 source/templates/source.html:91
-msgid "keywords"
+#: harvests/models.py:610 harvests/templates/external_topic_collection.html:60
+#: source/models.py:229 source/templates/source.html:95
+msgid "Keywords"
 msgstr "Keywords"
 
-#: harvests/models.py:608 harvests/models.py:735
+#: harvests/models.py:613 harvests/models.py:794
 msgid "annotation"
 msgstr "annotation"
 
-#: harvests/models.py:612
+#: harvests/models.py:617
 msgid "image"
 msgstr "image"
 
-#: harvests/models.py:671 harvests/templates/topic_collection.html:13
+#: harvests/models.py:622
+msgid "Image text"
+msgstr "Image text"
+
+#: harvests/models.py:623
+msgid ""
+"If image text is set, it will be used to generate an SVG image for the "
+"website, otherwise image will be used."
+msgstr ""
+"If image text is set, it will be used to generate an SVG image for the "
+"website, otherwise image will be used."
+
+#: harvests/models.py:730 harvests/templates/topic_collection.html:13
 msgid "External Topic Collection"
 msgstr "External Topic Collection"
 
-#: harvests/models.py:672 templates/base.html:110
+#: harvests/models.py:731 templates/base.html:110
 msgid "External Topic Collections"
 msgstr "External Topic Collections"
 
-#: harvests/models.py:689
+#: harvests/models.py:748
 msgid "New"
 msgstr "New"
 
-#: harvests/models.py:690
+#: harvests/models.py:749
 msgid "Finished"
 msgstr "Finished"
 
-#: harvests/models.py:702 harvests/templates/topic_collection.html:49
-#: source/models.py:274 source/templates/source.html:56 templates/api.html:17
+#: harvests/models.py:761 harvests/templates/topic_collection.html:49
+#: source/models.py:280 source/templates/source.html:60 templates/api.html:17
 msgid "Frequency"
 msgstr "Frequency"
 
-#: harvests/models.py:739
+#: harvests/models.py:798
 msgid "All sources are under open license or contract"
 msgstr "All sources are under open license or contract"
 
-#: harvests/models.py:742
+#: harvests/models.py:801
 msgid "Date from"
 msgstr "Date from"
 
-#: harvests/models.py:743
+#: harvests/models.py:802
 msgid "Date to"
 msgstr "Date to"
 
-#: harvests/models.py:747 harvests/templates/topic_collection.html:24
+#: harvests/models.py:806 harvests/templates/topic_collection.html:24
 msgid "Collection alias"
 msgstr "Collection alias"
 
-#: harvests/models.py:749 harvests/templates/topic_collection.html:82
+#: harvests/models.py:808 harvests/templates/topic_collection.html:82
 msgid "Aggregation with same type"
 msgstr "Aggregation with same type"
 
-#: harvests/models.py:792
+#: harvests/models.py:864
 msgid "Internal Topic Collection"
 msgstr "Internal Topic Collection"
 
-#: harvests/models.py:793 harvests/templates/external_topic_collection.html:82
+#: harvests/models.py:865 harvests/templates/external_topic_collection.html:82
 #: templates/base.html:113
 msgid "Internal Topic Collections"
 msgstr "Internal Topic Collections"
 
-#: harvests/models.py:799
+#: harvests/models.py:871
 msgid "file"
 msgstr "file"
 
-#: harvests/models.py:833
+#: harvests/models.py:905
 msgid "Harvest Configuration"
 msgstr "Harvest Configuration"
 
-#: harvests/models.py:834 harvests/views.py:398 templates/base.html:127
+#: harvests/models.py:906 harvests/views.py:417 templates/base.html:127
 msgid "Harvest Configurations"
 msgstr "Harvest Configurations"
 
-#: harvests/models.py:838
+#: harvests/models.py:910
 #, python-format
 msgid "Configuration for %(type)s Harvests"
 msgstr "Configuration for %(type)s Harvests"
 
-#: harvests/templates/calendar.html:22
+#: harvests/templates/calendar.html:20
+msgid "List of harvests"
+msgstr "List of harvests"
+
+#: harvests/templates/calendar.html:23
 msgid "Prev"
 msgstr "Prev"
 
-#: harvests/templates/calendar.html:23
+#: harvests/templates/calendar.html:24
 msgid "Today"
 msgstr "Today"
 
-#: harvests/templates/calendar.html:24 templates/bootstrap_table.html:52
+#: harvests/templates/calendar.html:25 templates/bootstrap_table.html:52
 #: templates/card_detail.html:37 templates/search/search.html:44
 msgid "Next"
 msgstr "Next"
 
-#: harvests/templates/calendar.html:28
+#: harvests/templates/calendar.html:29
 msgid "Month"
 msgstr "Month"
 
-#: harvests/templates/calendar.html:29
+#: harvests/templates/calendar.html:30
 msgid "Week"
 msgstr "Week"
 
-#: harvests/templates/calendar.html:40
+#: harvests/templates/calendar.html:41
 msgid "Add harvest"
 msgstr "Add harvest"
 
@@ -814,28 +861,24 @@ msgstr "annotation [cs]"
 msgid "annotation [en]"
 msgstr "annotation [en]"
 
-#: harvests/templates/external_topic_collection.html:39 source/models.py:289
+#: harvests/templates/external_topic_collection.html:39 source/models.py:295
 #: source/templates/source.html:32
 msgid "Screenshot"
 msgstr "Screenshot"
 
 #: harvests/templates/external_topic_collection.html:51
-#: harvests/templates/topic_collection.html:65 source/templates/source.html:64
+#: harvests/templates/topic_collection.html:65 source/templates/source.html:68
 #: www/templates/news_admin_detail.html:76
 msgid "Created at"
 msgstr "Created at"
 
 #: harvests/templates/external_topic_collection.html:55
-#: harvests/templates/topic_collection.html:69 source/templates/source.html:52
+#: harvests/templates/topic_collection.html:69 source/templates/source.html:56
 msgid "Owner"
 msgstr "Owner"
 
-#: harvests/templates/external_topic_collection.html:60
-msgid "Keywords"
-msgstr "Keywords"
-
 #: harvests/templates/external_topic_collection.html:66
-#: source/templates/source.html:130
+#: source/templates/source.html:134
 msgid "WWW link"
 msgstr "WWW link"
 
@@ -945,78 +988,82 @@ msgid "All sources are open?"
 msgstr "All sources are open?"
 
 #: harvests/templates/topic_collection.html:94 qa/templates/qa_form.html:20
-#: source/models.py:563 source/templates/source.html:152
+#: source/models.py:571 source/templates/source.html:156
 msgid "Seeds"
 msgstr "Seeds"
 
-#: harvests/views.py:58 templates/base.html:122
+#: harvests/views.py:59 templates/base.html:122
 msgid "Harvests"
 msgstr "Harvests"
 
-#: harvests/views.py:113 harvests/views.py:131
+#: harvests/views.py:66
+msgid "Back to calendar"
+msgstr "Back to calendar"
+
+#: harvests/views.py:132 harvests/views.py:150
 msgid "Harvest contains no seeds!"
 msgstr ""
 "Harvest contains no seeds! This means it cannot be frozen (set as 'Ready to "
 "harvest')"
 
-#: harvests/views.py:353 harvests/views.py:372
+#: harvests/views.py:372 harvests/views.py:391
 msgid "Available URLs for date"
 msgstr "Available URLs for date"
 
-#: harvests/views.py:357
+#: harvests/views.py:376
 msgid "All seeds for Harvest"
 msgstr "All seeds for Harvest"
 
-#: harvests/views.py:384
+#: harvests/views.py:403
 msgid "VNC"
 msgstr "VNC: Custom seeds"
 
-#: harvests/views.py:386
+#: harvests/views.py:405
 msgid "Totals"
 msgstr "Totals: All seeds"
 
-#: harvests/views.py:445
+#: harvests/views.py:464
 msgid "TopicCollections"
 msgstr "Topic Collections"
 
-#: harvests/views.py:455
+#: harvests/views.py:474
 msgid "Add TopicCollection"
 msgstr "Add Topic Collection"
 
-#: harvests/views.py:497
+#: harvests/views.py:523
 msgid "Cannot decode file to UTF-8"
 msgstr "Cannot decode file to UTF-8"
 
-#: harvests/views.py:499
+#: harvests/views.py:527
 #, python-format
 msgid ""
-"Original custom_seeds have been backed to: <a href='%(url)s' target='_blank'>"
-"%(url)s</a>"
+"Original custom_seeds have been backed to: <a href='%(url)s' "
+"target='_blank'>%(url)s</a>"
 msgstr ""
-"Original custom_seeds have been backed to: <a href='%(url)s' target='_blank'>"
-"%(url)s</a>"
+"Original custom_seeds have been backed to: <a href='%(url)s' "
+"target='_blank'>%(url)s</a>"
 
-#: harvests/views.py:503
+#: harvests/views.py:531
 msgid "Uploaded custom seeds will not be paired automatically"
 msgstr "Uploaded custom seeds will not be paired automatically"
 
-#: harvests/views.py:558
+#: harvests/views.py:599
 msgid "ExternalTopicCollections"
 msgstr "External Topic Collections"
 
-#: harvests/views.py:568
+#: harvests/views.py:609
 msgid "Add ExternalTopicCollection"
 msgstr "Add External Topic Collection"
 
-#: harvests/views.py:652
+#: harvests/views.py:693
 msgid "Topic collection published"
 msgstr "Topic collection published"
 
-#: harvests/views.py:654
+#: harvests/views.py:695
 msgid "Topic collection unpublished"
 msgstr "Topic collection unpublished"
 
-#: harvests/views.py:668
+#: harvests/views.py:709
 msgid "URL slug successfully updated"
 msgstr "URL slug successfully updated"
 
@@ -1034,8 +1081,8 @@ msgid "Position"
 msgstr "Position"
 
 #: publishers/forms.py:57 publishers/models.py:24 publishers/models.py:57
-#: publishers/tables.py:9 source/models.py:253 source/tables.py:8
-#: www/models.py:81
+#: publishers/tables.py:9 source/models.py:259 source/tables.py:8
+#: www/models.py:82
 msgid "Name"
 msgstr "Name"
 
@@ -1051,7 +1098,7 @@ msgstr "You can't use old contact and create new at the same time"
 msgid "Please fill-out the email"
 msgstr "Please fill-out the e-mail"
 
-#: publishers/models.py:31 publishers/views.py:43 templates/base.html:97
+#: publishers/models.py:31 publishers/views.py:45 templates/base.html:97
 msgid "Publishers"
 msgstr "Publishers"
 
@@ -1067,7 +1114,7 @@ msgstr "Phone"
 msgid "Address"
 msgstr "Address"
 
-#: publishers/models.py:65 source/templates/source.html:76
+#: publishers/models.py:65 source/models.py:254 source/templates/source.html:80
 msgid "Publisher contact"
 msgstr "Publisher contact"
 
@@ -1079,20 +1126,29 @@ msgstr "Publisher contacts"
 msgid "Contacts:"
 msgstr "Contacts:"
 
-#: publishers/templates/publisher.html:20 publishers/views.py:53
+#: publishers/templates/publisher.html:20 publishers/views.py:55
 msgid "Edit contacts"
 msgstr "Edit contacts"
 
-#: publishers/templates/publisher.html:24 source/models.py:306
-#: source/views.py:238 templates/base.html:94
+#: publishers/templates/publisher.html:24 source/models.py:313
+#: source/views.py:255 templates/base.html:94
 msgid "Sources"
 msgstr "Sources"
 
-#: publishers/views.py:20 source/views.py:80
+#: publishers/views.py:22 source/views.py:80
 msgid "Add publisher"
 msgstr "Add publisher"
 
-#: qa/models.py:18 qa/templates/detail.html:13 source/models.py:305
+#: publishers/views.py:71
+#, python-format
+msgid ""
+"Contact person %(person)s is still set as contact on: %(sources)s, please "
+"remove them there first."
+msgstr ""
+"Contact person %(person)s is still set as contact on: %(sources)s, please "
+"remove them there first."
+
+#: qa/models.py:18 qa/templates/detail.html:13 source/models.py:312
 msgid "Source"
 msgstr "Source"
 
@@ -1184,10 +1240,6 @@ msgstr "Declined by staff"
 msgid "Archiving accepted"
 msgstr "Archiving accepted"
 
-#: source/constants.py:29
-msgid "Archiving without publisher consent"
-msgstr "Archiving without publisher consent"
-
 #: source/constants.py:30
 msgid "Declined by publisher"
 msgstr "Declined by publisher"
@@ -1195,10 +1247,6 @@ msgstr "Declined by publisher"
 #: source/constants.py:31
 msgid "Publisher ignored requests"
 msgstr "Publisher ignored requests"
-
-#: source/constants.py:32
-msgid "Contract terminated"
-msgstr "Contract terminated"
 
 #: source/constants.py:60
 msgid "Once only"
@@ -1248,7 +1296,7 @@ msgstr "Seed is no longer published"
 msgid "Visitor"
 msgstr "Visitor"
 
-#: source/constants.py:123 source/templates/source.html:110
+#: source/constants.py:123 source/templates/source.html:114
 msgid "ISSN"
 msgstr "ISSN"
 
@@ -1284,79 +1332,95 @@ msgstr ""
 "Sources with status 'Archiving accepted' and 'Archiving without publisher "
 "consent' must have a selected Harvest Frequency"
 
-#: source/models.py:258 source/templates/source.html:68
-msgid "Suggested by"
-msgstr "Suggested by"
-
-#: source/models.py:279 source/templates/source.html:98
+#: source/models.py:130 source/models.py:285 source/templates/source.html:102
 msgid "Category"
 msgstr "Category"
 
-#: source/models.py:284 source/templates/source.html:102
+#: source/models.py:131
+msgid "Categories"
+msgstr "Categories"
+
+#: source/models.py:155 source/models.py:290 source/templates/source.html:106
 msgid "Sub category"
 msgstr "Sub category"
 
-#: source/models.py:296
+#: source/models.py:156
+msgid "Sub categories"
+msgstr "Sub categories"
+
+#: source/models.py:228
+msgid "Keyword"
+msgstr "Keyword"
+
+#: source/models.py:264 source/templates/source.html:72
+msgid "Suggested by"
+msgstr "Suggested by"
+
+#: source/models.py:302
 msgid "Source is dead"
 msgstr "Source is dead"
 
-#: source/models.py:515
+#: source/models.py:303 source/templates/source.html:52
+msgid "Priority source"
+msgstr "Priority source"
+
+#: source/models.py:523
 msgid "default"
 msgstr "default"
 
-#: source/models.py:516
+#: source/models.py:524
 msgid "low"
 msgstr "low"
 
-#: source/models.py:517
+#: source/models.py:525
 msgid "very_low"
 msgstr "very_low"
 
-#: source/models.py:528
+#: source/models.py:536
 msgid "Main seed"
 msgstr "Main seed"
 
-#: source/models.py:529
+#: source/models.py:537
 msgid "Seed url"
 msgstr "Seed URL"
 
-#: source/models.py:535
+#: source/models.py:543
 msgid "From"
 msgstr "From"
 
-#: source/models.py:536
+#: source/models.py:544
 msgid "To"
 msgstr "To"
 
-#: source/models.py:539
+#: source/models.py:547
 msgid "Javascript"
 msgstr "Javascript"
 
-#: source/models.py:540
+#: source/models.py:548
 msgid "Global reject"
 msgstr "Global reject"
 
-#: source/models.py:541
+#: source/models.py:549
 msgid "Youtube"
 msgstr "YouTube"
 
-#: source/models.py:542
+#: source/models.py:550
 msgid "Calendars"
 msgstr "Calendars"
 
-#: source/models.py:543
+#: source/models.py:551
 msgid "Local traps"
 msgstr "Local traps"
 
-#: source/models.py:544
+#: source/models.py:552
 msgid "Redirect on seed"
 msgstr "Redirect on seed"
 
-#: source/models.py:545
+#: source/models.py:553
 msgid "Robots.txt active"
 msgstr "Robots.txt active"
 
-#: source/models.py:562
+#: source/models.py:570
 msgid "Seed"
 msgstr "Seed"
 
@@ -1372,6 +1436,10 @@ msgstr "Potential duplicities"
 msgid "Sorry, we could not find any duplicities"
 msgstr "Sorry, we could not find any duplicities"
 
+#: source/templates/edit_seed.html:19
+msgid "If you proceed the seed will be deleted forever."
+msgstr "If you proceed the seed will be deleted forever."
+
 #: source/templates/source.html:41
 msgid ""
 "There is a screenshot associated with this source but the file does not "
@@ -1380,71 +1448,71 @@ msgstr ""
 "There is a screenshot associated with this source but the file does not "
 "exist."
 
-#: source/templates/source.html:48 www/models.py:127
+#: source/templates/source.html:48 www/models.py:131
 msgid "Dead"
 msgstr "Dead"
 
-#: source/templates/source.html:60
+#: source/templates/source.html:64
 msgid "Created by"
 msgstr "Created by"
 
-#: source/templates/source.html:106
+#: source/templates/source.html:110
 msgid "Aleph id"
 msgstr "Aleph ID"
 
-#: source/templates/source.html:114
+#: source/templates/source.html:118
 msgid "QA checks"
 msgstr "QA checks"
 
-#: source/templates/source.html:124
+#: source/templates/source.html:128
 msgid "WA-admin link"
 msgstr "WA-admin link"
 
-#: source/templates/source.html:125
+#: source/templates/source.html:129
 msgid "Legacy url"
 msgstr "Legacy URL"
 
-#: source/templates/source.html:143
+#: source/templates/source.html:147
 msgid "No"
 msgstr "No"
 
-#: source/templates/source.html:161
+#: source/templates/source.html:165
 msgid "Add seeds"
 msgstr "Add seeds"
 
-#: source/templates/source.html:167
+#: source/templates/source.html:171
 msgid "WA-KAT"
 msgstr "WA-KAT"
 
-#: source/templates/source.html:169
+#: source/templates/source.html:173
 msgid "QA check"
 msgstr "QA check"
 
-#: source/templates/source.html:174 source/templates/source.html:217
+#: source/templates/source.html:178 source/templates/source.html:224
 msgid "Deactivate"
 msgstr "Deactivate"
 
-#: source/templates/source.html:179
+#: source/templates/source.html:183
 msgid "Voting rounds"
 msgstr "Voting rounds"
 
-#: source/templates/source.html:182
+#: source/templates/source.html:186
 msgid "Create voting round"
 msgstr "Create voting round"
 
-#: source/templates/source.html:193
+#: source/templates/source.html:197
 msgid "Sorry no contracts yet."
 msgstr "Sorry no contracts yet."
 
-#: source/templates/source.html:195
+#: source/templates/source.html:199
 msgid "Create"
 msgstr "Create"
 
-#: source/templates/source.html:196
+#: source/templates/source.html:200
 msgid "Assign"
 msgstr "Assign"
 
-#: source/templates/source.html:213
+#: source/templates/source.html:220
 msgid "If you proceed it will be very hard to reactivate this source."
 msgstr "If you proceed it will be very hard to reactivate this source."
 
@@ -1462,7 +1530,7 @@ msgstr "Check for duplicities"
 
 #: source/views.py:195
 msgid "You dont have permission for deactivating source"
-msgstr "You dont have permission for deactivating source"
+msgstr "You don't have permission for deactivating source"
 
 #: source/views.py:206
 msgid "Source deactivated, it might still appear in searches."
@@ -1471,6 +1539,14 @@ msgstr "Source deactivated, it might still appear in searches."
 #: source/views.py:215
 msgid "Add seed"
 msgstr "Add seed"
+
+#: source/views.py:239
+msgid "You dont have permission for deleting seeds"
+msgstr "You don't have permission for deleting seeds"
+
+#: source/views.py:243
+msgid "Seed deleted."
+msgstr "Seed deleted."
 
 #: templates/api.html:6
 msgid ""
@@ -1565,6 +1641,14 @@ msgstr "Turn on Wayback Maintenance"
 msgid "Do you really want to change the Wayback Maintenance status?"
 msgstr "Do you really want to change the Wayback Maintenance status?"
 
+#: templates/bootstrap4_table.html:66
+msgid "previous"
+msgstr "previous"
+
+#: templates/bootstrap4_table.html:86
+msgid "next"
+msgstr "next"
+
 #: templates/bootstrap_comments_threaded.html:13
 msgid "Respond"
 msgstr "Respond"
@@ -1590,11 +1674,11 @@ msgstr "You are done, nothing more to do here."
 msgid "Reverse order"
 msgstr "Reverse order"
 
-#: templates/filtered_list.html:13
+#: templates/filtered_list.html:19
 msgid "records"
 msgstr "records"
 
-#: templates/filtered_list.html:15
+#: templates/filtered_list.html:22
 msgid "Toggle filters"
 msgstr "Toggle filters"
 
@@ -1833,95 +1917,95 @@ msgstr "Postpone voting"
 msgid "Nelze nyní vyhledávat..."
 msgstr "Cannot search now..."
 
-#: www/models.py:26
+#: www/models.py:27
 msgid "First source"
 msgstr "First source"
 
-#: www/models.py:34
+#: www/models.py:35
 msgid "second source"
 msgstr "second source"
 
-#: www/models.py:41
+#: www/models.py:42
 msgid "annotation for first source"
 msgstr "annotation for first source"
 
-#: www/models.py:48
+#: www/models.py:49
 msgid "annotation for second source"
 msgstr "annotation for second source"
 
-#: www/models.py:74
+#: www/models.py:75
 msgid "News article"
 msgstr "News article"
 
-#: www/models.py:75
+#: www/models.py:76
 msgid "News articles"
 msgstr "News articles"
 
-#: www/models.py:79
+#: www/models.py:80
 msgid "URL"
 msgstr "URL"
 
-#: www/models.py:80
+#: www/models.py:81
 msgid "Contact email"
 msgstr "Contact e-mail"
 
-#: www/models.py:84
+#: www/models.py:85
 msgid "Licensed under creative commons"
 msgstr "Licensed under Creative Commons"
 
-#: www/models.py:88
+#: www/models.py:89
 msgid "Note"
 msgstr "Note"
 
-#: www/models.py:92
+#: www/models.py:93
 msgid "Nomination"
 msgstr "Nomination"
 
-#: www/models.py:93
+#: www/models.py:94
 msgid "Nominations"
 msgstr "Nominations"
 
-#: www/models.py:120
+#: www/models.py:124
 msgid "Date started monitoring"
 msgstr "Website monitored since"
 
-#: www/models.py:122
+#: www/models.py:126
 msgid "Date extinct"
 msgstr "Date of recorded death"
 
-#: www/models.py:124
+#: www/models.py:128
 msgid "Status code"
 msgstr "Status code"
 
-#: www/models.py:129
+#: www/models.py:133
 msgid "Confirmed dead"
 msgstr "Confirmed dead"
 
-#: www/models.py:131
+#: www/models.py:135
 msgid "Requires confirmation"
 msgstr "Requires confirmation"
 
-#: www/models.py:133
+#: www/models.py:137
 msgid "Contains metadata"
 msgstr "Contains metadata"
 
-#: www/models.py:135
+#: www/models.py:139
 msgid "Death index"
 msgstr "Death index"
 
-#: www/models.py:137
+#: www/models.py:141
 msgid "Contains whois"
 msgstr "Contains whois"
 
-#: www/models.py:139
+#: www/models.py:143
 msgid "Datum poslední kontroly"
 msgstr "Date of last check"
 
-#: www/models.py:142
+#: www/models.py:146
 msgid "Extinct Website"
 msgstr "Extinct Website"
 
-#: www/models.py:143
+#: www/models.py:147
 msgid "Extinct Websites"
 msgstr "Extinct Websites"
 
@@ -1964,11 +2048,22 @@ msgstr "Extinct websites for year %(year)s"
 msgid "aktualizováno"
 msgstr "updated"
 
-#: www/templates/extinct_websites/history.html:15
+#: www/templates/extinct_websites/history.html:16
 msgid "Všechny mrtvé weby tento rok"
 msgstr "All extinct websites this year"
 
 #: www/templates/extinct_websites/history.html:18
+#: www/templates/extinct_websites/history.html:20
+#: www/templates/extinct_websites/history.html:27
+#: www/templates/extinct_websites/history.html:29
+#: www/templates/extinct_websites/summary.html:33
+#: www/templates/extinct_websites/summary.html:35
+#: www/templates/extinct_websites/summary.html:42
+#: www/templates/extinct_websites/summary.html:44
+msgid "Stáhnout"
+msgstr "Download"
+
+#: www/templates/extinct_websites/history.html:25
 msgid "Všechny weby trackované tento rok"
 msgstr "All tracked websites this year"
 
@@ -1983,29 +2078,31 @@ msgstr "Extinct Web Resources Database"
 #: www/templates/extinct_websites/summary.html:14
 #, python-format
 msgid ""
-"Web je mimořádně dynamické a efemérní médium. Z mezinárodních <a href="
-"\"https://ahrefs.com/blog/link-rot-study/\" target=\"_blank\">studií</a> "
-"vyplývá, že za dobu deseti let zanikne více jak 50 %% sledovaných webů. "
+"Web je mimořádně dynamické a efemérní médium. Z mezinárodních <a "
+"href=\"https://ahrefs.com/blog/link-rot-study/\" target=\"_blank\">studií</"
+"a> vyplývá, že za dobu deseti let zanikne více jak 50 %% sledovaných webů. "
 "Zpráva o mrtvých webech je aktivitou Webarchivu, která by měla přispět k "
 "přehledu o tuzemské webové krajině. Data sbíráme pomocí naší aplikace <a "
-"href=\"https://github.com/WebarchivCZ/extinct-websites\" target=\"_blank"
-"\">Extinct Webstites</a>, kde jsou podrobněji popsané zkoumané parametry. "
-"Jako vzorek nám slouží katalogizovaný <a href=\"https://www.webarchiv.cz/cs/"
-"katalog-stranek\" target=\"_blank\">korpus</a> bohemikálních webových "
-"zdrojů, který je rozšiřován o další zdroje. Definování pojmu „mrtvý webový "
-"zdroj“ je důležitou součástí probíhajícího výzkumu."
+"href=\"https://github.com/WebarchivCZ/extinct-websites\" "
+"target=\"_blank\">Extinct Webstites</a>, kde jsou podrobněji popsané "
+"zkoumané parametry. Jako vzorek nám slouží katalogizovaný <a href=\"https://"
+"www.webarchiv.cz/cs/katalog-stranek\" target=\"_blank\">korpus</a> "
+"bohemikálních webových zdrojů, který je rozšiřován o další zdroje. "
+"Definování pojmu „mrtvý webový zdroj“ je důležitou součástí probíhajícího "
+"výzkumu."
 msgstr ""
-"The web is an extremely dynamic and ephemeral medium. International <a href="
-"\"https://ahrefs.com/blog/link-rot-study/\" target=\"_blank\">studies</a> "
-"show that more than 50%% of websites disappear within a decade. The Dead "
+"The web is an extremely dynamic and ephemeral medium. International <a "
+"href=\"https://ahrefs.com/blog/link-rot-study/\" target=\"_blank\">studies</"
+"a> show that more than 50%% of websites disappear within a decade. The Dead "
 "Websites Report is an activity of the Webarchiv that should contribute to an "
-"overview of the Czech web landscape. We collect data using our <a href="
-"\"https://github.com/WebarchivCZ/extinct-websites\" target=\"_blank"
-"\">Extinct Websites</a> app, which details the parameters under "
-"investigation. Our sample is a catalogued <a href=\"https://www.webarchiv.cz/"
-"cs/katalog-stranek\" target=\"_blank\">corpus</a> of bohemian web resources, "
-"which is being expanded to include additional resources. Defining the term "
-"\"dead web resource\" is an important part of the ongoing research."
+"overview of the Czech web landscape. We collect data using our <a "
+"href=\"https://github.com/WebarchivCZ/extinct-websites\" "
+"target=\"_blank\">Extinct Websites</a> app, which details the parameters "
+"under investigation. Our sample is a catalogued <a href=\"https://www."
+"webarchiv.cz/cs/katalog-stranek\" target=\"_blank\">corpus</a> of bohemian "
+"web resources, which is being expanded to include additional resources. "
+"Defining the term \"dead web resource\" is an important part of the ongoing "
+"research."
 
 #: www/templates/extinct_websites/summary.html:18
 #, python-format
@@ -2021,13 +2118,6 @@ msgstr ""
 #: www/templates/extinct_websites/summary.html:31
 msgid "Všechny aktuálně mrtvé weby"
 msgstr "All currently extinct websites"
-
-#: www/templates/extinct_websites/summary.html:33
-#: www/templates/extinct_websites/summary.html:35
-#: www/templates/extinct_websites/summary.html:42
-#: www/templates/extinct_websites/summary.html:44
-msgid "Stáhnout"
-msgstr "Download"
 
 #: www/templates/extinct_websites/summary.html:40
 msgid "Všechny aktuálně trackované weby"
@@ -2213,17 +2303,17 @@ msgstr "^extinct-websites$"
 msgid "^mrtve-weby-historie/(?P<year>\\d{4})$"
 msgstr "^extinct-websites-history/(?P<year>\\d{4})$"
 
-#: www/views.py:477
+#: www/views.py:478
 #, python-format
 msgid "Webarchiv.cz - archivace vasich webovych stranek %(url)s"
 msgstr "Webarchiv.cz - web archiving your pages %(url)s"
 
-#: www/views.py:481
+#: www/views.py:482
 #, python-format
 msgid "Webarchiv.cz - archivace webovych stranek %(url)s"
 msgstr "Webarchiv.cz - web archiving %(url)s"
 
-#: www/views.py:503
+#: www/views.py:504
 #, python-format
 msgid "New nomination %(url)s"
 msgstr "New nomination %(url)s"

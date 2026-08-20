@@ -10,7 +10,8 @@ CONTRACT_STATE_EXPIRED = 'EXPIRED'
 
 CONTRACT_STATES = (
     (CONTRACT_STATE_NEGOTIATION, _('Contract in negotiation')),
-    (CONTRACT_STATE_DECLINED, _('Publisher declined')),
+    # ? Originally "Publisher declined" / "Odmítnuto vydavatelem"
+    (CONTRACT_STATE_DECLINED, _('Contract terminated')),
     (CONTRACT_STATE_VALID, _('Contract is valid')),
     (CONTRACT_STATE_EXPIRED, _('Contract expired')),
 )
@@ -167,6 +168,10 @@ CREATIVE_COMMONS_TYPES = {
         "description": "Uveďte původ-Nezpracovávejte-Neužívejte komerčně 1.0 Generic (CC BY-ND-NC 1.0)",
         "url": "https://creativecommons.org/licenses/by-nc-nd/1.0/deed.cs",
     },
+    "CC0 1.0": {
+        "description": "CC0 1.0 Universal (CC0 1.0)",
+        "url": "https://creativecommons.org/publicdomain/zero/1.0/"
+    }
 }
 
 CREATIVE_COMMONS_TYPES_CHOICES = ((None, "--------"),) + tuple(

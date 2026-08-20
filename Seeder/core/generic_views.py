@@ -3,6 +3,7 @@
 """
 
 from django.contrib import messages
+from django.utils import timezone
 from django.http.response import HttpResponseRedirect, JsonResponse
 from django.contrib.auth.mixins import UserPassesTestMixin
 from django.contrib.auth.decorators import login_required
@@ -148,19 +149,52 @@ class FilteredListView(ExportMixin, SingleTableMixin, FilterView):
     table_class = NotImplemented
     filterset_class = NotImplemented
 
+    back_link = None
+    back_link_title = _('Back')
     add_link = None
     add_link_title = _('Add')
-    full_export_url = None
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['export_formats'] = ['csv', 'xlsx']
         context['filter'] = self.filterset_class(data=self.request.GET)
         context['filter_active'] = bool(self.request.GET)
+        context['back_link'] = self.back_link
+        context['back_link_title'] = self.back_link_title
         context['add_link'] = self.add_link
         context['add_link_title'] = self.add_link_title
-        context['full_export_url'] = self.full_export_url
+        context['full_export_enabled'] = hasattr(
+            self, "get_df_for_full_export")
         return context
+
+    # ? def get_df_for_full_export(self) -> pd.DataFrame:
+    # ? Implement in order to enable full export functionality
+
+    def get_filename_for_export(self):
+        return (f"{self.__class__.__name__.lower()}_"
+                f"{timezone.now():%Y-%m-%d_%H-%M}.xlsx")
+
+    def get(self, request, *args, **kwargs):
+        """ Download all sources in an XLSX file """
+        from django.http import HttpResponse, HttpRequest
+        full_export = request.GET.get("full_export", "false").lower() == "true"
+        if full_export and hasattr(self, "get_df_for_full_export"):
+            df = self.get_df_for_full_export()
+            if df is None:  # Not implemented, return default
+                return super().get(request, *args, **kwargs)
+            # Make datetime fields timezone-naive
+            for col in df.columns:
+                if df[col].dtype.name == "datetime64[ns, UTC]":
+                    df[col] = df[col].dt.tz_convert("UTC").dt.tz_localize(None)
+            # Export the DF straight into a downloading response
+            filename = self.get_filename_for_export()
+            response = HttpResponse(
+                content_type=("application/vnd.openxmlformats-officedocument."
+                              "spreadsheetml.sheet"))
+            response["Content-Disposition"] = f"attachment; filename={filename}"
+            df.to_excel(response, index=False, engine="openpyxl")
+            return response
+        return super().get(request, *args, **kwargs)
 
 
 class JSONView(View, ContextMixin):

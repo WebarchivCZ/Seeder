@@ -5,6 +5,7 @@ import logging
 from itertools import chain
 from hashlib import md5
 from django.utils import timezone
+from django.utils.text import slugify
 from datetime import date
 
 from django.db import models
@@ -69,7 +70,7 @@ class HarvestAbstractModel(BaseModel):
 
         return u'FRQ: {0}, custom seeds: {1}, custom sources: {2}'.format(
             self.get_target_frequency_display(),
-            len(self.custom_seeds.splitlines()),
+            len(self.custom_seeds.split()),
             self.custom_sources.count()
         )
 
@@ -118,7 +119,7 @@ class HarvestAbstractModel(BaseModel):
         ## Still takes a lot of time due to 'icontains'
         ## Potentially can return wrong things because of the 'icontains'
         query = Q()
-        for seed_url in self.custom_seeds.splitlines():
+        for seed_url in self.custom_seeds.split():
             query |= Q(seed__url__icontains=seed_url)
         sources = Source.objects.filter(
             query, seed__state=source_constants.SEED_STATE_INCLUDE)
@@ -146,19 +147,21 @@ class HarvestAbstractModel(BaseModel):
         if not self.custom_seeds:
             return set()
         # Unwanted tabs and newlines can appear when entering as text
-        return set(map(str.strip, self.custom_seeds.splitlines())) - set([""])
+        return set(self.custom_seeds.split()) - set([""])
 
     def get_custom_sources_seeds(self):
         seeds = Seed.objects.filter(
             source__in=self.custom_sources.all())
         return set(seeds.values_list('url', flat=True)) - self.get_blacklisted()
 
-    def get_seeds(self, blacklisted=None):
+    def get_seeds(self, blacklisted=None, frozen_only=False):
         """
         :return: set of urls
         """
         if self.seeds_frozen and self.seeds_frozen != '':
-            return set(self.seeds_frozen.splitlines())
+            return set(self.seeds_frozen.split())
+        if frozen_only:  # Prematurely return so seeds aren't computed
+            return set()
 
         seeds = set(
             chain(
@@ -314,13 +317,14 @@ class Harvest(HarvestAbstractModel):
                 scheduled_on__lt=self.scheduled_on,
                 status__in=Harvest.PREVIOUSLY_HARVESTED_STATES
             ):
-                seeds.update(h.get_seeds())
+                # Only retrieve frozen seeds, otherwise we're in recursive hell
+                seeds.update(h.get_seeds(frozen_only=True))
             self.previously_harvested = seeds
         return self.previously_harvested
 
     def get_serials_frequency_json(self, frequency):
         # Disregard OneShot seeds, should be dealt with separately
-        if frequency == 0:
+        if str(frequency) == "0":
             return None
         seeds = set(Seed.objects.archiving().filter(
             source__frequency=frequency).values_list('url', flat=True))
@@ -414,7 +418,6 @@ class Harvest(HarvestAbstractModel):
         return {
             "idHarvest": self.pk,
             "dateGenerated": timezone.now().isoformat(),
-            # TODO: implement json freezing, still can be None though
             "dateFrozen": (self.date_frozen.isoformat()
                            if self.date_frozen else None),
             "plannedStart": self.scheduled_on.isoformat(),
@@ -438,8 +441,10 @@ class Harvest(HarvestAbstractModel):
     def get_seeds_by_frequency(self):
         if not self.target_frequency:
             return set()
+        # Ignore "0" frequency, oneshot dealt with separately
         seeds = Seed.objects.archiving().filter(
-            source__frequency__in=self.target_frequency)
+            source__frequency__in=self.target_frequency
+        ).exclude(source__frequency=0)
         blacklisted = self.get_blacklisted()
         return set(seeds.values_list('url', flat=True)) - blacklisted
 
@@ -478,9 +483,8 @@ class Harvest(HarvestAbstractModel):
     def get_archiveit_seeds(self):
         if not self.archive_it:
             return set()
-        # Get all potential ArchiveIt seeds
-        archiveit = Seed.objects.archiving().filter(
-            source__frequency__in=[1, 2, 4, 6])
+        # Get all potential ArchiveIt seeds across all source frequencies
+        archiveit = Seed.objects.archiving()
         archiveit = set(archiveit.values_list('url', flat=True))
         # Get all harvested seeds up to this Harvest's scheduled date
         previously_harvested = self.get_previously_harvested()
@@ -499,9 +503,11 @@ class Harvest(HarvestAbstractModel):
         blacklisted = self.get_blacklisted()
         return seeds - blacklisted
 
-    def get_seeds(self, blacklisted=None):
+    def get_seeds(self, blacklisted=None, frozen_only=False):
         if self.seeds_frozen and self.seeds_frozen != '':
-            return set(self.seeds_frozen.splitlines())
+            return set(self.seeds_frozen.split())
+        if frozen_only:  # Prematurely return so seeds aren't computed
+            return set()
 
         # Pre-compute blacklisted and pass down to TopicCollection functions
         if blacklisted is None:
@@ -533,8 +539,8 @@ class Harvest(HarvestAbstractModel):
         seeds = self.get_seeds()
         if len(seeds) > 0:
             self.seeds_frozen = '\n'.join(seeds)
-            self.json_frozen = json.dumps(self.get_json())
             self.date_frozen = timezone.now()
+            self.json_frozen = json.dumps(self.get_json())
             self.save()
             return True     # frozen correctly
         return False        # not frozen
@@ -602,7 +608,7 @@ class ExternalTopicCollection(BaseModel, OrderedModel):
         on_delete=models.PROTECT
     )
 
-    keywords = models.ManyToManyField(KeyWord, verbose_name=_('keywords'))
+    keywords = models.ManyToManyField(KeyWord, verbose_name=_('Keywords'))
 
     annotation = RichTextField(
         verbose_name=_('annotation'),
@@ -613,6 +619,10 @@ class ExternalTopicCollection(BaseModel, OrderedModel):
         upload_to='photos',
         null=True, blank=True,
     )
+    image_text = models.CharField(
+        _("Image text"), max_length=32, blank=True, help_text=_(
+            "If image text is set, it will be used to generate an SVG image "
+            "for the website, otherwise image will be used."))
 
     @property
     def custom_seeds(self):
@@ -641,11 +651,11 @@ class ExternalTopicCollection(BaseModel, OrderedModel):
         self.slug = unique_slug
         self.save()
 
-    def get_seeds(self, blacklisted=None):
+    def get_seeds(self, blacklisted=None, frozen_only=False):
         """ Get seeds from all internal collections """
         seeds = set()
         for internal in self.internal_collections.all():
-            seeds = seeds.union(internal.get_seeds())
+            seeds = seeds.union(internal.get_seeds(frozen_only=frozen_only))
         return seeds
 
     def get_www_url(self):
@@ -663,6 +673,56 @@ class ExternalTopicCollection(BaseModel, OrderedModel):
             return False
         return True
 
+    def get_svg_data(self):
+        # Use default if empty
+        text = self.image_text if self.image_text else "TC"
+        text_length = len(text)
+        svg_width = 206
+        svg_height = 156
+        background_color = "#00f"
+        font_family = "Times New Roman, serif"
+        font_weight = "normal"
+
+        if text_length > 10:
+            # Split text approximately in half, preferring space
+            midpoint = text_length // 2
+            split_index = text.rfind(' ', 0, midpoint + 1)
+            if split_index == -1:
+                split_index = midpoint
+            line1 = text[:split_index].strip()
+            line2 = text[split_index:].strip()
+
+            # Calculate font size based on the longest line
+            max_line_length = max(len(line1), len(line2))
+            target_ratio = 0.85  # Slightly higher for multi-line to use more space
+            target_width = svg_width * target_ratio
+            font_size = (target_width * 2) / max_line_length
+            # Clamp between 10px and 72px
+            font_size = max(10, min(font_size, 72))
+
+            svg = f"""<svg class='aspect-ratio' width='{svg_width}' height='{svg_height}' viewBox='0 0 {svg_width} {svg_height}' xmlns='http://www.w3.org/2000/svg'>
+  <rect width='100%' height='100%' fill='{background_color}'/>
+  <text x='50%' y='35%' fill='#fff' font-family='{font_family}' font-weight='{font_weight}' text-anchor='middle' dominant-baseline='middle' style='font-size: {font_size}px;'>{line1}</text>
+  <text x='50%' y='65%' fill='#fff' font-family='{font_family}' font-weight='{font_weight}' text-anchor='middle' dominant-baseline='middle' style='font-size: {font_size}px;'>{line2}</text>
+</svg>"""
+        else:
+            # Single-line logic (unchanged)
+            if text_length <= 5:
+                target_ratio = 0.5
+            else:
+                target_ratio = 0.65
+            target_width = svg_width * target_ratio
+            font_size = (target_width * 2) / text_length
+            # Clamp between 10px and 72px
+            font_size = max(10, min(font_size, 72))
+
+            svg = f"""<svg class='aspect-ratio' width='{svg_width}' height='{svg_height}' viewBox='0 0 {svg_width} {svg_height}' xmlns='http://www.w3.org/2000/svg'>
+  <rect width='100%' height='100%' fill='{background_color}'/>
+  <text x='50%' y='50%' fill='#fff' font-family='{font_family}' font-weight='{font_weight}' text-anchor='middle' dominant-baseline='middle' style='font-size: {font_size}px;'>{text}</text>
+</svg>"""
+
+        return svg
+
     def __str__(self):
         sign = '✔' if self.active else '✗'
         return '{0} {1}'.format(sign, self.title)
@@ -673,7 +733,7 @@ class ExternalTopicCollection(BaseModel, OrderedModel):
         ordering = ('order',)
 
 
-@revisions.register(exclude=('last_changed',))
+@revisions.register(exclude=('last_changed', 'custom_seeds', 'seeds_frozen'))
 class TopicCollection(HarvestAbstractModel):
     """
     Internal representation of a Topic Collection, containing seeds and sources
@@ -766,21 +826,39 @@ class TopicCollection(HarvestAbstractModel):
             aggregationWithSameType=self.aggregation_with_same_type,
         )
 
+    def freeze_seeds(self, commit=True):
+        """
+        Freezes the seeds to preserve them for later use.
+        Don't save if commit == False
+        """
+        seeds = self.get_seeds()
+        if len(seeds) > 0:
+            self.seeds_frozen = '\n'.join(seeds)
+            if commit:
+                self.save()
+            return True     # frozen correctly
+        return False        # not frozen
+
     def backup_custom_seeds(self):
         """
         Save all current custom seeds to a text file under media/seeds/backup
         Filename: tc_{current datetime}_{TC id}_{15 chars of TC title}.txt
         :return url: The media URL of the saved file
         """
-        filename = (f"tc_{timezone.now():%Y-%m-%d_%H-%M}_{self.pk}_"
-                    f"{self.title[:15].replace(' ', '-')}.txt")
-        filepath = os.path.join(
-            settings.MEDIA_ROOT, settings.SEEDS_BACKUP_DIR, filename)
+        safe_title = slugify(self.title)[:15] or "topic-collection"
+        filename = (
+            f"tc_{timezone.now():%Y-%m-%d_%H-%M}_{self.pk}_{safe_title}.txt"
+        )
+        backup_dir = os.path.abspath(os.path.join(
+            settings.MEDIA_ROOT, settings.SEEDS_BACKUP_DIR))
+        filepath = os.path.abspath(os.path.join(backup_dir, filename))
+        if os.path.commonpath([backup_dir, filepath]) != backup_dir:
+            raise ValueError("Unsafe backup path")
         # Ensure folder exists
-        os.makedirs(os.path.dirname(filepath), exist_ok=True)
+        os.makedirs(backup_dir, exist_ok=True)
         # Save seeds and return the media URL for download
-        with open(filepath, "w") as f:
-            f.write(self.custom_seeds)
+        with open(filepath, "w", encoding="utf-8") as f:
+            f.write(self.custom_seeds or "")
         return os.path.join(
             settings.MEDIA_URL, settings.SEEDS_BACKUP_DIR, filename)
 
@@ -869,3 +947,24 @@ def freeze_urls(sender, instance, **kwargs):
         instance.date_frozen = None
         instance.seeds_frozen = None
         instance.json_frozen = None
+
+
+@receiver(pre_save, sender=TopicCollection)
+def freeze_tc_urls(sender, instance, **kwargs):
+    """
+    Signal that freezes TopicCollection seeds on every save
+    """
+    # For creates, allow initial save first and freeze on subsequent save(s).
+    if instance.pk is None:
+        return
+
+    # Skip expensive seed freezing when save only touches unrelated fields.
+    update_fields = kwargs.get("update_fields")
+    if update_fields is not None:
+        touched = set(update_fields)
+        if touched.isdisjoint({"custom_seeds", "custom_sources", "seeds_frozen"}):
+            return
+
+    # Avoid recursive save by not committing in pre_save.
+    instance.seeds_frozen = ""
+    instance.freeze_seeds(commit=False)

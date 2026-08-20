@@ -1,6 +1,3 @@
-from .json_constants import store_constants
-from . import forms
-
 from django.http.response import HttpResponseRedirect
 from django.views.generic.base import RedirectView, TemplateView, View
 from django.utils.translation import ugettext_lazy as _
@@ -10,7 +7,7 @@ from django.utils.http import is_safe_url
 from django.utils import translation
 from django.views.generic.edit import FormView, UpdateView
 
-from core.json_constants import get_constant, update_constant
+from . import forms, models
 from .generic_views import LoginMixin, MessageView, SuperuserRequiredMixin
 from .dashboard_data import get_cards, cards_registry, REVERSE_SESSION
 
@@ -115,27 +112,30 @@ class DevNotesView(LoginMixin, TemplateView):
     template_name = 'dev_notes.html'
 
 
-class EditJsonConstantsView(SuperuserRequiredMixin, FormView, MessageView):
+class EditSiteConfigurationView(
+        SuperuserRequiredMixin, UpdateView, MessageView):
     """
     View for superusers where they can change constants accessed elsewhere in
     the application.
     e.g. "webarchive_size" on WWW Index
     """
-    form_class = forms.UpdateJsonConstantsForm
+    form_class = forms.SiteConfigurationForm
     template_name = 'edit_form.html'
-    success_url = reverse_lazy('core:json_constants')
-    view_name = "json_constants"
+    success_url = reverse_lazy('core:site_configuration')
+    view_name = "site_configuration"
+
+    def get_object(self):
+        return models.SiteConfiguration.get_solo()
 
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
         # This will show up in the page title & header w/ edit_form.html
-        ctx["object"] = _("Constants")
+        ctx["object"] = _("Site Configuration")
         return ctx
 
     def form_valid(self, form):
-        # Fields are created using constants' keys, so just store everything
-        store_constants(form.cleaned_data)
-        self.add_message(_("Constants successfully updated"), messages.SUCCESS)
+        self.add_message(_("Site Configuration successfully updated"),
+                         messages.SUCCESS)
         return super().form_valid(form)
 
 
@@ -145,8 +145,10 @@ class ToggleWaybackMaintenanceView(LoginMixin, View, MessageView):
     """
 
     def post(self, request, *args, **kwargs):
-        maintenance = get_constant("wayback_maintenance")
-        update_constant("wayback_maintenance", not maintenance)
+        config = models.SiteConfiguration.get_solo()
+        maintenance = config.wayback_maintenance
+        config.wayback_maintenance = not maintenance
+        config.save()
         # Based on the original value before update
         if maintenance:
             self.add_message(_('Wayback maintenance turned OFF'),

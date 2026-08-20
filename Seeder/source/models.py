@@ -19,6 +19,7 @@ from reversion import revisions
 from . import constants
 from contracts.constants import CREATIVE_COMMONS_TYPES
 from core.models import BaseModel, DatePickerField
+from core.utils import get_wayback_url
 from publishers.models import Publisher, ContactPerson
 from legacy_db.models import TransferRecord
 from search_blob.models import SearchModel, update_search
@@ -126,6 +127,8 @@ class Category(models.Model, SlugOrCreateModel):
 
     class Meta:
         ordering = ['name']
+        verbose_name = _('Category')
+        verbose_name_plural = _('Categories')
 
 
 class SubCategory(models.Model, SlugOrCreateModel):
@@ -149,23 +152,18 @@ class SubCategory(models.Model, SlugOrCreateModel):
 
     class Meta:
         ordering = ['name']
+        verbose_name = _('Sub category')
+        verbose_name_plural = _('Sub categories')
 
 
-class SourceManager(models.Manager):
-    """
-    Filters sources that needs quality assurance
-    """
-
-    def get_queryset(self):
-        return super(SourceManager, self).get_queryset().exclude(active=False)
-
+class SourceQuerySet(models.QuerySet):
     def archiving(self):
-        return self.get_queryset().filter(
+        return self.filter(
             state__in=constants.ARCHIVING_STATES
         )
 
     def public(self):
-        return self.get_queryset().filter(
+        return self.filter(
             state__in=constants.PUBLIC_STATES
         )
 
@@ -182,25 +180,29 @@ class SourceManager(models.Manager):
         )
 
     def has_cc(self, value=True):
-        with_contract = self.get_queryset().exclude(contract=None)
-        pks = [s.pk for s in with_contract
-               if s.contract_set.valid().filter(is_cc=True).count() > 0]
+        from contracts.models import Contract
+        with_cc = self.filter(
+            contract__in=Contract.objects.valid().filter(is_cc=True))
         # Can search for non-CC Sources as well
         if value:
-            return self.get_queryset().filter(pk__in=pks)
+            return with_cc
         else:
-            return self.get_queryset().exclude(pk__in=pks)
+            return self.exclude(pk__in=with_cc)
 
     def contains_contract_number(self, value):
-        try:
-            contract_number, year = [int(s.strip()) for s in value.split('/')]
-            with_contract = self.get_queryset().exclude(contract=None)
-            pks = [s.pk for s in with_contract
-                   if s.contract_set.valid().filter(
-                       contract_number=contract_number, year=year).count() > 0]
-            return self.get_queryset().filter(pk__in=pks)
-        except Exception:
-            return self.get_queryset().none()
+        from contracts.models import Contract
+        # Use the ContractQuerySet method for consistent filtering logic
+        contracts = Contract.objects.filter_by_contract_number(value)
+        return self.filter(contract__in=contracts)
+
+
+class SourceManager(models.Manager.from_queryset(SourceQuerySet)):
+    """
+    Filters sources that needs quality assurance
+    """
+
+    def get_queryset(self):
+        return super().get_queryset().exclude(active=False)
 
 
 class KeyWord(SlugOrCreateModel, models.Model):
@@ -222,6 +224,9 @@ class KeyWord(SlugOrCreateModel, models.Model):
     def www_url(self):
         return reverse('www:keyword', kwargs={'slug': self.slug_safe})
 
+    class Meta:
+        verbose_name = _('Keyword')
+        verbose_name_plural = _('Keywords')
 
 @revisions.register(exclude=('last_changed',))
 class Source(SearchModel, SlugOrCreateModel, BaseModel):
@@ -246,7 +251,8 @@ class Source(SearchModel, SlugOrCreateModel, BaseModel):
         on_delete=models.DO_NOTHING)
 
     publisher_contact = models.ForeignKey(
-        ContactPerson,
+        verbose_name=_('Publisher contact'),
+        to=ContactPerson,
         null=True, blank=True,
         on_delete=models.DO_NOTHING)
 
@@ -294,6 +300,7 @@ class Source(SearchModel, SlugOrCreateModel, BaseModel):
     screenshot_date = models.DateTimeField(null=True, blank=True)
     keywords = models.ManyToManyField(KeyWord, blank=True)
     dead_source = models.BooleanField(_('Source is dead'), default=False)
+    priority_source = models.BooleanField(_('Priority source'), default=False)
 
     slug = models.SlugField(unique=True, blank=True, null=True)
     from_field = 'stripped_main_url'
@@ -368,7 +375,7 @@ class Source(SearchModel, SlugOrCreateModel, BaseModel):
 
     @property
     def wayback_url(self):
-        return settings.WAYBACK_URL.format(url=self.url)
+        return get_wayback_url(self.url)
 
     @main_seed.setter
     def main_seed(self, value):
@@ -493,7 +500,8 @@ class Source(SearchModel, SlugOrCreateModel, BaseModel):
         df = pd.DataFrame.from_records(qs.values(
             "id", "name", "owner__username", "state", "publisher__name",
             "category__name", "sub_category__name", "suggested_by",
-            "dead_source", "created", "last_changed", "seed_urls",
+            "dead_source", "priority_source", "created", "last_changed",
+            "seed_urls",
         ))
         for col in df.columns:
             # Make datetime fields timezone-naive
@@ -586,3 +594,14 @@ class Seed(BaseModel):
 
 
 post_save.connect(update_search, sender=Source)
+
+
+def maybe_take_screenshot_for_source(sender, instance, created, **kwargs):
+    if created:
+        return
+    # Check performed directly in method
+    from source.screenshots import take_screenshot_for_source
+    take_screenshot_for_source(instance.pk)
+
+
+post_save.connect(maybe_take_screenshot_for_source, sender=Source)

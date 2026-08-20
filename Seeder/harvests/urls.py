@@ -29,12 +29,25 @@ internal_collections_urlpatterns = [
          name='internal_collection_add'),
     path('<int:pk>/edit', InternalCollectionEdit.as_view(),
          name='internal_collection_edit'),
+    path(
+        '<int:pk>/custom-seeds/chunk-upload',
+        InternalCollectionCustomSeedsChunkUploadView.as_view(),
+        name='internal_collection_custom_seeds_chunk_upload',
+    ),
+    path(
+        '<int:pk>/custom-seeds/chunk-upload/complete',
+        InternalCollectionCustomSeedsChunkCompleteView.as_view(),
+        name='internal_collection_custom_seeds_chunk_complete',
+    ),
     path('<int:pk>', InternalCollectionDetail.as_view(),
          name='internal_collection_detail'),
     path('<int:pk>/urls', InternalCollectionListUrls.as_view(),
          name='internal_collection_urls'),
     path('<int:pk>/history', InternalCollectionHistory.as_view(),
          name='internal_collection_history'),
+    path('internal_collection_autocomplete',
+         InternalCollectionAutocomplete.as_view(),
+         name="internal_collection_autocomplete")
 ]
 
 # External Topic Collections
@@ -81,6 +94,7 @@ harvest_config_urlpatterns = [
 
 urlpatterns = [
     path('', CalendarView.as_view(), name='calendar'),
+    path('list', HarvestListView.as_view(), name='list'),
     path('json', CalendarJsonView.as_view(), name='json_calendar'),
     path('add', AddView.as_view(), name='add'),
     path('<int:pk>/detail', Detail.as_view(), name='detail'),

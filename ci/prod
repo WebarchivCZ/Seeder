@@ -1,8 +1,8 @@
 ---
 prod:
   hosts:
-    wa-docker00:
-      ansible_host: 10.3.0.50
+    wa-docker01:
+      ansible_host: 10.3.0.52
   vars:
     env: prod
     seeder_docker_tag: latest
@@ -17,4 +17,4 @@ prod:
     treafik_seeder_rule: "Host(`webarchiv.cz`) || Host(`www.webarchiv.cz`) || Host(`seeder.webarchiv.cz`)"
     treafik_seeder_static_rule: "Host(`webarchiv.cz`) && (PathPrefix(`/static`) || PathPrefix(`/media`)) || Host(`www.webarchiv.cz`) && (PathPrefix(`/static`) || PathPrefix(`/media`)) || Host(`seeder.webarchiv.cz`) && (PathPrefix(`/static`) || PathPrefix(`/media`))"
     treafik_seeder_vyvoj_rule: "Host(`webarchiv.cz`) && PathPrefix(`/vyvoj`) || Host(`www.webarchiv.cz`) && PathPrefix(`/vyvoj`)"
-    treafik_api_rule: "Host(`wa-docker00`) || Host(`10.3.0.50`)"
+    treafik_api_rule: "Host(`wa-docker01`) || Host(`10.3.0.52`)"

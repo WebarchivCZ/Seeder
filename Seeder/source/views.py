@@ -225,6 +225,23 @@ class SeedAdd(SourceView, generic_views.ObjectMixinFixed, FormView):
 class SeedEdit(SourceView, generic_views.EditView):
     form_class = forms.SeedEdit
     model = models.Seed
+    template_name = "edit_seed.html"
+
+
+class SeedDelete(View, SourceView, ObjectMixinFixed):
+    model = models.Seed
+
+    def post(self, request, *args, **kwargs):
+        s = self.get_object()
+        redirect_url = s.get_absolute_url()
+        if not request.user.is_superuser:
+            self.add_message(
+                _("You dont have permission for deleting seeds"),
+                messages.ERROR)
+            return HttpResponseRedirect(redirect_url)
+        s.delete()
+        self.add_message(_('Seed deleted.'), messages.SUCCESS)
+        return HttpResponseRedirect(redirect_url)
 
 
 class History(SourceView, generic_views.HistoryView):
@@ -240,23 +257,10 @@ class SourceList(SourceView, generic_views.FilteredListView):
     filterset_class = field_filters.SourceFilter
 
     add_link = 'source:add'
-    full_export_url = 'source:export'
 
-
-class SourceExportAll(SourceView, View):
-    def get(self, request):
-        """ Download all sources in an XLSX file """
+    def get_df_for_full_export(self):
         from .models import Source
-        from django.http import HttpResponse
-        df = Source.export_all_sources()
-        # Export the DF straight into a downloading response
-        filename = f"sources_{datetime.now():%Y-%m-%d}.xlsx"
-        response = HttpResponse(
-            content_type=("application/vnd.openxmlformats-officedocument."
-                          "spreadsheetml.sheet"))
-        response["Content-Disposition"] = f"attachment; filename={filename}"
-        df.to_excel(response, index=False, engine="openpyxl")
-        return response
+        return Source.export_all_sources()
 
 
 class CategoryAutocomplete(autocomplete.Select2QuerySetView):

@@ -90,8 +90,9 @@ INSTALLED_APPS = (
     'rest_framework.authtoken',
     'captcha',
     'ordered_model',
+    'solo',
+    'chunked_upload',
     # 'elasticstack',
-
     'core',
     'publishers',
     'source',
@@ -235,7 +236,7 @@ CKEDITOR_CONFIGS = {
         'width': 800,
         'height': 100,
     },
-    'json_constants': {
+    'site_configuration': {
         'toolbar': 'Custom',
         'toolbar_Custom': [
             ['Bold', 'Italic', 'Underline', 'FontSize'],
@@ -248,14 +249,17 @@ DEBUG_TOOLBAR_CONFIG = {
     'SHOW_TOOLBAR_CALLBACK': 'core.utils.show_toolbar',
 }
 
-# Log output from all CRON jobs to /var/log/cron.log
-CRON_LOG = ">> /var/log/cron.log 2>&1"
+# Load cron env and log output from all CRON jobs to /var/log/cron.log
+# * Must be set to export environment variables to the cron jobs
+CRONTAB_COMMAND_PREFIX = "set -a; . /code/.cronenv; set +a;"
+CRONTAB_COMMAND_SUFFIX = ">> /var/log/cron.log 2>&1"
 CRONJOBS = [
-    ('1 * * * *', 'source.screenshots.take_screenshots', CRON_LOG),
-    ('10 * * * *', 'voting.cron.revive_postponed_rounds', CRON_LOG),
-    ('20 * * * *', 'contracts.cron.expire_contracts', CRON_LOG),
-    ('30 * * * *', 'contracts.cron.send_emails', CRON_LOG),
-    ('40 0 * * *', 'www.cron.reload_extinct_websites', CRON_LOG),
+    ('0 1 * * *', 'source.screenshots.take_screenshots'),
+    ('5 1 * * *', 'harvests.cron.cleanup_expired_chunked_uploads'),
+    ('10 * * * *', 'voting.cron.revive_postponed_rounds'),
+    ('20 * * * *', 'contracts.cron.expire_contracts'),
+    ('30 * * * *', 'contracts.cron.send_emails'),
+    ('40 0 * * *', 'www.cron.reload_extinct_websites'),
 ]
 
 # *     *     *   *    *        command to be executed
@@ -282,6 +286,9 @@ if DEBUG:
     REST_FRAMEWORK['DEFAULT_PERMISSION_CLASSES'] = [
         'rest_framework.permissions.AllowAny'
     ]
+    MIDDLEWARE = (
+        'core.middleware.ProfilingMiddleware',  # Add profiling at the top
+     ) + MIDDLEWARE
 
 
 WAKAT_URL = 'http://forpsi.kitakitsune.org:8080/?url_id={id}'
@@ -290,7 +297,6 @@ WAYBACK_URL = "http://wayback.webarchiv.cz/wayback/query?type=urlquery&url={url}
 
 SEEDS_EXPORT_DIR = 'seeds'
 SEEDS_BACKUP_DIR = os.path.join(SEEDS_EXPORT_DIR, 'backup')
-MANET_URL = '127.0.0.1:8891'
 
 
 QA_EVERY_N_MONTHS = 24

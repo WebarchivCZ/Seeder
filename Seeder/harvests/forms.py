@@ -32,6 +32,9 @@ harvest_widgets = {
     "custom_sources": autocomplete.ModelSelect2Multiple(
         url="source:source_autocomplete"
     ),
+    "topic_collections": autocomplete.ModelSelect2Multiple(
+        url="harvests:internal_collection_autocomplete",
+    ),
     **custom_seeds_widget,
 }
 
@@ -200,10 +203,16 @@ class InternalTopicCollectionForm(forms.ModelForm):
 
 class InternalTopicCollectionEditForm(InternalTopicCollectionForm):
     files_to_delete = forms.MultipleChoiceField(required=False)
-    custom_seeds_file = forms.FileField(required=False, help_text=_L(
-        "Provide a text file with one seed per line which will overwrite "
-        "all custom_seeds. The original custom_seeds will be backed up to "
-        "the media/seeds/backup folder."))
+    custom_seeds_upload_id = forms.CharField(
+        required=False,
+        widget=forms.HiddenInput(),
+        help_text=_L(
+            "Upload a .txt file (chunked upload, up to 500MB) with one seed "
+            "per line. After upload completes and this form is submitted, it "
+            "will overwrite all custom_seeds. The original custom_seeds will "
+            "be backed up to the media/seeds/backup folder."
+        ),
+    )
     ''' Maximum length of custom seeds (chars) to be displayed & editable '''
     CUSTOM_SEEDS_MAXLEN = 1 * 1000 * 1000  # 1MB
 
@@ -221,13 +230,16 @@ class InternalTopicCollectionEditForm(InternalTopicCollectionForm):
             # Remove initial value so it doesn't get "re-saved"
             if "custom_seeds" in self.initial:
                 del self.initial["custom_seeds"]
-            self.fields["custom_seeds_file"].help_text += "<br /><b>" + _(
-                "Custom seeds field is disabled because there are too many "
-                "seeds to be displayed in an HTML text field.") + "</b>"
+            self.fields["custom_seeds_upload_id"].help_text += (
+                "<br /><b>" + _(
+                    "Custom seeds field is disabled because there are too many "
+                    "seeds to be displayed in an HTML text field."
+                ) + "</b>"
+            )
 
     class Meta(InternalTopicCollectionForm.Meta):
         fields = InternalTopicCollectionForm.Meta.fields + \
-            ('files_to_delete', 'custom_seeds_file')
+            ('files_to_delete', 'custom_seeds_upload_id')
 
 
 class ExternalTopicCollectionForm(forms.ModelForm):
@@ -240,6 +252,7 @@ class ExternalTopicCollectionForm(forms.ModelForm):
             'title_en',
             'annotation_cs',
             'annotation_en',
+            'image_text',
             'image',
             # 'slug',
             'keywords',

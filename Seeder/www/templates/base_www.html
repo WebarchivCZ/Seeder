@@ -1,6 +1,6 @@
-{% load i18n raven core json_constants %}
+{% load i18n raven core %}
 {% get_current_language as lang %}
-{% json_constant "wayback_maintenance" as wayback_maintenance%}
+{% config "wayback_maintenance" as wayback_maintenance%}
 <!DOCTYPE html>
 <html lang="{{ lang }}">
 
@@ -110,9 +110,9 @@
     <section id="error">
         <div class="container" style="padding: 40px 0 40px 0;">
             {% if lang == "cs" %}
-                {% json_constant "wayback_maintenance_text_cs" as text %}
+                {% config "wayback_maintenance_text_cs" as text %}
             {% else %}
-                {% json_constant "wayback_maintenance_text_en" as text %}
+                {% config "wayback_maintenance_text_en" as text %}
             {% endif %}
             {{ text|safe }}
         </div>
@@ -162,6 +162,7 @@
                                 href="http://zlodejpapiru.cz/" target="_blank">Luboš Svoboda</a>
                             <br>Programming: <a href="http://www.tomaskorinek.com/" target="_blank">Tomáš Kořínek</a>
                         </li>
+                        
                         {% endif %}
                     </ul>
                 </div>
@@ -181,6 +182,19 @@
                                 {% if lang == "cs" %}upravit nastavení cookies{% else %}change cookie preferences{% endif %}
                             </a>
                         </li>
+                        {% if lang == "cs" %}
+                        <li>
+                            <a href="https://www.nkp.cz/o-knihovne/gdpr-v-narodni-knihovne-cr">
+                                GDPR v NK ČR
+                            </a>
+                        </li>
+                        {% else %}
+                        <li>
+                            <a href="https://www.nkp.cz/en/about-us/gdpr-in-the-nl-cr">
+                                GDPR in the NL CR
+                            </a>
+                        </li>
+                        {% endif %}
                     </ul>
                 </div>
 

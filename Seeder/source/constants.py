@@ -136,6 +136,7 @@ SCREENSHOT_RECTANGLE = '0,0,1366,768'
 
 
 SCREENSHOT_MAX_AGE = relativedelta(days=365)
+SCREENSHOT_RETRY_DELTA = relativedelta(days=30)
 SCREENSHOT_DIR = 'screenshots'  # relative to media root
 
 

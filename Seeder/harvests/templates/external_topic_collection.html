@@ -46,6 +46,12 @@
                         </td>
                     </tr>
                 {% endif %}
+                {% if object.image_text %}
+                    <tr>
+                        <td>{% trans 'Image text' %}</td>
+                        <td>{{ object.image_text }}</td>
+                    </tr>
+                {% endif %}
 
                 <tr>
                     <td>{% trans 'Created at' %}</td>

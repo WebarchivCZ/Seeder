@@ -7,7 +7,10 @@ from . import field_filters
 from . import constants
 
 from datetime import timedelta, date
+from dal import autocomplete
 
+from django.db.models.functions import Cast
+from django.db.models import CharField
 from django.views.generic import DetailView, FormView
 from django.utils.translation import ugettext_lazy as _
 from django.template.loader import render_to_string
@@ -29,6 +32,28 @@ class ContractView(LoginMixin):
 
 class Detail(ContractView, DetailView, CommentViewGeneric):
     template_name = 'contract.html'
+
+
+class ContractAutocomplete(autocomplete.Select2QuerySetView):
+
+    def get_queryset(self):
+        if not self.request.user.is_authenticated:
+            return models.Contract.objects.none()
+        # Annotate as strings so we can use icontains
+        qs = models.Contract.objects.all().annotate(
+            contract_number_s=Cast(
+                "contract_number", output_field=CharField()),
+            year_s=Cast("year", output_field=CharField())
+        ).order_by("contract_number", "year")
+        # Allow searching by "{contract_number} / {year}"
+        if self.q:
+            q_split = str(self.q or "").replace(" ", "").split("/")
+            if len(q_split) == 1:
+                qs = qs.filter(contract_number_s__icontains=q_split[0])
+            elif len(q_split) == 2:
+                qs = qs.filter(contract_number_s__icontains=q_split[0],
+                               year_s__icontains=q_split[1])
+        return qs
 
 
 class Create(LoginMixin, FormView, ObjectMixinFixed):
@@ -82,6 +107,43 @@ class Assign(LoginMixin, FormView, ObjectMixinFixed):
         self.object.state = source_constants.STATE_RUNNING
         self.object.save()
         return HttpResponseRedirect(contract.get_absolute_url())
+
+
+class Unassign(LoginMixin, FormView, MessageView, ObjectMixinFixed):
+    """
+    Unassign a contract from source
+    Defined with Source as the model to stay consistent with Assign
+    """
+    form_class = forms.AssignForm
+    template_name = "add_form.html"
+    title = _("Unassign contract")
+    view_name = "contracts"
+    model = Source
+
+    def get_form(self, form_class=None):
+        """ Retrieve all of Source's assigned contracts """
+        form = super().get_form(form_class)
+        contract = form.fields['contract']
+        contract.queryset = self.get_object().contract_set.all()
+        if not contract.queryset.exists():
+            self.add_message(self.request, messages.ERROR, _(
+                "The source doesn't have any contracts assigned."))
+            contract.disabled = True
+        return form
+
+    def form_valid(self, form):
+        """ Remove selected contract and change Source state if necessary """
+        contract = form.cleaned_data['contract']
+        contract.sources.remove(self.object)
+        # If no assigned contracts remain, update the state
+        if self.object.contract_set.count() == 0:
+            self.add_message(_("All contracts have been unassigned so the "
+                               "source state was changed to '%(state)s'") % {
+                "state": _('Archiving without publisher consent')},
+                level=messages.WARNING)
+            self.object.state = source_constants.STATE_WITHOUT_PUBLISHER
+            self.object.save()
+        return HttpResponseRedirect(self.object.get_absolute_url())
 
 
 class Edit(ContractView, EditView):

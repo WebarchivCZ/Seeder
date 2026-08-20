@@ -1,7 +1,9 @@
 from django.db import models
 from django import forms
 from django.utils import timezone
-from django.forms.widgets import DateTimeInput, SplitDateTimeWidget
+from django.utils.translation import gettext_lazy as _
+from ckeditor.fields import RichTextField
+from solo.models import SingletonModel
 
 from core import widgets
 
@@ -41,3 +43,26 @@ class BaseModel(models.Model):
     class Meta:
         abstract = True
         ordering = ('-last_changed', )
+
+class SiteConfiguration(SingletonModel):
+    """ Singleton model for Site Configuration """
+    webarchive_size = models.CharField(max_length=128, default="595 TB")
+    wayback_maintenance = models.BooleanField(default=False)
+    wayback_maintenance_text_cs = RichTextField(
+        config_name='site_configuration',
+        default="""
+<p><span style=\"font-size:24px\">Pokud vidíte tuto stránku, <strong>probíhá údržba dat</strong> a v archivu nelze nyní vyhledávat. Některé linky vrátí chybu.</span></p>
+<p><span style=\"font-size:24px\">Prosím zkuste načíst Webarchiv později.</span></p>
+""")
+    wayback_maintenance_text_en = RichTextField(
+        config_name='site_configuration',
+        default="""
+<p><span style=\"font-size:24px\">If you see this page, <strong>we are currently doing maintenance</strong> and it is not possible to search the archive. Some links may return an error.</span></p>
+<p><span style=\"font-size:24px\">Please, try to load Webarchiv again later.</span></p>
+""")
+
+    def __str__(self):
+        return str(_("Site Configuration"))
+
+    class Meta:
+        verbose_name = _("Site Configuration")

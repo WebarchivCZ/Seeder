@@ -86,7 +86,6 @@ Docker je nainstalovaný ručně pomocí [oficiální Docker dokumentace pro ins
    - cache:  memcached:latest
    - katalogizační nástroj: wakat:gehorak
    - naki-www image: naki-nkp/naki-www
-   - služba pro generáování screenshotů webů: bobey/manet:latest
    - traefik: routovací služba poslouchají na portu 80 a směřující traffic do kontejnerů
 
 ### Testoací server
@@ -170,11 +169,6 @@ Několik statických HTML, které se časem integrují přímo do aplikace Seede
 - Produkční prostředí: https://webarchiv.cz/vyvoj/
 
 V Docker Compose se služba jmenuje **vyvoj**. Image **webarchiv/vyvoj:naki**.
-
-## Manet
-Nástroj jež používá Seeder aby vytvářer snapshoty webů které má v katalogu.
-
-V Docker Compose se služba jmenuje **manet**. Image **bobey/manet:latest**.
 
 ## Katalogizační nástroj WaKat
 Polo automatický nástroj na katologizaci webů. Změna [WA-KAT](https://github.com/WebarchivCZ/WA-KAT) automaticky spouští aktualizaci testu nebo produkce. Nástroj je dostupný na adrese: [kat.webarchiv.cz](https://kat.webarchiv.cz/). Nástroj není součástí Docker Compose.
