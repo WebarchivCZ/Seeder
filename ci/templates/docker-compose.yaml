@@ -8,8 +8,8 @@ volumes:
 
 services:
   reverse-proxy:
-    # The official v2 Traefik docker image
-    image: traefik:v3.2
+    # The official v3 Traefik docker image
+    image: traefik:v3.7
     # Enables the web UI and tells Traefik to listen to docker
     command:
       - "--providers.docker"
