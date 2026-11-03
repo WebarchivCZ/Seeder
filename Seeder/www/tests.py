@@ -1,7 +1,7 @@
 from datetime import date
 
-from django.test import TestCase, Client
-from django.utils.translation import activate
+from django.test import TestCase, Client, override_settings
+from django.utils.translation import activate, override
 from django.urls import reverse
 from django.urls.resolvers import URLPattern, URLResolver
 from django.urls.exceptions import NoReverseMatch
@@ -138,6 +138,43 @@ class UrlAccessor(TestCase):
                 print('- {} ({})\n\t{}'.format(url, name, e))
             print("\nFirst exception for url '{}': ".format(exceptions[0][0]))
             raise exceptions[0][2]
+
+
+class ReferenceCentreLinksTest(TestCase):
+    def assert_reference_links(self, language, expected_url):
+        with override(language):
+            for name in ('www:about_contact', 'www:about_faq'):
+                with self.subTest(language=language, page=name):
+                    response = self.client.get(reverse(name))
+                    self.assertEqual(response.status_code, 200)
+                    self.assertNotContains(
+                        response, 'dulezite-odkazy/studovny/refc')
+                    self.assertNotContains(response, 'reading-rooms/refc-en')
+                    if name == 'www:about_contact' or language == 'cs':
+                        self.assertContains(
+                            response, 'href="{}"'.format(expected_url))
+
+    def test_czech_reference_links(self):
+        self.assert_reference_links(
+            'cs', 'https://www.nkp.cz/studovny-a-prostory/referencni-centrum')
+
+    def test_english_reference_links(self):
+        self.assert_reference_links(
+            'en', 'https://www.nkp.cz/en/reading-rooms/reference-centre')
+
+    @override_settings(REFERENCE_CENTRE_URLS={
+        'cs': 'https://example.org/cs/centre',
+        'en': 'https://example.org/en/centre',
+    })
+    def test_shared_setting_updates_all_reference_links(self):
+        self.assert_reference_links('cs', 'https://example.org/cs/centre')
+        self.assert_reference_links('en', 'https://example.org/en/centre')
+
+    @override_settings(REFERENCE_CENTRE_URLS={
+        'cs': 'https://example.org/default-centre',
+    })
+    def test_english_falls_back_to_czech_when_not_configured(self):
+        self.assert_reference_links('en', 'https://example.org/default-centre')
 
 
 class WwwUrlsTest(TestCase):

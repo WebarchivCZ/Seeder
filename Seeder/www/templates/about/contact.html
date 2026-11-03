@@ -1,10 +1,12 @@
 {% extends "base_www.html" %}
+{% load urltags %}
 
 {% block title %}{% if lang == "cs" %}Kontakty{% else %}Contacts{% endif %}{% endblock title %}
 
 
 
 {% block content %}
+	{% reference_centre_url as centre_url %}
 
 	{% include "about/menu.html" %}
 
@@ -22,7 +24,7 @@
 					tel.: 221 663 256, 221 663 544<br><br>
 					e-mail: webarchiv[@]nkp.cz
 					<br><br>
-					Neomezený přístup k webovému archivu je možný pouze z <a href="https://www.nkp.cz/sluzby/dulezite-odkazy/studovny/refc">Referenčního centra</a> Národní knihovny ČR.
+					Neomezený přístup k webovému archivu je možný pouze z <a href="{{ centre_url }}">Referenčního centra</a> Národní knihovny ČR.
 				</p>
 
 			{% else %}
@@ -37,7 +39,7 @@
 					e-mail: webarchiv[@]nkp.cz
 				</p>
 				<br><br>
-				Unlimited access to the web archive is possible only in the <a href="http://www.en.nkp.cz/services/links/reading-rooms/refc-en">Reference Centre</a>.
+				Unlimited access to the web archive is possible only in the <a href="{{ centre_url }}">Reference Centre</a>.
 
 			{% endif %}
 
