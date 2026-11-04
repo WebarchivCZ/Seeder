@@ -729,10 +729,15 @@ class ExternalCollectionDetailPublicLinkTests(TestCase):
     def get_detail(self, locale):
         from django.utils.translation import activate
         activate(locale)
-        response = self.client.get(reverse(
-            'harvests:external_collection_detail',
-            kwargs={'pk': self.external.pk}))
+        # Curator URLs have no language prefix: LocaleMiddleware takes the
+        # language from the request, so send it explicitly and assert it.
+        response = self.client.get(
+            reverse('harvests:external_collection_detail',
+                    kwargs={'pk': self.external.pk}),
+            HTTP_ACCEPT_LANGUAGE=locale)
         self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.wsgi_request.LANGUAGE_CODE, locale)
+        self.assertIn('/%s/' % locale, self.external.get_www_url())
         return response.content.decode()
 
     def test_www_link_follows_public_www_url(self):

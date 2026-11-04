@@ -186,10 +186,17 @@ class SourceDetailPublicLinkTests(TestCase):
         from django.urls import reverse
         from django.utils.translation import activate
         activate(locale)
+        # The curator URL has no language prefix, so LocaleMiddleware picks
+        # the language from the request; activate() alone would be
+        # overridden by the default language.
         response = self.client.get(
-            reverse('source:detail', kwargs={'pk': self.source.pk}))
+            reverse('source:detail', kwargs={'pk': self.source.pk}),
+            HTTP_ACCEPT_LANGUAGE=locale)
         self.assertEqual(response.status_code, 200)
-        return response.content.decode()
+        self.assertEqual(response.wsgi_request.LANGUAGE_CODE, locale)
+        html = response.content.decode()
+        self.assertIn('/%s/' % locale, self.source.get_public_url())
+        return html
 
     def test_links_stay_relative_without_public_www_url(self):
         from django.test import override_settings
