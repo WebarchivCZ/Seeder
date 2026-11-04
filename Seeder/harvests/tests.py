@@ -713,3 +713,37 @@ class ExternalTopicCollectionCustomSeedsTests(TestCase):
     def test_only_null_seeds_give_empty_string(self):
         self.create_internal(104, None)
         self.assertEqual(self.external.custom_seeds, "")
+
+
+class ExternalCollectionDetailPublicLinkTests(TestCase):
+    """#728: the WWW link of an external collection in the curator interface
+    uses the configured public origin."""
+
+    def setUp(self):
+        self.user = User.objects.create_superuser('pedro', '', 'password')
+        self.client.login(username='pedro', password='password')
+        self.external = ExternalTopicCollection.objects.create(
+            title_cs="Kolekce", title_en="Collection", owner=self.user,
+            annotation="", active=True)
+
+    def get_detail(self, locale):
+        from django.utils.translation import activate
+        activate(locale)
+        response = self.client.get(reverse(
+            'harvests:external_collection_detail',
+            kwargs={'pk': self.external.pk}))
+        self.assertEqual(response.status_code, 200)
+        return response.content.decode()
+
+    def test_www_link_follows_public_www_url(self):
+        origin = 'https://app.webarchiv.cz'
+        for locale in ('cs', 'en'):
+            with override_settings(PUBLIC_WWW_URL=''):
+                html = self.get_detail(locale)
+                www_url = self.external.get_www_url()
+                self.assertIn('href="%s"' % www_url, html)
+            with override_settings(PUBLIC_WWW_URL=origin):
+                html = self.get_detail(locale)
+                www_url = self.external.get_www_url()
+                self.assertIn('href="%s%s"' % (origin, www_url), html)
+                self.assertIn('>%s%s</a>' % (origin, www_url), html)

@@ -12,6 +12,7 @@ test:
     seeder_db_pass: "{{ seeder_db_pass_vault }}"
     seeder_django_allowed_hosts: app.webarchiv.cz
     seeder_django_debug: 'False'
+    seeder_public_www_url: https://app.webarchiv.cz
     treafik_seeder_rule: "Host(`app.webarchiv.cz`)"
     treafik_seeder_static_rule: "Host(`app.webarchiv.cz`) && (PathPrefix(`/static`) || PathPrefix(`/media`))"
     treafik_seeder_vyvoj_rule: "Host(`app.webarchiv.cz`) && PathPrefix(`/vyvoj`)"
