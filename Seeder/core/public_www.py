@@ -10,16 +10,45 @@ so the browser resolves them against the curator's host and gets a 404.
 set, links stay relative exactly as before; nothing is assumed about the
 deployment.
 """
+import ipaddress
 import re
-from urllib.parse import urlparse
 
 from django.conf import settings
 
 PUBLIC_WWW_SCHEMES = ('http', 'https')
 # scheme://host[:port] and nothing else: no path, query, fragment, userinfo,
-# backslash or whitespace. Internal host names without a TLD and any valid
-# port are allowed on purpose (test/staging hosts).
-_ORIGIN_RE = re.compile(r'^https?://[^/?#@\\\s]+$', re.IGNORECASE)
+# backslash or whitespace. The host is either an IPv6 literal in brackets
+# (followed only by an optional port), or DNS labels / an IPv4 address.
+# Internal host names without a TLD and any valid port are allowed on
+# purpose (test/staging hosts).
+_LABEL = r'[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?'
+_ORIGIN_RE = re.compile(
+    r'^(?P<scheme>https?)://'
+    r'(?:\[(?P<ipv6>[0-9A-Fa-f:.]+)\]|(?P<name>%s(?:\.%s)*))'
+    r'(?::(?P<port>\d{1,5}))?$' % (_LABEL, _LABEL),
+    re.IGNORECASE)
+
+
+def _is_valid_origin(origin):
+    match = _ORIGIN_RE.match(origin)
+    if not match:
+        return False
+    if match.group('scheme').lower() not in PUBLIC_WWW_SCHEMES:
+        return False
+    port = match.group('port')
+    if port is not None and int(port) > 65535:
+        return False
+    ipv6 = match.group('ipv6')
+    name = match.group('name')
+    try:
+        if ipv6 is not None:
+            ipaddress.IPv6Address(ipv6)
+        elif all(label.isdigit() for label in name.split('.')):
+            # numeric labels are only valid as a real IPv4 address
+            ipaddress.IPv4Address(name)
+    except ValueError:
+        return False
+    return True
 
 
 def get_public_www_origin():
@@ -30,16 +59,7 @@ def get_public_www_origin():
     """
     origin = (getattr(settings, 'PUBLIC_WWW_URL', '') or '').strip()
     origin = origin.rstrip('/')
-    if not origin or not _ORIGIN_RE.match(origin):
-        return ''
-    try:
-        parsed = urlparse(origin)
-        # .port raises ValueError for a non-numeric or out-of-range port
-        if (parsed.scheme.lower() not in PUBLIC_WWW_SCHEMES
-                or not parsed.hostname or parsed.port is None and ':' in
-                parsed.netloc.rsplit(']', 1)[-1]):
-            return ''
-    except ValueError:
+    if not origin or not _is_valid_origin(origin):
         return ''
     return origin
 

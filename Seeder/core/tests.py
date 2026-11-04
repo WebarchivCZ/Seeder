@@ -38,7 +38,13 @@ class PublicAbsoluteUrlTests(SimpleTestCase):
                        'https://example.cz:65536', 'https://example.cz:',
                        # backslash and whitespace
                        'https://example.cz\\@evil.example',
-                       'https://example .cz'):
+                       'https://example .cz',
+                       # hosts a browser (WHATWG URL) rejects
+                       'https://[::1]evil.com', 'https://example.cz|bad',
+                       'https://%2f', 'https://256.256.256.256',
+                       'https://[::1', 'https://[not-ipv6]',
+                       'https://[::1]:8000x', 'https://-bad.cz',
+                       'https://example.cz.'):
             with override_settings(PUBLIC_WWW_URL=origin):
                 self.assertEqual(get_public_www_origin(), '', origin)
                 self.assertEqual(public_absolute_url('/cs/zdroj/s'),
@@ -46,8 +52,10 @@ class PublicAbsoluteUrlTests(SimpleTestCase):
 
     def test_internal_hosts_and_ports_are_accepted(self):
         for origin in ('http://wa-dev-docker01:8000', 'https://host:8',
-                       'https://[::1]:8000', 'http://localhost',
-                       'HTTPS://App.webarchiv.cz'):
+                       'https://[::1]:8000', 'https://[2001:db8::1]',
+                       'http://localhost', 'http://10.3.0.122',
+                       'http://10.3.0.122:8000', 'HTTPS://App.webarchiv.cz',
+                       'https://www.webarchiv.cz:65535'):
             with override_settings(PUBLIC_WWW_URL=origin):
                 self.assertEqual(get_public_www_origin(), origin, origin)
                 self.assertEqual(public_absolute_url('/en/source/s'),
