@@ -82,5 +82,28 @@ class NormalizePublicLinkTests(SimpleTestCase):
 
     def test_rejects_invalid_values(self):
         for value in (None, '', '   ', 'x', 'example.cz:abc/p',
-                      'http:///example.com', 'http:////c.example.org/x'):
+                      'http:///example.com', 'http:////c.example.org/x',
+                      'http://example.cz/a b'):
+            self.assertIsNone(normalize_public_link(value), repr(value))
+
+    def test_malformed_input_does_not_raise(self):
+        # urlparse() raises ValueError for these; the page must not break
+        for value in ('https://[broken', '//[broken', 'http://[::1',
+                      '[broken', 'https://[::1'):
+            self.assertIsNone(normalize_public_link(value), repr(value))
+        self.assertEqual(normalize_public_link('https://[::1]:8000/x'),
+                         'https://[::1]:8000/x')
+
+    def test_port_range(self):
+        self.assertEqual(normalize_public_link('example.cz:65535/a'),
+                         'http://example.cz:65535/a')
+        for value in ('example.cz:65536/a', 'http://example.cz:99999/',
+                      'https://example.cz:70000'):
+            self.assertIsNone(normalize_public_link(value), value)
+
+    def test_backslash_is_rejected(self):
+        # Browsers read the host as example.org, urlparse() as evil.example
+        for value in ('https://example.org\\@evil.example/x',
+                      'example.org\\@evil.example/x',
+                      'https://example.cz\\x', 'example.cz/a\\b'):
             self.assertIsNone(normalize_public_link(value), repr(value))

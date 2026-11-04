@@ -1,5 +1,7 @@
+import re
 from datetime import date
 from unittest import mock
+from urllib.parse import urlparse
 
 from django.test import TestCase, Client
 from django.utils.html import escape
@@ -221,18 +223,30 @@ class TopicCollectionCustomSeedsTest(TestCase):
     must not be clickable and NULL seeds of an internal collection must not
     break the page. Stored data and the CSV export stay unchanged.
     """
-    SEEDS = [
-        'www.kvasnyprumysl.cz/',
-        'example.cz/cesta?q=1',
-        'https://a.cz/',
-        '//c.example.org/x',
-        'example.cz:8443/p',
+    # stored value -> expected clickable link
+    VALID = {
+        'www.kvasnyprumysl.cz/': 'http://www.kvasnyprumysl.cz/',
+        'example.cz/cesta?q=1': 'http://example.cz/cesta?q=1',
+        'https://a.cz/': 'https://a.cz/',
+        '//c.example.org/x': 'https://c.example.org/x',
+        'example.cz:8443/p': 'http://example.cz:8443/p',
+    }
+    # shown as text only: unsupported schemes, malformed values, bad ports,
+    # backslash in the authority
+    REJECTED = [
         'javascript:alert(1)',
         'javascript://%0aalert(1)',
         'data:text/html,hi',
         'ftp://ftp.example.cz/x',
         'mailto:a@b.cz',
+        'https://[broken',
+        '//[broken',
+        'example.cz:65536/a',
+        'https://example.org\\@evil.example/x',
     ]
+    SEEDS = list(VALID) + REJECTED
+    BLOCK_RE = re.compile(
+        r'<div class="col-md-12 item-textual">(.*?)</div>\s*</div>', re.S)
 
     def setUp(self):
         user = User.objects.create_superuser('pedro', 'pedro@seeder.com',
@@ -259,33 +273,30 @@ class TopicCollectionCustomSeedsTest(TestCase):
         with mock.patch.object(TopicCollectionDetail, 'per_page', 50):
             return self.client.get(url)
 
+    def seed_block(self, html, raw):
+        """Return the HTML block of one custom seed (by its stored text)."""
+        marker = '<span class="italic">%s</span>' % escape(raw)
+        blocks = [b for b in self.BLOCK_RE.findall(html) if marker in b]
+        self.assertEqual(len(blocks), 1, 'block for %r' % raw)
+        return blocks[0]
+
     def assert_seed_links(self, response):
         self.assertEqual(response.status_code, 200)
         html = response.content.decode()
-        # Seeds without a scheme become external links
-        self.assertIn('href="http://www.kvasnyprumysl.cz/"', html)
-        self.assertIn('href="http://example.cz/cesta?q=1"', html)
-        self.assertIn('href="http://example.cz:8443/p"', html)
-        self.assertIn('href="https://c.example.org/x"', html)
-        # Valid URLs are unchanged
-        self.assertIn('href="https://a.cz/"', html)
-        # Stored text is still displayed
-        for raw in self.SEEDS:
-            self.assertIn(escape(raw), html)
-        # Unsupported schemes are never used as href (the page template has
-        # its own unrelated ``javascript:`` link, hence the exact values)
-        for href in ('href="javascript:alert(1)"',
-                     'href="javascript://%0aalert(1)"',
-                     'href="http://javascript', 'href="data:text/html,hi"',
-                     'href="http://data:', 'href="ftp://ftp.example.cz/x"',
-                     'href="http://ftp://', 'href="mailto:a@b.cz"',
-                     'href="http://mailto:'):
-            self.assertNotIn(href, html)
+        for raw, link in self.VALID.items():
+            block = self.seed_block(html, raw)
+            # "current" link and Wayback link built from the validated URL
+            self.assertIn('href="%s"' % link, block)
+            self.assertIn('href="%s"' % escape(get_wayback_url(link)), block)
+            self.assertIn('>%s</a>' % urlparse(link).netloc, block)
+        for raw in self.REJECTED:
+            block = self.seed_block(html, raw)
+            # text only: no "current" link, no Wayback link, no href at all
+            self.assertNotIn('href=', block)
+            self.assertNotIn('<a ', block)
+            self.assertIn('>%s</h2>' % escape(raw), block)
         # No relative link that would resolve inside Webarchiv
         self.assertNotIn('href="www.kvasnyprumysl.cz/"', html)
-        # Wayback keeps the host for host:port seeds
-        self.assertIn(escape(get_wayback_url('http://example.cz:8443/p')),
-                      html)
 
     def test_custom_seed_links_en(self):
         self.assert_seed_links(self.get_detail('en'))

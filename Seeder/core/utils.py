@@ -91,22 +91,31 @@ def normalize_public_link(raw_url):
     value = raw_url.strip()
     if not value:
         return None
-    if value.startswith('//'):
-        candidate = 'https:' + value
-    else:
-        scheme = urlparse(value).scheme.lower()
-        if scheme in PUBLIC_LINK_SCHEMES:
-            candidate = value
-        elif scheme and not _HOST_PORT_RE.match(value):
-            return None
-        else:
-            candidate = 'http://' + value
-    try:
-        _public_link_validator(candidate)
-    except ValidationError:
+    # A backslash is never valid in a URL; browsers turn it into "/" while
+    # urlparse() keeps it in the authority, so the two would disagree about
+    # the host (e.g. "https://example.org\@evil.example/x").
+    if '\\' in value:
         return None
-    # Reject e.g. ``http:///host`` which the validator accepts but browsers
-    # resolve differently.
-    if not urlparse(candidate).netloc:
+    try:
+        if value.startswith('//'):
+            candidate = 'https:' + value
+        else:
+            scheme = urlparse(value).scheme.lower()
+            if scheme in PUBLIC_LINK_SCHEMES:
+                candidate = value
+            elif scheme and not _HOST_PORT_RE.match(value):
+                return None
+            else:
+                candidate = 'http://' + value
+        _public_link_validator(candidate)
+        parsed = urlparse(candidate)
+        # Reject e.g. ``http:///host`` which the validator accepts but
+        # browsers resolve differently; ``.port`` raises ValueError for a
+        # port outside 0-65535, which the validator does not check.
+        if not parsed.netloc or not parsed.hostname:
+            return None
+        parsed.port
+    except (ValidationError, ValueError):
+        # ValueError: invalid IPv6 literal (urlparse) or port out of range
         return None
     return candidate

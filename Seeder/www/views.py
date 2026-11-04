@@ -172,16 +172,24 @@ class TopicCollectionDetail(PaginatedView, DetailView):
 
         ``url`` is the stored value shown as text. ``href`` is a validated
         HTTP(S) link or ``None``; seeds without a scheme get one, anything
-        that is not a web address is shown without a link. ``name`` and
-        ``wayback_url`` are derived from the validated link when available.
+        that is not a web address is shown as plain text without any link
+        (neither "current" nor Wayback). ``name`` and ``wayback_url`` are
+        derived only from the validated link; a rejected value is never
+        parsed again, so malformed input cannot break the page.
         """
         link = normalize_public_link(raw_url)
-        base = link or raw_url
+        if link is None:
+            return {
+                'name': raw_url,
+                'url': raw_url,
+                'href': None,
+                'wayback_url': None,
+            }
         return {
-            'name': urlparse(base).netloc or raw_url,
+            'name': urlparse(link).netloc,
             'url': raw_url,
             'href': link,
-            'wayback_url': get_wayback_url(base),
+            'wayback_url': get_wayback_url(link),
         }
 
 
