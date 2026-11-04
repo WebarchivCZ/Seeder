@@ -15,7 +15,8 @@ from django.utils import timezone
 from source.constants import SOURCE_FREQUENCY_PER_YEAR
 from harvests.cron import cleanup_expired_chunked_uploads
 from harvests.scheduler import get_dates_for_timedelta
-from harvests.models import Attachment, Harvest, TopicCollection
+from harvests.models import (Attachment, ExternalTopicCollection, Harvest,
+                             TopicCollection)
 from harvests.views import INTERNAL_TC_CUSTOM_SEEDS_UPLOADS_SESSION_KEY
 from chunked_upload.constants import COMPLETE
 from chunked_upload.models import ChunkedUpload
@@ -683,3 +684,32 @@ class ScheduleTest(TestCase):
                 datetime(2012, 1, 21)
             ]
         )
+
+
+class ExternalTopicCollectionCustomSeedsTests(TestCase):
+    """#735: combined custom seeds must tolerate NULL in internal collections."""
+
+    def setUp(self):
+        self.user = User.objects.create_superuser('pedro', '', 'password')
+        self.external = ExternalTopicCollection.objects.create(
+            title_cs="Kolekce", title_en="Collection", owner=self.user,
+            annotation="", active=True)
+
+    def create_internal(self, pk, custom_seeds):
+        return TopicCollection.objects.create(
+            pk=pk, title_cs="int%d" % pk, title_en="int%d" % pk,
+            owner=self.user, annotation="", all_open=True,
+            external_collection=self.external, custom_seeds=custom_seeds)
+
+    def test_null_seeds_are_skipped(self):
+        self.create_internal(100, "a.cz\nb.cz")
+        self.create_internal(101, None)
+        self.create_internal(102, "")
+        self.create_internal(103, "c.cz")
+        seeds = self.external.custom_seeds
+        # Ordering of internal collections is not under test here
+        self.assertEqual(sorted(seeds.split()), ["a.cz", "b.cz", "c.cz"])
+
+    def test_only_null_seeds_give_empty_string(self):
+        self.create_internal(104, None)
+        self.assertEqual(self.external.custom_seeds, "")

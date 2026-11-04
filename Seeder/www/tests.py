@@ -1,6 +1,8 @@
 from datetime import date
+from unittest import mock
 
 from django.test import TestCase, Client
+from django.utils.html import escape
 from django.utils.translation import activate
 from django.urls import reverse
 from django.urls.resolvers import URLPattern, URLResolver
@@ -18,6 +20,8 @@ from blacklists.models import Blacklist
 from contracts.models import Contract
 from qa.models import QualityAssuranceCheck
 from www.models import NewsObject
+from www.views import TopicCollectionDetail
+from core.utils import get_wayback_url
 from voting.models import VotingRound
 
 DATE = date.today()
@@ -208,3 +212,93 @@ class SeederUrlsTest(TestCase):
 
     def test_cs_seeder_urls(self):
         self.a.access_urls(self.url_names, self.url_kwargs, 'cs', admin=True)
+
+
+class TopicCollectionCustomSeedsTest(TestCase):
+    """
+    #735: free-text custom seeds on the public collection detail must link
+    to the external website (not back into Webarchiv), unsupported values
+    must not be clickable and NULL seeds of an internal collection must not
+    break the page. Stored data and the CSV export stay unchanged.
+    """
+    SEEDS = [
+        'www.kvasnyprumysl.cz/',
+        'example.cz/cesta?q=1',
+        'https://a.cz/',
+        '//c.example.org/x',
+        'example.cz:8443/p',
+        'javascript:alert(1)',
+        'javascript://%0aalert(1)',
+        'data:text/html,hi',
+        'ftp://ftp.example.cz/x',
+        'mailto:a@b.cz',
+    ]
+
+    def setUp(self):
+        user = User.objects.create_superuser('pedro', 'pedro@seeder.com',
+                                             'password')
+        self.external = ExternalTopicCollection.objects.create(
+            pk=10, title_cs="Kolekce", title_en="Collection", owner=user,
+            annotation="", active=True)
+        TopicCollection.objects.create(
+            pk=10, title_cs="int", title_en="int", owner=user, annotation="",
+            all_open=True, external_collection=self.external,
+            custom_seeds="\n".join(self.SEEDS))
+        # Nullable field: an internal collection without seeds used to raise
+        # TypeError (HTTP 500) when the external collection was displayed
+        TopicCollection.objects.create(
+            pk=11, title_cs="int2", title_en="int2", owner=user,
+            annotation="", all_open=True, external_collection=self.external,
+            custom_seeds=None)
+
+    def get_detail(self, locale):
+        activate(locale)
+        url = reverse('www:collection_detail',
+                      kwargs={'slug': self.external.slug})
+        # All seeds on one page; pagination itself is not under test here
+        with mock.patch.object(TopicCollectionDetail, 'per_page', 50):
+            return self.client.get(url)
+
+    def assert_seed_links(self, response):
+        self.assertEqual(response.status_code, 200)
+        html = response.content.decode()
+        # Seeds without a scheme become external links
+        self.assertIn('href="http://www.kvasnyprumysl.cz/"', html)
+        self.assertIn('href="http://example.cz/cesta?q=1"', html)
+        self.assertIn('href="http://example.cz:8443/p"', html)
+        self.assertIn('href="https://c.example.org/x"', html)
+        # Valid URLs are unchanged
+        self.assertIn('href="https://a.cz/"', html)
+        # Stored text is still displayed
+        for raw in self.SEEDS:
+            self.assertIn(escape(raw), html)
+        # Unsupported schemes are never used as href (the page template has
+        # its own unrelated ``javascript:`` link, hence the exact values)
+        for href in ('href="javascript:alert(1)"',
+                     'href="javascript://%0aalert(1)"',
+                     'href="http://javascript', 'href="data:text/html,hi"',
+                     'href="http://data:', 'href="ftp://ftp.example.cz/x"',
+                     'href="http://ftp://', 'href="mailto:a@b.cz"',
+                     'href="http://mailto:'):
+            self.assertNotIn(href, html)
+        # No relative link that would resolve inside Webarchiv
+        self.assertNotIn('href="www.kvasnyprumysl.cz/"', html)
+        # Wayback keeps the host for host:port seeds
+        self.assertIn(escape(get_wayback_url('http://example.cz:8443/p')),
+                      html)
+
+    def test_custom_seed_links_en(self):
+        self.assert_seed_links(self.get_detail('en'))
+
+    def test_custom_seed_links_cs(self):
+        self.assert_seed_links(self.get_detail('cs'))
+
+    def test_csv_export_keeps_stored_seeds(self):
+        activate('en')
+        response = self.client.get(reverse(
+            'www:collection_csv', kwargs={'slug': self.external.slug}))
+        self.assertEqual(response.status_code, 200)
+        csv = response.content.decode()
+        for raw in self.SEEDS:
+            self.assertIn(raw, csv)
+        self.assertNotIn('http://www.kvasnyprumysl.cz/', csv)

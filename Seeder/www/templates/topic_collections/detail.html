@@ -75,9 +75,11 @@
                         <h2 class="passive_link"><a href="{{ source.wayback_url }}" target="_blank">{{ source.name }}</a></h2>
                         <p>
                             <span class="italic">{{ source.url }}</span>
-                            <span class="blue">[</span><a href="{{ source.url }}"
+                            {% if source.href %}
+                            <span class="blue">[</span><a href="{{ source.href }}"
                                 target="_blank">{% if lang == "cs" %}aktuální
                                 verze{% else %}current{% endif %}</a><span class="blue">]</span>
+                            {% endif %}
                         </p>
                     </div>
                 </div>
