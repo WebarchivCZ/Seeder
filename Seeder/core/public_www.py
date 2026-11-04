@@ -19,13 +19,16 @@ PUBLIC_WWW_SCHEMES = ('http', 'https')
 # scheme://host[:port] and nothing else: no path, query, fragment, userinfo,
 # backslash or whitespace. The host is either an IPv6 literal in brackets
 # (followed only by an optional port), or DNS labels / an IPv4 address.
-# Internal host names without a TLD and any valid port are allowed on
-# purpose (test/staging hosts).
-_LABEL = r'[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?'
+# Internal host names without a TLD, internationalised names, a trailing
+# dot (fully qualified name) and any valid port are allowed on purpose
+# (test/staging hosts). Labels follow Django's URLValidator character set;
+# the port is ASCII digits only (``\d`` would also match e.g. Arabic digits).
+_LABEL_CHAR = r'[a-z0-9¡-￿]'
+_LABEL = r'%s(?:[a-z0-9¡-￿-]{0,61}%s)?' % (_LABEL_CHAR, _LABEL_CHAR)
 _ORIGIN_RE = re.compile(
     r'^(?P<scheme>https?)://'
-    r'(?:\[(?P<ipv6>[0-9A-Fa-f:.]+)\]|(?P<name>%s(?:\.%s)*))'
-    r'(?::(?P<port>\d{1,5}))?$' % (_LABEL, _LABEL),
+    r'(?:\[(?P<ipv6>[0-9A-Fa-f:.]+)\]|(?P<name>%s(?:\.%s)*\.?))'
+    r'(?::(?P<port>[0-9]{1,5}))?$' % (_LABEL, _LABEL),
     re.IGNORECASE)
 
 
@@ -43,9 +46,10 @@ def _is_valid_origin(origin):
     try:
         if ipv6 is not None:
             ipaddress.IPv6Address(ipv6)
-        elif all(label.isdigit() for label in name.split('.')):
-            # numeric labels are only valid as a real IPv4 address
-            ipaddress.IPv4Address(name)
+        elif name.rstrip('.').rsplit('.', 1)[-1].isdigit():
+            # a numeric last label is only valid as a real IPv4 address
+            # ("foo.123" and "256.256.256.256" are rejected by browsers)
+            ipaddress.IPv4Address(name.rstrip('.'))
     except ValueError:
         return False
     return True

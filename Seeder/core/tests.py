@@ -44,7 +44,8 @@ class PublicAbsoluteUrlTests(SimpleTestCase):
                        'https://%2f', 'https://256.256.256.256',
                        'https://[::1', 'https://[not-ipv6]',
                        'https://[::1]:8000x', 'https://-bad.cz',
-                       'https://example.cz.'):
+                       'https://foo.123', 'https://example.cz:٨',
+                       'https://exa mple.cz', 'https://example.cz..'):
             with override_settings(PUBLIC_WWW_URL=origin):
                 self.assertEqual(get_public_www_origin(), '', origin)
                 self.assertEqual(public_absolute_url('/cs/zdroj/s'),
@@ -55,7 +56,9 @@ class PublicAbsoluteUrlTests(SimpleTestCase):
                        'https://[::1]:8000', 'https://[2001:db8::1]',
                        'http://localhost', 'http://10.3.0.122',
                        'http://10.3.0.122:8000', 'HTTPS://App.webarchiv.cz',
-                       'https://www.webarchiv.cz:65535'):
+                       'https://www.webarchiv.cz:65535',
+                       # fully qualified name and internationalised name
+                       'https://example.cz.', 'https://česko.cz'):
             with override_settings(PUBLIC_WWW_URL=origin):
                 self.assertEqual(get_public_www_origin(), origin, origin)
                 self.assertEqual(public_absolute_url('/en/source/s'),
