@@ -10,27 +10,36 @@ so the browser resolves them against the curator's host and gets a 404.
 set, links stay relative exactly as before; nothing is assumed about the
 deployment.
 """
+import re
 from urllib.parse import urlparse
 
 from django.conf import settings
 
 PUBLIC_WWW_SCHEMES = ('http', 'https')
+# scheme://host[:port] and nothing else: no path, query, fragment, userinfo,
+# backslash or whitespace. Internal host names without a TLD and any valid
+# port are allowed on purpose (test/staging hosts).
+_ORIGIN_RE = re.compile(r'^https?://[^/?#@\\\s]+$', re.IGNORECASE)
 
 
 def get_public_www_origin():
     """
     Return the configured public origin (``scheme://host[:port]``) without a
-    trailing slash, or ``''`` when it is unset or not a plain origin.
+    trailing slash, or ``''`` when it is unset or not a plain origin. An
+    invalid value never raises; the links then stay relative.
     """
     origin = (getattr(settings, 'PUBLIC_WWW_URL', '') or '').strip()
     origin = origin.rstrip('/')
-    if not origin:
+    if not origin or not _ORIGIN_RE.match(origin):
         return ''
-    parsed = urlparse(origin)
-    if (parsed.scheme.lower() not in PUBLIC_WWW_SCHEMES
-            or not parsed.netloc or '@' in parsed.netloc
-            or parsed.path or parsed.params or parsed.query
-            or parsed.fragment):
+    try:
+        parsed = urlparse(origin)
+        # .port raises ValueError for a non-numeric or out-of-range port
+        if (parsed.scheme.lower() not in PUBLIC_WWW_SCHEMES
+                or not parsed.hostname or parsed.port is None and ':' in
+                parsed.netloc.rsplit(']', 1)[-1]):
+            return ''
+    except ValueError:
         return ''
     return origin
 

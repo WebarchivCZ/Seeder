@@ -30,11 +30,28 @@ class PublicAbsoluteUrlTests(SimpleTestCase):
     def test_invalid_origin_falls_back_to_relative(self):
         for origin in ('webarchiv.cz', 'https://www.webarchiv.cz/seeder',
                        'ftp://www.webarchiv.cz', 'https://user@webarchiv.cz',
-                       'https://webarchiv.cz?q=1', 'https://', '   '):
+                       'https://webarchiv.cz?q=1', 'https://', '   ',
+                       # bare separators would swallow the appended path
+                       'https://www.webarchiv.cz?', 'https://www.webarchiv.cz#',
+                       # must not raise: invalid IPv6 literal, bad ports
+                       'https://[broken', 'https://example.cz:bad',
+                       'https://example.cz:65536', 'https://example.cz:',
+                       # backslash and whitespace
+                       'https://example.cz\\@evil.example',
+                       'https://example .cz'):
             with override_settings(PUBLIC_WWW_URL=origin):
                 self.assertEqual(get_public_www_origin(), '', origin)
                 self.assertEqual(public_absolute_url('/cs/zdroj/s'),
                                  '/cs/zdroj/s', origin)
+
+    def test_internal_hosts_and_ports_are_accepted(self):
+        for origin in ('http://wa-dev-docker01:8000', 'https://host:8',
+                       'https://[::1]:8000', 'http://localhost',
+                       'HTTPS://App.webarchiv.cz'):
+            with override_settings(PUBLIC_WWW_URL=origin):
+                self.assertEqual(get_public_www_origin(), origin, origin)
+                self.assertEqual(public_absolute_url('/en/source/s'),
+                                 origin + '/en/source/s', origin)
 
     @override_settings(PUBLIC_WWW_URL='https://www.webarchiv.cz')
     def test_non_relative_values_are_unchanged(self):
