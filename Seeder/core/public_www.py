@@ -13,6 +13,7 @@ deployment.
 import ipaddress
 import re
 
+import idna
 from django.conf import settings
 
 PUBLIC_WWW_SCHEMES = ('http', 'https')
@@ -46,11 +47,17 @@ def _is_valid_origin(origin):
     try:
         if ipv6 is not None:
             ipaddress.IPv6Address(ipv6)
-        elif name.rstrip('.').rsplit('.', 1)[-1].isdigit():
-            # a numeric last label is only valid as a real IPv4 address
-            # ("foo.123" and "256.256.256.256" are rejected by browsers)
-            ipaddress.IPv4Address(name.rstrip('.'))
-    except ValueError:
+        else:
+            # Normalise the host the way browsers do (UTS #46): rejects
+            # invalid code points such as a full-width "／" or "．" that the
+            # Unicode label range above would let through.
+            ascii_name = idna.encode(name.rstrip('.'), uts46=True) \
+                .decode('ascii')
+            if ascii_name.rsplit('.', 1)[-1].isdigit():
+                # a numeric last label is only valid as a real IPv4 address
+                # ("foo.123", "256.256.256.256" are rejected by browsers)
+                ipaddress.IPv4Address(ascii_name)
+    except (ValueError, UnicodeError, idna.IDNAError):
         return False
     return True
 

@@ -45,7 +45,9 @@ class PublicAbsoluteUrlTests(SimpleTestCase):
                        'https://[::1', 'https://[not-ipv6]',
                        'https://[::1]:8000x', 'https://-bad.cz',
                        'https://foo.123', 'https://example.cz:٨',
-                       'https://exa mple.cz', 'https://example.cz..'):
+                       'https://exa mple.cz', 'https://example.cz..',
+                       # full-width solidus and full-width dot (UTS #46)
+                       'https://foo／bar.cz', 'https://foo．123'):
             with override_settings(PUBLIC_WWW_URL=origin):
                 self.assertEqual(get_public_www_origin(), '', origin)
                 self.assertEqual(public_absolute_url('/cs/zdroj/s'),
