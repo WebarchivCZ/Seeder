@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% load i18n bootstrap3 thumbnail static %}
+{% load i18n bootstrap3 thumbnail static core %}
 
 {% block title %} {{ object }} {% endblock %}
 {% block page_header %} {{ object }}{% endblock %}
@@ -70,7 +70,9 @@
 
                 <tr>
                     <td>{% trans 'WWW link' %}</td>
-                    <td><a href="{{ object.get_www_url }}" target="_blank">{{ object.get_www_url }}</a></td>
+                    {% with object.get_www_url|public_absolute as public_url %}
+                    <td><a href="{{ public_url }}" target="_blank">{{ public_url }}</a></td>
+                    {% endwith %}
                 </tr>
 
                 <tr>

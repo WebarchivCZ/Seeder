@@ -18,7 +18,32 @@ Use Python 3 + Django conventions with 4-space indentation and PEP 8-compatible 
 Tests are primarily Django `manage.py test` tests, located in app-level files such as `Seeder/source/tests.py` and `Seeder/harvests/tests.py`. Add or update tests for behavior changes and regressions. For DB-sensitive logic, run with `--settings=settings.tests` (SQLite test settings) to match CI expectations.
 
 ## Commit & Pull Request Guidelines
-Recent history favors short, imperative commit messages, often with issue references (for example: `#710: fix slug creation...`). Keep commits focused and include migrations with schema changes. PRs should include: purpose/scope, linked issue, deployment notes (if any), and screenshots for UI/template changes. Target `master` for development work; `production` is release-focused.
+
+These conventions apply to new work, including bug fixes. Preserve existing historical names; do not rename unrelated branches.
+
+- Start each delivery item from `master`, after checking the working tree and base revision. Use one branch and one PR per item. The agreed combined #728 + #735 package may share one branch/PR, with both issues listed in its description.
+- Name branches `feat/#<issue>_<shortDescription>`: ASCII without spaces or diacritics, with a concise `lowerCamelCase` description. Examples: `feat/#731_referencniCentrum`, `feat/#712_addSeederUrl`. For a combined item, use the first issue in the branch name and list all issues in the PR. Do not introduce alternate prefixes for bug fixes within this delivery.
+- Write commit subjects in English as `#<issue>: <imperative description>`, for example `#731: Centralize and fix reference centre links`. Keep each commit focused; use an optional body to explain the reason or a material trade-off. Include generated migrations with model changes. Do not mix unrelated fixes or commit secrets/generated runtime files.
+- Use the same issue prefix and concise English description for the PR title, for example `#731: Fix reference centre links`. Target `master`; production releases use `production` and are coordinated with the client.
+- Write the PR description in English for a reviewer who has not seen the chat: explain the concrete problem and resulting behavior, link every relevant issue, summarize the final scope, and list actual validation commands/results and any remaining failures. Include screenshots for UI/template changes and deployment requirements (migrations, environment variables, other operational steps), or explicitly state when none are required. Distinguish local verification from client test acceptance and production verification.
+- Keep the title and description aligned with the final diff. Use `Closes #<issue>` only when merging the PR should close that issue; otherwise use a plain issue reference. Never claim tests, client acceptance or deployment that have not happened.
+
+Recommended PR body:
+
+```markdown
+<Problem and resulting behavior. Issue link/reference.>
+
+## Changes
+- <Relevant change and purpose.>
+
+## Validation
+- `<exact command>` — <actual result; disclose remaining failures.>
+- <Manual/browser checks and screenshots for each affected language.>
+
+## Deployment
+<Required steps, or "No migrations or new environment variables required.">
+<Client test acceptance / production status when relevant.>
+```
 
 ## Security & Configuration Tips
 Do not commit secrets. Keep local overrides in environment variables or local settings files derived from `Seeder/settings/local_settings.template.py`. Treat `ci/group_vars/*/vault.yaml` and runtime `.cronenv` content as sensitive.

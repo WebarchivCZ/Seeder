@@ -294,6 +294,11 @@ if DEBUG:
 WAKAT_URL = 'http://forpsi.kitakitsune.org:8080/?url_id={id}'
 WAYBACK_URL = "http://wayback.webarchiv.cz/wayback/query?type=urlquery&url={url}"
 
+# Public website origin used for links from the curator interface to the
+# public pages (e.g. 'https://www.webarchiv.cz'). Empty keeps the links
+# host-relative; set per environment (see ci/prod, ci/test).
+PUBLIC_WWW_URL = ''
+
 
 SEEDS_EXPORT_DIR = 'seeds'
 SEEDS_BACKUP_DIR = os.path.join(SEEDS_EXPORT_DIR, 'backup')
@@ -307,6 +312,12 @@ LEGACY_SCREENSHOT_URL_PNG = 'http://www.webarchiv.cz/images/resource/thumb/small
 
 
 WEBARCHIV_EMAIL = 'webarchiv@nkp.cz'
+
+# Shared destinations for reference centre links on the public website.
+REFERENCE_CENTRE_URLS = {
+    'cs': 'https://www.nkp.cz/studovny-a-prostory/referencni-centrum',
+    'en': 'https://www.nkp.cz/en/reading-rooms/reference-centre',
+}
 
 # RECAPTCHA_PUBLIC_KEY = ''
 # RECAPTCHA_PRIVATE_KEY = ''
