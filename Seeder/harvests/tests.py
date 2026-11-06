@@ -15,7 +15,8 @@ from django.utils import timezone
 from source.constants import SOURCE_FREQUENCY_PER_YEAR
 from harvests.cron import cleanup_expired_chunked_uploads
 from harvests.scheduler import get_dates_for_timedelta
-from harvests.models import Attachment, Harvest, TopicCollection
+from harvests.models import (Attachment, ExternalTopicCollection, Harvest,
+                             TopicCollection)
 from harvests.views import INTERNAL_TC_CUSTOM_SEEDS_UPLOADS_SESSION_KEY
 from chunked_upload.constants import COMPLETE
 from chunked_upload.models import ChunkedUpload
@@ -683,3 +684,71 @@ class ScheduleTest(TestCase):
                 datetime(2012, 1, 21)
             ]
         )
+
+
+class ExternalTopicCollectionCustomSeedsTests(TestCase):
+    """#735: combined custom seeds must tolerate NULL in internal collections."""
+
+    def setUp(self):
+        self.user = User.objects.create_superuser('pedro', '', 'password')
+        self.external = ExternalTopicCollection.objects.create(
+            title_cs="Kolekce", title_en="Collection", owner=self.user,
+            annotation="", active=True)
+
+    def create_internal(self, pk, custom_seeds):
+        return TopicCollection.objects.create(
+            pk=pk, title_cs="int%d" % pk, title_en="int%d" % pk,
+            owner=self.user, annotation="", all_open=True,
+            external_collection=self.external, custom_seeds=custom_seeds)
+
+    def test_null_seeds_are_skipped(self):
+        self.create_internal(100, "a.cz\nb.cz")
+        self.create_internal(101, None)
+        self.create_internal(102, "")
+        self.create_internal(103, "c.cz")
+        seeds = self.external.custom_seeds
+        # Ordering of internal collections is not under test here
+        self.assertEqual(sorted(seeds.split()), ["a.cz", "b.cz", "c.cz"])
+
+    def test_only_null_seeds_give_empty_string(self):
+        self.create_internal(104, None)
+        self.assertEqual(self.external.custom_seeds, "")
+
+
+class ExternalCollectionDetailPublicLinkTests(TestCase):
+    """#728: the WWW link of an external collection in the curator interface
+    uses the configured public origin."""
+
+    def setUp(self):
+        self.user = User.objects.create_superuser('pedro', '', 'password')
+        self.client.login(username='pedro', password='password')
+        self.external = ExternalTopicCollection.objects.create(
+            title_cs="Kolekce", title_en="Collection", owner=self.user,
+            annotation="", active=True)
+
+    def get_detail(self, locale):
+        from django.utils.translation import activate
+        activate(locale)
+        # Curator URLs have no language prefix: LocaleMiddleware takes the
+        # language from the request, so send it explicitly and assert it.
+        response = self.client.get(
+            reverse('harvests:external_collection_detail',
+                    kwargs={'pk': self.external.pk}),
+            HTTP_ACCEPT_LANGUAGE=locale)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.wsgi_request.LANGUAGE_CODE, locale)
+        self.assertIn('/%s/' % locale, self.external.get_www_url())
+        return response.content.decode()
+
+    def test_www_link_follows_public_www_url(self):
+        origin = 'https://app.webarchiv.cz'
+        for locale in ('cs', 'en'):
+            with override_settings(PUBLIC_WWW_URL=''):
+                html = self.get_detail(locale)
+                www_url = self.external.get_www_url()
+                self.assertIn('href="%s"' % www_url, html)
+            with override_settings(PUBLIC_WWW_URL=origin):
+                html = self.get_detail(locale)
+                www_url = self.external.get_www_url()
+                self.assertIn('href="%s%s"' % (origin, www_url), html)
+                self.assertIn('>%s%s</a>' % (origin, www_url), html)

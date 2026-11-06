@@ -163,3 +163,60 @@ class SourceScreenshotTests(TestCase):
         self.assertEqual(source.state, constants.STATE_RUNNING)
         self.assertGreaterEqual(mocked.call_count, 1)
         mocked.assert_any_call(source.pk)
+
+
+class SourceDetailPublicLinkTests(TestCase):
+    """#728: links from the curator source detail to the public website must
+    use the configured public origin so they work on any curator host."""
+
+    def setUp(self):
+        from django.contrib.auth.models import User
+        self.user = User.objects.create_superuser(
+            'curator', 'curator@example.com', 'password')
+        self.client.login(username='curator', password='password')
+        category = Category.objects.create(name='Category', slug='category')
+        self.source = Source.objects.create(
+            created_by=self.user, owner=self.user, name='Zdroj',
+            category=category, state=constants.STATE_RUNNING, slug='zdroj')
+        from source.models import KeyWord
+        self.keyword = KeyWord.objects.create(word='Klic', slug='klic')
+        self.source.keywords.add(self.keyword)
+
+    def get_detail(self, locale):
+        from django.urls import reverse
+        from django.utils.translation import activate
+        activate(locale)
+        # The curator URL has no language prefix, so LocaleMiddleware picks
+        # the language from the request; activate() alone would be
+        # overridden by the default language.
+        response = self.client.get(
+            reverse('source:detail', kwargs={'pk': self.source.pk}),
+            HTTP_ACCEPT_LANGUAGE=locale)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.wsgi_request.LANGUAGE_CODE, locale)
+        html = response.content.decode()
+        self.assertIn('/%s/' % locale, self.source.get_public_url())
+        return html
+
+    def test_links_stay_relative_without_public_www_url(self):
+        from django.test import override_settings
+        for locale in ('cs', 'en'):
+            with override_settings(PUBLIC_WWW_URL=''):
+                html = self.get_detail(locale)
+                public_url = self.source.get_public_url()
+                self.assertTrue(public_url.startswith('/'))
+                self.assertIn('href="%s"' % public_url, html)
+                self.assertIn('href="%s"' % self.keyword.www_url(), html)
+
+    def test_links_are_absolute_with_public_www_url(self):
+        from django.test import override_settings
+        origin = 'https://www.webarchiv.cz'
+        for locale in ('cs', 'en'):
+            with override_settings(PUBLIC_WWW_URL=origin + '/'):
+                html = self.get_detail(locale)
+                public_url = self.source.get_public_url()
+                self.assertIn('href="%s%s"' % (origin, public_url), html)
+                self.assertIn('>%s%s</a>' % (origin, public_url), html)
+                self.assertIn('href="%s%s"' % (origin, self.keyword.www_url()),
+                              html)
+                self.assertNotIn('href="%s"' % public_url, html)

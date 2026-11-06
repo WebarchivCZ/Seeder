@@ -2,8 +2,18 @@ from django import template
 from django.conf import settings
 from django.utils.html import format_html
 from core.models import SiteConfiguration
+from core.public_www import public_absolute_url
 
 register = template.Library()
+
+
+@register.filter(name="public_absolute")
+def public_absolute(path):
+    '''
+    Prefix a relative public-site path with settings.PUBLIC_WWW_URL so that
+    links from the curator interface work on any curator host (#728).
+    '''
+    return public_absolute_url(path)
 
 
 @register.simple_tag

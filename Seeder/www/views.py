@@ -18,7 +18,7 @@ from django.core.paginator import EmptyPage
 from django.urls import reverse
 from django.conf import settings
 
-from core.utils import get_wayback_url
+from core.utils import get_wayback_url, normalize_public_link
 from contracts.models import Contract
 from search_blob.models import Blob
 from settings.base import WAYBACK_URL
@@ -110,7 +110,7 @@ class TopicCollectionDetail(PaginatedView, DetailView):
         return qs.filter(active=True)
 
     def get_paginator_queryset(self):
-        qs = self.get_object().custom_sources
+        qs = self.object.custom_sources
         # Manually first select the PUBLIC sources and then everything else
         pks = list(
             qs.filter(state__in=PUBLIC_STATES).values_list("pk", flat=True))
@@ -129,13 +129,10 @@ class TopicCollectionDetail(PaginatedView, DetailView):
         so we need to decide which paginator is longer and use that for range
         """
         context = super().get_context_data(**kwargs)
+        # sorted() keeps pagination stable; set() alone has no defined order
         custom_seeds = [
-            {
-                'name': urlparse(url).netloc,
-                'url': url,
-                'wayback_url': get_wayback_url(url)
-            }
-            for url in set(self.get_object().custom_seeds.split())
+            self.get_custom_seed_context(url)
+            for url in sorted(set(self.object.custom_seeds.split()))
         ]
 
         page = self.get_page_num()
@@ -167,6 +164,33 @@ class TopicCollectionDetail(PaginatedView, DetailView):
         context['custom_seeds'] = seed_page
         context['bigger_paginator'] = bigger_paginator
         return context
+
+    @staticmethod
+    def get_custom_seed_context(raw_url):
+        """
+        Presentation of one free-text custom seed (#735).
+
+        ``url`` is the stored value shown as text. ``href`` is a validated
+        HTTP(S) link or ``None``; seeds without a scheme get one, anything
+        that is not a web address is shown as plain text without any link
+        (neither "current" nor Wayback). ``name`` and ``wayback_url`` are
+        derived only from the validated link; a rejected value is never
+        parsed again, so malformed input cannot break the page.
+        """
+        link = normalize_public_link(raw_url)
+        if link is None:
+            return {
+                'name': raw_url,
+                'url': raw_url,
+                'href': None,
+                'wayback_url': None,
+            }
+        return {
+            'name': urlparse(link).netloc,
+            'url': raw_url,
+            'href': link,
+            'wayback_url': get_wayback_url(link),
+        }
 
 
 class TopicCollectionUrlsCsv(DetailView):
