@@ -452,6 +452,9 @@ msgstr "Nelze smazat smlouvu s číslem"
 msgid "Contract deleted."
 msgstr "Smlouva smazána"
 
+msgid "This contract has subcontracts or negotiation emails and cannot be deleted."
+msgstr "Tuto smlouvu nelze smazat, protože má podsmlouvy nebo vyjednávací e-maily."
+
 #: core/dashboard_data.py:83
 msgid "Contracts in negotiation"
 msgstr "Smlouvy v jednání"

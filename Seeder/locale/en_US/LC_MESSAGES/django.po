@@ -456,6 +456,9 @@ msgstr "Can't delete contract with number"
 msgid "Contract deleted."
 msgstr "Contract deleted."
 
+msgid "This contract has subcontracts or negotiation emails and cannot be deleted."
+msgstr "This contract has subcontracts or negotiation emails and cannot be deleted."
+
 #: core/dashboard_data.py:83
 msgid "Contracts in negotiation"
 msgstr "Contracts in negotiation"
