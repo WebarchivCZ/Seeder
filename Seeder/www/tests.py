@@ -3,11 +3,9 @@ from datetime import date
 from unittest import mock
 from urllib.parse import urlparse
 
-
 from django.test import TestCase, Client, override_settings
 from django.utils.html import escape
 from django.utils.translation import activate, override
-
 from django.urls import reverse
 from django.urls.resolvers import URLPattern, URLResolver
 from django.urls.exceptions import NoReverseMatch
