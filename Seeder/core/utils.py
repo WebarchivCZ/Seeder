@@ -1,7 +1,18 @@
 # pylint: disable=W0613
 
+import re
 from urllib.parse import urlparse
 from django.conf import settings
+from django.core.exceptions import ValidationError
+from django.core.validators import URLValidator
+
+# Only web pages can be harvested, so only these schemes become clickable
+# links when free-text seeds are presented on the public website.
+PUBLIC_LINK_SCHEMES = ('http', 'https')
+_public_link_validator = URLValidator(schemes=list(PUBLIC_LINK_SCHEMES))
+# ``host:port[/path]`` without a scheme; urlparse() would read the host as
+# the scheme, so it is recognised explicitly before prepending ``http://``.
+_HOST_PORT_RE = re.compile(r'^[A-Za-z0-9.-]+:\d+(?:[/?#].*)?$')
 
 def merge_dicts(x, y):
     """
@@ -62,3 +73,49 @@ def get_wayback_url(url):
     except: # If it fails (likely on ValueError), keep original URL
         pass
     return settings.WAYBACK_URL.format(url=url)
+
+
+def normalize_public_link(raw_url):
+    """
+    Return a clickable HTTP(S) URL built from a free-text seed, or ``None``
+    when the value is not a valid web address (missing TLD, ``javascript:``,
+    ``mailto:``, ``ftp://`` and similar). The stored value is never changed;
+    this only decides what the public website may use in ``href``.
+
+    - ``example.cz/path`` and ``host:8080/path`` get ``http://`` prepended
+    - ``//host/path`` becomes ``https://host/path``
+    - ``http(s)://...`` is kept as is and only validated
+    """
+    if not raw_url:
+        return None
+    value = raw_url.strip()
+    if not value:
+        return None
+    # A backslash is never valid in a URL; browsers turn it into "/" while
+    # urlparse() keeps it in the authority, so the two would disagree about
+    # the host (e.g. "https://example.org\@evil.example/x").
+    if '\\' in value:
+        return None
+    try:
+        if value.startswith('//'):
+            candidate = 'https:' + value
+        else:
+            scheme = urlparse(value).scheme.lower()
+            if scheme in PUBLIC_LINK_SCHEMES:
+                candidate = value
+            elif scheme and not _HOST_PORT_RE.match(value):
+                return None
+            else:
+                candidate = 'http://' + value
+        _public_link_validator(candidate)
+        parsed = urlparse(candidate)
+        # Reject e.g. ``http:///host`` which the validator accepts but
+        # browsers resolve differently; ``.port`` raises ValueError for a
+        # port outside 0-65535, which the validator does not check.
+        if not parsed.netloc or not parsed.hostname:
+            return None
+        parsed.port
+    except (ValidationError, ValueError):
+        # ValueError: invalid IPv6 literal (urlparse) or port out of range
+        return None
+    return candidate

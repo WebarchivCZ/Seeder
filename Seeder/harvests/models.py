@@ -627,8 +627,11 @@ class ExternalTopicCollection(BaseModel, OrderedModel):
     @property
     def custom_seeds(self):
         """ Return custom seeds of all internal collections combined """
-        return "\n".join(self.internal_collections.all().values_list(
-            "custom_seeds", flat=True))
+        # The field is nullable; skip NULL/empty values instead of failing
+        return "\n".join(
+            seeds for seeds in self.internal_collections.all().values_list(
+                "custom_seeds", flat=True)
+            if seeds)
 
     @property
     def custom_sources(self):

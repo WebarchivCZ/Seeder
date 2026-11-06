@@ -1,7 +1,13 @@
+import re
 from datetime import date
+from unittest import mock
+from urllib.parse import urlparse
+
 
 from django.test import TestCase, Client, override_settings
+from django.utils.html import escape
 from django.utils.translation import activate, override
+
 from django.urls import reverse
 from django.urls.resolvers import URLPattern, URLResolver
 from django.urls.exceptions import NoReverseMatch
@@ -18,6 +24,8 @@ from blacklists.models import Blacklist
 from contracts.models import Contract
 from qa.models import QualityAssuranceCheck
 from www.models import NewsObject
+from www.views import TopicCollectionDetail
+from core.utils import get_wayback_url
 from voting.models import VotingRound
 
 DATE = date.today()
@@ -245,3 +253,102 @@ class SeederUrlsTest(TestCase):
 
     def test_cs_seeder_urls(self):
         self.a.access_urls(self.url_names, self.url_kwargs, 'cs', admin=True)
+
+
+class TopicCollectionCustomSeedsTest(TestCase):
+    """
+    #735: free-text custom seeds on the public collection detail must link
+    to the external website (not back into Webarchiv), unsupported values
+    must not be clickable and NULL seeds of an internal collection must not
+    break the page. Stored data and the CSV export stay unchanged.
+    """
+    # stored value -> expected clickable link
+    VALID = {
+        'www.kvasnyprumysl.cz/': 'http://www.kvasnyprumysl.cz/',
+        'example.cz/cesta?q=1': 'http://example.cz/cesta?q=1',
+        'https://a.cz/': 'https://a.cz/',
+        '//c.example.org/x': 'https://c.example.org/x',
+        'example.cz:8443/p': 'http://example.cz:8443/p',
+    }
+    # shown as text only: unsupported schemes, malformed values, bad ports,
+    # backslash in the authority
+    REJECTED = [
+        'javascript:alert(1)',
+        'javascript://%0aalert(1)',
+        'data:text/html,hi',
+        'ftp://ftp.example.cz/x',
+        'mailto:a@b.cz',
+        'https://[broken',
+        '//[broken',
+        'example.cz:65536/a',
+        'https://example.org\\@evil.example/x',
+    ]
+    SEEDS = list(VALID) + REJECTED
+    BLOCK_RE = re.compile(
+        r'<div class="col-md-12 item-textual">(.*?)</div>\s*</div>', re.S)
+
+    def setUp(self):
+        user = User.objects.create_superuser('pedro', 'pedro@seeder.com',
+                                             'password')
+        self.external = ExternalTopicCollection.objects.create(
+            pk=10, title_cs="Kolekce", title_en="Collection", owner=user,
+            annotation="", active=True)
+        TopicCollection.objects.create(
+            pk=10, title_cs="int", title_en="int", owner=user, annotation="",
+            all_open=True, external_collection=self.external,
+            custom_seeds="\n".join(self.SEEDS))
+        # Nullable field: an internal collection without seeds used to raise
+        # TypeError (HTTP 500) when the external collection was displayed
+        TopicCollection.objects.create(
+            pk=11, title_cs="int2", title_en="int2", owner=user,
+            annotation="", all_open=True, external_collection=self.external,
+            custom_seeds=None)
+
+    def get_detail(self, locale):
+        activate(locale)
+        url = reverse('www:collection_detail',
+                      kwargs={'slug': self.external.slug})
+        # All seeds on one page; pagination itself is not under test here
+        with mock.patch.object(TopicCollectionDetail, 'per_page', 50):
+            return self.client.get(url)
+
+    def seed_block(self, html, raw):
+        """Return the HTML block of one custom seed (by its stored text)."""
+        marker = '<span class="italic">%s</span>' % escape(raw)
+        blocks = [b for b in self.BLOCK_RE.findall(html) if marker in b]
+        self.assertEqual(len(blocks), 1, 'block for %r' % raw)
+        return blocks[0]
+
+    def assert_seed_links(self, response):
+        self.assertEqual(response.status_code, 200)
+        html = response.content.decode()
+        for raw, link in self.VALID.items():
+            block = self.seed_block(html, raw)
+            # "current" link and Wayback link built from the validated URL
+            self.assertIn('href="%s"' % link, block)
+            self.assertIn('href="%s"' % escape(get_wayback_url(link)), block)
+            self.assertIn('>%s</a>' % urlparse(link).netloc, block)
+        for raw in self.REJECTED:
+            block = self.seed_block(html, raw)
+            # text only: no "current" link, no Wayback link, no href at all
+            self.assertNotIn('href=', block)
+            self.assertNotIn('<a ', block)
+            self.assertIn('>%s</h2>' % escape(raw), block)
+        # No relative link that would resolve inside Webarchiv
+        self.assertNotIn('href="www.kvasnyprumysl.cz/"', html)
+
+    def test_custom_seed_links_en(self):
+        self.assert_seed_links(self.get_detail('en'))
+
+    def test_custom_seed_links_cs(self):
+        self.assert_seed_links(self.get_detail('cs'))
+
+    def test_csv_export_keeps_stored_seeds(self):
+        activate('en')
+        response = self.client.get(reverse(
+            'www:collection_csv', kwargs={'slug': self.external.slug}))
+        self.assertEqual(response.status_code, 200)
+        csv = response.content.decode()
+        for raw in self.SEEDS:
+            self.assertIn(raw, csv)
+        self.assertNotIn('http://www.kvasnyprumysl.cz/', csv)

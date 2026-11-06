@@ -294,6 +294,11 @@ if DEBUG:
 WAKAT_URL = 'http://forpsi.kitakitsune.org:8080/?url_id={id}'
 WAYBACK_URL = "http://wayback.webarchiv.cz/wayback/query?type=urlquery&url={url}"
 
+# Public website origin used for links from the curator interface to the
+# public pages (e.g. 'https://www.webarchiv.cz'). Empty keeps the links
+# host-relative; set per environment (see ci/prod, ci/test).
+PUBLIC_WWW_URL = ''
+
 
 SEEDS_EXPORT_DIR = 'seeds'
 SEEDS_BACKUP_DIR = os.path.join(SEEDS_EXPORT_DIR, 'backup')

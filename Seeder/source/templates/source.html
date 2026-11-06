@@ -94,7 +94,7 @@
                 <tr>
                     <td>{% trans 'Keywords' %}</td>
                     <td>{% for keyword in source.keywords.all %}
-                        <a href="{{ keyword.www_url }}">{{ keyword }}</a>{% include "includes/comma.html" %}
+                        <a href="{{ keyword.www_url|public_absolute }}">{{ keyword }}</a>{% include "includes/comma.html" %}
                         {% endfor %}
                     </td>
                 </tr>
@@ -132,7 +132,9 @@
                 {% endwith %}
                 <tr>
                     <td>{% trans 'WWW link' %}</td>
-                    <td><a href="{{ source.get_public_url }}" target="_blank">{{ source.get_public_url }}</a></td>
+                    {% with source.get_public_url|public_absolute as public_url %}
+                    <td><a href="{{ public_url }}" target="_blank">{{ public_url }}</a></td>
+                    {% endwith %}
                 </tr>
                 <tr>
                     <td>CC Licence</td>

@@ -72,12 +72,18 @@
                 {% for source in custom_seeds %}
                 <div class="row">
                     <div class="col-md-12 item-textual">
+                        {% if source.wayback_url %}
                         <h2 class="passive_link"><a href="{{ source.wayback_url }}" target="_blank">{{ source.name }}</a></h2>
+                        {% else %}
+                        <h2 class="passive_link">{{ source.name }}</h2>
+                        {% endif %}
                         <p>
                             <span class="italic">{{ source.url }}</span>
-                            <span class="blue">[</span><a href="{{ source.url }}"
+                            {% if source.href %}
+                            <span class="blue">[</span><a href="{{ source.href }}"
                                 target="_blank">{% if lang == "cs" %}aktuální
                                 verze{% else %}current{% endif %}</a><span class="blue">]</span>
+                            {% endif %}
                         </p>
                     </div>
                 </div>

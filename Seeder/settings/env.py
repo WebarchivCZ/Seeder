@@ -85,6 +85,7 @@ SERVER_EMAIL = os.environ.get('SERVER_EMAIL', 'webarchiv@nkp.cz')
 WAKAT_URL = os.environ.get('WAKAT_URL', 'http://kat.webarchiv.cz/?url_id={id}')
 WAYBACK_URL = os.environ.get(
     'WAYBACK_URL', 'https://wayback.webarchiv.cz/wayback/*/{url}')
+PUBLIC_WWW_URL = os.environ.get('PUBLIC_WWW_URL', '')
 RECAPTCHA_PUBLIC_KEY = os.environ.get('RECAPTCHA_PUBLIC_KEY')
 RECAPTCHA_PRIVATE_KEY = os.environ.get('RECAPTCHA_PRIVATE_KEY')
 
