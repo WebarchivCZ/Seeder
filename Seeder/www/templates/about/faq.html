@@ -1,10 +1,12 @@
 {% extends "base_www.html" %}
+{% load urltags %}
 
 {% block title %}{% if lang == "cs" %}Často kladené dotazy{% else %}Frequently Asked Questions{% endif %}{% endblock title %}
 
 
 
 {% block content %}
+	{% reference_centre_url as centre_url %}
 
 	{% include "about/menu.html" %}
 
@@ -54,7 +56,7 @@
 				<div class="indent-left">
 					<h3>Proč nemohu vidět některé webové stránky?</h3>
 					<p>Pokud se vám zobrazuje chybové hlášení, že přístup k archivovaným verzím je blokován, důvodem je současné znění autorského zákona. To nám dovoluje zpřístupňovat online pouze stránky, k jejichž archivaci nám dal jejich vydavatel souhlas. Veřejně online je přístupná pouze malá část archivu.</p>
-					<p>Pokud máte zájem prohlédnout si celý archiv, můžete navštívit <a href="http://www.nkp.cz/sluzby/dulezite-odkazy/studovny/refc">Referenční centrum Národní Knihovny ČR</a>, kde jsou dostupné terminály, přes které je možné do archivu vstoupit.</p>
+					<p>Pokud máte zájem prohlédnout si celý archiv, můžete navštívit <a href="{{ centre_url }}">Referenční centrum Národní Knihovny ČR</a>, kde jsou dostupné terminály, přes které je možné do archivu vstoupit.</p>
 
 					<h3>Proč jsou některé stránky nekompletní nebo nedostupné?</h3>
 					<p>Z technických důvodů nejsme vždy schopni archivovat stránky v takové podobě, v jaké jsou vystaveny na webu. Snažíme se vždy archivovat stránky tak, aby archivní verze byla kompletní, bohužel to není vždy možné. Vzhledem k omezenému diskovému prostoru a počítačovému výkonu se může stát, že se některé části stránky nenachází v našem archivu. Jedná se zejména o větší soubory, např. videa. </p>
