@@ -126,13 +126,18 @@ class VoteCard(DashboardCard):
     def get_badge(self, element):
         return element.vote__count
 
+    def get_font_weight(self, element):
+        return 'bold' if element.priority else 'normal'
+
     def annotate_and_order(self, qs):
-        """ Order the SUGGESTED_BOLD on top -> Vote count -> Source name """
+        """Order highlighted sources first, then by vote count and name."""
         return qs.annotate(
             Count('vote'),
             priority=Case(
-                When(source__suggested_by__in=source_models.constants.SUGGESTED_BOLD,
-                     then=Value(True)),
+                When(
+                    Q(source__suggested_by__in=source_models.constants.SUGGESTED_BOLD)
+                    | Q(source__priority_source=True),
+                    then=Value(True)),
                 default=Value(False), output_field=BooleanField()
             )
         ).order_by('-priority', 'vote__count', Lower('source__name'))
@@ -159,13 +164,6 @@ class ManagedVotingRounds(VoteCard):
         has_voted = element.vote_set.filter(author=self.user).exists()
         return 'success' if has_voted else ''
 
-    def get_font_weight(self, element):
-        if (element.source.suggested_by
-                in source_models.constants.SUGGESTED_BOLD):
-            return "bold"
-        else:
-            return "normal"
-
 
 class OpenToVoteRounds(VoteCard):
     """
@@ -185,13 +183,6 @@ class OpenToVoteRounds(VoteCard):
             Q(source__state__in=source_models.constants.VOTE_STATES)
         )
         return self.annotate_and_order(qs)
-
-    def get_font_weight(self, element):
-        if (element.source.suggested_by
-                in source_models.constants.SUGGESTED_BOLD):
-            return "bold"
-        else:
-            return "normal"
 
 
 class SourceCard(DashboardCard):
