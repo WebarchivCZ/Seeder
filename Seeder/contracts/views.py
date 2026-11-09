@@ -9,8 +9,10 @@ from . import constants
 from datetime import timedelta, date
 from dal import autocomplete
 
+from django.db import transaction
 from django.db.models.functions import Cast
 from django.db.models import CharField
+from django.urls import reverse
 from django.views.generic import DetailView, FormView
 from django.utils.translation import ugettext_lazy as _
 from django.template.loader import render_to_string
@@ -172,6 +174,7 @@ class ListView(ContractView, FilteredListView):
     title = _('Contracts')
     table_class = tables.ContractTable
     filterset_class = field_filters.ContractFilter
+    show_list_messages = True
 
 
 class Schedule(ContractView, FormView, ObjectMixinFixed):
@@ -237,9 +240,11 @@ class Schedule(ContractView, FormView, ObjectMixinFixed):
         return HttpResponseRedirect(self.object.get_absolute_url())
 
 
-class DeleteView(View, MessageView, ContractView, ObjectMixinFixed):
+class DeleteView(ContractView, View, MessageView, ObjectMixinFixed):
+    @transaction.atomic
     def post(self, request, *args, **kwargs):
-        contract = self.get_object()
+        queryset = self.get_queryset().select_for_update()
+        contract = self.get_object(queryset=queryset)
         if not contract.can_delete():
             self.add_message(
                 _("Can't delete contract with number"),
@@ -247,10 +252,20 @@ class DeleteView(View, MessageView, ContractView, ObjectMixinFixed):
             )
             return HttpResponseRedirect(contract.get_absolute_url())
 
-        source_url = contract.sources.first().get_absolute_url()
+        if (contract.sub_contracts.exclude(pk=contract.pk).exists()
+                or contract.emailnegotiation_set.exists()):
+            self.add_message(
+                _("This contract has subcontracts or negotiation emails "
+                  "and cannot be deleted."),
+                messages.ERROR
+            )
+            return HttpResponseRedirect(contract.get_absolute_url())
+
+        source = contract.sources.first()
+        redirect_url = source.get_absolute_url() if source else reverse('contracts:list')
         contract.delete()
         self.add_message(
             _('Contract deleted.'),
             messages.SUCCESS
         )
-        return HttpResponseRedirect(source_url)
+        return HttpResponseRedirect(redirect_url)
