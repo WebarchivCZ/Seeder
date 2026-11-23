@@ -156,9 +156,8 @@ class ReferenceCentreLinksTest(TestCase):
                     self.assertNotContains(
                         response, 'dulezite-odkazy/studovny/refc')
                     self.assertNotContains(response, 'reading-rooms/refc-en')
-                    if name == 'www:about_contact' or language == 'cs':
-                        self.assertContains(
-                            response, 'href="{}"'.format(expected_url))
+                    self.assertContains(
+                        response, 'href="{}"'.format(expected_url))
 
     def test_czech_reference_links(self):
         self.assert_reference_links(
