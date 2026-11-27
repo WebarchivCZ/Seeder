@@ -1,8 +1,17 @@
+from django.contrib.auth.models import User
 from django.template import Context, Template
-from django.test import SimpleTestCase, override_settings
+from django.test import RequestFactory, SimpleTestCase, TestCase, override_settings
+from django.urls import reverse
 
+from core.dashboard_data import (
+    ManagedVotingRounds, OpenToVoteRounds, REVERSE_SESSION,
+)
 from core.public_www import get_public_www_origin, public_absolute_url
 from core.utils import normalize_public_link
+from source import constants as source_constants
+from source.models import Category, Source
+from voting import constants as voting_constants
+from voting.models import Vote
 
 
 class PublicAbsoluteUrlTests(SimpleTestCase):
@@ -137,3 +146,168 @@ class NormalizePublicLinkTests(SimpleTestCase):
                       'example.org\\@evil.example/x',
                       'https://example.cz\\x', 'example.cz/a\\b'):
             self.assertIsNone(normalize_public_link(value), repr(value))
+
+
+class PriorityVotingCardTests(TestCase):
+    """#732: voting cards share one highlighted group and keep tie-breakers."""
+
+    @classmethod
+    def setUpTestData(cls):
+        cls.curator = User.objects.create_user(username='priority-curator')
+        cls.other = User.objects.create_user(username='other-curator')
+        cls.voters = [
+            User.objects.create_user(username='voter-{}'.format(i))
+            for i in range(2)
+        ]
+        cls.category = Category.objects.create(name='Voting test category')
+
+    def create_round(self, name, owner, priority=False,
+                     suggested_by=source_constants.SUGGESTED_CURATOR, votes=0):
+        source = Source.objects.create(
+            name=name, owner=owner, created_by=owner, category=self.category,
+            priority_source=priority, suggested_by=suggested_by,
+        )
+        # Source's post_save signal creates the initial round.
+        voting_round = source.votinground_set.get()
+        for voter in self.voters[:votes]:
+            Vote.objects.create(
+                voting_round=voting_round, author=voter,
+                vote=voting_constants.VOTE_APPROVE,
+            )
+        return voting_round
+
+    def create_mixed_rounds(self, owner):
+        # Deliberately insert out of order. Lower() must break vote-count ties,
+        # and the priority flag must not rank above ISSN/publisher suggestions.
+        ordinary = self.create_round('aardvark ordinary', owner)
+        priority = self.create_round('beta priority', owner, priority=True)
+        publisher = self.create_round(
+            'Zulu publisher', owner,
+            suggested_by=source_constants.SUGGESTED_PUBLISHER)
+        issn = self.create_round(
+            'alpha ISSN', owner,
+            suggested_by=source_constants.SUGGESTED_ISSN)
+        both = self.create_round(
+            'Alpha both', owner, priority=True,
+            suggested_by=source_constants.SUGGESTED_PUBLISHER, votes=1)
+        null_priority = self.create_round(
+            'A priority without suggestion', owner, priority=True,
+            suggested_by=None, votes=2)
+        null_ordinary = self.create_round(
+            'Zulu without suggestion', owner, suggested_by=None)
+        ordinary_with_votes = self.create_round('A ordinary with votes', owner,
+                                                votes=1)
+        return [
+            (issn, 'bold', 0), (priority, 'bold', 0), (publisher, 'bold', 0),
+            (both, 'bold', 1), (null_priority, 'bold', 2),
+            (ordinary, 'normal', 0), (null_ordinary, 'normal', 0),
+            (ordinary_with_votes, 'normal', 1),
+        ]
+
+    def card(self, card_class, reverse_order=False, page=1):
+        request = RequestFactory().get('/')
+        request.user = self.curator
+        request.session = {
+            REVERSE_SESSION.format(card_class.id): reverse_order,
+        }
+        return card_class(request, page=page)
+
+    def assert_elements(self, elements, expected):
+        self.assertEqual(
+            [(e['instance'].pk, e['font_weight'], e['badge'])
+             for e in elements],
+            [(r.pk, weight, count) for r, weight, count in expected],
+        )
+
+    def test_managed_rounds_order_font_weight_and_vote_counts(self):
+        expected = self.create_mixed_rounds(self.curator)
+        self.assert_elements(self.card(ManagedVotingRounds).elements(), expected)
+
+    def test_open_rounds_order_font_weight_and_vote_counts(self):
+        expected = self.create_mixed_rounds(self.other)
+        self.assert_elements(self.card(OpenToVoteRounds).elements(), expected)
+
+    def test_explicit_reverse_order_is_preserved(self):
+        for card_class, owner in ((ManagedVotingRounds, self.curator),
+                                  (OpenToVoteRounds, self.other)):
+            expected = self.create_mixed_rounds(owner)
+            with self.subTest(card=card_class.id):
+                self.assert_elements(
+                    self.card(card_class, reverse_order=True).elements(),
+                    list(reversed(expected)),
+                )
+
+    def test_priority_is_applied_before_pagination(self):
+        for card_class, owner in ((ManagedVotingRounds, self.curator),
+                                  (OpenToVoteRounds, self.other)):
+            for i in range(14):
+                self.create_round('Ordinary {:02d}'.format(i), owner)
+            priority = self.create_round('Z priority', owner, priority=True)
+            with self.subTest(card=card_class.id):
+                card = self.card(card_class)
+                self.assertEqual(card.paginator.count, 15)
+                first_page = list(card.elements())
+                self.assertEqual(len(first_page), 10)
+                self.assertEqual(first_page[0]['instance'].pk, priority.pk)
+                self.assertEqual(first_page[0]['font_weight'], 'bold')
+                second_page = list(self.card(card_class, page=2).elements())
+                ids = [e['instance'].pk for e in first_page + second_page]
+                self.assertEqual(len(ids), 15)
+                self.assertEqual(len(set(ids)), 15)
+
+    def test_priority_does_not_bypass_card_filters(self):
+        own = self.create_round('Own priority', self.curator, priority=True)
+        other = self.create_round('Other priority', self.other, priority=True)
+        voted = self.create_round('Already voted', self.other, priority=True)
+        Vote.objects.create(voting_round=voted, author=self.curator,
+                            vote=voting_constants.VOTE_APPROVE)
+        for owner in (self.curator, self.other):
+            inactive = self.create_round('Inactive', owner, priority=True)
+            Source.objects.filter(pk=inactive.source_id).update(active=False)
+            closed = self.create_round('Closed round', owner, priority=True)
+            type(closed).objects.filter(pk=closed.pk).update(
+                state=voting_constants.VOTE_APPROVE)
+        not_voting = self.create_round('Not voting', self.other, priority=True)
+        Source.objects.filter(pk=not_voting.source_id).update(
+            state=source_constants.STATE_RUNNING)
+        self.assertEqual(
+            [e['instance'].pk for e in self.card(ManagedVotingRounds).elements()],
+            [own.pk],
+        )
+        self.assertEqual(
+            [e['instance'].pk for e in self.card(OpenToVoteRounds).elements()],
+            [other.pk],
+        )
+
+    def assert_rendered_elements(self, response, expected):
+        self.assertEqual(response.status_code, 200)
+        html = response.content.decode()
+        positions = []
+        for voting_round, weight, count in expected:
+            url = voting_round.get_absolute_url()
+            # Both card templates have this same public rendering contract.
+            self.assertContains(response, 'href="{}"'.format(url), count=1)
+            self.assertRegex(
+                html,
+                r'href="{}"[^>]*style="font-weight: {}"'.format(url, weight),
+            )
+            positions.append(html.index('href="{}"'.format(url)))
+        self.assertEqual(positions, sorted(positions))
+
+    def test_dashboard_renders_both_highlighted_groups(self):
+        managed = self.create_mixed_rounds(self.curator)
+        opened = self.create_mixed_rounds(self.other)
+        self.client.force_login(self.curator)
+        response = self.client.get(reverse('core:dashboard'))
+        self.assert_rendered_elements(response, managed)
+        self.assert_rendered_elements(response, opened)
+
+    def test_card_details_render_order_and_font_weight(self):
+        self.client.force_login(self.curator)
+        for card_class, owner in ((ManagedVotingRounds, self.curator),
+                                  (OpenToVoteRounds, self.other)):
+            expected = self.create_mixed_rounds(owner)
+            with self.subTest(card=card_class.id):
+                response = self.client.get(
+                    reverse('core:card', kwargs={'card': card_class.id}))
+                self.assert_rendered_elements(response, expected)
